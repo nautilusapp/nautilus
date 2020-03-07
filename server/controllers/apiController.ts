@@ -8,7 +8,7 @@ const apiController = {
 
   hello: (req: Request, res: Response, next: NextFunction) => {
     const hello: Hello = {
-      message: 'Hello nautilis api!',
+      message: 'Hello nautilus api!',
     }
     res.locals.hello = hello;
     return next();

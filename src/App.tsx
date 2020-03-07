@@ -14,7 +14,7 @@ import { render } from 'react-dom';
 
 const App = () => (
   <>
-    <h1>Hello Nautilis!</h1>
+    <h1>Hello Nautilus!</h1>
   </>
 );
 
