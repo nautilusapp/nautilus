@@ -21,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/oslabs-beta/nautilis/issues"
   },
-  "homepage": "https://github.com/oslabs-beta/nautilis#readme"
+  "homepage": "https://github.com/oslabs-beta/nautilis#readme",
+  "dependencies": {
+    "react": "^16.13.0",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
 }
