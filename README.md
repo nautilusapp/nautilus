@@ -1,4 +1,4 @@
-# nautilis
+# nautilus
 A Docker Compose Charting Tool
 
 ## Usage
