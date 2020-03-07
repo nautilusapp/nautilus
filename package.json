@@ -10,8 +10,7 @@
     "watch-ts": "tsc -w",
     "watch-node": "cross-env NODE_ENV=development nodemon dist/server.js",
     "watch": "concurrently \"npm run watch-ts\" \"npm run watch-node\"",
-    "dev-server": "npm run build-server && npm run watch",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open\" \"npm run dev-server\""
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open\" \"npm run watch\""
   },
   "repository": {
     "type": "git",
