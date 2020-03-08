@@ -9,13 +9,28 @@
  * ************************************
  */
 
-import * as React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-const App = () => (
-  <>
-    <h1>Hello Nautilus!</h1>
-  </>
-);
+// IMPORT REACT CONTAINERS OR COMPONENTS
+import Title from './components/Title';
+
+type AppState = {
+  projectName: string,
+}
+
+class App extends Component<{}, AppState> {
+  state: {
+    projectName: 'Nautilus',
+  }
+
+  render() {
+    return (
+      <>
+        <Title projectName={this.state.projectName}/>
+      </>
+    )
+  }
+}
 
 export default App;
