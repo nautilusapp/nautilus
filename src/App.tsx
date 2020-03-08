@@ -20,11 +20,8 @@ type AppState = {
 }
 
 class App extends Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-      projectName: 'Nautilus',
-    }
+  state: {
+    projectName: 'Nautilus',
   }
 
   render() {
