@@ -19,3 +19,5 @@ const HostOS: React.FC<Props> = props => {
     </div>
   );
 };
+
+export default HostOS;
