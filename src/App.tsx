@@ -14,7 +14,7 @@ import { render } from 'react-dom';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import Title from './components/Title';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import FileSelector from './components/FileUpload';
 
 //bootstrap css

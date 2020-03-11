@@ -5,14 +5,12 @@ const FileSelector: React.FC = props => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const target = e.currentTarget as typeof e.currentTarget & {
-      yaml: HTMLFormElement;
-    };
+    const target = e.currentTarget;
     const formData = new FormData();
     const file = target.yaml.files[0];
     if (file !== null) {
       formData.append('yaml', file);
-      fetch('https://testbackend.c0d3.com/file', {
+      fetch('/api/file', {
         method: 'POST',
         body: formData,
       })
