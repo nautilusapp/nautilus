@@ -9,6 +9,7 @@
  * ************************************
  */
 import React from 'react';
+import Volume from './Volume';
 
 type Props = {};
 

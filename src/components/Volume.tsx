@@ -1,24 +1,23 @@
 /**
  * ************************************
  *
- * @module  HostOS.tsx
+ * @module  Volume.tsx
  * @author
  * @date 3/11/20
- * @description Display for the hostOS view
+ * @description Show individual volumes or bind mounts
  *
  * ************************************
  */
 import React from 'react';
-import Volume from './Volume';
 
 type Props = {};
 
-const HostOS: React.FC<Props> = props => {
+const Volume: React.FC<Props> = props => {
   return (
-    <div className="host-os">
+    <div className="volume">
       <div></div>
     </div>
   );
 };
 
-export default HostOS;
+export default Volume;
