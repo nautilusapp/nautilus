@@ -8,33 +8,37 @@
  *
  * ************************************
  */
-
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+
+// IMPORT STYLES
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/app.scss';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
-import Title from './components/Title';
-import Button from 'react-bootstrap/Button';
-import FileSelector from './components/FileUpload';
+import LeftNav from './components/LeftNav';
+import OptionBar from './components/OptionBar';
+import D3Wrapper from './components/D3Wrapper';
 
-//bootstrap css
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-type AppState = {
+type State = {
   projectName: string;
 };
 
-class App extends Component<{}, AppState> {
-  state = {
-    projectName: 'Nautilus',
-  };
+
+class App extends Component<{}, State> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      projectName: 'Nautilus',
+    }
+
+  }
   render() {
     return (
-      <>
-        <Title projectName={this.state.projectName} />
-        <Button variant="secondary">hello noobs</Button>
-        <FileSelector />
-      </>
+      <div className="app" >
+        <LeftNav projectName={this.state.projectName} />
+        <OptionBar />
+        <D3Wrapper />
+      </div>
     );
   }
 }
