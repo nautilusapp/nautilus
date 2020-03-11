@@ -10,6 +10,8 @@
  */
 import React from 'react';
 
+import ServicesWrapper from './ServicesWrapper';
+
 type Props = {
 
 }
@@ -18,7 +20,7 @@ const D3Wrapper: React.FC<Props> = props => {
 
   return (
     <div className="d3-wrapper">
-      
+      <ServicesWrapper />
     </div>
   );
 };
