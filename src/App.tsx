@@ -10,12 +10,13 @@
  */
 import React, { Component } from 'react';
 
-// IMPORT REACT CONTAINERS OR COMPONENTS
-import LeftNav from './components/LeftNav';
-
-//bootstrap css
+// IMPORT STYLES
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.scss';
+
+// IMPORT REACT CONTAINERS OR COMPONENTS
+import LeftNav from './components/LeftNav';
+import OptionBar from './components/OptionBar';
 
 type State = {
   projectName: string;
@@ -34,6 +35,7 @@ class App extends Component<{}, State> {
     return (
       <div className="app" >
         <LeftNav projectName={this.state.projectName} />
+        <OptionBar />
       </div>
     );
   }
