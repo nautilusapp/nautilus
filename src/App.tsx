@@ -15,6 +15,7 @@ import { LeftNav } from './containers/LeftNav';
 
 //bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/app.scss';
 
 type State = {
   projectName: string;
