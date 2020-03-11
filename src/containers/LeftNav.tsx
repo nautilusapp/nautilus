@@ -10,15 +10,26 @@
  */
 import React from 'react';
 
-type Props = {
+// IMPORT REACT COMPONENTS
+import { ServiceInfoDisplay } from '../components/ServiceInfoDisplay';
+import Title from '../components/Title';
+import Button from 'react-bootstrap/Button';
+import FileSelector from '../components/FileUpload';
 
+type Props = {
+  projectName: string;
 }
 
-export const LeftNav: React.FC<Props> = props => {
+export const LeftNav: React.FC<Props> = ({
+  projectName
+}) => {
 
   return (
-    <div>
-      
+    <div className="left-nav" >
+      <Title projectName={projectName} />
+      <Button variant="secondary">hello noobs</Button>
+      <FileSelector />
+      <ServiceInfoDisplay />
     </div>
   );
 }
