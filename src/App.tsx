@@ -17,6 +17,7 @@ import './styles/app.scss';
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
+import D3Wrapper from './components/D3Wrapper';
 
 type State = {
   projectName: string;
@@ -36,6 +37,7 @@ class App extends Component<{}, State> {
       <div className="app" >
         <LeftNav projectName={this.state.projectName} />
         <OptionBar />
+        <D3Wrapper />
       </div>
     );
   }
