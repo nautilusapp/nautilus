@@ -14,8 +14,7 @@ module.exports = {
     publicPath: '/dist/',
     proxy: [
       {
-        context: ["/api"],
-        target: 'http://localhost:3000',
+        '/api': 'http://localhost:3000',
       },
     ],
     hot: true,
@@ -52,7 +51,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js', '.scss' ],
+    extensions: ['.tsx', '.ts', '.js', '.scss'],
   },
   // plugins
   plugins: [
