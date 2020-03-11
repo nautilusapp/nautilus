@@ -10,15 +10,19 @@
  */
 import React from 'react';
 
+import InfoDropdown from './InfoDropdown';
+
 type Props = {
 
 }
 
-export const ServiceInfoDisplay: React.FC<Props> = props => {
+const ServiceInfoDisplay: React.FC<Props> = props => {
 
   return (
     <div className="service-info-display">
-
+      <InfoDropdown />
     </div>
   );
 }
+
+export default ServiceInfoDisplay;

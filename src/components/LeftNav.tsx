@@ -11,16 +11,16 @@
 import React from 'react';
 
 // IMPORT REACT COMPONENTS
-import { ServiceInfoDisplay } from '../components/ServiceInfoDisplay';
-import Title from '../components/Title';
+import ServiceInfoDisplay from './ServiceInfoDisplay';
+import Title from './Title';
 import Button from 'react-bootstrap/Button';
-import FileSelector from '../components/FileUpload';
+import FileSelector from './FileUpload';
 
 type Props = {
   projectName: string;
 }
 
-export const LeftNav: React.FC<Props> = ({
+const LeftNav: React.FC<Props> = ({
   projectName
 }) => {
 
@@ -33,3 +33,5 @@ export const LeftNav: React.FC<Props> = ({
     </div>
   );
 }
+
+export default LeftNav;

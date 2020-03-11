@@ -11,7 +11,7 @@
 import React, { Component } from 'react';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
-import { LeftNav } from './containers/LeftNav';
+import LeftNav from './components/LeftNav';
 
 //bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
