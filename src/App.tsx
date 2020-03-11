@@ -14,22 +14,26 @@ import { render } from 'react-dom';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import Title from './components/Title';
+import { Button } from 'react-bootstrap';
+
+//bootstrap css
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 type AppState = {
-  projectName: string,
-}
+  projectName: string;
+};
 
 class App extends Component<{}, AppState> {
-  state: {
+  state = {
     projectName: 'Nautilus',
-  }
-
+  };
   render() {
     return (
       <>
-        <Title projectName={this.state.projectName}/>
+        <Title projectName={this.state.projectName} />
+        <Button>hello noobs</Button>
       </>
-    )
+    );
   }
 }
 
