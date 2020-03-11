@@ -15,6 +15,7 @@ import { render } from 'react-dom';
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import Title from './components/Title';
 import { Button } from 'react-bootstrap';
+import FileSelector from './components/FileUpload';
 
 //bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,7 +32,8 @@ class App extends Component<{}, AppState> {
     return (
       <>
         <Title projectName={this.state.projectName} />
-        <Button>hello noobs</Button>
+        <Button variant="secondary">hello noobs</Button>
+        <FileSelector />
       </>
     );
   }
