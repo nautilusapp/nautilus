@@ -1,10 +1,10 @@
 /**
  * ************************************
  *
- * @module  ServicesWrapper.tsx
+ * @module  DockerEngine.tsx
  * @author
  * @date 3/11/20
- * @description Display area for services containers
+ * @description DockerEngine for bind mounts
  *
  * ************************************
  */
@@ -12,12 +12,12 @@ import React from 'react';
 
 type Props = {};
 
-const ServicesWrapper: React.FC<Props> = props => {
+const DockerEngine: React.FC<Props> = props => {
   return (
-    <div className="services-wrapper">
+    <div className="docker-engine">
       <div></div>
     </div>
   );
 };
 
-export default ServicesWrapper;
+export default DockerEngine;

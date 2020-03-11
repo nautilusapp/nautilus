@@ -2,10 +2,10 @@
  * ************************************
  *
  * @module  LeftNav.tsx
- * @author 
+ * @author
  * @date 3/11/20
- * @description 
- * 
+ * @description
+ *
  * ************************************
  */
 import React from 'react';
@@ -18,20 +18,17 @@ import FileSelector from './FileUpload';
 
 type Props = {
   projectName: string;
-}
+};
 
-const LeftNav: React.FC<Props> = ({
-  projectName
-}) => {
-
+const LeftNav: React.FC<Props> = ({ projectName }) => {
   return (
-    <div className="left-nav" >
+    <div className="left-nav">
       <Title projectName={projectName} />
       <Button variant="secondary">hello noobs</Button>
       <FileSelector />
       <ServiceInfoDisplay />
     </div>
   );
-}
+};
 
 export default LeftNav;

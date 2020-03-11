@@ -1,10 +1,10 @@
 /**
  * ************************************
  *
- * @module  ServicesWrapper.tsx
+ * @module  HostOS.tsx
  * @author
  * @date 3/11/20
- * @description Display area for services containers
+ * @description Display for the hostOS view
  *
  * ************************************
  */
@@ -12,12 +12,10 @@ import React from 'react';
 
 type Props = {};
 
-const ServicesWrapper: React.FC<Props> = props => {
+const HostOS: React.FC<Props> = props => {
   return (
-    <div className="services-wrapper">
+    <div className="host-os">
       <div></div>
     </div>
   );
 };
-
-export default ServicesWrapper;
