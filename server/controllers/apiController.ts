@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from 'express';
-const yaml = require('js-yaml');
+import yaml from 'js-yaml';
 interface Hello {
   message: string;
 }
