@@ -9,6 +9,7 @@
  * ************************************
  */
 import React from 'react';
+import Services from './Service';
 
 type Props = {};
 
