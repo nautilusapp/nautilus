@@ -16,7 +16,7 @@ apiRouter.post(
   '/file',
   upload.single('yaml'),
   apiController.convertFile,
-  apiController.formatFile,
+  apiController.formatFileData,
   (req, res) => {
     res.status(200).json(res.locals);
   },

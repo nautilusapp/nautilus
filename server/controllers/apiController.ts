@@ -39,7 +39,7 @@ const apiController = {
     res.locals = yamlJSON;
     return next();
   },
-  formatFile: (req: Request, res: Response, next: NextFunction) => {
+  formatFileData: (req: Request, res: Response, next: NextFunction) => {
     try {
       const services = res.locals.services;
       const bindMounts: string[] = [];
