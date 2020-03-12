@@ -40,6 +40,7 @@ const initialState: State = {
     volumes: false,
     dependsOn: false,
   },
+  version: '',
 };
 
 class App extends Component<{}, State> {
@@ -57,10 +58,10 @@ class App extends Component<{}, State> {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         this.setState(state => {
           return {
             ...state,
+            ...data,
             fileUploaded: state.fileUploaded ? false : true,
           };
         });

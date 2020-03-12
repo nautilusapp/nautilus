@@ -10,6 +10,7 @@ export type State = {
   bindMountsClicked: Clicked;
   view: 'networks' | 'default' | 'depends_on';
   options: Options;
+  version: string;
 };
 
 type Clicked = {
@@ -17,7 +18,7 @@ type Clicked = {
 };
 
 type ReadOnlyObj = {
-  readonly [prop: string]: ReadOnlyObj | Array<string>;
+  readonly [prop: string]: ReadOnlyObj | Array<string> | string;
 };
 
 type DependsOn = {
