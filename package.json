@@ -2,6 +2,7 @@
   "name": "nautilis",
   "version": "1.0.0",
   "description": "A Docker Compose Charting Tool",
+  "types": "./src/types.d.ts",
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "build": "npm run build-src && npm run build-server",
