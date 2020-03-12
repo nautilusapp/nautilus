@@ -26,7 +26,9 @@ const initialState: State = {
   selectedContainer: '',
   fileUploaded: false,
   services: {},
-  dependsOn: {},
+  dependsOn: {
+    name: 'false',
+  },
   networks: {},
   volumes: [],
   volumesClicked: {},

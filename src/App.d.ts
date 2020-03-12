@@ -2,7 +2,7 @@ export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
   services: ReadOnlyObj;
-  dependsOn: ReadOnlyObj;
+  dependsOn: DependsOn;
   networks: ReadOnlyObj;
   volumes: Array<ReadOnlyObj>;
   volumesClicked: Clicked;
@@ -17,11 +17,16 @@ type Clicked = {
 };
 
 type ReadOnlyObj = {
-  readonly [prop: string]: any;
+  readonly [prop: string]: ReadOnlyObj | Array<string>;
+};
+
+type DependsOn = {
+  readonly name: string;
+  readonly children?: Array<DependsOn>;
 };
 
 type Options = {
-  ports: boolean;
-  volumes: boolean;
-  dependsOn: boolean;
+  readonly ports: boolean;
+  readonly volumes: boolean;
+  readonly dependsOn: boolean;
 };
