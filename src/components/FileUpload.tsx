@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const FileSelector: React.FC = props => {
+type Props = {
+  fileUploaded: () => void;
+};
+
+const FileSelector: React.FC<Props> = ({ fileUploaded }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -16,6 +20,7 @@ const FileSelector: React.FC = props => {
       })
         .then(response => response.json())
         .then(data => {
+          fileUploaded();
           console.log(data);
         })
         .catch(error => {
