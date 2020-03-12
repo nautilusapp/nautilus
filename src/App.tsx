@@ -20,14 +20,14 @@ import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 import Button from 'react-bootstrap/Button';
 
-import { State } from './App.d';
+import { State, FileUpload } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
   fileUploaded: false,
   services: {},
   dependsOn: {
-    name: 'false',
+    name: 'placeholder',
   },
   networks: {},
   volumes: [],
@@ -47,22 +47,33 @@ class App extends Component<{}, State> {
     super(props);
     this.state = initialState;
 
-    this.fileUploaded = this.fileUploaded.bind(this);
+    this.fileUpload = this.fileUpload.bind(this);
   }
 
-  fileUploaded() {
-    this.setState(state => {
-      return {
-        ...state,
-        fileUploaded: state.fileUploaded ? false : true,
-      };
-    });
-  }
+  fileUpload: FileUpload = formData => {
+    fetch('/api/file', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.setState(state => {
+          return {
+            ...state,
+            fileUploaded: state.fileUploaded ? false : true,
+          };
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
   render() {
     return (
       <div className="app">
-        <LeftNav fileUploaded={this.fileUploaded} />
+        <LeftNav fileUpload={this.fileUpload} />
         <OptionBar />
         <D3Wrapper />
       </div>

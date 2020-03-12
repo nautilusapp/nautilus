@@ -30,3 +30,7 @@ type Options = {
   readonly volumes: boolean;
   readonly dependsOn: boolean;
 };
+
+export type FileUpload = {
+  (formData: FormData): void;
+};
