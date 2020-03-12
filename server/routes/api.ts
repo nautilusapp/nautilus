@@ -16,8 +16,9 @@ apiRouter.post(
   '/file',
   upload.single('yaml'),
   apiController.convertFile,
+  apiController.formatFile,
   (req, res) => {
-    res.status(200).json('sdfsdkf');
+    res.status(200).json(res.locals);
   },
 );
 
