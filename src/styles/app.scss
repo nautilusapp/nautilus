@@ -8,6 +8,12 @@
   }
 }
 
+@media screen and (max-width: 800px) {
+  h1 {
+    font-size: 1.5em;
+  }
+}
+
 
 .left-nav {
   background-color: $primary-color;
@@ -43,8 +49,4 @@
   }
 }
 
-// @media screen and (max-width: 600px) {
-//   .file-upload {
-//     font-size: 1em;
-//   }
-// }
+

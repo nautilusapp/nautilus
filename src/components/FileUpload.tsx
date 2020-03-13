@@ -20,16 +20,25 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
   };
 
   return (
-    <div >
-      <Form className="file-upload" onSubmit={handleSubmit} encType="multipart/form-data">
-        <Form.Label htmlFor="files">Upload your Docker Compose File</Form.Label>
-        <Form.Control
-          id="files"
-          type="file"
-          name="yaml"
-          accept=".yml,.yaml"
-          style={{ display: 'none' }}
-        ></Form.Control>
+    <div>
+      <Form
+        className="file-upload"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+      >
+        <Form.Group>
+          <Form.Label htmlFor="files">
+            Upload your Docker Compose File
+          </Form.Label>
+          <Form.Control
+            as="input"
+            id="files"
+            type="file"
+            name="yaml"
+            accept=".yml,.yaml"
+            style={{ display: 'none' }}
+          ></Form.Control>
+        </Form.Group>
         <Button type="submit">Upload</Button>
       </Form>
     </div>
