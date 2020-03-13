@@ -1,27 +1,22 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const FileSelector: React.FC = props => {
+import { FileUpload } from '../App.d';
+
+type Props = {
+  fileUpload: FileUpload;
+};
+
+const FileUpload: React.FC<Props> = ({ fileUpload }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const target = e.currentTarget;
     const formData = new FormData();
     const file = target.yaml.files[0];
-    if (file !== null) {
-      formData.append('yaml', file);
-      fetch('/api/file', {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
+    formData.append('yaml', file);
+
+    fileUpload(formData);
   };
 
   return (
@@ -40,4 +35,4 @@ const FileSelector: React.FC = props => {
     </div>
   );
 };
-export default FileSelector;
+export default FileUpload;

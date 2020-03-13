@@ -12,20 +12,19 @@ import React from 'react';
 
 // IMPORT REACT COMPONENTS
 import ServiceInfoDisplay from './ServiceInfoDisplay';
-import Title from './Title';
-import Button from 'react-bootstrap/Button';
 import FileSelector from './FileUpload';
+import Title from './Title';
+import { FileUpload } from '../App.d';
 
 type Props = {
-  projectName: string;
+  fileUpload: FileUpload;
 };
 
-const LeftNav: React.FC<Props> = ({ projectName }) => {
+const LeftNav: React.FC<Props> = ({ fileUpload }) => {
   return (
     <div className="left-nav">
-
-      <Title projectName={projectName} />
-      <FileSelector />
+      <Title />
+      <FileSelector fileUpload={fileUpload} />
       <ServiceInfoDisplay />
     </div>
   );
