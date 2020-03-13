@@ -23,8 +23,8 @@ type Props = {
 const LeftNav: React.FC<Props> = ({ projectName }) => {
   return (
     <div className="left-nav">
+
       <Title projectName={projectName} />
-      <Button variant="secondary">hello noobs</Button>
       <FileSelector />
       <ServiceInfoDisplay />
     </div>

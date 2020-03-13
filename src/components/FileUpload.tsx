@@ -25,9 +25,9 @@ const FileSelector: React.FC = props => {
   };
 
   return (
-    <div>
-      <Form onSubmit={handleSubmit} encType="multipart/form-data">
-        <Form.Label htmlFor="files">Upload your yaml file</Form.Label>
+    <div >
+      <Form className="file-upload" onSubmit={handleSubmit} encType="multipart/form-data">
+        <Form.Label htmlFor="files">Upload your Docker Compose File</Form.Label>
         <Form.Control
           id="files"
           type="file"
@@ -35,7 +35,7 @@ const FileSelector: React.FC = props => {
           accept=".yml,.yaml"
           style={{ display: 'none' }}
         ></Form.Control>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Upload</Button>
       </Form>
     </div>
   );
