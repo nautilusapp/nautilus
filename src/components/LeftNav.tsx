@@ -12,9 +12,8 @@ import React from 'react';
 
 // IMPORT REACT COMPONENTS
 import ServiceInfoDisplay from './ServiceInfoDisplay';
-import Button from 'react-bootstrap/Button';
 import FileSelector from './FileUpload';
-
+import Title from './Title';
 import { FileUpload } from '../App.d';
 
 type Props = {
@@ -24,8 +23,7 @@ type Props = {
 const LeftNav: React.FC<Props> = ({ fileUpload }) => {
   return (
     <div className="left-nav">
-      <h1>Nautilus</h1>
-      <Button variant="secondary">hello noobs</Button>
+      <Title />
       <FileSelector fileUpload={fileUpload} />
       <ServiceInfoDisplay />
     </div>
