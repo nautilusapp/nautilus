@@ -4,6 +4,7 @@
   "description": "A Docker Compose Charting Tool",
   "types": "./src/types.d.ts",
   "scripts": {
+    "electron": "electron .",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "build": "npm run build-src && npm run build-server",
     "build-src": "cross-env NODE_ENV=production webpack",
