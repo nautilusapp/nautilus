@@ -8,18 +8,32 @@
  *
  * ************************************
  */
-import React from 'react';
-
+import React, { useState } from 'react';
 import ServicesWrapper from './ServicesWrapper';
 import DockerEngine from './DockerEngine';
 import HostOS from './HostOS';
+import FileSelector from './FileUpload';
 
-type Props = {};
+//type import
+import { FileUpload } from '../App.d';
 
-const D3Wrapper: React.FC<Props> = props => {
+type Props = {
+  fileUpload: FileUpload;
+  fileUploaded: boolean;
+};
+
+const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload }) => {
   return (
     <div className="d3-wrapper">
       <ServicesWrapper />
+      <div className="initial-file-upload">
+        {!fileUploaded ? (
+          <FileSelector
+            fileUpload={fileUpload}
+            locatedWithinVisualizer={true}
+          />
+        ) : null}
+      </div>
       <DockerEngine />
       <HostOS />
     </div>
