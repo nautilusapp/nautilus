@@ -8,14 +8,10 @@
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.js",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.js",
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
-    "electron": "cross-env NODE_ENV=production npm run e-build && electron dist/main.js",
-    "e-build": "webpack --config ./webpack.config.js",
-    "build-src": "cross-env NODE_ENV=production webpack",
-    "build-server": "tsc",
-    "watch-ts": "tsc -w",
-    "watch-node": "cross-env NODE_ENV=development nodemon dist/server.js",
-    "watch": "concurrently \"npm run watch-ts\" \"npm run watch-node\"",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open\" \"npm run watch\""
+    "dev-main": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.main.js",
+    "dev-renderer": "cross-env NODE_ENV=development DEV_PORT=8080 webpack-dev-server --config ./configs/webpack.config.renderer.dev.js",
+    "dev-build": "concurrently \"npm run dev-main\" \"npm run dev-renderer\"",
+    "dev": "electron ./dist/main.dev.js"
   },
   "repository": {
     "type": "git",

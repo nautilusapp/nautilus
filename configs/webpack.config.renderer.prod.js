@@ -1,8 +1,9 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-export default {
+module.exports = {
   mode: process.env.NODE_ENV,
-  entry: '../src/index.tsx',
+  entry: './src/index.tsx',
   target: 'electron-renderer',
 
   module: {
@@ -28,7 +29,7 @@ export default {
     ],
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'renderer.js',
     path: path.resolve(__dirname, '..', 'dist'),
   },
   resolve: {

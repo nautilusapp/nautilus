@@ -1,17 +1,18 @@
 const path = require('path');
-const { MiniCssExtractPlugin, HotModuleReplacementPlugin } = require('webpack');
+const { HotModuleReplacementPlugin } = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-export default {
+module.exports = {
   mode: process.env.NODE_ENV,
   entry: './src/index.tsx',
   target: 'electron-renderer',
   output: {
-    filename: 'bundle.js',
+    filename: 'renderer.js',
   },
 
   devtool: 'source-map',
   devServer: {
-    publicPath: '/dist/',
+    publicPath: 'dist/',
     hot: true,
     port: process.env.DEV_PORT,
   },
