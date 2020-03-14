@@ -16,11 +16,13 @@ const createWindow = () => {
             preload: path.join(app.getAppPath(), 'bundle.js'),
           },
   });
-  // load index.html of application
-  window.loadURL(`file://${app.getAppPath()}/../index.html`);
 
-  // open with devtools
-  window.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') {
+    window.loadURL(`http://localhost:${process.env.DEV_PORT}/`);
+    window.webContents.openDevTools();
+  } else {
+    window.loadURL(`file://${app.getAppPath()}/../index.html`);
+  }
 };
 
 app.whenReady().then(createWindow);

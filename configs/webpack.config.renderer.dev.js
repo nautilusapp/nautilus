@@ -1,5 +1,5 @@
 const path = require('path');
-const { EnviornmentPlugin, HotModuleReplacementPlugin } = require('webpack');
+const { MiniCssExtractPlugin, HotModuleReplacementPlugin } = require('webpack');
 
 export default {
   mode: process.env.NODE_ENV,
@@ -9,11 +9,11 @@ export default {
     filename: 'bundle.js',
   },
 
-  // devtool: "source-map",
+  devtool: 'source-map',
   devServer: {
     publicPath: '/dist/',
     hot: true,
-    port: process.env.PORT,
+    port: process.env.DEV_PORT,
   },
   module: {
     rules: [
@@ -22,25 +22,21 @@ export default {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      // {
-      //   enforce: "pre",
-      //   test: /\.js$/,
-      //   loader: "source-map-loader"
-      // },
-      // sass loader
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
+      },
       {
         test: /\.s?[ac]ss$/,
         use: [
-          // Creates `style` nodes from JS strings
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: process.env.NODE_ENV === 'development',
             },
           },
-          // Translates CSS into CommonJS
           'css-loader',
-          // Compiles Sass to CSS
           'sass-loader',
         ],
       },
