@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from 'electron';
-import os from 'os';
 import path from 'path';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer';
 
 if (module.hot) {
   module.hot.accept();
@@ -23,6 +25,9 @@ const createWindow = () => {
   if (process.env.NODE_ENV === 'development') {
     window.loadURL(`http://localhost:9080`);
     window.webContents.openDevTools();
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name: string) => console.log(`Added Extension: ${name}`))
+      .catch((err: Error) => console.log(`An error occurred: ${err}`));
   } else {
     window.loadURL(`file://${app.getAppPath()}/../index.html`);
   }
