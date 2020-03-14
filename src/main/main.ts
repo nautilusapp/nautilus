@@ -22,7 +22,7 @@ const createWindow = () => {
   });
 
   if (process.env.NODE_ENV === 'development') {
-    window.loadURL(`http://localhost:${process.env.DEV_PORT}`);
+    window.loadURL(`http://localhost:9080`);
     window.webContents.openDevTools();
   } else {
     window.loadURL(`file://${app.getAppPath()}/../index.html`);

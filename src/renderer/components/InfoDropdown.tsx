@@ -9,8 +9,8 @@
  * ************************************
  */
 import React from 'react';
-import { FaAngleDown } from 'react-icons/fa'
-import { Navbar, Accordion, Card } from 'react-bootstrap';
+import { FaAngleDown } from 'react-icons/fa';
+import { Accordion, Card } from 'react-bootstrap';
 
 type Props = {};
 
@@ -26,9 +26,7 @@ const InfoDropdown: React.FC<Props> = props => {
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="0">
-            <Card.Body>
-              Other services
-            </Card.Body>
+            <Card.Body>Other services</Card.Body>
           </Accordion.Collapse>
         </Card>
         {/* STORAGE */}
@@ -39,9 +37,7 @@ const InfoDropdown: React.FC<Props> = props => {
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="1">
-            <Card.Body>
-              Add Storage Info Here
-            </Card.Body>
+            <Card.Body>Add Storage Info Here</Card.Body>
           </Accordion.Collapse>
         </Card>
         {/* NETWORK */}
@@ -52,9 +48,7 @@ const InfoDropdown: React.FC<Props> = props => {
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="2">
-            <Card.Body>
-              Add Network Info Here
-            </Card.Body>
+            <Card.Body>Add Network Info Here</Card.Body>
           </Accordion.Collapse>
         </Card>
         {/* SECURITY */}
@@ -65,9 +59,7 @@ const InfoDropdown: React.FC<Props> = props => {
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="3">
-            <Card.Body>
-              Add Security Info Here
-            </Card.Body>
+            <Card.Body>Add Security Info Here</Card.Body>
           </Accordion.Collapse>
         </Card>
         {/* MISC */}
@@ -78,14 +70,11 @@ const InfoDropdown: React.FC<Props> = props => {
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="4">
-            <Card.Body>
-              Add Misc. Info Here
-            </Card.Body>
+            <Card.Body>Add Misc. Info Here</Card.Body>
           </Accordion.Collapse>
         </Card>
-
       </Accordion>
-    </div >
+    </div>
   );
 };
 

@@ -18,7 +18,6 @@ import './styles/app.scss';
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
-import Button from 'react-bootstrap/Button';
 
 import { State, FileUpload } from './App.d';
 
@@ -73,7 +72,7 @@ class App extends Component<{}, State> {
 
   render() {
     return (
-      <div className="app">
+      <div className="app-class">
         <LeftNav fileUpload={this.fileUpload} />
         <OptionBar />
         <D3Wrapper />
