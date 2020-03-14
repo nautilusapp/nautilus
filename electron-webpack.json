@@ -2,7 +2,7 @@
   "electronWebpack": {
     "commonSourceDirectory": "src/common",
     "staticSourceDirectory": "src/static",
-    "title": true,
+    "title": "Nautilus",
 
     "main": {
       "sourceDirectory": "src/main"
