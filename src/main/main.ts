@@ -1,7 +1,11 @@
 import electron from 'electron';
-import path from 'path';
+// import path from 'path';
 
 const app = electron.app;
+
+if (module.hot) {
+  module.hot.accept();
+}
 
 const createWindow = () => {
   let window = new electron.BrowserWindow({
