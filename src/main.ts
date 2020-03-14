@@ -1,20 +1,26 @@
 import electron from 'electron';
+import path from 'path';
 
 const app = electron.app;
 
 const createWindow = () => {
-  let win = new electron.BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-    },
+  let window = new electron.BrowserWindow({
+    width: 1000,
+    height: 750,
+    webPreferences:
+      process.env.NODE_ENV === 'development'
+        ? {
+            nodeIntegration: true,
+          }
+        : {
+            preload: path.join(app.getAppPath(), 'bundle.js'),
+          },
   });
   // load index.html of application
-  win.loadFile('index.html');
+  window.loadURL(`file://${app.getAppPath()}/../index.html`);
 
   // open with devtools
-  win.webContents.openDevTools();
+  window.webContents.openDevTools();
 };
 
 app.whenReady().then(createWindow);
