@@ -1,6 +1,16 @@
 // IMPORT SASS
 @import 'variables';
 
+.app {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100%;
+  width:100%
+}
+
 .title {
   margin: 10%;
   h1 {
@@ -8,38 +18,67 @@
   }
 }
 
-
 .left-nav {
   background-color: $primary-color;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 100%;
+  grid-area: 1 / 1 / 6 / 2;
+  // top: 0;
+  // left: 0;
+  // width: 40%;
+  // height: 100%;
+
+  .title {
+    margin: 10%;
+    h1 {
+      color: $fourth-color;
+    }
+  }
+
+  .info-dropdown {
+    padding: 10%;
+    background: none;
+  }
+
+  .card-header {
+    background: none;
+    color: $fourth-color;
+    background-color: $primary-color;
+    padding: 0.5em;
+  }
+
+  .file-upload {
+    margin: 10%;
+    background: none;
+    color: $fourth-color;
+    font-size: 1em;
+    button {
+      background-color: $secondary-color;
+      border-color: $fourth-color;
+    }
+  }
 }
 
-.info-dropdown {
-  padding: 10%;
-  background: none;
-}
-
-.card-header {
-  background: none;
-  color: $fourth-color;
+.option-bar {
   background-color: $primary-color;
-  padding: 0.5em;
-}
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+  grid-area: 1 / 2 / 2 / 6;
+  margin-bottom: 5%;
+  font-size: 1.3rem;
 
-.file-upload {
-  margin: 10%;
-  background: none;
-  color: $fourth-color;
-  font-size: 1em;
-  button {
-    background-color: $secondary-color;
-    border-color: $fourth-color;
+  .group-by {
+    margin-left: 5%;
+    width: 50%;
+  }
+
+  .view-options {
+    width: 50%;
+  }
+  .option {
+    margin: 0 0 0 3%;
   }
 }
 
