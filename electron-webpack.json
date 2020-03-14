@@ -1,0 +1,15 @@
+{
+  "electronWebpack": {
+    "commonSourceDirectory": "src/common",
+    "staticSourceDirectory": "src/static",
+    "title": true,
+
+    "main": {
+      "sourceDirectory": "src/main"
+    },
+
+    "renderer": {
+      "sourceDirectory": "src/renderer"
+    }
+  }
+}
