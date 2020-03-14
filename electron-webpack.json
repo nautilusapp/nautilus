@@ -1,6 +1,6 @@
 {
   "commonSourceDirectory": "src/common",
-  "staticSourceDirectory": "src/static",
+  "staticSourceDirectory": "static",
   "title": "Nautilus",
 
   "main": {

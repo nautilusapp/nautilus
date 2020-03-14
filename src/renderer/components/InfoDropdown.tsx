@@ -10,7 +10,8 @@
  */
 import React from 'react';
 import { FaAngleDown } from 'react-icons/fa';
-import { Accordion, Card } from 'react-bootstrap';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
 
 type Props = {};
 

@@ -1,14 +1,13 @@
-import electron from 'electron';
-// import path from 'path';
-
-const app = electron.app;
+import { app, BrowserWindow } from 'electron';
+import os from 'os';
+import path from 'path';
 
 if (module.hot) {
   module.hot.accept();
 }
 
 const createWindow = () => {
-  let window = new electron.BrowserWindow({
+  let window = new BrowserWindow({
     width: 1000,
     height: 750,
     webPreferences:
@@ -17,7 +16,7 @@ const createWindow = () => {
             nodeIntegration: true,
           }
         : {
-            // preload: path.join(app.getAppPath(), 'renderer.js'),
+            preload: path.join(app.getAppPath(), 'dist/index.js'),
           },
   });
 
@@ -38,7 +37,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (electron.BrowserWindow.getAllWindows().length === 0) {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });

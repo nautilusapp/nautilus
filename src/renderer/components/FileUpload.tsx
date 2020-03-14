@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import { FileUpload } from '../App.d';
 
@@ -20,8 +21,12 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
   };
 
   return (
-    <div >
-      <Form className="file-upload" onSubmit={handleSubmit} encType="multipart/form-data">
+    <div>
+      <Form
+        className="file-upload"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+      >
         <Form.Label htmlFor="files">Upload your Docker Compose File</Form.Label>
         <Form.Control
           id="files"
