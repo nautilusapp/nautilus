@@ -26,12 +26,16 @@ type DependsOn = {
   readonly children?: Array<DependsOn>;
 };
 
-type Options = {
-  readonly ports: boolean;
-  readonly volumes: boolean;
-  readonly dependsOn: boolean;
+export type Options = {
+  ports: boolean;
+  volumes: boolean;
+  dependsOn: boolean;
 };
 
 export type FileUpload = {
   (formData: FormData): void;
+};
+
+export type UpdateOption = {
+  (option: string): void;
 };

@@ -2,7 +2,7 @@
  * ************************************
  *
  * @module  App.tsx
- * @author Joshua Nordstrom
+ * @author Joshua Nordstrom, Tyler Hurtt
  * @date 3/7/20
  * @description start of the application
  *
@@ -20,7 +20,8 @@ import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 import Button from 'react-bootstrap/Button';
 
-import { State, FileUpload } from './App.d';
+import { State, FileUpload, /* UpdateOption */ } from './App.d';
+import { stat } from 'fs';
 
 const initialState: State = {
   selectedContainer: '',
@@ -47,9 +48,15 @@ class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = initialState;
-
     this.fileUpload = this.fileUpload.bind(this);
+    // this.updateOption = this.updateOption.bind(this);
   }
+
+  // updateOption: UpdateOption = option => {
+  //   // console.log('this is what i want to manipulate', option);
+  //   // console.log('1st', !this.state.options['ports']);
+  //   // this.setState({!this.state.options['ports']})
+  // };
 
   fileUpload: FileUpload = formData => {
     fetch('/api/file', {
@@ -75,7 +82,10 @@ class App extends Component<{}, State> {
     return (
       <div className="app">
         <LeftNav fileUpload={this.fileUpload} />
-        <OptionBar />
+        <OptionBar
+          // updateOption={this.updateOption}
+          options={this.state.options}
+        />
         <D3Wrapper />
       </div>
     );
