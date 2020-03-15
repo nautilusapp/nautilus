@@ -49,6 +49,11 @@ module.exports = {
           'sass-loader',
         ],
       },
+      //for rendering images - d3
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader',
+      },
     ],
   },
   resolve: {

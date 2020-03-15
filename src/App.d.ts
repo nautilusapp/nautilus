@@ -1,3 +1,5 @@
+import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
+
 export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
@@ -30,6 +32,21 @@ type Options = {
   readonly ports: boolean;
   readonly volumes: boolean;
   readonly dependsOn: boolean;
+};
+
+//test - Aris depends on
+interface Node extends SimulationNodeDatum {
+  name: string;
+}
+
+interface Link extends SimulationLinkDatum<Node> {
+  source: string;
+  target: string;
+}
+
+type Graph = {
+  nodes: Node[];
+  links: Link[];
 };
 
 export type FileUpload = {

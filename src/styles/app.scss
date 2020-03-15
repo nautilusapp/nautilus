@@ -14,7 +14,6 @@
   }
 }
 
-
 .left-nav {
   background-color: $primary-color;
   display: flex;
@@ -49,4 +48,15 @@
   }
 }
 
+.d3-wrapper {
+  display: flex;
+  justify-content: start;
+}
 
+.app {
+  display: flex;
+}
+
+.myContainers {
+  background-image: url('../../src/styles/aris.png');
+}
