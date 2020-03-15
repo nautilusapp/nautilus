@@ -10,11 +10,20 @@
  */
 import React from 'react';
 import Services from './Service';
+import TempService from './tempService';
 
-type Props = {};
+import { State } from '../app.d';
 
-const ServicesWrapper: React.FC<Props> = () => {
-  return <div className="services-wrapper"></div>;
+type Props = {
+  serviceInfo: State;
+};
+
+const ServicesWrapper: React.FC<Props> = ({ serviceInfo }) => {
+  return (
+    <div className="services-wrapper">
+      <TempService serviceInfo={serviceInfo} />
+    </div>
+  );
 };
 
 export default ServicesWrapper;

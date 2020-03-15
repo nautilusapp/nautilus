@@ -82,6 +82,7 @@ class App extends Component<{}, State> {
         <D3Wrapper
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
+          serviceInfo={this.state}
         />
       </div>
     );

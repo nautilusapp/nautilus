@@ -26,6 +26,7 @@ const LeftNav: React.FC<Props> = ({ fileUpload, fileUploaded }) => {
     <div className="left-nav">
       <Title />
       {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
+      {'Hey!!!'}
       <ServiceInfoDisplay />
     </div>
   );
