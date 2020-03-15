@@ -2,7 +2,7 @@
  * ************************************
  *
  * @module  App.tsx
- * @author Joshua Nordstrom, Tyler Hurtt
+ * @author Joshua Nordstrom
  * @date 3/7/20
  * @description start of the application
  *
@@ -20,7 +20,13 @@ import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 import Button from 'react-bootstrap/Button';
 
-import { State, FileUpload, /*View,*/ Options, UpdateOption, UpdateView } from './App.d';
+import {
+  State,
+  FileUpload,
+  View,
+  UpdateOption,
+  UpdateView,
+} from './App.d';
 import { stat } from 'fs';
 import { stringify } from 'querystring';
 
@@ -52,31 +58,23 @@ class App extends Component<{}, State> {
     this.fileUpload = this.fileUpload.bind(this);
     // this.updateOption = this.updateOption.bind(this);
   }
-  
-  updateView: UpdateView = (view) => {
-    // console.log('in updateView...');
-    // console.log('current view in state...', this.state.view);
-    // console.log('...', view);
-    // console.log('changing state...');
-      this.setState(state => {
-        return {
-          ...state, view
-        }
-      })
+
+  updateView: UpdateView = (view: View) => {
+    this.setState(state => {
+      return {
+        ...state,
+        view,
+      };
+    });
   };
 
   updateOption: UpdateOption = option => {
-    console.log('in updateOption...');
-    console.log('current options in state...', this.state.options);
-    console.log('option...', option);
-    // console.log('grabbing that options value from state...', this.state.options[option])
-    const clone: object = Object.assign(this.state.options)
     this.setState(state => {
       return {
-        ...state,        }
-      }
-    )
-    console.log('stateOptions...', this.state.options);
+        ...state,
+        options: { ...state.options, [option]: !state.options[option] },
+      };
+    });
   };
 
   fileUpload: FileUpload = formData => {
@@ -107,7 +105,7 @@ class App extends Component<{}, State> {
           view={this.state.view}
           options={this.state.options}
           updateView={this.updateView}
-          updateOption={this.updateOption} 
+          updateOption={this.updateOption}
         />
         <D3Wrapper />
       </div>

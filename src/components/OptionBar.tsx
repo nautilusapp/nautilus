@@ -2,19 +2,19 @@
  * ************************************
  *
  * @module  OptionBar.tsx
- * @author
+ * @author Tyler Hurtt
  * @date 3/11/20
  * @description Used to display toggle options
  *
  * ************************************
  */
-import React, { useState, ReactFragment } from 'react';
+import React, {ReactFragment} from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { Options, UpdateOption, UpdateView } from '../App.d';
+import { View, Options, UpdateOption, UpdateView } from '../App.d';
 
 type Props = {
-  view: string;
+  view: View;
   options: Options;
   updateView: UpdateView;
   updateOption: UpdateOption;
@@ -28,63 +28,139 @@ const OptionBar: React.FC<Props> = ({
 }) => {
   let dependsViewFlag = false;
 
-  const viewClickToggle = (element: EventTarget & Element): void => {
+  // const viewClickToggle = (element: EventTarget & Element): void => {
 
-  }
+  // }
   const handleViewClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const element = e.currentTarget
+    const element = e.currentTarget;
     const v = element.id;
-
-    // Toggle Text Color
-    if(element.classList.contains('selected')){
-      element.classList.remove('selected')
-    } else {
-      element.classList.add('selected')
-    }
-
-    // Drop Depends_On Option if already in that view
-    if (v === 'depends_on') {
-      dependsViewFlag = true;
-    } else {
-      dependsViewFlag = false;
-    }
 
     // Update view in state
     updateView(v);
   };
 
   const handleOptionClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const element = e.currentTarget
-    const option = e.currentTarget.id;
-    console.log('inside handleOptionClick...')
-    console.log('options...', options);
-    console.log('clicked...', option);
-
-    // Toggle Text Color
-    if(element.classList.contains('selected')){
-      element.classList.remove('selected')
-    } else {
-      element.classList.add('selected')
-    }
+    const element = e.currentTarget;
+    const option = element.id;
 
     // Update options in state
     updateOption(option);
   };
 
+  // Function for toggling group-by view
+  let renderViewOptions = (): ReactFragment => {
+    if (view === 'networks') {
+      return (
+        <React.Fragment>
+          <Navbar.Text
+            className="view selected"
+            id="networks"
+            onClick={handleViewClick}
+          >
+            Networks
+          </Navbar.Text>
+          <Navbar.Text
+            className="view"
+            id="depends_on"
+            onClick={handleViewClick}
+          >
+            Depends On
+          </Navbar.Text>
+        </React.Fragment>
+      );
+    } else if (view === 'depends_on') {
+      return (
+        <React.Fragment>
+          <Navbar.Text
+            className="view"
+            id="networks"
+            onClick={handleViewClick}
+          >
+            Networks
+          </Navbar.Text>
+          <Navbar.Text
+            className="view selected"
+            id="depends_on"
+            onClick={handleViewClick}
+          >
+            Depends On
+          </Navbar.Text>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <Navbar.Text
+            className="view"
+            id="networks"
+            onClick={handleViewClick}
+          >
+            Networks
+          </Navbar.Text>
+          <Navbar.Text
+            className="view"
+            id="depends_on"
+            onClick={handleViewClick}
+          >
+            Depends On
+          </Navbar.Text>
+        </React.Fragment>
+      );
+    }
+  };
+
+  // Options text
+  let portsOption = (
+    <Navbar.Text className="option" id="ports" onClick={handleOptionClick}>
+      Ports
+    </Navbar.Text>
+  );
+  let volumesOption = (
+    <Navbar.Text className="option" id="volumes" onClick={handleOptionClick}>
+      Volumes
+    </Navbar.Text>
+  );
   let dependsOption = (
-    <Navbar.Text
-      className="option"
-      id="dependsOnOption"
-      onClick={handleOptionClick}
-    >
+    <Navbar.Text className="option" id="dependsOn" onClick={handleOptionClick}>
       Depends On
     </Navbar.Text>
   );
+  
+  // Selected options text
+  if(options.ports === true){
+    portsOption = (
+      <Navbar.Text className="option selected" id="ports" onClick={handleOptionClick}>
+        Ports
+      </Navbar.Text>
+    );
+  } else {
+    portsOption
+  }
+  if( options.volumes === true){
+    volumesOption = (
+      <Navbar.Text className="option selected" id="volumes" onClick={handleOptionClick}>
+        Volumes
+      </Navbar.Text>
+    );
+  } else {
+    volumesOption
+  }
+  if(options.dependsOn === true){
+    dependsOption = (
+      <Navbar.Text className="option selected" id="dependsOn" onClick={handleOptionClick}>
+        Depends On
+      </Navbar.Text>
+    );
+  } else {
+    dependsOption
+  }
+
+  // Remove dependsOn Option when view is depends on
   if (view === 'depends_on') {
     dependsOption = (
       <Navbar.Text
         className="option"
-        id="dependsOnOption"
+        id="dependsOn"
         style={{ display: 'none' }}
       >
         Depends On
@@ -95,30 +171,13 @@ const OptionBar: React.FC<Props> = ({
   return (
     <Navbar className="option-bar" variant="dark">
       <Nav className="group-by">
-        <Navbar.Text>Group By: </Navbar.Text>
-        <Navbar.Text className="option view" id="networks" onClick={handleViewClick}>
-          Networks
-        </Navbar.Text>
-        <Navbar.Text
-          className="option view"
-          id="depends_on"
-          onClick={handleViewClick}
-        >
-          Depends On
-        </Navbar.Text>
+        <Navbar.Text className="tag">Group By: </Navbar.Text>
+        {renderViewOptions()}
       </Nav>
-      <Nav className="view-options">
-        <Navbar.Text>View Options: </Navbar.Text>
-        <Navbar.Text className="option" id="ports" onClick={handleOptionClick}>
-          Ports
-        </Navbar.Text>
-        <Navbar.Text
-          className="option"
-          id="volumes"
-          onClick={handleOptionClick}
-        >
-          Volumes
-        </Navbar.Text>
+      <Nav className="options">
+        <Navbar.Text className="tag">View Options: </Navbar.Text>
+        {portsOption}
+        {volumesOption}
         {dependsOption}
       </Nav>
     </Navbar>

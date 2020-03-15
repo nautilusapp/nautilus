@@ -8,7 +8,7 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: string;
+  view: View;
   options: Options;
   version: string;
 };
@@ -27,16 +27,16 @@ type DependsOn = {
 };
 
 export type Options = {
-  ports: boolean;
-  volumes: boolean;
-  dependsOn: boolean;
+  readonly ports: boolean;
+  readonly volumes: boolean;
+  readonly dependsOn: boolean;
 };
 
 export type FileUpload = {
   (formData: FormData): void;
 };
 
-// export type View = 'networks' | 'default' | 'depends_on';
+export type View = 'networks' | 'default' | 'depends_on';
 
 export type UpdateOption = {
   (option: string): void;

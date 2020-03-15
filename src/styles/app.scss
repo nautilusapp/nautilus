@@ -66,12 +66,14 @@
       margin-left: 5%;
       width: 50%;
       color: $fourth-color;
-
-      .option {
+      .tag {
+        color: white;
+      }
+      .view {
         margin: 0 0 0 3%;
       }
-  
-      .option:hover {
+
+      .view:hover {
         color: $fourth-color;
       }
 
@@ -80,10 +82,12 @@
       }
     }
 
-    .view-options {
+    .options {
       width: 50%;
       color: $fourth-color;
-      
+      .tag {
+        color: white;
+      }
       .option {
         margin: 0 0 0 3%;
       }
@@ -95,7 +99,6 @@
       .selected {
         color: $fourth-color;
       }
-
     }
   }
 }
