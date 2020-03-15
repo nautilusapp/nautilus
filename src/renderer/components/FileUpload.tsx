@@ -16,11 +16,10 @@ const FileUpload: React.FC<Props> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.currentTarget;
-    const formData = new FormData();
     const file = target.yaml.files[0];
-    formData.append('yaml', file);
-
-    fileUpload(formData);
+    //if no file, do nothing
+    if (!file) return;
+    fileUpload(file);
   };
   const color = locatedWithinVisualizer ? 'black' : 'white';
   return (
