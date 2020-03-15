@@ -16,22 +16,6 @@ import { getStatic } from '../scripts/static';
 //import {simulation} from 'd3-simulation';
 
 import { Graph } from '../App.d';
-// type dProps = {
-//   width: number;
-//   height: number;
-//   data: {
-//     nodes: { name: string }[];
-//     links: { source: string; target: string }[];
-//   };
-// };
-// type Graph = {
-//   nodes: Node[];
-//   links: Link[];
-// };
-
-// interface INode {
-//   name: string;
-// }
 
 class DependsOnView extends React.Component<Graph, {}> {
   // props: Graph = whatever is passed in
