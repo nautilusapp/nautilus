@@ -13,20 +13,13 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 
-<<<<<<< HEAD:src/Index.tsx
-=======
 if (module.hot) {
   module.hot.accept();
 }
 
->>>>>>> master:src/renderer/Index.tsx
 render(
   <>
     <App />
   </>,
-<<<<<<< HEAD:src/Index.tsx
-  document.getElementById('root'),
-=======
   document.getElementById('app'),
->>>>>>> master:src/renderer/Index.tsx
 );

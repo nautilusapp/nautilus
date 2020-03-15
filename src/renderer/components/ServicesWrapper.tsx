@@ -9,10 +9,9 @@
  * ************************************
  */
 import React from 'react';
-<<<<<<< HEAD:src/components/ServicesWrapper.tsx
-import Services from './Service';
-import DependsOnTest from './DependsOn-Test';
-import { Node, Link, Graph } from '../App.d';
+//import Services from './Service';
+import DependsOnView from './DependsOnView';
+import { Graph } from '../App.d';
 type Props = {};
 
 const ServicesWrapper: React.FC<Props> = props => {
@@ -22,22 +21,10 @@ const ServicesWrapper: React.FC<Props> = props => {
   };
   return (
     <div className="services-wrapper">
-      <DependsOnTest nodes={data.nodes} links={data.links} />
+      <DependsOnView nodes={data.nodes} links={data.links} />
       <div></div>
     </div>
   );
-=======
-// import Services from './Service';
-
-type Props = {};
-
-const ServicesWrapper: React.FC<Props> = () => {
-  return <div className="services-wrapper"></div>;
->>>>>>> master:src/renderer/components/ServicesWrapper.tsx
 };
 
 export default ServicesWrapper;
-
-// width={900}
-// height={900}
-// data={{ nodes: [{ name: '' }], links: [{ source: '', target: '' }] }
