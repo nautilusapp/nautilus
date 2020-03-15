@@ -8,7 +8,7 @@
  *
  * ************************************
  */
-import React, { useState } from 'react';
+import React from 'react';
 import ServicesWrapper from './ServicesWrapper';
 import DockerEngine from './DockerEngine';
 import HostOS from './HostOS';
