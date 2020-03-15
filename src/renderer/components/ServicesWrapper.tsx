@@ -9,6 +9,7 @@
  * ************************************
  */
 import React from 'react';
+<<<<<<< HEAD:src/components/ServicesWrapper.tsx
 import Services from './Service';
 import DependsOnTest from './DependsOn-Test';
 import { Node, Link, Graph } from '../App.d';
@@ -25,6 +26,14 @@ const ServicesWrapper: React.FC<Props> = props => {
       <div></div>
     </div>
   );
+=======
+// import Services from './Service';
+
+type Props = {};
+
+const ServicesWrapper: React.FC<Props> = () => {
+  return <div className="services-wrapper"></div>;
+>>>>>>> master:src/renderer/components/ServicesWrapper.tsx
 };
 
 export default ServicesWrapper;

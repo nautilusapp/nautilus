@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nautilus</title>
+    <link rel="stylesheet" type="text/css" href="dist/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nautilus: A Docker Compose File Charting Tool</title>
-  <link rel="stylesheet" type="text/css" href="/dist/style.css">
-</head>
-
-<body>
-  <!-- Hang React App Here -->
-  <div id="root"></div>
-  <!-- LOAD SCRIPTS -->
-  <script type="text/javascript" src="/dist/bundle.js"></script>
-</body>
-
+  <body>
+    <!-- Hang React App Here -->
+    <div id="app"></div>
+    <!-- LOAD SCRIPTS -->
+    <script type="text/javascript" src="dist/renderer.js"></script>
+  </body>
 </html>

@@ -50,5 +50,5 @@ type Graph = {
 };
 
 export type FileUpload = {
-  (formData: FormData): void;
+  (file: File): void;
 };
