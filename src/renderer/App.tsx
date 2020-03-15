@@ -8,7 +8,12 @@
  *
  * ************************************
  */
+//IMPORT LIBRARIES
 import React, { Component } from 'react';
+import yaml from 'js-yaml';
+
+//IMPORT HELPER FUNCTIONS
+import { convertYamlToState } from './helpers/yamlParser';
 
 // IMPORT STYLES
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -46,29 +51,35 @@ class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = initialState;
-
     this.fileUpload = this.fileUpload.bind(this);
   }
 
-  fileUpload: FileUpload = formData => {
-    fetch('/api/file', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.setState(state => {
-          return {
-            ...state,
-            ...data,
-            fileUploaded: state.fileUploaded ? false : true,
-          };
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  fileUpload: FileUpload = (file: File) => {
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (fileReader.result) {
+        const yamlJSON = yaml.safeLoad(fileReader.result.toString());
+        const yamlState = convertYamlToState(yamlJSON);
+        localStorage.setItem('state', JSON.stringify(yamlState));
+        this.setState(
+          Object.assign(
+            initialState,
+            { options: this.state.options, view: this.state.view },
+            yamlState,
+          ),
+        );
+      }
+    };
+    fileReader.readAsText(file);
   };
+
+  componentDidMount() {
+    const stateJSON = localStorage.getItem('state');
+    if (stateJSON) {
+      const stateJS = JSON.parse(stateJSON);
+      this.setState(Object.assign(initialState, stateJS));
+    }
+  }
 
   render() {
     return (

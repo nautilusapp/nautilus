@@ -21,7 +21,7 @@ const createWindow = () => {
             preload: path.join(app.getAppPath(), 'dist/index.js'),
           },
   });
-
+  window.maximize();
   if (process.env.NODE_ENV === 'development') {
     window.loadURL(`http://localhost:9080`);
     window.webContents.openDevTools();
