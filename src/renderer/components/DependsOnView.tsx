@@ -11,6 +11,7 @@
 import React from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
+import { getStatic } from '../scripts/static';
 
 //import {simulation} from 'd3-simulation';
 
@@ -160,11 +161,11 @@ class DependsOnView extends React.Component<Graph, {}> {
 
     //create images
     const imgArray = [
-      './src/styles/danny.png',
-      './src/styles/aris.png',
-      './src/styles/josh.png',
-      './src/styles/Mike.png',
-      './src/styles/tyler.png',
+      getStatic('danny.png'),
+      getStatic('aris.png'),
+      getStatic('josh.png'),
+      getStatic('Mike.png'),
+      getStatic('tyler.png'),
     ];
 
     //create rectangles
