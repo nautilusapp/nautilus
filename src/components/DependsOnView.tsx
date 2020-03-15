@@ -8,11 +8,13 @@
  *
  * ************************************
  */
-import React, { Component } from 'react';
-import Services from './Service';
+import React from 'react';
+//import Services from './Service';
 import * as d3 from 'd3';
-import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
-import { Node, Link, Graph } from '../App.d';
+
+//import {simulation} from 'd3-simulation';
+
+import { Graph } from '../App.d';
 // type dProps = {
 //   width: number;
 //   height: number;
@@ -21,24 +23,18 @@ import { Node, Link, Graph } from '../App.d';
 //     links: { source: string; target: string }[];
 //   };
 // };
-
-// type Refs = {
-//   mountPoint?: HTMLDivElement;
+// type Graph = {
+//   nodes: Node[];
+//   links: Link[];
 // };
 
-// type d3Node = {
+// interface INode {
 //   name: string;
-// };
+// }
 
-// type d3Link = {
-//   source: string;
-//   target: string;
-// };
-
-class DependsOn extends React.Component<Graph, {}> {
+class DependsOnView extends React.Component<Graph, {}> {
   // props: Graph = whatever is passed in
   // const DependsOn: React.FC<Props> = props => {
-  //ctrls: Refs = {};
 
   componentDidMount() {
     const width = 700;
@@ -160,7 +156,7 @@ class DependsOn extends React.Component<Graph, {}> {
       .call(drag);
 
     // create texts
-    let texts = textsAndNodes.append('text').text((d: any) => d.name);
+    textsAndNodes.append('text').text((d: any) => d.name);
 
     //create images
     const imgArray = [
@@ -172,7 +168,7 @@ class DependsOn extends React.Component<Graph, {}> {
     ];
 
     //create rectangles
-    let rectangles = textsAndNodes
+    textsAndNodes
       .append('rect')
       .attr('width', 40)
       .attr('height', 40)
@@ -183,7 +179,7 @@ class DependsOn extends React.Component<Graph, {}> {
         return 'hsl(' + Math.random() * 360 + ',60%,50%)';
       });
 
-    let image = textsAndNodes
+    textsAndNodes
       .append('svg:image')
       .attr('xlink:href', (d: any) => {
         return imgArray[Math.floor(Math.random() * imgArray.length)];
@@ -200,4 +196,4 @@ class DependsOn extends React.Component<Graph, {}> {
   }
 }
 
-export default DependsOn;
+export default DependsOnView;
