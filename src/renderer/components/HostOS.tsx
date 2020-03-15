@@ -9,7 +9,7 @@
  * ************************************
  */
 import React from 'react';
-import Volume from './Volume';
+// import Volume from './Volume';
 
 type Props = {};
 

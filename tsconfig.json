@@ -1,15 +1,14 @@
 {
-  "compileOnSave": true,
+  "extends": "./node_modules/electron-webpack/tsconfig-base.json",
   "compilerOptions": {
-    "outDir": "./dist",
+    "jsx": "react",
     // "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "target": "es6",
-    "jsx": "react",
     "allowJs": true
   },
-  "include": ["server/**/*"]
+  "exclude": ["server/**/*"]
 }
