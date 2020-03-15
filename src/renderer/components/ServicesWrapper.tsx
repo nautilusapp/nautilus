@@ -13,12 +13,8 @@ import React from 'react';
 
 type Props = {};
 
-const ServicesWrapper: React.FC<Props> = props => {
-  return (
-    <div className="services-wrapper">
-      <div></div>
-    </div>
-  );
+const ServicesWrapper: React.FC<Props> = () => {
+  return <div className="services-wrapper"></div>;
 };
 
 export default ServicesWrapper;

@@ -73,9 +73,15 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="app-class">
-        <LeftNav fileUpload={this.fileUpload} />
+        <LeftNav
+          fileUploaded={this.state.fileUploaded}
+          fileUpload={this.fileUpload}
+        />
         <OptionBar />
-        <D3Wrapper />
+        <D3Wrapper
+          fileUploaded={this.state.fileUploaded}
+          fileUpload={this.fileUpload}
+        />
       </div>
     );
   }
