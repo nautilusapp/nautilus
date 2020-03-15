@@ -34,7 +34,7 @@ type Options = {
   readonly dependsOn: boolean;
 };
 
-//test - Aris depends on
+//d3 force graph - Node ,Link, Graph
 interface Node extends SimulationNodeDatum {
   name: string;
 }
