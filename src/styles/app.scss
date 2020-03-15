@@ -66,17 +66,36 @@
       margin-left: 5%;
       width: 50%;
       color: $fourth-color;
+
+      .option {
+        margin: 0 0 0 3%;
+      }
+  
+      .option:hover {
+        color: $fourth-color;
+      }
+
+      .selected {
+        color: $fourth-color;
+      }
     }
 
     .view-options {
       width: 50%;
       color: $fourth-color;
-    }
-    .option {
-      margin: 0 0 0 3%;
-    }
-    .option:hover {
-      color: $fourth-color;
+      
+      .option {
+        margin: 0 0 0 3%;
+      }
+
+      .option:hover {
+        color: $fourth-color;
+      }
+
+      .selected {
+        color: $fourth-color;
+      }
+
     }
   }
 }

@@ -8,90 +8,118 @@
  *
  * ************************************
  */
-import React, { useState } from 'react';
+import React, { useState, ReactFragment } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
-import { Options, UpdateOption } from '../App.d';
+import { Options, UpdateOption, UpdateView } from '../App.d';
 
 type Props = {
-  // updateOption: UpdateOption
+  view: string;
   options: Options;
+  updateView: UpdateView;
+  updateOption: UpdateOption;
 };
 
-const OptionBar: React.FC<Props> = ({ options /* updateOption */ }) => {
-  // ports: false,
-  // volumes: false,
-  // dependsOn: false,
+const OptionBar: React.FC<Props> = ({
+  view,
+  options,
+  updateView,
+  updateOption,
+}) => {
+  let dependsViewFlag = false;
 
-  // const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log(e.target)
-  // };
+  const viewClickToggle = (element: EventTarget & Element): void => {
 
-  const [ports, setPorts] = useState(options.ports);
-  const [volumes, setVolumes] = useState(options.volumes);
-  const [dependsOn, setDependsOn] = useState(options.dependsOn);
+  }
+  const handleViewClick = (e: React.MouseEvent<Element, MouseEvent>) => {
+    const element = e.currentTarget
+    const v = element.id;
 
-
-  const handleClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const option = e.currentTarget.id;
-    // updateOption(e.currentTarget.id)
-    // console.log(option)
-    // console.log('this is the object', options)
-
-    if (option === 'ports') {
-      console.log(options.ports);
-      if (options.ports === false) {
-        setPorts((options.ports = true));
-      } else {
-        setPorts((options.ports = false));
-      }
-      console.log(options.ports);
-    } else if (option === 'volumes') {
-      console.log(options.volumes);
-      if (options.volumes === false) {
-        setVolumes((options.volumes = true));
-      } else {
-        setVolumes((options.volumes = false));
-      }
-      console.log(options.volumes);
-    } else if (option === 'dependsOn') {
-      console.log(options.dependsOn);
-      if (options.dependsOn === false) {
-        setDependsOn((options.dependsOn = true));
-      } else {
-        setDependsOn((options.dependsOn = false));
-      }
-      console.log(options.dependsOn);
+    // Toggle Text Color
+    if(element.classList.contains('selected')){
+      element.classList.remove('selected')
+    } else {
+      element.classList.add('selected')
     }
-    // console.log('this is the option I selected', options[option])
+
+    // Drop Depends_On Option if already in that view
+    if (v === 'depends_on') {
+      dependsViewFlag = true;
+    } else {
+      dependsViewFlag = false;
+    }
+
+    // Update view in state
+    updateView(v);
   };
+
+  const handleOptionClick = (e: React.MouseEvent<Element, MouseEvent>) => {
+    const element = e.currentTarget
+    const option = e.currentTarget.id;
+    console.log('inside handleOptionClick...')
+    console.log('options...', options);
+    console.log('clicked...', option);
+
+    // Toggle Text Color
+    if(element.classList.contains('selected')){
+      element.classList.remove('selected')
+    } else {
+      element.classList.add('selected')
+    }
+
+    // Update options in state
+    updateOption(option);
+  };
+
+  let dependsOption = (
+    <Navbar.Text
+      className="option"
+      id="dependsOnOption"
+      onClick={handleOptionClick}
+    >
+      Depends On
+    </Navbar.Text>
+  );
+  if (view === 'depends_on') {
+    dependsOption = (
+      <Navbar.Text
+        className="option"
+        id="dependsOnOption"
+        style={{ display: 'none' }}
+      >
+        Depends On
+      </Navbar.Text>
+    );
+  }
 
   return (
     <Navbar className="option-bar" variant="dark">
       <Nav className="group-by">
         <Navbar.Text>Group By: </Navbar.Text>
-        <Navbar.Text className="option" id="networks" onClick={handleClick}>
+        <Navbar.Text className="option view" id="networks" onClick={handleViewClick}>
           Networks
         </Navbar.Text>
-        <Navbar.Text className="option" id="dependsOn" onClick={handleClick}>
+        <Navbar.Text
+          className="option view"
+          id="depends_on"
+          onClick={handleViewClick}
+        >
           Depends On
         </Navbar.Text>
       </Nav>
       <Nav className="view-options">
         <Navbar.Text>View Options: </Navbar.Text>
-        <Navbar.Text className="option" id="ports" onClick={handleClick}>
+        <Navbar.Text className="option" id="ports" onClick={handleOptionClick}>
           Ports
         </Navbar.Text>
-        <Navbar.Text className="option" id="volumes" onClick={handleClick}>
+        <Navbar.Text
+          className="option"
+          id="volumes"
+          onClick={handleOptionClick}
+        >
           Volumes
         </Navbar.Text>
-        <Navbar.Text className="option" id="dependsOn" onClick={handleClick}>
-          Depends On
-        </Navbar.Text>
+        {dependsOption}
       </Nav>
     </Navbar>
   );
