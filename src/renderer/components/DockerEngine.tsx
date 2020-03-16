@@ -9,16 +9,14 @@
  * ************************************
  */
 import React from 'react';
-import Volume from './Volume';
+//import Volume from './Volume';
 
 type Props = {};
 
 const DockerEngine: React.FC<Props> = props => {
   return (
     <div className="docker-engine">
-      <div>
-        <Volume />
-      </div>
+      <div></div>
     </div>
   );
 };
