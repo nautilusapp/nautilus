@@ -25,17 +25,20 @@ type Props = {
 const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload }) => {
   return (
     <div className="d3-wrapper">
-      <ServicesWrapper />
       <div className="initial-file-upload">
         {!fileUploaded ? (
           <FileSelector
             fileUpload={fileUpload}
             locatedWithinVisualizer={true}
           />
-        ) : null}
+        ) : (
+          <>
+            <ServicesWrapper />
+            <DockerEngine />
+            <HostOS />
+          </>
+        )}
       </div>
-      <DockerEngine />
-      <HostOS />
     </div>
   );
 };
