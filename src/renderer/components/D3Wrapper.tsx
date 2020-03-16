@@ -15,16 +15,18 @@ import HostOS from './HostOS';
 import FileSelector from './FileUpload';
 
 //type import
-import { FileUpload } from '../App.d';
+import { FileUpload, Services } from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
   fileUploaded: boolean;
+  services: Services;
 };
 
-const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload }) => {
+const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload, services }) => {
   return (
     <div className="d3-wrapper">
+      <ServicesWrapper services={services} />
       <div className="initial-file-upload">
         {!fileUploaded ? (
           <FileSelector
@@ -33,7 +35,7 @@ const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload }) => {
           />
         ) : (
           <>
-            <ServicesWrapper />
+            <ServicesWrapper services={services} />
             <DockerEngine />
             <HostOS />
           </>

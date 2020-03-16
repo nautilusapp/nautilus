@@ -11,13 +11,16 @@
 import React from 'react';
 
 import InfoDropdown from './InfoDropdown';
+import { Service } from '../App.d';
 
-type Props = {};
+type Props = {
+  service?: Service;
+};
 
-const ServiceInfoDisplay: React.FC<Props> = props => {
+const ServiceInfoDisplay: React.FC<Props> = ({ service }) => {
   return (
     <div className="service-info-display">
-      <InfoDropdown />
+      <InfoDropdown service={service} />
     </div>
   );
 };
