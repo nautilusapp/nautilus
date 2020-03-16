@@ -173,6 +173,10 @@ const DependsOnView: React.FC<Props> = props => {
       })
       .attr('height', 40)
       .attr('width', 40);
+
+    return () => {
+      forceGraph.remove();
+    };
   });
 
   return (
