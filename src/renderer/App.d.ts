@@ -40,3 +40,4 @@ export type UpdateOption = {
 export type UpdateView = {
   (view: string): void;
 };
+

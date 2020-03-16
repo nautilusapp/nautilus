@@ -2,6 +2,7 @@
  * ************************************
  *
  * @module  OptionBar.tsx
+
  * @author Tyler Hurtt
  * @date 3/11/20
  * @description Used to display toggle options
