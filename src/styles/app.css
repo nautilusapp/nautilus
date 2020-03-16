@@ -1,0 +1,128 @@
+.app {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100%;
+  width: 100%;
+  color: #EBEBEB;
+}
+
+.app .left-nav {
+  background-color: #003459;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-area: 1 / 1 / 6 / 2;
+}
+
+.app .left-nav .title {
+  margin: 10%;
+}
+
+.app .left-nav .title h1 {
+  color: #EBEBEB;
+}
+
+.app .left-nav .info-dropdown {
+  padding: 10%;
+  background: none;
+}
+
+.app .left-nav .card-header {
+  background: none;
+  color: #EBEBEB;
+  background-color: #003459;
+  padding: 0.5em;
+}
+
+.app .left-nav .file-upload {
+  margin: 10%;
+  background: none;
+  color: #EBEBEB;
+  font-size: 1em;
+}
+
+.app .left-nav .file-upload button {
+  background-color: #2274A5;
+  border-color: #EBEBEB;
+}
+
+.app .option-bar {
+  background-color: #003459;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: space-between;
+      -ms-flex-align: space-between;
+          align-items: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 4;
+  grid-area: 1 / 2 / 2 / 6;
+  margin-bottom: 5%;
+  font-size: 1.3rem;
+}
+
+.app .option-bar .group-by {
+  margin-left: 5%;
+  width: 50%;
+  color: #EBEBEB;
+}
+
+.app .option-bar .group-by .tag {
+  color: white;
+}
+
+.app .option-bar .group-by .view {
+  margin: 0 0 0 3%;
+}
+
+.app .option-bar .group-by .view:hover {
+  color: #EBEBEB;
+}
+
+.app .option-bar .group-by .selected {
+  color: #EBEBEB;
+}
+
+.app .option-bar .options {
+  width: 50%;
+  color: #EBEBEB;
+}
+
+.app .option-bar .options .tag {
+  color: white;
+}
+
+.app .option-bar .options .option {
+  margin: 0 0 0 3%;
+}
+
+.app .option-bar .options .option:hover {
+  color: #EBEBEB;
+}
+
+.app .option-bar .options .selected {
+  color: #EBEBEB;
+}
+/*# sourceMappingURL=app.css.map */

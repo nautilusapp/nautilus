@@ -27,16 +27,12 @@ type DependsOn = {
 };
 
 export type Options = {
-  readonly ports: boolean;
-  readonly volumes: boolean;
-  readonly dependsOn: boolean;
+  [key: string]: boolean;
 };
 
 export type FileUpload = {
   (formData: FormData): void;
 };
-
-export type View = 'networks' | 'default' | 'depends_on';
 
 export type UpdateOption = {
   (option: string): void;
@@ -44,4 +40,3 @@ export type UpdateOption = {
 export type UpdateView = {
   (view: string): void;
 };
-

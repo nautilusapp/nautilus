@@ -18,17 +18,8 @@ import './styles/app.scss';
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
-import Button from 'react-bootstrap/Button';
 
-import {
-  State,
-  FileUpload,
-  View,
-  UpdateOption,
-  UpdateView,
-} from './App.d';
-import { stat } from 'fs';
-import { stringify } from 'querystring';
+import { State, FileUpload, UpdateOption } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
@@ -59,7 +50,7 @@ class App extends Component<{}, State> {
     // this.updateOption = this.updateOption.bind(this);
   }
 
-  updateView: UpdateView = (view: View) => {
+  updateView = (view: string) => {
     this.setState(state => {
       return {
         ...state,
