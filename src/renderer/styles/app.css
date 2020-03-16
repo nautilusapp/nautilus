@@ -9,7 +9,7 @@
   grid-row-gap: 0px;
   height: 100%;
   width: 100%;
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .left-nav {
@@ -36,7 +36,7 @@
 }
 
 .app .left-nav .title h1 {
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .left-nav .info-dropdown {
@@ -46,7 +46,7 @@
 
 .app .left-nav .card-header {
   background: none;
-  color: #EBEBEB;
+  color: #ebebeb;
   background-color: #003459;
   padding: 0.5em;
 }
@@ -54,13 +54,13 @@
 .app .left-nav .file-upload {
   margin: 10%;
   background: none;
-  color: #EBEBEB;
+  color: #ebebeb;
   font-size: 1em;
 }
 
 .app .left-nav .file-upload button {
-  background-color: #2274A5;
-  border-color: #EBEBEB;
+  background-color: #2274a5;
+  border-color: #ebebeb;
 }
 
 .app .option-bar {
@@ -86,7 +86,7 @@
 .app .option-bar .group-by {
   margin-left: 5%;
   width: 50%;
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .option-bar .group-by .tag {
@@ -98,16 +98,16 @@
 }
 
 .app .option-bar .group-by .view:hover {
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .option-bar .group-by .selected {
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .option-bar .options {
   width: 50%;
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .option-bar .options .tag {
@@ -119,10 +119,10 @@
 }
 
 .app .option-bar .options .option:hover {
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 
 .app .option-bar .options .selected {
-  color: #EBEBEB;
+  color: #ebebeb;
 }
 /*# sourceMappingURL=app.css.map */

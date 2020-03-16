@@ -1,0 +1,13 @@
+{
+  "commonSourceDirectory": "src/common",
+  "staticSourceDirectory": "static",
+  "title": "Nautilus",
+
+  "main": {
+    "sourceDirectory": "src/main"
+  },
+
+  "renderer": {
+    "sourceDirectory": "src/renderer"
+  }
+}

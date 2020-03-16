@@ -31,7 +31,7 @@ export type Options = {
 };
 
 export type FileUpload = {
-  (formData: FormData): void;
+  (file: File): void;
 };
 
 export type UpdateOption = {

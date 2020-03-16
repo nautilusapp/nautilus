@@ -18,13 +18,14 @@ import { FileUpload } from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
+  fileUploaded: boolean;
 };
 
-const LeftNav: React.FC<Props> = ({ fileUpload }) => {
+const LeftNav: React.FC<Props> = ({ fileUpload, fileUploaded }) => {
   return (
     <div className="left-nav">
       <Title />
-      <FileSelector fileUpload={fileUpload} />
+      {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       <ServiceInfoDisplay />
     </div>
   );
