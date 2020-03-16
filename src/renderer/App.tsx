@@ -103,6 +103,23 @@ class App extends Component<{}, State> {
     fileReader.readAsText(file);
   };
 
+  getDisplayInfo = (): void => {
+    console.log('inside getDisplay function...');
+
+    const services = this.state.services;
+    console.log('services', services);
+
+    const servicesNames = Object.keys(services);
+    console.log(servicesNames);
+    servicesNames.forEach(name =>
+      console.log(
+        name,
+        Object.keys(services[name]),
+        Object.values(services[name]),
+      ),
+    );
+  };
+
   componentDidMount() {
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
@@ -114,6 +131,7 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="app-class">
+        {this.getDisplayInfo()}
         <LeftNav
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
