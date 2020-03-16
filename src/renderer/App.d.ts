@@ -1,7 +1,9 @@
+import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
+
 export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
-  services: ReadOnlyObj;
+  services: Services;
   dependsOn: DependsOn;
   networks: ReadOnlyObj;
   volumes: Array<ReadOnlyObj>;
@@ -30,6 +32,41 @@ export type Options = {
   [key: string]: boolean;
 };
 
+//d3 force graph - Node ,Link, Graph
+interface iNode extends SimulationNodeDatum {
+  name: string;
+}
+
+interface Link extends SimulationLinkDatum<iNode> {
+  source: string;
+  target: string;
+}
+
+type Graph = {
+  nodes: iNode[];
+  links: Link[];
+};
+
+export type Service = {
+  build?: string;
+  command?: string;
+  environment?: ReadOnlyObj;
+  image?: string;
+  ports?: string[];
+  volumes?: string[];
+  working_dir?: string;
+  security_opt?: string[];
+  stop_grace_Period?: string;
+  stop_signal?: string;
+  tmpfs?: string[];
+  restart?: string;
+  pid?: string;
+};
+
+export type Services = {
+  [service: string]: Service;
+};
+
 export type FileUpload = {
   (file: File): void;
 };
@@ -40,4 +77,3 @@ export type UpdateOption = {
 export type UpdateView = {
   (view: string): void;
 };
-

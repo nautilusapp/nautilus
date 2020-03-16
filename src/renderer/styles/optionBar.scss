@@ -1,0 +1,47 @@
+.option-bar {
+  background-color: $primary-color;
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+  grid-area: 1 / 2 / 2 / 6;
+  font-size: 1.3rem;
+
+  .group-by {
+    margin-left: 5%;
+    width: 50%;
+    color: $fourth-color;
+    .tag {
+      color: $fifth-color;
+    }
+    .view {
+      margin: 0 0 0 3%;
+    }
+
+    .view:hover {
+      color: $fourth-color;
+    }
+
+    .selected {
+      color: $fourth-color;
+    }
+  }
+
+  .options {
+    width: 50%;
+    color: $fourth-color;
+    .tag {
+      color: $fifth-color;
+    }
+    .option {
+      margin: 0 0 0 3%;
+    }
+
+    .option:hover {
+      color: $fourth-color;
+    }
+
+    .selected {
+      color: $fourth-color;
+    }
+  }
+}
