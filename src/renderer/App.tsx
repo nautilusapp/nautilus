@@ -27,7 +27,7 @@ import D3Wrapper from './components/D3Wrapper';
 import { State, FileUpload } from './App.d';
 
 const initialState: State = {
-  selectedContainer: '',
+  selectedContainer: 'app',
   fileUploaded: false,
   services: {},
   dependsOn: {
@@ -87,11 +87,14 @@ class App extends Component<{}, State> {
         <LeftNav
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
+          selectedContainer={this.state.selectedContainer}
+          service={this.state.services[this.state.selectedContainer]}
         />
         <OptionBar />
         <D3Wrapper
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
+          serviceInfo={this.state.services}
         />
       </div>
     );

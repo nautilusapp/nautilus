@@ -1,7 +1,7 @@
 export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
-  services: ReadOnlyObj;
+  services: ServiceInfo;
   dependsOn: DependsOn;
   networks: ReadOnlyObj;
   volumes: Array<ReadOnlyObj>;
@@ -30,6 +30,26 @@ type Options = {
   readonly ports: boolean;
   readonly volumes: boolean;
   readonly dependsOn: boolean;
+};
+
+export type Service = {
+  build?: string;
+  command?: string;
+  environment?: ReadOnlyObj;
+  image?: string;
+  ports?: string[];
+  volumes?: string[];
+  working_dir?: string;
+  security_opt?: string[];
+  stop_grace_Period?: string;
+  stop_signal?: string;
+  tmpfs?: string[];
+  restart: string;
+  pid: string;
+};
+
+export type ServiceInfo = {
+  [service: string]: Service;
 };
 
 export type FileUpload = {

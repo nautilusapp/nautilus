@@ -15,17 +15,22 @@ import HostOS from './HostOS';
 import FileSelector from './FileUpload';
 
 //type import
-import { FileUpload } from '../App.d';
+import { FileUpload, ServiceInfo } from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
   fileUploaded: boolean;
+  serviceInfo: ServiceInfo;
 };
 
-const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload }) => {
+const D3Wrapper: React.FC<Props> = ({
+  fileUploaded,
+  fileUpload,
+  serviceInfo,
+}) => {
   return (
     <div className="d3-wrapper">
-      <ServicesWrapper />
+      <ServicesWrapper serviceInfo={serviceInfo} />
       <div className="initial-file-upload">
         {!fileUploaded ? (
           <FileSelector

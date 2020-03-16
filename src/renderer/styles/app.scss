@@ -11,6 +11,7 @@
 
 .title {
   margin: 10%;
+
   h1 {
     color: $fourth-color;
   }
@@ -61,10 +62,16 @@
   background: none;
   color: $fourth-color;
   font-size: 1em;
+
   button {
     background-color: $secondary-color;
     border-color: $fourth-color;
   }
+}
+
+.leftNavContainerTitle {
+  color: $fifth-color;
+  text-align: center;
 }
 
 // @media screen and (max-width: 600px) {
