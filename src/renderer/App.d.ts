@@ -1,3 +1,5 @@
+import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
+
 export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
@@ -28,6 +30,21 @@ type DependsOn = {
 
 export type Options = {
   [key: string]: boolean;
+};
+
+//d3 force graph - Node ,Link, Graph
+interface iNode extends SimulationNodeDatum {
+  name: string;
+}
+
+interface Link extends SimulationLinkDatum<iNode> {
+  source: string;
+  target: string;
+}
+
+type Graph = {
+  nodes: iNode[];
+  links: Link[];
 };
 
 export type FileUpload = {

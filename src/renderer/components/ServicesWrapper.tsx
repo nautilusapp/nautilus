@@ -9,12 +9,17 @@
  * ************************************
  */
 import React from 'react';
-// import Services from './Service';
-
+//import Services from './Service';
+import DependsOnView from './DependsOnView';
 type Props = {};
 
-const ServicesWrapper: React.FC<Props> = () => {
-  return <div className="services-wrapper"></div>;
+const ServicesWrapper: React.FC<Props> = props => {
+  return (
+    <div className="services-wrapper">
+      <DependsOnView />
+      <div></div>
+    </div>
+  );
 };
 
 export default ServicesWrapper;
