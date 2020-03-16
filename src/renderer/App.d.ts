@@ -35,17 +35,17 @@ type Options = {
 };
 
 //d3 force graph - Node ,Link, Graph
-interface Node extends SimulationNodeDatum {
+interface iNode extends SimulationNodeDatum {
   name: string;
 }
 
-interface Link extends SimulationLinkDatum<Node> {
+interface Link extends SimulationLinkDatum<iNode> {
   source: string;
   target: string;
 }
 
 type Graph = {
-  nodes: Node[];
+  nodes: iNode[];
   links: Link[];
 };
 

@@ -8,20 +8,22 @@
  *
  * ************************************
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
 
 //import {simulation} from 'd3-simulation';
 
-import { Graph } from '../App.d';
+import { Graph, iNode, Link } from '../App.d';
 
-class DependsOnView extends React.Component<Graph, {}> {
+type Props = {};
+
+const DependsOnView: React.FC<Props> = props => {
   // props: Graph = whatever is passed in
   // const DependsOn: React.FC<Props> = props => {
 
-  componentDidMount() {
+  useEffect(() => {
     const width = 700;
     const height = 700;
     const forceData: Graph = {
@@ -72,16 +74,16 @@ class DependsOnView extends React.Component<Graph, {}> {
     //create force simulation
     // re add forceData.nodes in line 97
     const simulation = d3
-      .forceSimulation(forceData.nodes)
+      .forceSimulation<iNode>(forceData.nodes)
       .force(
         'link',
         d3
-          .forceLink(forceData.links)
+          .forceLink<iNode, Link>(forceData.links)
           .distance(110)
-          .id((d: any) => d.name),
+          .id((node: iNode) => node.name),
       )
-      .force('charge', d3.forceManyBody().strength(-40))
-      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('charge', d3.forceManyBody<iNode>().strength(-40))
+      .force('center', d3.forceCenter<iNode>(width / 2, height / 2))
       .on('tick', ticked);
 
     //create Links
@@ -114,7 +116,7 @@ class DependsOnView extends React.Component<Graph, {}> {
     };
 
     let drag = d3
-      .drag()
+      .drag<SVGGElement, iNode>()
       .on('start', dragstarted)
       .on('drag', dragged)
       .on('end', dragended);
@@ -135,7 +137,7 @@ class DependsOnView extends React.Component<Graph, {}> {
     let textsAndNodes = forceGraph
       .append('g')
       .selectAll('g')
-      .data(forceData.nodes)
+      .data<iNode>(forceData.nodes)
       .enter()
       .append('g')
       .call(drag);
@@ -171,14 +173,13 @@ class DependsOnView extends React.Component<Graph, {}> {
       })
       .attr('height', 40)
       .attr('width', 40);
-  }
-  render() {
-    return (
-      <div className="depends-wrapper">
-        <div className="forceGraph"></div>
-      </div>
-    );
-  }
-}
+  });
+
+  return (
+    <div className="depends-wrapper">
+      <div className="forceGraph"></div>
+    </div>
+  );
+};
 
 export default DependsOnView;
