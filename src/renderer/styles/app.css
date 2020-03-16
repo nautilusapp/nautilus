@@ -1,0 +1,163 @@
+.app-class {
+  background-color: #fff1b8;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100vh;
+}
+
+.app-class .left-nav {
+  background-color: #003459;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-area: 1 / 1 / 6 / 2;
+  height: 100vh;
+}
+
+.app-class .left-nav .title {
+  margin: 10%;
+}
+
+.app-class .left-nav .title h1 {
+  color: #ebebeb;
+}
+
+.app-class .left-nav .info-dropdown {
+  padding: 10%;
+  background: none;
+}
+
+.app-class .left-nav .card-header {
+  background: none;
+  color: #ebebeb;
+  background-color: #003459;
+  padding: 0.5em;
+}
+
+.app-class .left-nav .file-upload {
+  margin: 10%;
+  background: none;
+  color: #ebebeb;
+  font-size: 1em;
+}
+
+.app-class .left-nav .file-upload button {
+  background-color: #2274a5;
+  border-color: #ebebeb;
+}
+
+.app-class .option-bar {
+  background-color: #003459;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: space-between;
+      -ms-flex-align: space-between;
+          align-items: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 1;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 4;
+  grid-area: 1 / 2 / 2 / 6;
+  margin-bottom: 8%;
+  font-size: 1.3rem;
+}
+
+.app-class .option-bar .group-by {
+  margin-left: 5%;
+  width: 50%;
+  color: #ebebeb;
+}
+
+.app-class .option-bar .group-by .tag {
+  color: #fff1b8;
+}
+
+.app-class .option-bar .group-by .view {
+  margin: 0 0 0 3%;
+}
+
+.app-class .option-bar .group-by .view:hover {
+  color: #ebebeb;
+}
+
+.app-class .option-bar .group-by .selected {
+  color: #ebebeb;
+}
+
+.app-class .option-bar .options {
+  width: 50%;
+  color: #ebebeb;
+}
+
+.app-class .option-bar .options .tag {
+  color: #fff1b8;
+}
+
+.app-class .option-bar .options .option {
+  margin: 0 0 0 3%;
+}
+
+.app-class .option-bar .options .option:hover {
+  color: #ebebeb;
+}
+
+.app-class .option-bar .options .selected {
+  color: #ebebeb;
+}
+
+.app-class .d3-wrapper {
+  background-color: #fff1b8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 4;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 4;
+  grid-area: 2 / 2 / 6 / 6;
+}
+
+.app-class .d3-wrapper div button {
+  display: block;
+}
+
+.app-class .d3-wrapper .initial-file-upload {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+/*# sourceMappingURL=app.css.map */

@@ -1,61 +1,94 @@
 // IMPORT SASS
 @import 'variables';
 
-#root {
-  height: 100%;
-}
-
 .app-class {
-  display: flex;
-}
-
-.title {
-  margin: 10%;
-
-  h1 {
-    color: $fourth-color;
-  }
-}
-
-.left-nav {
-  background-color: $primary-color;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 100vh;
-}
-
-.d3-wrapper {
   background-color: $fifth-color;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  top: 0;
-  left: 0;
-  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
   height: 100vh;
-}
 
-.initial-file-upload {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .left-nav {
+    background-color: $primary-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    grid-area: 1 / 1 / 6 / 2;
+    height: 100vh;
 
-.info-dropdown {
-  padding: 10%;
-  background: none;
-}
+    .title {
+      margin: 10%;
+      h1 {
+        color: $fourth-color;
+      }
+    }
 
-.card-header {
-  background: none;
-  color: $fourth-color;
-  background-color: $primary-color;
-  padding: 0.5em;
-}
+    .info-dropdown {
+      padding: 10%;
+      background: none;
+    }
+
+    .card-header {
+      background: none;
+      color: $fourth-color;
+      background-color: $primary-color;
+      padding: 0.5em;
+    }
+
+    .file-upload {
+      margin: 10%;
+      background: none;
+      color: $fourth-color;
+      font-size: 1em;
+      button {
+        background-color: $secondary-color;
+        border-color: $fourth-color;
+      }
+    }
+
+  }
+
+  .option-bar {
+    background-color: $primary-color;
+    display: flex;
+    align-items: space-between;
+    justify-content: space-between;
+    grid-area: 1 / 2 / 2 / 6;
+    margin-bottom: 8%;
+    font-size: 1.3rem;
+
+    .group-by {
+      margin-left: 5%;
+      width: 50%;
+      color: $fourth-color;
+      .tag {
+        color: $fifth-color;
+      }
+      .view {
+        margin: 0 0 0 3%;
+      }
+
+      .view:hover {
+        color: $fourth-color;
+      }
+
+      .selected {
+        color: $fourth-color;
+      }
+    }
+
+    .options {
+      width: 50%;
+      color: $fourth-color;
+      .tag {
+        color: $fifth-color;
+      }
+      .option {
+        margin: 0 0 0 3%;
+      }
+
 
 .file-upload {
   margin: 10%;
@@ -66,16 +99,33 @@
   button {
     background-color: $secondary-color;
     border-color: $fourth-color;
+
+      .option:hover {
+        color: $fourth-color;
+      }
+
+      .selected {
+        color: $fourth-color;
+      }
+    }
+
+  }
+
+  .d3-wrapper {
+    background-color: $fifth-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    grid-area: 2 / 2 / 6 / 6;
+
+    div button {
+      display: block;
+    }
+
+    .initial-file-upload {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
-
-.leftNavContainerTitle {
-  color: $fifth-color;
-  text-align: center;
-}
-
-// @media screen and (max-width: 600px) {
-//   .file-upload {
-//     font-size: 1em;
-//   }
-// }

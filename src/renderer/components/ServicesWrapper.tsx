@@ -10,6 +10,7 @@
  */
 import React from 'react';
 import Service from './Service';
+import DependsOnView from './DependsOnView';
 
 import { ServiceInfo } from '../App.d';
 
@@ -21,6 +22,7 @@ const ServicesWrapper: React.FC<Props> = ({ serviceInfo }) => {
   return (
     <div className="services-wrapper">
       <Service service={serviceInfo.app} name="app" />
+      <DependsOnView />
     </div>
   );
 };
