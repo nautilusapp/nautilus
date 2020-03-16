@@ -15,7 +15,7 @@ type Props = {};
 const Volume: React.FC<Props> = props => {
   return (
     <div className="volume">
-      <div></div>
+      <div>Place Volume Here:</div>
     </div>
   );
 };
