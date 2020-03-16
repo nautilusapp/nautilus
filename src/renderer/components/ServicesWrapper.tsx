@@ -11,17 +11,12 @@
 import React from 'react';
 //import Services from './Service';
 import DependsOnView from './DependsOnView';
-import { Graph } from '../App.d';
 type Props = {};
 
 const ServicesWrapper: React.FC<Props> = props => {
-  const data: Graph = {
-    nodes: [{ name: '' }],
-    links: [{ source: '', target: '' }],
-  };
   return (
     <div className="services-wrapper">
-      <DependsOnView nodes={data.nodes} links={data.links} />
+      <DependsOnView />
       <div></div>
     </div>
   );
