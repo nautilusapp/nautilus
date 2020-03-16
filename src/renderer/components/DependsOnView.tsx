@@ -77,14 +77,13 @@ const DependsOnView: React.FC<Props> = props => {
     };
 
     //create force simulation
-    // re add forceData.nodes in line 97
     const simulation = d3
       .forceSimulation<iNode>(forceData.nodes)
       .force(
         'link',
         d3
           .forceLink<iNode, Link>(forceData.links)
-          .distance(110)
+          .distance(130)
           .id((node: iNode) => node.name),
       )
       .force('charge', d3.forceManyBody<iNode>().strength(-40))
@@ -138,7 +137,7 @@ const DependsOnView: React.FC<Props> = props => {
         </g>
           */
 
-    //create textAndNodes
+    //create textAndNodes Group
     let textsAndNodes = forceGraph
       .append('g')
       .selectAll('g')
@@ -150,34 +149,14 @@ const DependsOnView: React.FC<Props> = props => {
     // create texts
     textsAndNodes.append('text').text((d: any) => d.name);
 
-    //create images
-    const imgArray = [
-      getStatic('danny.png'),
-      getStatic('aris.png'),
-      getStatic('josh.png'),
-      getStatic('Mike.png'),
-      getStatic('tyler.png'),
-    ];
-
-    //create rectangles
-    textsAndNodes
-      .append('rect')
-      .attr('width', 40)
-      .attr('height', 40)
-      .attr('rx', 5)
-      .attr('ry', 5)
-      .classed('myContainers', true)
-      .attr('fill', (d: any) => {
-        return 'hsl(' + Math.random() * 360 + ',60%,50%)';
-      });
-
+    //create container images
     textsAndNodes
       .append('svg:image')
       .attr('xlink:href', (d: any) => {
-        return imgArray[Math.floor(Math.random() * imgArray.length)];
+        return getStatic('container.svg');
       })
-      .attr('height', 40)
-      .attr('width', 40);
+      .attr('height', 60)
+      .attr('width', 60);
 
     return () => {
       forceGraph.remove();
