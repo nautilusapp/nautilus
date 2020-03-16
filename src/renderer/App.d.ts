@@ -10,7 +10,7 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: 'networks' | 'default' | 'depends_on';
+  view: string;
   options: Options;
   version: string;
 };
@@ -28,10 +28,8 @@ type DependsOn = {
   readonly children?: Array<DependsOn>;
 };
 
-type Options = {
-  readonly ports: boolean;
-  readonly volumes: boolean;
-  readonly dependsOn: boolean;
+export type Options = {
+  [key: string]: boolean;
 };
 
 //d3 force graph - Node ,Link, Graph
@@ -52,3 +50,11 @@ type Graph = {
 export type FileUpload = {
   (file: File): void;
 };
+
+export type UpdateOption = {
+  (option: string): void;
+};
+export type UpdateView = {
+  (view: string): void;
+};
+
