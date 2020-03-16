@@ -52,17 +52,27 @@ class App extends Component<{}, State> {
     super(props);
     this.state = initialState;
     this.fileUpload = this.fileUpload.bind(this);
-    this.updateOption= this.updateOption.bind(this);
-    this.updateView=this.updateView.bind(this)
+    this.updateOption = this.updateOption.bind(this);
+    this.updateView = this.updateView.bind(this);
   }
 
   updateView = (view: string) => {
-    this.setState(state => {
-      return {
-        ...state,
-        view,
-      };
-    });
+    if (view === 'depends_on') {
+      this.setState(state => {
+        return {
+          ...state,
+          view,
+          options: { ...state.options, dependsOn: false },
+        };
+      });
+    } else {
+      this.setState(state => {
+        return {
+          ...state,
+          view,
+        };
+      });
+    }
   };
 
   updateOption: UpdateOption = option => {
