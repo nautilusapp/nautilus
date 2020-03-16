@@ -1,0 +1,22 @@
+.d3-wrapper {
+  background-color: $fifth-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-area: 2 / 2 / 6 / 6;
+
+  div button {
+    display: block;
+  }
+
+  .initial-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .depends-wrapper {
+    height: 500px;
+    width: 500px;
+  }
+}
