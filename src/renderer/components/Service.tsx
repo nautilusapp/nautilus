@@ -10,14 +10,15 @@
  */
 import React from 'react';
 
-type Props = {};
+import { Service } from '../App.d';
 
-const Service: React.FC<Props> = props => {
-  return (
-    <div className="service">
-      <div></div>
-    </div>
-  );
+type Props = {
+  name: string;
+  service: Service;
+};
+
+const Service: React.FC<Props> = ({ service }) => {
+  return <>hello</>;
 };
 
 export default Service;
