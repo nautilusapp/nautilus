@@ -1,0 +1,38 @@
+.left-nav {
+  background-color: $primary-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-area: 1 / 1 / 6 / 2;
+  height: 100vh;
+
+  .title {
+    margin: 10%;
+    h1 {
+      color: $fourth-color;
+    }
+  }
+
+  .info-dropdown {
+    padding: 10%;
+    background: none;
+  }
+
+  .card-header {
+    background: none;
+    color: $fourth-color;
+    background-color: $primary-color;
+    padding: 0.5em;
+  }
+
+  .file-upload {
+    margin: 10%;
+    background: none;
+    color: $fourth-color;
+    font-size: 1em;
+    button {
+      background-color: $secondary-color;
+      border-color: $fourth-color;
+    }
+  }
+}

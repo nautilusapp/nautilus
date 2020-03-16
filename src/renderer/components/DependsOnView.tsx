@@ -24,8 +24,8 @@ const DependsOnView: React.FC<Props> = props => {
   // const DependsOn: React.FC<Props> = props => {
 
   useEffect(() => {
-    const width = 700;
-    const height = 700;
+    // const width = 700;
+    // const height = 700;
     const forceData: Graph = {
       nodes: [
         { name: 'db' },
@@ -44,6 +44,7 @@ const DependsOnView: React.FC<Props> = props => {
         { source: 'db', target: 'ag' },
         { source: 'db', target: 'ab' },
         { source: 'db', target: 'bubble' },
+        { source: 'ab', target: 'ag' },
         { source: 'ab', target: 'ab-api' },
         { source: 'ab', target: 'ab-pathos' },
         { source: 'cats', target: 'cats-api' },
@@ -51,6 +52,10 @@ const DependsOnView: React.FC<Props> = props => {
         { source: 'ab', target: 'dogs' },
       ],
     };
+
+    const container = d3.select('.depends-wrapper');
+    const width = parseInt(container.style('width'), 10);
+    const height = parseInt(container.style('height'), 10);
 
     //initialize graph
     const forceGraph = d3
@@ -173,6 +178,10 @@ const DependsOnView: React.FC<Props> = props => {
       })
       .attr('height', 40)
       .attr('width', 40);
+
+    return () => {
+      forceGraph.remove();
+    };
   });
 
   return (
