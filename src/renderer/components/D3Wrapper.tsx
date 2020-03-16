@@ -33,10 +33,14 @@ const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload, services }) => {
             fileUpload={fileUpload}
             locatedWithinVisualizer={true}
           />
-        ) : null}
+        ) : (
+          <>
+            <ServicesWrapper services={services} />
+            <DockerEngine />
+            <HostOS />
+          </>
+        )}
       </div>
-      <DockerEngine />
-      <HostOS />
     </div>
   );
 };

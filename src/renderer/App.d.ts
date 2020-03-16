@@ -59,8 +59,8 @@ export type Service = {
   stop_grace_Period?: string;
   stop_signal?: string;
   tmpfs?: string[];
-  restart: string;
-  pid: string;
+  restart?: string;
+  pid?: string;
 };
 
 export type Services = {
