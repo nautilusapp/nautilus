@@ -8,7 +8,7 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: View;
+  view: string;
   options: Options;
   version: string;
 };

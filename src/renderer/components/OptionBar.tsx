@@ -95,12 +95,11 @@ const OptionBar: React.FC<Props> = ({
       );
     }
   };
-  
 
   const portsClass = options.ports ? 'option selected' : 'option';
   const volumesClass = options.volumes ? 'option selected' : 'option';
   const dependsClass = options.dependsOn ? 'option selected' : 'option';
-  const dependsOptionDisplay = (view === 'depends_on') ? 'none' : '';
+  const dependsOptionDisplay = view === 'depends_on' ? 'none' : '';
   // Options text
   let portsOption = (
     <Navbar.Text className={portsClass} id="ports" onClick={handleOptionClick}>
@@ -126,7 +125,6 @@ const OptionBar: React.FC<Props> = ({
       Depends On
     </Navbar.Text>
   );
-
 
   return (
     <Navbar className="option-bar" variant="dark">

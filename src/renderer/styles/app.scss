@@ -1,107 +1,80 @@
 // IMPORT SASS
 @import 'variables';
 
-.app {
+// #root {
+//   height: 100%;
+// }
+
+.app-class {
+  // display: flex;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: 100%;
-  width: 100%;
-  color: $fourth-color;
-
-  .left-nav {
-    background-color: $primary-color;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    grid-area: 1 / 1 / 6 / 2;
-    // top: 0;
-    // left: 0;
-    // width: 40%;
-    // height: 100%;
-
-    .title {
-      margin: 10%;
-      h1 {
-        color: $fourth-color;
-      }
-    }
-
-    .info-dropdown {
-      padding: 10%;
-      background: none;
-    }
-
-    .card-header {
-      background: none;
-      color: $fourth-color;
-      background-color: $primary-color;
-      padding: 0.5em;
-    }
-
-    .file-upload {
-      margin: 10%;
-      background: none;
-      color: $fourth-color;
-      font-size: 1em;
-      button {
-        background-color: $secondary-color;
-        border-color: $fourth-color;
-      }
-    }
-  }
-
-  .option-bar {
-    background-color: $primary-color;
-    display: flex;
-    align-items: space-between;
-    justify-content: space-between;
-    grid-area: 1 / 2 / 2 / 6;
-    margin-bottom: 5%;
-    font-size: 1.3rem;
-
-    .group-by {
-      margin-left: 5%;
-      width: 50%;
-      color: $fourth-color;
-      .tag {
-        color: white;
-      }
-      .view {
-        margin: 0 0 0 3%;
-      }
-
-      .view:hover {
-        color: $fourth-color;
-      }
-
-      .selected {
-        color: $fourth-color;
-      }
-    }
-
-    .options {
-      width: 50%;
-      color: $fourth-color;
-      .tag {
-        color: white;
-      }
-      .option {
-        margin: 0 0 0 3%;
-      }
-
-      .option:hover {
-        color: $fourth-color;
-      }
-
-      .selected {
-        color: $fourth-color;
-      }
-    }
-  }
+grid-template-columns: repeat(5, 1fr);
+grid-template-rows: repeat(5, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
 }
+
+.left-nav {
+  background-color: $primary-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 100vh;
+  grid-area: 1 / 1 / 6 / 2;
+
+  .title {
+    margin: 10%;
+    h1 {
+      color: $fourth-color;
+    }
+  }
+
+  .file-upload {
+    margin: 10%;
+    background: none;
+    color: $fourth-color;
+    font-size: 1em;
+    button {
+      background-color: $secondary-color;
+      border-color: $fourth-color;
+    }
+  }
+
+  .initial-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .info-dropdown {
+    padding: 10%;
+    background: none;
+  }
+  
+  .card-header {
+    background: none;
+    color: $fourth-color;
+    background-color: $primary-color;
+    padding: 0.5em;
+  }
+
+}
+
+.d3-wrapper {
+  background-color: $fifth-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100vh;
+  grid-area: 2 / 2 / 6 / 6;
+}
+
 
 // @media screen and (max-width: 600px) {
 //   .file-upload {

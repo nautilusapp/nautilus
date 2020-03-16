@@ -24,7 +24,7 @@ import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
-import { State, FileUpload } from './App.d';
+import { State, FileUpload, UpdateOption } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
@@ -52,7 +52,27 @@ class App extends Component<{}, State> {
     super(props);
     this.state = initialState;
     this.fileUpload = this.fileUpload.bind(this);
+    this.updateOption= this.updateOption.bind(this);
+    this.updateView=this.updateView.bind(this)
   }
+
+  updateView = (view: string) => {
+    this.setState(state => {
+      return {
+        ...state,
+        view,
+      };
+    });
+  };
+
+  updateOption: UpdateOption = option => {
+    this.setState(state => {
+      return {
+        ...state,
+        options: { ...state.options, [option]: !state.options[option] },
+      };
+    });
+  };
 
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
@@ -88,7 +108,12 @@ class App extends Component<{}, State> {
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
         />
-        <OptionBar />
+        <OptionBar
+          view={this.state.view}
+          options={this.state.options}
+          updateView={this.updateView}
+          updateOption={this.updateOption}
+        />
         <D3Wrapper
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
