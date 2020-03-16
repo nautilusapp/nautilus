@@ -12,16 +12,16 @@ import React from 'react';
 import Service from './Service';
 import DependsOnView from './DependsOnView';
 
-import { ServiceInfo } from '../App.d';
+import { Services } from '../App.d';
 
 type Props = {
-  serviceInfo: ServiceInfo;
+  services: Services;
 };
 
-const ServicesWrapper: React.FC<Props> = ({ serviceInfo }) => {
+const ServicesWrapper: React.FC<Props> = ({ services }) => {
   return (
     <div className="services-wrapper">
-      <Service service={serviceInfo.app} name="app" />
+      <Service service={services.app} name="app" />
       <DependsOnView />
     </div>
   );

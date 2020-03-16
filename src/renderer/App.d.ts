@@ -3,7 +3,7 @@ import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
 export type State = {
   selectedContainer: string;
   fileUploaded: boolean;
-  services: ServiceInfo;
+  services: Services;
   dependsOn: DependsOn;
   networks: ReadOnlyObj;
   volumes: Array<ReadOnlyObj>;
@@ -59,11 +59,11 @@ export type Service = {
   stop_grace_Period?: string;
   stop_signal?: string;
   tmpfs?: string[];
-  restart: string;
-  pid: string;
+  restart?: string;
+  pid?: string;
 };
 
-export type ServiceInfo = {
+export type Services = {
   [service: string]: Service;
 };
 
@@ -77,4 +77,3 @@ export type UpdateOption = {
 export type UpdateView = {
   (view: string): void;
 };
-
