@@ -10,8 +10,8 @@
  */
 import React from 'react';
 // import Service from './Service';
-// import DependsOnView from './DependsOnView';
-import DefaultView from './DefaultView';
+import DependsOnView from './DependsOnView';
+// import DefaultView from './DefaultView';
 
 import { Services } from '../App.d';
 
@@ -23,8 +23,8 @@ const ServicesWrapper: React.FC<Props> = ({ services }) => {
   return (
     <div className="services-wrapper">
       {/* <Service service={services.app} name="app" /> */}
-      {/* <DependsOnView /> */}
-      <DefaultView services={services} />
+      <DependsOnView services={services} />
+      {/* <DefaultView services={services} /> */}
     </div>
   );
 };

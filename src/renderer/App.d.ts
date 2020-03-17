@@ -33,17 +33,24 @@ export type Options = {
 };
 
 //d3 force graph - Node ,Link, Graph
-interface iNode extends SimulationNodeDatum {
+// interface iNode extends SimulationNodeDatum {
+//   name: string;
+// }
+
+interface SNode extends SimulationNodeDatum {
+  id: number;
   name: string;
+  ports: string[];
+  volumes: string[];
 }
 
-interface Link extends SimulationLinkDatum<iNode> {
+interface Link extends SimulationLinkDatum<SNode> {
   source: string;
   target: string;
 }
 
-type Graph = {
-  nodes: iNode[];
+type SGraph = {
+  nodes: SNode[];
   links: Link[];
 };
 
