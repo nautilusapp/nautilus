@@ -27,7 +27,7 @@ import D3Wrapper from './components/D3Wrapper';
 import { State, FileUpload, UpdateOption } from './App.d';
 
 const initialState: State = {
-  selectedContainer: 'app',
+  selectedContainer: '',
   fileUploaded: false,
   services: {},
   dependsOn: {
@@ -54,8 +54,11 @@ class App extends Component<{}, State> {
     this.fileUpload = this.fileUpload.bind(this);
     this.updateOption = this.updateOption.bind(this);
     this.updateView = this.updateView.bind(this);
+    this.setSelectedContainer = this.setSelectedContainer.bind(this);
   }
-
+  setSelectedContainer = (containerName: string) => {
+    this.setState({ ...this.state, selectedContainer: containerName });
+  };
   updateView = (view: string) => {
     if (view === 'depends_on') {
       this.setState(state => {
@@ -130,6 +133,7 @@ class App extends Component<{}, State> {
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}
           services={this.state.services}
+          setSelectedContainer={this.setSelectedContainer}
         />
       </div>
     );
