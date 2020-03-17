@@ -117,6 +117,7 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="app-class">
+        <div className="draggable"></div>
         <LeftNav
           fileUploaded={this.state.fileUploaded}
           fileUpload={this.fileUpload}

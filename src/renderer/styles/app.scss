@@ -25,4 +25,12 @@ body {
   .main {
     flex-grow: 1;
   }
+  .draggable {
+    -webkit-app-region: drag;
+    height: 1.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+  }
 }
