@@ -1,10 +1,9 @@
 .d3-wrapper {
-  background-color: $fifth-color;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  grid-area: 2 / 2 / 11 / 6;
+  // grid-area: 2 / 2 / 11 / 6;
 
   div button {
     display: block;

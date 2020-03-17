@@ -4,9 +4,17 @@
 @import 'leftNav';
 @import 'd3Wrapper';
 
+body {
+  font-size: 14px;
+}
+
+.flex {
+  display: flex;
+}
+
 .app-class {
-  background-color: $fifth-color;
-  display: felx;
+  background-color: $fourth-color;
+  display: flex;
   // display: grid;
   // grid-template-columns: repeat(5, 1fr);
   // grid-template-rows: repeat(10, 1fr);
@@ -14,4 +22,7 @@
   // grid-row-gap: 0px;
   height: 100vh;
   width: 100vw;
+  .main {
+    flex-grow: 1;
+  }
 }

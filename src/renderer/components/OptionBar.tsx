@@ -11,7 +11,6 @@
  */
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 import { Options, UpdateOption, UpdateView } from '../App.d';
 
 type Props = {
@@ -28,118 +27,46 @@ const OptionBar: React.FC<Props> = ({
   updateOption,
 }) => {
   const handleViewClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const element = e.currentTarget;
-    const v = element.id;
-
-    // Update view in state
-    updateView(v);
+    updateView(e.currentTarget.id);
   };
 
   const handleOptionClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    const element = e.currentTarget;
-    const option = element.id;
-
-    // Update options in state
-    updateOption(option);
+    updateOption(e.currentTarget.id);
   };
 
-  // Function for toggling group-by view
-  let renderViewOptions = () => {
-    if (view === 'networks') {
-      return (
-        <>
-          <Navbar.Text
-            className="view selected"
-            id="networks"
-            onClick={handleViewClick}
-          >
-            Networks
-          </Navbar.Text>
-          <Navbar.Text
-            className="view"
-            id="depends_on"
-            onClick={handleViewClick}
-          >
-            Depends On
-          </Navbar.Text>
-        </>
-      );
-    } else if (view === 'depends_on') {
-      return (
-        <>
-          <Navbar.Text className="view" id="networks" onClick={handleViewClick}>
-            Networks
-          </Navbar.Text>
-          <Navbar.Text
-            className="view selected"
-            id="depends_on"
-            onClick={handleViewClick}
-          >
-            Depends On
-          </Navbar.Text>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Navbar.Text className="view" id="networks" onClick={handleViewClick}>
-            Networks
-          </Navbar.Text>
-          <Navbar.Text
-            className="view"
-            id="depends_on"
-            onClick={handleViewClick}
-          >
-            Depends On
-          </Navbar.Text>
-        </>
-      );
-    }
-  };
-
-  const portsClass = options.ports ? 'option selected' : 'option';
-  const volumesClass = options.volumes ? 'option selected' : 'option';
-  const dependsClass = options.dependsOn ? 'option selected' : 'option';
+  const networksClass = view === 'networks' ? 'option selected' : 'option';
+  const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
   const dependsOptionDisplay = view === 'depends_on' ? 'none' : '';
-  // Options text
-  let portsOption = (
-    <Navbar.Text className={portsClass} id="ports" onClick={handleOptionClick}>
-      Ports
-    </Navbar.Text>
-  );
-  let volumesOption = (
+
+  const optionsArr = ['ports', 'volumes', 'dependsOn'];
+
+  const optionsDisplay = optionsArr.map(opt => (
     <Navbar.Text
-      className={volumesClass}
-      id="volumes"
+      className={'options ' + options[opt] ? 'selected' : ''}
+      id="ports"
       onClick={handleOptionClick}
     >
-      Volumes
+      {opt}
     </Navbar.Text>
-  );
-  let dependsOption = (
-    <Navbar.Text
-      className={dependsClass}
-      id="dependsOn"
-      onClick={handleOptionClick}
-      style={{ display: dependsOptionDisplay }}
-    >
-      Depends On
-    </Navbar.Text>
-  );
+  ));
 
   return (
-    <Navbar className="option-bar" variant="dark">
-      <Nav className="group-by">
-        <Navbar.Text className="tag">Group By: </Navbar.Text>
-        {renderViewOptions()}
-      </Nav>
-      <Nav className="options">
-        <Navbar.Text className="tag">View Options: </Navbar.Text>
-        {portsOption}
-        {volumesOption}
-        {dependsOption}
-      </Nav>
-    </Navbar>
+    <div className="option-bar">
+      <div className="views flex">
+        <div className={networksClass} id="networks" onClick={handleViewClick}>
+          networks
+        </div>
+        <div
+          className={dependsOnClass}
+          id="depends_on"
+          onClick={handleViewClick}
+        >
+          depends on
+        </div>
+      </div>
+      {/* <div className="vl"></div> */}
+      <div className="options flex">{optionsDisplay}</div>
+    </div>
   );
 };
 

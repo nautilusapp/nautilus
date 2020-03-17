@@ -1,47 +1,32 @@
 .option-bar {
-  background-color: $primary-color;
+  // background-color: $primary-color;
   display: flex;
-  align-items: space-between;
   justify-content: space-between;
-  grid-area: 1 / 2 / 2 / 6;
-  font-size: 1.3rem;
+  // grid-area: 1 / 2 / 2 / 6;
+  border-bottom: $border;
+  padding: 0.5em;
+  margin: 0 1em;
 
-  .group-by {
-    margin-left: 5%;
-    width: 50%;
-    color: $fourth-color;
-    .tag {
-      color: $fifth-color;
-    }
-    .view {
-      margin: 0 0 0 3%;
-    }
+  .views {
+    flex: 1 1 0;
+    justify-content: center;
+  }
 
-    .view:hover {
-      color: $fourth-color;
-    }
-
-    .selected {
-      color: $fourth-color;
-    }
+  .vl {
+    border-left: $border;
   }
 
   .options {
-    width: 50%;
-    color: $fourth-color;
-    .tag {
-      color: $fifth-color;
-    }
-    .option {
-      margin: 0 0 0 3%;
-    }
+    flex: 1 1 0;
+    justify-content: center;
+  }
 
-    .option:hover {
-      color: $fourth-color;
-    }
+  .selected {
+    font-weight: bold;
+  }
 
-    .selected {
-      color: $fourth-color;
-    }
+  .option {
+    color: $secondary-color;
+    margin: 0 0 0 3%;
   }
 }

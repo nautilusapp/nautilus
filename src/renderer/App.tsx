@@ -38,7 +38,7 @@ const initialState: State = {
   volumesClicked: {},
   bindMounts: [],
   bindMountsClicked: {},
-  view: 'default',
+  view: 'networks',
   options: {
     ports: false,
     volumes: false,
@@ -123,18 +123,20 @@ class App extends Component<{}, State> {
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
         />
-        <OptionBar
-          view={this.state.view}
-          options={this.state.options}
-          updateView={this.updateView}
-          updateOption={this.updateOption}
-        />
-        <D3Wrapper
-          fileUploaded={this.state.fileUploaded}
-          fileUpload={this.fileUpload}
-          services={this.state.services}
-          setSelectedContainer={this.setSelectedContainer}
-        />
+        <div className="main">
+          <OptionBar
+            view={this.state.view}
+            options={this.state.options}
+            updateView={this.updateView}
+            updateOption={this.updateOption}
+          />
+          <D3Wrapper
+            fileUploaded={this.state.fileUploaded}
+            fileUpload={this.fileUpload}
+            services={this.state.services}
+            setSelectedContainer={this.setSelectedContainer}
+          />
+        </div>
       </div>
     );
   }
