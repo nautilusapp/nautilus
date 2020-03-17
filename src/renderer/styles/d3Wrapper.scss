@@ -2,17 +2,13 @@
   background-color: $fifth-color;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  grid-area: 2 / 2 / 6 / 6;
+  justify-content: center;
+  align-items: center;
+  grid-area: 2 / 2 / 11 / 6;
 
   div button {
     display: block;
-  }
-
-  .initial-file-upload {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0 auto;
   }
 
   .depends-wrapper {
