@@ -85,3 +85,7 @@ export type UpdateOption = {
 export type UpdateView = {
   (view: string): void;
 };
+
+export type SetSelectedContainer = {
+  (containerName: string): void;
+};

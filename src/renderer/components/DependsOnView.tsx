@@ -12,13 +12,14 @@ import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
-import { Services, Link, SGraph, SNode } from '../App.d';
+import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
 
 type Props = {
   services: Services;
+  setSelectedContainer: SetSelectedContainer;
 };
 
-const DependsOnView: React.FC<Props> = ({ services }) => {
+const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
   let links: Link[] = [];
   const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
     const ports: string[] = [];
@@ -131,6 +132,9 @@ const DependsOnView: React.FC<Props> = ({ services }) => {
       .data<SNode>(serviceGraph.nodes)
       .enter()
       .append('g')
+      .on('click', (node: any) => {
+        setSelectedContainer(node.name);
+      })
       .call(drag);
 
     // create texts
