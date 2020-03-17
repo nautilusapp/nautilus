@@ -15,11 +15,13 @@ import { getStatic } from '../scripts/static';
 
 //import {simulation} from 'd3-simulation';
 
-import { Graph, iNode, Link } from '../App.d';
+import { Graph, iNode, Link, SetSelectedContainer } from '../App.d';
 
-type Props = {};
+type Props = {
+  setSelectedContainer: SetSelectedContainer;
+};
 
-const DependsOnView: React.FC<Props> = props => {
+const DependsOnView: React.FC<Props> = ({ setSelectedContainer }) => {
   // props: Graph = whatever is passed in
   // const DependsOn: React.FC<Props> = props => {
   useEffect(() => {
@@ -143,6 +145,9 @@ const DependsOnView: React.FC<Props> = props => {
       .data<iNode>(forceData.nodes)
       .enter()
       .append('g')
+      .on('click', (node: any) => {
+        setSelectedContainer(node.name);
+      })
       .call(drag);
 
     // create texts
