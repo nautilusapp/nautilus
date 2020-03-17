@@ -22,7 +22,6 @@ type Props = {};
 const DependsOnView: React.FC<Props> = props => {
   // props: Graph = whatever is passed in
   // const DependsOn: React.FC<Props> = props => {
-
   useEffect(() => {
     // const width = 700;
     // const height = 700;
