@@ -52,8 +52,9 @@ export type Service = {
   command?: string;
   environment?: ReadOnlyObj;
   image?: string;
-  ports?: string[];
-  volumes?: string[];
+  depends_on: string[];
+  ports: string[];
+  volumes: string[];
   working_dir?: string;
   security_opt?: string[];
   stop_grace_Period?: string;
