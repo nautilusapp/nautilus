@@ -9,15 +9,20 @@
  * ************************************
  */
 import React from 'react';
-//import Services from './Service';
+import Service from './Service';
 import DependsOnView from './DependsOnView';
-type Props = {};
 
-const ServicesWrapper: React.FC<Props> = props => {
+import { Services } from '../App.d';
+
+type Props = {
+  services: Services;
+};
+
+const ServicesWrapper: React.FC<Props> = ({ services }) => {
   return (
     <div className="services-wrapper">
+      <Service service={services.app} name="app" />
       <DependsOnView />
-      <div></div>
     </div>
   );
 };
