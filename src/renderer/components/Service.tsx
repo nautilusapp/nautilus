@@ -18,7 +18,11 @@ type Props = {
 };
 
 const Service: React.FC<Props> = ({ service }) => {
-  return <>hello</>;
+  return (
+    <div>
+      <div></div>
+    </div>
+  );
 };
 
 export default Service;
