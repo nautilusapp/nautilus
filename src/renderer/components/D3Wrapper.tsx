@@ -26,7 +26,6 @@ type Props = {
 const D3Wrapper: React.FC<Props> = ({ fileUploaded, fileUpload, services }) => {
   return (
     <div className="d3-wrapper">
-      <ServicesWrapper services={services} />
       <div className="initial-file-upload">
         {!fileUploaded ? (
           <FileSelector
