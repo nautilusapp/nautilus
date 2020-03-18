@@ -148,6 +148,7 @@ class App extends Component<{}, State> {
             fileUpload={this.fileUpload}
             services={this.state.services}
             setSelectedContainer={this.setSelectedContainer}
+            options={this.state.options}
           />
         </div>
       </div>
