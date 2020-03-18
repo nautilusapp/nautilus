@@ -12,6 +12,7 @@ const createWindow = () => {
   let window = new BrowserWindow({
     width: 1000,
     height: 750,
+    titleBarStyle: 'hidden',
     webPreferences:
       process.env.NODE_ENV === 'development'
         ? {

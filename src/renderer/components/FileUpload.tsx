@@ -21,7 +21,7 @@ const FileUpload: React.FC<Props> = ({
     if (!file) return;
     fileUpload(file);
   };
-  const color = locatedWithinVisualizer ? 'black' : 'white';
+  // const color = locatedWithinVisualizer ? 'black' : 'white';
   return (
     <div>
       <Form
@@ -29,17 +29,8 @@ const FileUpload: React.FC<Props> = ({
         onSubmit={handleSubmit}
         encType="multipart/form-data"
       >
-        <Form.Label htmlFor="files">
-          <div style={{ color }}>Upload your Docker Compose File</div>
-        </Form.Label>
-        <Form.Control
-          id="files"
-          type="file"
-          name="yaml"
-          accept=".yml,.yaml"
-          style={{ display: 'none' }}
-        ></Form.Control>
-        <Button type="submit">Upload</Button>
+        <Form.Control id="files" type="file" name="yaml" accept=".yml,.yaml" />
+        <Button type="submit">Submit</Button>
       </Form>
     </div>
   );

@@ -4,12 +4,38 @@
 @import 'leftNav';
 @import 'd3Wrapper';
 
+body {
+  font-size: 14px;
+  -webkit-user-select: none;
+}
+
+.flex {
+  display: flex;
+}
+
+h2 {
+  color: $primary-color;
+  font-size: 1.5em;
+  line-height: 1em;
+  align-self: center;
+}
+
 .app-class {
-  background-color: $fifth-color;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  background-color: $fourth-color;
+  display: flex;
   height: 100vh;
+  width: 100vw;
+  .main {
+    flex-grow: 1;
+    min-width: 700px;
+    flex-direction: column;
+  }
+  .draggable {
+    -webkit-app-region: drag;
+    height: 1.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+  }
 }
