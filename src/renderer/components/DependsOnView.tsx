@@ -70,10 +70,10 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       // Enforces borders
       textsAndNodes
         .attr('cx', (d: any) => {
-          return (d.x = Math.max(radius, Math.min(width - radius, d.x)));
+          return (d.x = Math.max(0, Math.min(width - radius, d.x)));
         })
         .attr('cy', (d: any) => {
-          return (d.y = Math.max(radius, Math.min(height - radius, d.y)));
+          return (d.y = Math.max(15, Math.min(height - radius, d.y)));
         })
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
