@@ -15,7 +15,7 @@ const createMenu = (window: BrowserWindow) => {
       submenu: [
         {
           label: 'Upload Docker-Compose File',
-          accelerator: 'CommandOrControl+U',
+          accelerator: 'CommandOrControl+O',
           //on click for upload menu item
           click() {
             dialog
@@ -23,7 +23,6 @@ const createMenu = (window: BrowserWindow) => {
                 properties: ['openFile'],
                 filters: [
                   { name: 'Docker Compose Files', extensions: ['yml', 'yaml'] },
-                  { name: 'All Files', extensions: ['*'] },
                 ],
               })
               .then((result: any) => {
