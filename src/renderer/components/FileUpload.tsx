@@ -28,6 +28,9 @@ const FileUpload: React.FC<Props> = ({
         onSubmit={handleSubmit}
         encType="multipart/form-data"
       >
+        <Form.Label htmlFor="files">
+          <div>Upload your Docker Compose File</div>
+        </Form.Label>
         <Form.Control id="files" type="file" name="yaml" accept=".yml,.yaml" />
         <Button type="submit">Submit</Button>
       </Form>
