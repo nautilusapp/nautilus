@@ -11,7 +11,7 @@
 import React from 'react';
 import ServicesWrapper from './ServicesWrapper';
 import FileSelector from './FileUpload';
-import VolumesWrapper from './VolumesWapper';
+import VolumesWrapper from './VolumesWrapper';
 
 //type import
 import { FileUpload, Services, SetSelectedContainer } from '../App.d';
