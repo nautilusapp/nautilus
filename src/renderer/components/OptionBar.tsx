@@ -27,7 +27,7 @@ const OptionBar: React.FC<Props> = ({
   updateOption,
 }) => {
   const handleViewClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    updateView(e.currentTarget.id);
+    updateView(e.currentTarget.id as 'networks' | 'depends_on');
   };
 
   const handleOptionClick = (e: React.MouseEvent<Element, MouseEvent>) => {

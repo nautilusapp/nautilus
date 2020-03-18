@@ -25,7 +25,7 @@ import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
-import { State, FileUpload, UpdateOption } from './App.d';
+import { State, FileUpload, UpdateOption, UpdateView } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
@@ -39,7 +39,7 @@ const initialState: State = {
   volumesClicked: {},
   bindMounts: [],
   bindMountsClicked: {},
-  view: 'networks',
+  view: 'depends_on',
   options: {
     ports: false,
     volumes: false,
@@ -60,7 +60,7 @@ class App extends Component<{}, State> {
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView = (view: string) => {
+  updateView: UpdateView = view => {
     if (view === 'depends_on') {
       this.setState(state => {
         return {
