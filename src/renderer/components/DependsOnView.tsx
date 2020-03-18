@@ -62,7 +62,9 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     const forceGraph = d3
       .select('.depends-wrapper')
       .append('svg')
-      .attr('class', 'graph');
+      .attr('class', 'graph')
+      .attr('width', width)
+      .attr('height', height);
 
     //set location when ticked
     const ticked = () => {
@@ -99,13 +101,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    const svg = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height);
-
-    svg
+    forceGraph
       .append('svg:defs')
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
@@ -169,9 +165,6 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
         setSelectedContainer(node.name);
       })
       .call(drag);
-
-    // create texts
-    textsAndNodes.append('text').text((d: any) => d.name);
 
     //create container images
     textsAndNodes
