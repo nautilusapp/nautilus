@@ -9,20 +9,27 @@
  * ************************************
  */
 import React from 'react';
-import Service from './Service';
+// import Service from './Service';
 import DependsOnView from './DependsOnView';
 
-import { Services } from '../App.d';
+import { Services, SetSelectedContainer } from '../App.d';
 
 type Props = {
   services: Services;
+  setSelectedContainer: SetSelectedContainer;
 };
 
-const ServicesWrapper: React.FC<Props> = ({ services }) => {
+const ServicesWrapper: React.FC<Props> = ({
+  services,
+  setSelectedContainer,
+}) => {
   return (
     <div className="services-wrapper">
-      <Service service={services.app} name="app" />
-      <DependsOnView />
+      {/* <Service service={services.app} name="app" /> */}
+      <DependsOnView
+        services={services}
+        setSelectedContainer={setSelectedContainer}
+      />
     </div>
   );
 };

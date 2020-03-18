@@ -34,7 +34,10 @@ const LeftNav: React.FC<Props> = ({
       <Title />
       {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       <div className="leftNavContainerTitle">
-        {selectedContainer[0].toUpperCase() + selectedContainer.slice(1)}
+        {/* display name if there is a selected container */}
+        {selectedContainer !== ''
+          ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
+          : selectedContainer}
       </div>
       <ServiceInfoDisplay service={service} />
     </div>

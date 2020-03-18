@@ -1,7 +1,7 @@
 /**
  * ************************************
  *
- * @module  ServicesWrapper.tsx
+ * @module  DependsOnView.tsx
  * @author
  * @date 3/11/20
  * @description Display area for services containers in Depends_On view : force-graph
@@ -12,90 +12,99 @@ import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
+import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
 
-//import {simulation} from 'd3-simulation';
+type Props = {
+  services: Services;
+  setSelectedContainer: SetSelectedContainer;
+};
 
-import { Graph, iNode, Link } from '../App.d';
+const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
+  let links: Link[] = [];
+  const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
+    const ports: string[] = [];
+    const volumes: string[] = [];
+    if (services[sName].hasOwnProperty('ports')) {
+      services[sName].ports.forEach(port => {
+        ports.push(port);
+      });
+    }
+    if (services[sName].hasOwnProperty('volumes')) {
+      services[sName].volumes.forEach(vol => {
+        volumes.push(vol);
+      });
+    }
+    if (services[sName].hasOwnProperty('depends_on')) {
+      services[sName].depends_on.forEach(el => {
+        links.push({ source: el, target: sName });
+      });
+    }
+    return {
+      id: i,
+      name: sName,
+      ports: ports,
+      volumes: volumes,
+    };
+  });
 
-type Props = {};
-
-const DependsOnView: React.FC<Props> = props => {
-  // props: Graph = whatever is passed in
-  // const DependsOn: React.FC<Props> = props => {
+  const serviceGraph: SGraph = {
+    nodes,
+    links,
+  };
 
   useEffect(() => {
-    // const width = 700;
-    // const height = 700;
-    const forceData: Graph = {
-      nodes: [
-        { name: 'db' },
-        { name: 'ag' },
-        { name: 'ab' },
-        { name: 'ab-api' },
-        { name: 'ab-pathos' },
-        { name: 'bubble' },
-        { name: 'cats' },
-        { name: 'cats-api' },
-        { name: 'ab-pathos' },
-        { name: 'cat-pathos' },
-        { name: 'dogs' },
-      ],
-      links: [
-        { source: 'db', target: 'ag' },
-        { source: 'db', target: 'ab' },
-        { source: 'db', target: 'bubble' },
-        { source: 'ab', target: 'ag' },
-        { source: 'ab', target: 'ab-api' },
-        { source: 'ab', target: 'ab-pathos' },
-        { source: 'cats', target: 'cats-api' },
-        { source: 'cats', target: 'cat-pathos' },
-        { source: 'ab', target: 'dogs' },
-      ],
-    };
-
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
+    const radius = 60;  // Used to determine the size of each container for border enforcement
 
     //initialize graph
     const forceGraph = d3
-      .select('.forceGraph')
+      .select('.depends-wrapper')
       .append('svg')
       .attr('width', width)
       .attr('height', height);
 
     //set location when ticked
     const ticked = () => {
+      // Enforces borders
+      textsAndNodes
+        .attr('cx', (d: any) => {
+          return (d.x = Math.max(radius, Math.min(width - radius, d.x)));
+        })
+        .attr('cy', (d: any) => {
+          return (d.y = Math.max(radius, Math.min(height - radius, d.y)));
+        })
+        .attr('transform', (d: any) => {
+          return 'translate(' + d.x + ',' + d.y + ')';
+        });
+        
       link
-        .attr('x1', (d: any) => d.source.x)
-        .attr('y1', (d: any) => d.source.y)
-        .attr('x2', (d: any) => d.target.x)
-        .attr('y2', (d: any) => d.target.y);
-      textsAndNodes.attr('transform', (d: any) => {
-        return 'translate(' + d.x + ',' + d.y + ')';
-      });
+        .attr('x1', (d: any) => d.source.x + 30)
+        .attr('y1', (d: any) => d.source.y + 30)
+        .attr('x2', (d: any) => d.target.x + 30)
+        .attr('y2', (d: any) => d.target.y + 30);
     };
 
     //create force simulation
-    // re add forceData.nodes in line 97
     const simulation = d3
-      .forceSimulation<iNode>(forceData.nodes)
+      .forceSimulation<SNode>(serviceGraph.nodes)
       .force(
         'link',
         d3
-          .forceLink<iNode, Link>(forceData.links)
-          .distance(110)
-          .id((node: iNode) => node.name),
+          .forceLink<SNode, Link>(serviceGraph.links)
+          .distance(130)
+          .id((node: SNode) => node.name),
       )
-      .force('charge', d3.forceManyBody<iNode>().strength(-40))
-      .force('center', d3.forceCenter<iNode>(width / 2, height / 2))
+      .force('charge', d3.forceManyBody<SNode>().strength(-400))
+      .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
     //create Links
     const link = forceGraph
       .append('g')
       .selectAll('line')
-      .data(forceData.links)
+      .data(serviceGraph.links)
       .enter()
       .append('line')
       .attr('stroke-width', (d: any) => 3)
@@ -121,73 +130,44 @@ const DependsOnView: React.FC<Props> = props => {
     };
 
     let drag = d3
-      .drag<SVGGElement, iNode>()
+      .drag<SVGGElement, SNode>()
       .on('start', dragstarted)
       .on('drag', dragged)
       .on('end', dragended);
 
-    /* <g>
-            <g>
-                <text>
-                <rectangles>
-            </g>
-            <g>
-                <text>
-                <rectangles>
-            </g>
-        </g>
-          */
-
-    //create textAndNodes
+    //create textAndNodes Group
     let textsAndNodes = forceGraph
       .append('g')
       .selectAll('g')
-      .data<iNode>(forceData.nodes)
+      .data<SNode>(serviceGraph.nodes)
       .enter()
       .append('g')
+      .on('click', (node: any) => {
+        setSelectedContainer(node.name);
+      })
       .call(drag);
 
     // create texts
     textsAndNodes.append('text').text((d: any) => d.name);
 
-    //create images
-    const imgArray = [
-      getStatic('danny.png'),
-      getStatic('aris.png'),
-      getStatic('josh.png'),
-      getStatic('Mike.png'),
-      getStatic('tyler.png'),
-    ];
-
-    //create rectangles
-    textsAndNodes
-      .append('rect')
-      .attr('width', 40)
-      .attr('height', 40)
-      .attr('rx', 5)
-      .attr('ry', 5)
-      .classed('myContainers', true)
-      .attr('fill', (d: any) => {
-        return 'hsl(' + Math.random() * 360 + ',60%,50%)';
-      });
-
+    //create container images
     textsAndNodes
       .append('svg:image')
       .attr('xlink:href', (d: any) => {
-        return imgArray[Math.floor(Math.random() * imgArray.length)];
+        return getStatic('container.svg');
       })
-      .attr('height', 40)
-      .attr('width', 40);
+      .attr('height', 60)
+      .attr('width', 60);
 
     return () => {
       forceGraph.remove();
     };
-  });
+  }, [services]);
 
   return (
-    <div className="depends-wrapper">
-      <div className="forceGraph"></div>
-    </div>
+    <>
+      <div className="depends-wrapper" />
+    </>
   );
 };
 
