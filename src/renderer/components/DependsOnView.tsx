@@ -228,36 +228,53 @@ const DependsOnView: React.FC<Props> = ({
    *
    */
   useEffect(() => {
+    // PORTS LOCATION
+    const cx = 58;
+    const cy = 18;
+    const radius = 5;
+    const dx = cx + radius;
+    const dy = cy + radius;
     // CREATE PORTS
     let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
-    let ports: d3.Selection<SVGCircleElement, SNode, any, any>;
-    let portText: d3.Selection<SVGTextElement, SNode, any, any>;
+    const ports: d3.Selection<SVGCircleElement, SNode, any, any>[] = [];
+    const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
     if (options.ports) {
       nodesWithPorts = d3
         .select('.nodes')
         .selectAll<SVGGElement, SNode>('g')
         .filter((d: SNode) => d.ports.length > 0);
 
-      ports = nodesWithPorts
-        .append('circle')
-        .attr('class', 'port')
-        .attr('cx', 58)
-        .attr('cy', 45)
-        .attr('r', 5);
+      nodesWithPorts.each(function(d: SNode) {
+        const node = this;
+        d.ports.forEach((pString, i) => {
+          const port = d3
+            .select<SVGElement, SNode>(node)
+            .append('circle')
+            .attr('class', 'port')
+            .attr('cx', cx)
+            .attr('cy', cy + i * 12)
+            .attr('r', radius);
 
-      portText = nodesWithPorts
-        .append('text')
-        .text((d: SNode) => d.ports[0])
-        .attr('class', 'ports-text')
-        .attr('color', 'white')
-        .attr('dx', 63)
-        .attr('dy', 50);
+          ports.push(port);
+
+          const pText = d3
+            .select<SVGElement, SNode>(node)
+            .append('text')
+            .text(pString)
+            .attr('class', 'ports-text')
+            .attr('color', 'white')
+            .attr('dx', dx)
+            .attr('dy', dy + i * 12);
+
+          portText.push(pText);
+        });
+      });
     }
 
     return () => {
       if (options.ports) {
-        ports.remove();
-        portText.remove();
+        ports.forEach(node => node.remove());
+        portText.forEach(node => node.remove());
       }
     };
   }, [options.ports]);
