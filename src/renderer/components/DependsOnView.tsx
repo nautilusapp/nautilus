@@ -64,7 +64,6 @@ const DependsOnView: React.FC<Props> = ({
     nodes,
     links,
   };
-<<<<<<< HEAD
 
   let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
 
@@ -73,9 +72,6 @@ const DependsOnView: React.FC<Props> = ({
    * Depends On View
    *********************
    */
-=======
-  
->>>>>>> master
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
@@ -84,11 +80,11 @@ const DependsOnView: React.FC<Props> = ({
 
     //initialize graph
     const forceGraph = d3
-    .select('.depends-wrapper')
-    .append('svg')
-    .attr('class', 'graph')
-    .attr('width', width)
-    .attr('height', height);
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('class', 'graph')
+      .attr('width', width)
+      .attr('height', height);
 
     //set location when ticked
     const ticked = () => {
