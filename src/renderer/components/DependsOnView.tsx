@@ -62,8 +62,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     const forceGraph = d3
       .select('.depends-wrapper')
       .append('svg')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('class', 'graph');
 
     //set location when ticked
     const ticked = () => {
