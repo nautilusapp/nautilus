@@ -25,10 +25,14 @@ const createWindow = () => {
   window.maximize();
   if (process.env.NODE_ENV === 'development') {
     window.loadURL(`http://localhost:9080`);
-    window.webContents.openDevTools();
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name: string) => console.log(`Added Extension: ${name}`))
-      .catch((err: Error) => console.log(`An error occurred: ${err}`));
+    window.webContents.on('did-frame-finish-load', () => {
+      installExtension(REACT_DEVELOPER_TOOLS)
+        .then((name: string) => {
+          window.webContents.openDevTools();
+          console.log(`Added Extension: ${name}`);
+        })
+        .catch((err: Error) => console.log(`An error occurred: ${err}`));
+    });
   } else {
     window.loadURL(`file://${app.getAppPath()}/../index.html`);
   }
