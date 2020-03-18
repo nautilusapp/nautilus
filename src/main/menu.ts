@@ -1,6 +1,5 @@
 import { dialog, Menu, BrowserWindow } from 'electron';
 import fs from 'fs';
-// const isMac = process.platform === 'darwin';
 
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
