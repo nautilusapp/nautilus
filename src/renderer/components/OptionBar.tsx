@@ -74,7 +74,11 @@ const OptionBar: React.FC<Props> = ({
           depends on
         </Navbar.Text>
       </div>
-      {/* <div className="vl"></div> */}
+      <div className="titles flex">
+        <h2>Views</h2>
+        <div className="vl"></div>
+        <h2>Options</h2>
+      </div>
       <div className="options flex">{optionsDisplay}</div>
     </div>
   );

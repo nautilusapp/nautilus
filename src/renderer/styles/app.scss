@@ -24,6 +24,7 @@ body {
   width: 100vw;
   .main {
     flex-grow: 1;
+    min-width: 700px;
   }
   .draggable {
     -webkit-app-region: drag;

@@ -1,26 +1,33 @@
 .option-bar {
-  // background-color: $primary-color;
   display: flex;
-  justify-content: space-between;
-  // grid-area: 1 / 2 / 2 / 6;
+  justify-content: center;
   border-bottom: $border;
   padding: 0.5em;
-  margin: 0 1em;
+  margin-top: 1em;
 
   .views {
     flex: 1 1 0;
-    justify-content: center;
-    margin-top: 1em;
+    justify-content: flex-end;
   }
 
-  .vl {
-    border-left: $border;
+  .titles {
+    // flex: 1 1 0;
+    justify-content: center;
+    .vl {
+      border-left: $border;
+    }
+    h2 {
+      color: $primary-color;
+      margin: 0em 0.5em 0em 0.3em;
+      font-size: 1.5em;
+      line-height: 1em;
+      align-self: center;
+    }
   }
 
   .options {
     flex: 1 1 0;
-    justify-content: center;
-    margin-top: 1em;
+    justify-content: flex-start;
   }
 
   .selected {
@@ -35,7 +42,7 @@
     padding: 0em 0.3em !important;
     border-radius: 0.5em;
     border: 1px solid $fourth-color;
-    margin: 0em 1em;
+    margin: 0 3%;
   }
   .option:hover {
     background-color: $hover-color;
