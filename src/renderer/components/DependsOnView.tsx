@@ -64,6 +64,7 @@ const DependsOnView: React.FC<Props> = ({
     nodes,
     links,
   };
+<<<<<<< HEAD
 
   let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
 
@@ -72,6 +73,9 @@ const DependsOnView: React.FC<Props> = ({
    * Depends On View
    *********************
    */
+=======
+  
+>>>>>>> master
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
@@ -80,19 +84,21 @@ const DependsOnView: React.FC<Props> = ({
 
     //initialize graph
     const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
+    .select('.depends-wrapper')
+    .append('svg')
+    .attr('class', 'graph')
+    .attr('width', width)
+    .attr('height', height);
 
     //set location when ticked
     const ticked = () => {
       // Enforces borders
       textsAndNodes
         .attr('cx', (d: any) => {
-          return (d.x = Math.max(radius, Math.min(width - radius, d.x)));
+          return (d.x = Math.max(0, Math.min(width - radius, d.x)));
         })
         .attr('cy', (d: any) => {
-          return (d.y = Math.max(radius, Math.min(height - radius, d.y)));
+          return (d.y = Math.max(15, Math.min(height - radius, d.y)));
         })
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
@@ -119,13 +125,7 @@ const DependsOnView: React.FC<Props> = ({
       .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    const svg = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height);
-
-    svg
+    forceGraph
       .append('svg:defs')
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
