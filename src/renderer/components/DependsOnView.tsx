@@ -134,7 +134,10 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .attr('marker-end', 'url(#end)');
 
     const dragstarted = (d: any) => {
-      simulation.alphaTarget(0.3).restart();
+      // simulation.alphaTarget(0.3).restart();
+      // d.fx = d3.event.x;
+      // d.fy = d3.event.y;
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d3.event.x;
       d.fy = d3.event.y;
     };
@@ -147,6 +150,16 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
 
     const dragended = (d: any) => {
       // alpha min is 0, head there
+      // simulation.alphaTarget(0);
+      // d.fx = null;
+      // d.fy = null;
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = d.x;
+      d.fy = d.y;
+    };
+
+    //sets 'clicked' nodes back to unfixed position
+    const dblClick = (d: any) => {
       simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
@@ -168,6 +181,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .on('click', (node: any) => {
         setSelectedContainer(node.name);
       })
+      .on('dblclick', dblClick)
       .call(drag);
 
     // create texts
