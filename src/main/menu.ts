@@ -1,4 +1,4 @@
-import { dialog, Menu, BrowserWindow } from 'electron';
+import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
 
 const createMenu = (window: BrowserWindow) => {
@@ -65,7 +65,7 @@ const createMenu = (window: BrowserWindow) => {
         {
           label: 'Nautilus Homepage',
           click() {
-            require('electron').shell.openExternal('https://electron.atom.io');
+            shell.openExternal('https://electron.atom.io');
           },
         },
       ],
