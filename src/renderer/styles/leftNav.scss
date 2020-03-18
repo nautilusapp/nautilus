@@ -8,6 +8,7 @@
 
   .title {
     margin: 10%;
+
     h1 {
       color: $fourth-color;
     }
@@ -30,9 +31,15 @@
     background: none;
     color: $fourth-color;
     font-size: 1em;
+
     button {
       background-color: $secondary-color;
       border-color: $fourth-color;
     }
+  }
+
+  .leftNavContainerTitle {
+    text-align: center;
+    color: $fifth-color;
   }
 }
