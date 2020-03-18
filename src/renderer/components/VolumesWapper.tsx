@@ -16,7 +16,16 @@ type Props = {};
 const VolumesWrapper: React.FC<Props> = props => {
   return (
     <div className="volumes-wrapper">
-      <div></div>
+      <div className="container">
+        <div className="half">
+          <h2>Bind Mounts</h2>
+          <hr />
+        </div>
+        <div className="half">
+          <h2>Volumes</h2>
+          <hr />
+        </div>
+      </div>
     </div>
   );
 };
