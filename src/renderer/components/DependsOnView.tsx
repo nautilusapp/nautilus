@@ -51,7 +51,6 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     nodes,
     links,
   };
-
   
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
