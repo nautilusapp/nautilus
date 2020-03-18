@@ -7,7 +7,6 @@ import { FileUpload } from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
-  locatedWithinVisualizer?: boolean;
 };
 
 const FileUpload: React.FC<Props> = ({ fileUpload }) => {
