@@ -15,8 +15,7 @@ const FileUpload: React.FC<Props> = ({
 }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const target = e.currentTarget;
-    const file = target.yaml.files[0];
+    const file = e.currentTarget.yaml.files[0];
     //if no file, do nothing
     if (!file) return;
     fileUpload(file);
