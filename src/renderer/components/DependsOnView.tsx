@@ -12,14 +12,27 @@ import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
-import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
+import {
+  Services,
+  Link,
+  SGraph,
+  SNode,
+  SetSelectedContainer,
+  Options,
+} from '../App.d';
+// import Ports from './Ports';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
+  options: Options;
 };
 
-const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
+const DependsOnView: React.FC<Props> = ({
+  services,
+  setSelectedContainer,
+  options,
+}) => {
   let links: Link[] = [];
   const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
     const ports: string[] = [];
@@ -52,6 +65,13 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     links,
   };
 
+  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
+
+  /**
+   *
+   * Depends On View
+   *
+   */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
@@ -172,8 +192,9 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .on('end', dragended);
 
     //create textAndNodes Group
-    let textsAndNodes = forceGraph
+    textsAndNodes = forceGraph
       .append('g')
+      .attr('class', 'nodes')
       .selectAll('g')
       .data<SNode>(serviceGraph.nodes)
       .enter()
@@ -200,6 +221,46 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       forceGraph.remove();
     };
   }, [services]);
+
+  /**
+   *
+   * PORTS OPTION TOGGLE
+   *
+   */
+  useEffect(() => {
+    // CREATE PORTS
+    let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
+    let ports: d3.Selection<SVGCircleElement, SNode, any, any>;
+    let portText: d3.Selection<SVGTextElement, SNode, any, any>;
+    if (options.ports) {
+      nodesWithPorts = d3
+        .select('.nodes')
+        .selectAll<SVGGElement, SNode>('g')
+        .filter((d: SNode) => d.ports.length > 0);
+
+      ports = nodesWithPorts
+        .append('circle')
+        .attr('class', 'port')
+        .attr('cx', 58)
+        .attr('cy', 45)
+        .attr('r', 5);
+
+      portText = nodesWithPorts
+        .append('text')
+        .text((d: SNode) => d.ports[0])
+        .attr('class', 'ports-text')
+        .attr('color', 'white')
+        .attr('dx', 63)
+        .attr('dy', 50);
+    }
+
+    return () => {
+      if (options.ports) {
+        ports.remove();
+        portText.remove();
+      }
+    };
+  }, [options.ports]);
 
   return (
     <>
