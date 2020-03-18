@@ -71,7 +71,6 @@ const InfoDropdown: React.FC<Props> = ({ service }) => {
       if (overviewProps[key]) {
         if (key === 'environment') {
           environmentVars[key] = key;
-          console.log(environmentVars);
         }
         serviceOverview[key] = service[key];
       }
