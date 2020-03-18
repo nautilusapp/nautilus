@@ -34,7 +34,7 @@ const D3Wrapper: React.FC<Props> = ({
   return (
     <div className="d3-wrapper">
       {!fileUploaded ? (
-        <FileSelector fileUpload={fileUpload} locatedWithinVisualizer={true} />
+        <FileSelector fileUpload={fileUpload} />
       ) : (
         <>
           <ServicesWrapper
