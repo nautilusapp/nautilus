@@ -10,9 +10,8 @@
  */
 import React from 'react';
 import ServicesWrapper from './ServicesWrapper';
-import DockerEngine from './DockerEngine';
-import HostOS from './HostOS';
 import FileSelector from './FileUpload';
+import VolumesWrapper from './VolumesWapper';
 
 //type import
 import { FileUpload, Services, SetSelectedContainer } from '../App.d';
@@ -32,23 +31,17 @@ const D3Wrapper: React.FC<Props> = ({
 }) => {
   return (
     <div className="d3-wrapper">
-      <div className="initial-file-upload">
-        {!fileUploaded ? (
-          <FileSelector
-            fileUpload={fileUpload}
-            locatedWithinVisualizer={true}
+      {!fileUploaded ? (
+        <FileSelector fileUpload={fileUpload} locatedWithinVisualizer={true} />
+      ) : (
+        <>
+          <ServicesWrapper
+            services={services}
+            setSelectedContainer={setSelectedContainer}
           />
-        ) : (
-          <>
-            <ServicesWrapper
-              services={services}
-              setSelectedContainer={setSelectedContainer}
-            />
-            <DockerEngine />
-            <HostOS />
-          </>
-        )}
-      </div>
+          <VolumesWrapper />
+        </>
+      )}
     </div>
   );
 };

@@ -1,17 +1,27 @@
 .d3-wrapper {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  // grid-area: 2 / 2 / 11 / 6;
+  flex: 1 1 0;
+
+  .services-wrapper {
+    flex: 1 1 0;
+    height: 100%;
+    .depends-wrapper {
+      height: 100%;
+      width: 100%;
+      .graph {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .volumes-wrapper {
+    width: 200px;
+    height: 100%;
+  }
 
   div button {
     display: block;
     margin: 0 auto;
-  }
-
-  .depends-wrapper {
-    height: 500px;
-    width: 600px;
   }
 }

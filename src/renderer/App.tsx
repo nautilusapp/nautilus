@@ -124,7 +124,7 @@ class App extends Component<{}, State> {
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
         />
-        <div className="main">
+        <div className="main flex">
           <OptionBar
             view={this.state.view}
             options={this.state.options}

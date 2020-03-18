@@ -6,6 +6,7 @@
 
 body {
   font-size: 14px;
+  -webkit-user-select: none;
 }
 
 .flex {
@@ -15,16 +16,12 @@ body {
 .app-class {
   background-color: $fourth-color;
   display: flex;
-  // display: grid;
-  // grid-template-columns: repeat(5, 1fr);
-  // grid-template-rows: repeat(10, 1fr);
-  // grid-column-gap: 0px;
-  // grid-row-gap: 0px;
   height: 100vh;
   width: 100vw;
   .main {
     flex-grow: 1;
     min-width: 700px;
+    flex-direction: column;
   }
   .draggable {
     -webkit-app-region: drag;
