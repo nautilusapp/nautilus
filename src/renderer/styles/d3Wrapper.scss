@@ -2,6 +2,8 @@
   display: flex;
   flex: 1 1 0;
   min-height: 500px;
+  align-items: center;
+  justify-content: center;
 
   .services-wrapper {
     flex: 1 1 0;
@@ -46,8 +48,13 @@
     }
   }
 
+  .file-upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   div button {
-    display: block;
     margin: 0 auto;
   }
 }
