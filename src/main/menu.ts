@@ -63,7 +63,7 @@ const createMenu = (window: BrowserWindow) => {
       role: 'help',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'Nautilus Homepage',
           click() {
             require('electron').shell.openExternal('https://electron.atom.io');
           },
