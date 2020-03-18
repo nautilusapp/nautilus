@@ -1,5 +1,6 @@
-import { dialog, Menu, BrowserWindow } from 'electron';
+import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
+
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
     {
@@ -32,6 +33,9 @@ const createMenu = (window: BrowserWindow) => {
               .catch((err: Error) => console.log('error reading file: ', err));
           },
         },
+        { type: 'separator' },
+        { role: 'close' },
+        { role: 'quit' },
       ],
     },
     {
@@ -59,9 +63,9 @@ const createMenu = (window: BrowserWindow) => {
       role: 'help',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'Nautilus Homepage',
           click() {
-            require('electron').shell.openExternal('https://electron.atom.io');
+            shell.openExternal('https://electron.atom.io');
           },
         },
       ],
