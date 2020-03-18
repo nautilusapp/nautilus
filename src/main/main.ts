@@ -5,8 +5,6 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import createMenu from './menu';
 
-// const isMac = process.platform === 'darwin';
-
 if (module.hot) {
   module.hot.accept();
 }

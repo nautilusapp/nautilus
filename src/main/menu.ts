@@ -1,5 +1,7 @@
 import { dialog, Menu, BrowserWindow } from 'electron';
 import fs from 'fs';
+// const isMac = process.platform === 'darwin';
+
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
     {
@@ -32,6 +34,9 @@ const createMenu = (window: BrowserWindow) => {
               .catch((err: Error) => console.log('error reading file: ', err));
           },
         },
+        { type: 'separator' },
+        { role: 'close' },
+        { role: 'quit' },
       ],
     },
     {
