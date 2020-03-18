@@ -15,24 +15,25 @@ import Card from 'react-bootstrap/Card';
 
 // import { Service } from '../App.d';
 
-type Props = {
+type ReactProps = {
   service?: any;
 };
 
-type FilteredServiceProps = {
+type DockerComposeProperties = {
   [prop: string]: string;
 };
 
-type FilteredServiceSection = {
+type ServiceOverview = {
   [prop: string]: any;
 };
 
-type EnvironmentVars = {
+type EnvironmentVariables = {
   [prop: string]: string;
 };
 
-const InfoDropdown: React.FC<Props> = ({ service }) => {
-  const overviewProps: FilteredServiceProps = {
+const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
+  // Create an object to house text intros for each docker-compose property
+  const dockerComposeProperties: DockerComposeProperties = {
     build: 'Build: ',
     context: 'Context: ',
     dockerfile: 'Dockerfile: ',
@@ -49,18 +50,25 @@ const InfoDropdown: React.FC<Props> = ({ service }) => {
   };
 
   // Objects to hold filtered 1D service properties
-  const serviceOverview: FilteredServiceSection = {};
+  const serviceOverview: ServiceOverview = {};
 
   // Arrays/Objects to hold filtered 2D service properties
-  const environmentVars: EnvironmentVars = {};
+  const environmentVariables: EnvironmentVariables = {};
 
+  // if service exists
   if (service) {
+    // loop through the properties in each service
     Object.keys(service).forEach((key: string) => {
-      if (overviewProps[key]) {
+      // and if the service property can be found in the list of docker-compose properties...
+      if (dockerComposeProperties[key]) {
+        // ASIDE: if any of the below keys equal the specified strings,
         if (key === 'environment') {
-          environmentVars[key] = key;
-          console.log(environmentVars);
+          // ASIDE: set the key at the 2d arrays/objects between lines 55 and x, to be the service's property and set it equal to service's property
+          environmentVariables[key] = key;
+          console.log(environmentVariables);
         }
+        // ...then set the key in the serviceOverview's object to equal the service property and its value to be the service property value
+        // ie {Build: ./result}
         serviceOverview[key] = service[key];
       }
     });
@@ -81,7 +89,8 @@ const InfoDropdown: React.FC<Props> = ({ service }) => {
               {Object.keys(serviceOverview).length === 0
                 ? 'There are no overview details in your Docker-Compose file'
                 : Object.keys(serviceOverview).map(
-                    el => `${overviewProps[el]}${serviceOverview[el]}`,
+                    el =>
+                      `${dockerComposeProperties[el]}${serviceOverview[el]}`,
                   )}
             </Card.Body>
           </Accordion.Collapse>
