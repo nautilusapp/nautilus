@@ -1,84 +1,11 @@
-import { app, BrowserWindow, Menu, dialog } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
-import fs from 'fs';
+import createMenu from './menu';
 
 // const isMac = process.platform === 'darwin';
-
-//create custom menu item
-const createMenu = (window: BrowserWindow) => {
-  const template: Electron.MenuItemConstructorOptions[] = [
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Upload Docker-Compose File',
-          accelerator: 'CommandOrControl+U',
-          //on click for upload menu item
-          click() {
-            dialog
-              .showOpenDialog({
-                properties: ['openFile'],
-                filters: [
-                  { name: 'Docker Compose Files', extensions: ['yml', 'yaml'] },
-                  { name: 'All Files', extensions: ['*'] },
-                ],
-              })
-              .then((result: any) => {
-                if (result.filePaths[0]) {
-                  let yamlText = fs
-                    .readFileSync(result.filePaths[0])
-                    .toString();
-                  window.webContents.send(
-                    'file-uploaded-within-electron',
-                    yamlText,
-                  );
-                }
-              })
-              .catch((err: Error) => console.log('error reading file: ', err));
-          },
-        },
-      ],
-    },
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'delete' },
-      ],
-    },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'reload' },
-        { type: 'separator' },
-        { role: 'togglefullscreen' },
-      ],
-    },
-    { role: 'window', submenu: [{ role: 'minimize' }, { role: 'close' }] },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click() {
-            require('electron').shell.openExternal('https://electron.atom.io');
-          },
-        },
-      ],
-    },
-  ];
-
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
-};
 
 if (module.hot) {
   module.hot.accept();
@@ -128,6 +55,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createMenu(createWindow());
   }
 });
