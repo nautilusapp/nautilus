@@ -56,7 +56,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
-    const radius = 60;  // Used to determine the size of each container for border enforcement
+    const radius = 60; // Used to determine the size of each container for border enforcement
 
     //initialize graph
     const forceGraph = d3
@@ -78,7 +78,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
-        
+
       link
         .attr('x1', (d: any) => d.source.x + 30)
         .attr('y1', (d: any) => d.source.y + 30)
@@ -100,15 +100,39 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    //create Links
+    const svg = d3
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    svg
+      .append('svg:defs')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22.5)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    //create Links with arrowheads
     const link = forceGraph
       .append('g')
       .selectAll('line')
       .data(serviceGraph.links)
       .enter()
       .append('line')
-      .attr('stroke-width', (d: any) => 3)
-      .attr('stroke', 'pink');
+      .attr('stroke-width', 3)
+      .attr('stroke', 'pink')
+      .attr('class', 'link')
+      .attr('marker-end', 'url(#end)');
 
     const dragstarted = (d: any) => {
       simulation.alphaTarget(0.3).restart();
