@@ -12,7 +12,7 @@ type YamlState = {
 export const convertYamlToState = (file: any) => {
   const services = file.services;
   const volumes = file.volumes ? file.volumes : {};
-  const networks = file.networks ? file.volumes : {};
+  const networks = file.networks ? file.networks : {};
   const state: YamlState = Object.assign(
     {},
     { fileUploaded: true, services, volumes, networks },
