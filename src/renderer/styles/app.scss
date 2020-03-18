@@ -13,6 +13,13 @@ body {
   display: flex;
 }
 
+h2 {
+  color: $primary-color;
+  font-size: 1.5em;
+  line-height: 1em;
+  align-self: center;
+}
+
 .app-class {
   background-color: $fourth-color;
   display: flex;
