@@ -12,14 +12,27 @@ import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
-import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
+import {
+  Services,
+  Link,
+  SGraph,
+  SNode,
+  SetSelectedContainer,
+  Options,
+} from '../App.d';
+// import Ports from './Ports';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
+  options: Options;
 };
 
-const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
+const DependsOnView: React.FC<Props> = ({
+  services,
+  setSelectedContainer,
+  options,
+}) => {
   let links: Link[] = [];
   const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
     const ports: string[] = [];
@@ -51,7 +64,14 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     nodes,
     links,
   };
-  
+
+  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
+
+  /**
+   *********************
+   * Depends On View
+   *********************
+   */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
@@ -60,11 +80,11 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
 
     //initialize graph
     const forceGraph = d3
-    .select('.depends-wrapper')
-    .append('svg')
-    .attr('class', 'graph')
-    .attr('width', width)
-    .attr('height', height);
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('class', 'graph')
+      .attr('width', width)
+      .attr('height', height);
 
     //set location when ticked
     const ticked = () => {
@@ -168,8 +188,9 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .on('end', dragended);
 
     //create textAndNodes Group
-    let textsAndNodes = forceGraph
+    textsAndNodes = forceGraph
       .append('g')
+      .attr('class', 'nodes')
       .selectAll('g')
       .data<SNode>(serviceGraph.nodes)
       .enter()
@@ -196,6 +217,69 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       forceGraph.remove();
     };
   }, [services]);
+
+  /**
+   *********************
+   * PORTS OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    // PORTS LOCATION
+    const cx = 58;
+    const cy = 18;
+    const radius = 5;
+    const dx = cx + radius;
+    const dy = cy + radius;
+    // PORTS VARIABLES
+    let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
+    const ports: d3.Selection<SVGCircleElement, SNode, any, any>[] = [];
+    const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
+    if (options.ports) {
+      // select all nodes with ports
+      nodesWithPorts = d3
+        .select('.nodes')
+        .selectAll<SVGGElement, SNode>('g')
+        .filter((d: SNode) => d.ports.length > 0);
+
+      // iterate through all nodes with ports
+      nodesWithPorts.each(function(d: SNode) {
+        const node = this;
+        // iterate through all ports of node
+        d.ports.forEach((pString, i) => {
+          // add svg port
+          const port = d3
+            .select<SVGElement, SNode>(node)
+            .append('circle')
+            .attr('class', 'port')
+            .attr('cx', cx)
+            .attr('cy', cy + i * 12)
+            .attr('r', radius);
+          // store d3 object in ports array
+          ports.push(port);
+          // add svg port text
+          const pText = d3
+            .select<SVGElement, SNode>(node)
+            .append('text')
+            .text(pString)
+            .attr('class', 'ports-text')
+            .attr('color', 'white')
+            .attr('dx', dx)
+            .attr('dy', dy + i * 12);
+          // store d3 object in ports text array
+          portText.push(pText);
+        });
+      });
+    }
+
+    return () => {
+      // before unmoutning, if ports option was on, remove the ports
+      if (options.ports) {
+        ports.forEach(node => node.remove());
+        portText.forEach(node => node.remove());
+      }
+    };
+    // only fire when options.ports changes
+  }, [options.ports]);
 
   return (
     <>
