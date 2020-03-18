@@ -56,6 +56,7 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
+    const radius = 60;  // Used to determine the size of each container for border enforcement
 
     //initialize graph
     const forceGraph = d3
@@ -65,14 +66,23 @@ const DependsOnView: React.FC<Props> = ({ services, setSelectedContainer }) => {
 
     //set location when ticked
     const ticked = () => {
+      // Enforces borders
+      textsAndNodes
+        .attr('cx', (d: any) => {
+          return (d.x = Math.max(radius, Math.min(width - radius, d.x)));
+        })
+        .attr('cy', (d: any) => {
+          return (d.y = Math.max(radius, Math.min(height - radius, d.y)));
+        })
+        .attr('transform', (d: any) => {
+          return 'translate(' + d.x + ',' + d.y + ')';
+        });
+        
       link
-        .attr('x1', (d: any) => d.source.x)
-        .attr('y1', (d: any) => d.source.y)
-        .attr('x2', (d: any) => d.target.x)
-        .attr('y2', (d: any) => d.target.y);
-      textsAndNodes.attr('transform', (d: any) => {
-        return 'translate(' + d.x + ',' + d.y + ')';
-      });
+        .attr('x1', (d: any) => d.source.x + 30)
+        .attr('y1', (d: any) => d.source.y + 30)
+        .attr('x2', (d: any) => d.target.x + 30)
+        .attr('y2', (d: any) => d.target.y + 30);
     };
 
     //create force simulation
