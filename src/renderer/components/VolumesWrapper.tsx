@@ -8,12 +8,15 @@
  * ************************************
  */
 import React from 'react';
+import DockerEngine from './DockerEngine';
+import { ReadOnlyObj } from '../App.d';
 // import HostOS from './HostOS';
-// import DockerEngine from './DockerEngine';
 
-type Props = {};
+type Props = {
+  volumes: Array<ReadOnlyObj>;
+};
 
-const VolumesWrapper: React.FC<Props> = props => {
+const VolumesWrapper: React.FC<Props> = ({ volumes }) => {
   return (
     <div className="volumes-wrapper">
       <div className="container">
@@ -24,6 +27,7 @@ const VolumesWrapper: React.FC<Props> = props => {
         <div className="half">
           <h2>Volumes</h2>
           <hr />
+          <DockerEngine volumes={volumes} />
         </div>
       </div>
     </div>

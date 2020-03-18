@@ -46,6 +46,13 @@
         margin: 0 0 0.75em 0;
       }
     }
+    .volume {
+      background-color: #fad02c;
+      border-radius: 5px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+      margin: 0.5em;
+    }
   }
 
   .file-upload {

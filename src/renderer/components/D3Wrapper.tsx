@@ -22,6 +22,7 @@ type Props = {
   fileUploaded: boolean;
   services: Services;
   options: Options;
+  volumes: Array<ReadOnlyObj>;
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const D3Wrapper: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
+  volumes,
 }) => {
   return (
     <div className="d3-wrapper">
@@ -42,7 +44,7 @@ const D3Wrapper: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             options={options}
           />
-          <VolumesWrapper />
+          <VolumesWrapper volumes={volumes} />
         </>
       )}
     </div>
