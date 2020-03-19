@@ -78,23 +78,41 @@ const DependsOnView: React.FC<Props> = ({
     const height = parseInt(container.style('height'), 10);
     const radius = 60; // Used to determine the size of each container for border enforcement
 
+    const rootNames: any = {};
+    Object.keys(services).forEach(el => {
+      rootNames[el] = true;
+    });
+    links.forEach(el => {
+      if (rootNames[el.target]) {
+        delete rootNames[el.target];
+      }
+    });
+    const rootNumbers = Object.keys(rootNames).length;
+    const rootDisplacement = width / (rootNumbers + 1);
+    let rootLocation = rootDisplacement;
+
+    Object.keys(rootNames).forEach(el => {
+      rootNames[el] = rootLocation;
+      rootLocation += rootDisplacement;
+    });
+
     //initialize graph
     const forceGraph = d3
       .select('.depends-wrapper')
       .append('svg')
-      .attr('class', 'graph')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('class', 'graph');
 
     //set location when ticked
     const ticked = () => {
+      const w = parseInt(container.style('width'), 10);
+      const h = parseInt(container.style('height'), 10);
       // Enforces borders
       textsAndNodes
         .attr('cx', (d: any) => {
-          return (d.x = Math.max(0, Math.min(width - radius, d.x)));
+          return (d.x = Math.max(0, Math.min(w - radius, d.x)));
         })
         .attr('cy', (d: any) => {
-          return (d.y = Math.max(15, Math.min(height - radius, d.y)));
+          return (d.y = Math.max(15, Math.min(h - radius, d.y)));
         })
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
@@ -105,7 +123,12 @@ const DependsOnView: React.FC<Props> = ({
         .attr('y1', (d: any) => d.source.y + 30)
         .attr('x2', (d: any) => d.target.x + 30)
         .attr('y2', (d: any) => d.target.y + 30);
+
+      simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     };
+
+    // move force graph with resizing window
+    window.addEventListener('resize', ticked);
 
     //create force simulation
     const simulation = d3
@@ -199,7 +222,21 @@ const DependsOnView: React.FC<Props> = ({
         setSelectedContainer(node.name);
       })
       .on('dblclick', dblClick)
-      .call(drag);
+      .call(drag)
+      .attr('fx', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fx = rootNames[d.name]);
+        } else {
+          return (d.fx = null);
+        }
+      })
+      .attr('fy', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fy = 0);
+        } else {
+          return (d.fy = null);
+        }
+      });
 
     // create texts
     textsAndNodes.append('text').text((d: any) => d.name);
