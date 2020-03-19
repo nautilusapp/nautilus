@@ -92,13 +92,7 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
     localStorage.setItem('state', JSON.stringify(yamlState));
-    this.setState(
-      Object.assign(
-        initialState,
-        { options: this.state.options, view: this.state.view },
-        yamlState,
-      ),
-    );
+    this.setState(Object.assign(initialState, yamlState));
   };
 
   fileUpload: FileUpload = (file: File) => {
