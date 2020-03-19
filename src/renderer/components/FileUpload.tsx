@@ -1,27 +1,26 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from 'react';
+// import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { FaUpload } from 'react-icons/fa';
 
 import { FileUpload } from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
-  locatedWithinVisualizer?: boolean;
 };
 
-const FileUpload: React.FC<Props> = ({
-  fileUpload,
-  locatedWithinVisualizer,
-}) => {
+const FileUpload: React.FC<Props> = ({ fileUpload }) => {
+  const [fileName, setFileName] = useState('');
+  const [fileSelected, setFileSelected] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const target = e.currentTarget;
-    const file = target.yaml.files[0];
+    const file = e.currentTarget.yaml.files[0];
     //if no file, do nothing
     if (!file) return;
     fileUpload(file);
+    setFileSelected(false);
+    setFileName('');
   };
-  // const color = locatedWithinVisualizer ? 'black' : 'white';
   return (
     <div>
       <Form
@@ -29,8 +28,33 @@ const FileUpload: React.FC<Props> = ({
         onSubmit={handleSubmit}
         encType="multipart/form-data"
       >
-        <Form.Control id="files" type="file" name="yaml" accept=".yml,.yaml" />
-        <Button type="submit">Submit</Button>
+        <h5>{!fileSelected ? 'Upload your Docker-Compose file' : fileName}</h5>
+        <Form.Label htmlFor="files">
+          {!fileSelected ? (
+            <div className="select-file-button">
+              <FaUpload size={32} />
+            </div>
+          ) : (
+            <button type="submit">
+              <FaUpload size={32} />
+            </button>
+          )}
+        </Form.Label>
+        <Form.Control
+          id="files"
+          type="file"
+          name="yaml"
+          accept=".yml,.yaml"
+          style={{ display: 'none' }}
+          onChange={(event: React.SyntheticEvent<HTMLInputElement>) => {
+            if (event.currentTarget) {
+              if (event.currentTarget.files) {
+                setFileSelected(true);
+                setFileName(event.currentTarget.files[0].name);
+              }
+            }
+          }}
+        />
       </Form>
     </div>
   );

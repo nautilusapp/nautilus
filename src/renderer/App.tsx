@@ -11,6 +11,7 @@
 //IMPORT LIBRARIES
 import React, { Component } from 'react';
 import yaml from 'js-yaml';
+import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
@@ -24,7 +25,7 @@ import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
-import { State, FileUpload, UpdateOption } from './App.d';
+import { State, FileUpload, UpdateOption, UpdateView } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
@@ -38,7 +39,7 @@ const initialState: State = {
   volumesClicked: {},
   bindMounts: [],
   bindMountsClicked: {},
-  view: 'networks',
+  view: 'depends_on',
   options: {
     ports: false,
     volumes: false,
@@ -59,7 +60,7 @@ class App extends Component<{}, State> {
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView = (view: string) => {
+  updateView: UpdateView = view => {
     if (view === 'depends_on') {
       this.setState(state => {
         return {
@@ -87,31 +88,36 @@ class App extends Component<{}, State> {
     });
   };
 
+  convertAndStoreYamlJSON = (yamlText: string) => {
+    const yamlJSON = yaml.safeLoad(yamlText);
+    const yamlState = convertYamlToState(yamlJSON);
+    localStorage.setItem('state', JSON.stringify(yamlState));
+    this.setState(Object.assign(initialState, yamlState));
+  };
+
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       if (fileReader.result) {
-        const yamlJSON = yaml.safeLoad(fileReader.result.toString());
-        const yamlState = convertYamlToState(yamlJSON);
-        localStorage.setItem('state', JSON.stringify(yamlState));
-        this.setState(
-          Object.assign(
-            initialState,
-            { options: this.state.options, view: this.state.view },
-            yamlState,
-          ),
-        );
+        this.convertAndStoreYamlJSON(fileReader.result.toString());
       }
     };
     fileReader.readAsText(file);
   };
 
   componentDidMount() {
+    ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
+      this.convertAndStoreYamlJSON(arg);
+    });
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
       this.setState(Object.assign(initialState, stateJS));
     }
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('file-uploaded-within-electron');
   }
 
   render() {
@@ -136,6 +142,7 @@ class App extends Component<{}, State> {
             fileUpload={this.fileUpload}
             services={this.state.services}
             setSelectedContainer={this.setSelectedContainer}
+            options={this.state.options}
           />
         </div>
       </div>

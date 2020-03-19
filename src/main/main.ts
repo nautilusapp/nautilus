@@ -3,6 +3,7 @@ import path from 'path';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
+import createMenu from './menu';
 
 if (module.hot) {
   module.hot.accept();
@@ -36,9 +37,13 @@ const createWindow = () => {
   } else {
     window.loadURL(`file://${app.getAppPath()}/../index.html`);
   }
+  return window;
 };
 
-app.whenReady().then(createWindow);
+app
+  .whenReady()
+  .then(createWindow)
+  .then(createMenu);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -48,6 +53,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createMenu(createWindow());
   }
 });

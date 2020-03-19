@@ -10,7 +10,7 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: string;
+  view: 'networks' | 'depends_on';
   options: Options;
   version: string;
 };
@@ -83,7 +83,7 @@ export type UpdateOption = {
   (option: string): void;
 };
 export type UpdateView = {
-  (view: string): void;
+  (view: 'networks' | 'depends_on'): void;
 };
 
 export type SetSelectedContainer = {

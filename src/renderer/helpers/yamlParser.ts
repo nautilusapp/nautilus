@@ -33,5 +33,6 @@ export const convertYamlToState = (file: any) => {
       });
     }
   });
+  state.bindMounts = bindMounts;
   return state;
 };
