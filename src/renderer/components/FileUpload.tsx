@@ -15,8 +15,6 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const file = e.currentTarget.yaml.files[0];
-    //if no file, do nothing
-    if (!file) return;
     fileUpload(file);
     setFileSelected(false);
     setFileName('');
@@ -35,7 +33,7 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
               <FaUpload size={32} />
             </div>
           ) : (
-            <button type="submit">
+            <button type="submit" className="uploadButton">
               <FaUpload size={32} />
             </button>
           )}
