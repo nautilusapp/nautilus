@@ -11,7 +11,6 @@
 import React, { ReactElement } from 'react';
 import Volume from './Volume';
 import { ReadOnlyObj } from '../App.d';
-//import Volume from './Volume';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;
