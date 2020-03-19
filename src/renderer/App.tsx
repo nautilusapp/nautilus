@@ -52,10 +52,6 @@ class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = initialState;
-    this.fileUpload = this.fileUpload.bind(this);
-    this.updateOption = this.updateOption.bind(this);
-    this.updateView = this.updateView.bind(this);
-    this.setSelectedContainer = this.setSelectedContainer.bind(this);
   }
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
