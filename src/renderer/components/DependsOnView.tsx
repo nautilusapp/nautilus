@@ -19,6 +19,7 @@ import {
   SNode,
   SetSelectedContainer,
   Options,
+  Roots,
 } from '../App.d';
 // import Ports from './Ports';
 
@@ -78,21 +79,27 @@ const DependsOnView: React.FC<Props> = ({
     const height = parseInt(container.style('height'), 10);
     const radius = 60; // Used to determine the size of each container for border enforcement
 
-    const rootNames: any = {};
-    Object.keys(services).forEach(el => {
-      rootNames[el] = true;
-    });
+    //create roots object that starts with all of the keys of services and values of true (just a placeholder)
+
+    const roots = Object.keys(services).reduce((acc: Roots, el) => {
+      acc[el] = true;
+      return acc;
+    }, {});
+    //iterate through links and find if the roots object contains any of the link targets
     links.forEach(el => {
-      if (rootNames[el.target]) {
-        delete rootNames[el.target];
+      if (roots[el.target]) {
+        //filter the roots
+        delete roots[el.target];
       }
     });
-    const rootNumbers = Object.keys(rootNames).length;
+    //evaluate number of roots and determine the width of the d3 simulation to
+    //determine how many segments it can be split into with the roots in the middle
+    const rootNumbers = Object.keys(roots).length;
     const rootDisplacement = width / (rootNumbers + 1);
     let rootLocation = rootDisplacement;
-
-    Object.keys(rootNames).forEach(el => {
-      rootNames[el] = rootLocation;
+    // store the x location of the root within the roots object
+    Object.keys(roots).forEach(el => {
+      roots[el] = rootLocation;
       rootLocation += rootDisplacement;
     });
 
@@ -224,15 +231,16 @@ const DependsOnView: React.FC<Props> = ({
       .on('dblclick', dblClick)
       .call(drag)
       .attr('fx', (d: any) => {
-        if (rootNames[d.name]) {
-          return (d.fx = rootNames[d.name]);
+        //assign the initial x location to the relative displacement from the left
+        if (roots[d.name]) {
+          return (d.fx = roots[d.name]);
         } else {
           return (d.fx = null);
         }
       })
       .attr('fy', (d: any) => {
-        if (rootNames[d.name]) {
-          return (d.fy = 0);
+        if (roots[d.name]) {
+          return (d.fy = 30); // fixed y position
         } else {
           return (d.fy = null);
         }
