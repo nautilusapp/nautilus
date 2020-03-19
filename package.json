@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
     "dev": "cross-env NODE_ENV=development electron-webpack dev",
-    "compile": "cross-env NODE_ENV=development electron-webpack",
+    "compile": "cross-env NODE_ENV=production electron-webpack",
     "dist": "concurrently \"npm run compile\" \"electron-builder\""
   },
   "repository": {
