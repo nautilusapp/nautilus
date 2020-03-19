@@ -142,6 +142,7 @@ class App extends Component<{}, State> {
             setSelectedContainer={this.setSelectedContainer}
             options={this.state.options}
             volumes={this.state.volumes}
+            bindMounts={this.state.bindMounts}
           />
         </div>
       </div>

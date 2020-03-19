@@ -23,6 +23,7 @@ type Props = {
   services: Services;
   options: Options;
   volumes: Array<ReadOnlyObj>;
+  bindMounts: Array<string>;
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const D3Wrapper: React.FC<Props> = ({
   setSelectedContainer,
   options,
   volumes,
+  bindMounts,
 }) => {
   return (
     <div className="d3-wrapper">
@@ -44,7 +46,7 @@ const D3Wrapper: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             options={options}
           />
-          <VolumesWrapper volumes={volumes} />
+          <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />
         </>
       )}
     </div>

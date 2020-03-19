@@ -10,19 +10,22 @@
 import React from 'react';
 import DockerEngine from './DockerEngine';
 import { ReadOnlyObj } from '../App.d';
+import HostOS from './HostOS';
 // import HostOS from './HostOS';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;
+  bindMounts: Array<string>;
 };
 
-const VolumesWrapper: React.FC<Props> = ({ volumes }) => {
+const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts }) => {
   return (
     <div className="volumes-wrapper">
       <div className="container">
         <div className="half">
           <h2>Bind Mounts</h2>
           <hr />
+          <HostOS bindMounts={bindMounts} />
         </div>
         <div className="half">
           <h2>Volumes</h2>
