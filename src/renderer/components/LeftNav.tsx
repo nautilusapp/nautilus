@@ -11,7 +11,7 @@
 import React from 'react';
 
 // IMPORT REACT COMPONENTS
-import ServiceInfoDisplay from './ServiceInfoDisplay';
+import InfoDropdown from './InfoDropdown';
 import FileSelector from './FileUpload';
 import Title from './Title';
 import { FileUpload, Service } from '../App.d';
@@ -39,7 +39,9 @@ const LeftNav: React.FC<Props> = ({
           ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
           : selectedContainer}
       </div>
-      <ServiceInfoDisplay service={service} />
+      <div className="service-info-display">
+        <InfoDropdown service={service} />
+      </div>
     </div>
   );
 };
