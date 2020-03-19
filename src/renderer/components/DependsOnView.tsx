@@ -78,6 +78,24 @@ const DependsOnView: React.FC<Props> = ({
     const height = parseInt(container.style('height'), 10);
     const radius = 60; // Used to determine the size of each container for border enforcement
 
+    const rootNames: any = {};
+    Object.keys(services).forEach(el => {
+      rootNames[el] = true;
+    });
+    links.forEach(el => {
+      if (rootNames[el.target]) {
+        delete rootNames[el.target];
+      }
+    });
+    const rootNumbers = Object.keys(rootNames).length;
+    const rootDisplacement = width / (rootNumbers + 1);
+    let rootLocation = rootDisplacement;
+
+    Object.keys(rootNames).forEach(el => {
+      rootNames[el] = rootLocation;
+      rootLocation += rootDisplacement;
+    });
+
     //initialize graph
     const forceGraph = d3
       .select('.depends-wrapper')
@@ -204,7 +222,21 @@ const DependsOnView: React.FC<Props> = ({
         setSelectedContainer(node.name);
       })
       .on('dblclick', dblClick)
-      .call(drag);
+      .call(drag)
+      .attr('fx', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fx = rootNames[d.name]);
+        } else {
+          return (d.fx = null);
+        }
+      })
+      .attr('fy', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fy = 0);
+        } else {
+          return (d.fy = null);
+        }
+      });
 
     // create texts
     textsAndNodes.append('text').text((d: any) => d.name);
