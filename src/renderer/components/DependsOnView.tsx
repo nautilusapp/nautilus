@@ -243,21 +243,7 @@ const DependsOnView: React.FC<Props> = ({
         return getStatic('container.svg');
       })
       .attr('height', 60)
-      .attr('width', 60)
-      .attr('fx', (d: any) => {
-        if (rootNames[d.name]) {
-          return (d.fx = rootNames[d.name]);
-        } else {
-          return (d.fx = null);
-        }
-      })
-      .attr('fy', (d: any) => {
-        if (rootNames[d.name]) {
-          return (d.fy = 0);
-        } else {
-          return (d.fy = null);
-        }
-      });
+      .attr('width', 60);
 
     return () => {
       forceGraph.remove();
