@@ -89,3 +89,7 @@ export type UpdateView = {
 export type SetSelectedContainer = {
   (containerName: string): void;
 };
+
+export type Roots = {
+  [service: string]: boolean | number;
+};
