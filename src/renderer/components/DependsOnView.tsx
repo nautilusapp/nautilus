@@ -116,20 +116,6 @@ const DependsOnView: React.FC<Props> = ({
         })
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
-        })
-        .attr('fx', (d: any) => {
-          if (rootNames[d.name]) {
-            return (d.fx = rootNames[d.name]);
-          } else {
-            return (d.fx = null);
-          }
-        })
-        .attr('fy', (d: any) => {
-          if (rootNames[d.name]) {
-            return (d.fy = 0);
-          } else {
-            return (d.fy = null);
-          }
         });
 
       link
@@ -231,7 +217,21 @@ const DependsOnView: React.FC<Props> = ({
         setSelectedContainer(node.name);
       })
       .on('dblclick', dblClick)
-      .call(drag);
+      .call(drag)
+      .attr('fx', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fx = rootNames[d.name]);
+        } else {
+          return (d.fx = null);
+        }
+      })
+      .attr('fy', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fy = 0);
+        } else {
+          return (d.fy = null);
+        }
+      });
 
     // create texts
     textsAndNodes.append('text').text((d: any) => d.name);
@@ -243,7 +243,21 @@ const DependsOnView: React.FC<Props> = ({
         return getStatic('container.svg');
       })
       .attr('height', 60)
-      .attr('width', 60);
+      .attr('width', 60)
+      .attr('fx', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fx = rootNames[d.name]);
+        } else {
+          return (d.fx = null);
+        }
+      })
+      .attr('fy', (d: any) => {
+        if (rootNames[d.name]) {
+          return (d.fy = 0);
+        } else {
+          return (d.fy = null);
+        }
+      });
 
     return () => {
       forceGraph.remove();
