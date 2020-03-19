@@ -27,6 +27,14 @@ type ServiceOverview = {
   [prop: string]: any;
 };
 
+// type Build = {
+//   [prop: string]: string | {};
+// };
+
+type context = {
+  [prop: string]: string;
+}
+
 type EnvironmentVariables = {
   [prop: string]: string;
 };
@@ -53,6 +61,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
   const serviceOverview: ServiceOverview = {};
 
   // Arrays/Objects to hold filtered 2D service properties
+  const context: Context = 
   const environmentVariables: EnvironmentVariables = {};
 
   // if service exists
@@ -70,6 +79,11 @@ const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
         // ...then set the key in the serviceOverview's object to equal the service property and its value to be the service property value
         // ie {Build: ./result}
         serviceOverview[key] = service[key];
+        // if the service property is build and it's value is an object,
+        if (key === 'build' && typeof service[key] === 'object') {
+          // set the key in the serviceOverview object to 'build' and set the value to an empty object
+          serviceOverview[key] = '';
+        }
       }
     });
   }

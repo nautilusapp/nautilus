@@ -3,8 +3,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  grid-area: 1 / 1 / 11 / 2;
-  height: 100vh;
+  // grid-area: 1 / 1 / 11 / 2;
+  // height: 100vh;
+  height: 100%;
+  min-width: 220px;
+  max-width: 220px;
 
   .title {
     margin: 10%;
@@ -12,6 +15,10 @@
     h1 {
       color: $fourth-color;
     }
+  }
+
+  .leftNavContainerTitle {
+    color: $fourth-color;
   }
 
   .info-dropdown {
@@ -31,10 +38,27 @@
     background: none;
     color: $fourth-color;
     font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .select-file-button:hover {
+      cursor: hand;
+      cursor: pointer;
+      opacity: 0.9;
+    }
 
     button {
-      background-color: $secondary-color;
-      border-color: $fourth-color;
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: hand;
+      cursor: pointer;
+      opacity: 0.9;
+      outline: inherit;
     }
   }
 
