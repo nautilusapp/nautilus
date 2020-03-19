@@ -88,7 +88,7 @@ const DependsOnView: React.FC<Props> = ({
       }
     });
     const rootNumbers = Object.keys(rootNames).length;
-    let rootDisplacement = width / (rootNumbers + 1);
+    const rootDisplacement = width / (rootNumbers + 1);
     let rootLocation = rootDisplacement;
 
     Object.keys(rootNames).forEach(el => {
