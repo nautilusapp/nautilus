@@ -32,11 +32,6 @@ export type Options = {
   [key: string]: boolean;
 };
 
-//d3 force graph - Node ,Link, Graph
-// interface iNode extends SimulationNodeDatum {
-//   name: string;
-// }
-
 interface SNode extends SimulationNodeDatum {
   id: number;
   name: string;
