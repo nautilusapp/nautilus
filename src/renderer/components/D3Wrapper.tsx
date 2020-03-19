@@ -14,7 +14,13 @@ import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
 
 //type import
-import { FileUpload, Services, SetSelectedContainer, Options } from '../App.d';
+import {
+  FileUpload,
+  Services,
+  SetSelectedContainer,
+  Options,
+  ReadOnlyObj,
+} from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
