@@ -60,7 +60,8 @@ class App extends Component<{}, State> {
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView: UpdateView = view => {
+  updateView: UpdateView = e => {
+    const view = e.currentTarget.id as 'networks' | 'depends_on';
     if (view === 'depends_on') {
       this.setState(state => {
         return {
@@ -79,7 +80,8 @@ class App extends Component<{}, State> {
     }
   };
 
-  updateOption: UpdateOption = option => {
+  updateOption: UpdateOption = e => {
+    const option = e.currentTarget.id;
     this.setState(state => {
       return {
         ...state,

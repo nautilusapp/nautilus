@@ -80,10 +80,10 @@ export type FileUpload = {
 };
 
 export type UpdateOption = {
-  (option: string): void;
+  (e: React.MouseEvent<Element, MouseEvent>): void;
 };
 export type UpdateView = {
-  (view: 'networks' | 'depends_on'): void;
+  (e: React.MouseEvent<Element, MouseEvent>): void;
 };
 
 export type SetSelectedContainer = {
