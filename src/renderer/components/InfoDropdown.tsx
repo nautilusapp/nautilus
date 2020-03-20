@@ -2,7 +2,7 @@
  * ************************************
  *
  * @module  InfoDropdown.tsx
- * @author
+ * @author Aris Razuri, not danny
  * @date 3/11/20
  * @description Dropdown display to show categories of service info
  *
@@ -12,87 +12,92 @@ import React from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+// import YAML from 'yamljs';
 
 // import { Service } from '../App.d';
 
-type Props = {
+type ReactProps = {
   service?: any;
 };
 
-type FilteredServiceProps = {
+type DockerComposeCommands = {
   [prop: string]: string;
 };
 
-type FilteredServiceSection = {
+type ServiceOverview = {
   [prop: string]: any;
 };
 
-type EnvironmentVars = {
-  [prop: string]: string;
+// type Build = {
+//   [prop: string]: string | {};
+// };
+
+type TwoDimension = {
+  [prop: string]: any;
 };
 
-const InfoDropdown: React.FC<Props> = ({ service }) => {
-  const overviewProps: FilteredServiceProps = {
+const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
+  // Create an object to house text intros for each docker-compose property
+  const dockerComposeCommands: DockerComposeCommands = {
+    build: 'Build: ',
+    context: 'Context: ',
+    dockerfile: 'Dockerfile: ',
+    args: 'Args: ',
+    cache_from: 'Cache_from: ',
+    labels: 'Labels: ',
+    shm_size: 'Shm_size: ',
+    target: 'Target: ',
     image: 'Image: ',
-    container_name: 'Container Name: ',
+    command: 'Command: ',
     environment: 'Environment: ',
     env_file: 'Env_file: ',
-    depends_on: 'Depends On: ',
-    working_dir: 'Working Directory: ',
-  };
-  const storageProps: FilteredServiceProps = {};
-  const networkProps: FilteredServiceProps = {
-    networks: 'Networks: ',
     ports: 'Ports: ',
   };
-  const securityProps: FilteredServiceProps = {
-    security_opt: 'Security Options: ',
-  };
-  const miscProps: FilteredServiceProps = {
-    stop_grace_Period: 'Stop Grace Period: ',
-    stop_signal: 'Stop Signal: ',
-    restart: 'Restart: ',
-    pid: 'Pid: ',
-  };
 
-  // Objects to hold filtered 1D service properties
-  const serviceOverview: FilteredServiceSection = {};
-  const serviceStorage: FilteredServiceSection = {};
-  const serviceNetwork: FilteredServiceSection = {};
-  const serviceSecurity: FilteredServiceSection = {};
-  const serviceMisc: FilteredServiceSection = {};
+  // Objects to hold filtered 1D service Commands
+  const serviceOverview: ServiceOverview = {};
 
-  // Arrays/Objects to hold filtered 2D service properties
-  const security_opt: string[] = [];
-  const environmentVars: EnvironmentVars = {};
+  // Arrays/Objects to hold filtered 2D service Commands
+  const environmentVariables: TwoDimension = {};
+  const env_file: string[] = [];
 
+  // if service exists
   if (service) {
-    Object.keys(service).forEach((key: string) => {
-      if (overviewProps[key]) {
-        if (key === 'environment') {
-          environmentVars[key] = key;
+    // console.log(YAML.stringify(service, 4));
+    // loop through the Commands in each service
+    Object.keys(service).forEach(command => {
+      // and if the service command can be found in the list of docker-compose Commands...
+      if (dockerComposeCommands[command]) {
+        // ...then set the command in the serviceOverview's object to equal the service property and its value to be the service property value
+        // ie {Build: ./result}
+        serviceOverview[command] = '';
+        // ASIDE: if any of the below keys equal the specified strings,
+        if (command === 'environment') {
+          // loop through the environment variable's values (array)
+          service[command].forEach((value: string) => {
+            const valueArray = value.split('=');
+            environmentVariables[valueArray[0]] = valueArray[1];
+          });
+        } else if (command === 'env_file') {
+          if (typeof service[command] === 'string') {
+            serviceOverview[command] = service[command];
+          } else {
+            for (let i = 0; i < service[command].length; i += 1) {
+              env_file.push(service[command][i]);
+            }
+          }
         }
-        serviceOverview[key] = service[key];
-      }
-      if (storageProps[key]) {
-        serviceStorage[key] = service[key];
-      }
-      if (networkProps[key]) {
-        serviceNetwork[key] = service[key];
-      }
-      if (securityProps[key]) {
-        if (key === 'security_opt') security_opt.push(service[key]);
-        serviceSecurity[key] = service[key];
-      }
-      if (miscProps[key]) {
-        serviceMisc[key] = service[key];
+        // if the service property is build and it's value is an object,
+        else if (command === 'build' && typeof service[command] === 'object') {
+          // set the command in the serviceOverview object to 'build' and set the value to an empty object
+        } else serviceOverview[command] = service[command];
       }
     });
   }
 
   return (
     <div className="info-dropdown">
-      <Accordion>
+      <Accordion defaultActiveKey="0">
         {/* OVERVIEW */}
         <Card>
           <Card.Header>
@@ -102,79 +107,67 @@ const InfoDropdown: React.FC<Props> = ({ service }) => {
           </Card.Header>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
-              {Object.keys(serviceOverview).length === 0
-                ? 'There are no overview details in your Docker-Compose file'
-                : Object.keys(serviceOverview).map(
-                    el => `${overviewProps[el]}${serviceOverview[el]}`,
-                  )}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-        {/* STORAGE */}
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Card.Header} eventKey="1">
-              Storage <FaAngleDown />
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="1">
-            <Card.Body>
-              {Object.keys(serviceStorage).length === 0
-                ? 'There are no storage details in your Docker-Compose file'
-                : Object.keys(serviceStorage).map(
-                    el => `${storageProps[el]}${serviceStorage[el]}`,
-                  )}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-        {/* NETWORK */}
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Card.Header} eventKey="2">
-              Network <FaAngleDown />
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="2">
-            <Card.Body>
-              {Object.keys(serviceNetwork).length === 0
-                ? 'There are no network details in your Docker-Compose file'
-                : Object.keys(serviceNetwork).map(
-                    el => `${networkProps[el]}${serviceNetwork[el]}`,
-                  )}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-        {/* SECURITY */}
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Card.Header} eventKey="3">
-              Security <FaAngleDown />
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="3">
-            <Card.Body>
-              {Object.keys(serviceSecurity).length === 0
-                ? 'There are no storage details in your Docker-Compose file'
-                : Object.keys(serviceSecurity).map(
-                    el => `${securityProps[el]}${serviceSecurity[el]}`,
-                  )}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-        {/* MISC */}
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Card.Header} eventKey="4">
-              Miscellaneous <FaAngleDown />
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="4">
-            <Card.Body>
-              {Object.keys(serviceMisc).length === 0
-                ? 'There are no miscellaneous details in your Docker-Compose file'
-                : Object.keys(serviceMisc).map(
-                    el => `${miscProps[el]}${serviceMisc[el]}`,
-                  )}
+              <div className="overflow-container">
+                <div className="overview-display">
+                  {Object.keys(serviceOverview).length === 0
+                    ? 'There are no overview details in your Docker-Compose file'
+                    : Object.keys(serviceOverview).map((command, i) => {
+                        let commandJSX = (
+                          <span className="command">
+                            {dockerComposeCommands[command]}
+                          </span>
+                        );
+                        let valueJSX: JSX.Element;
+                        if (
+                          command === 'environment' &&
+                          !serviceOverview[command].length
+                        ) {
+                          const environment: JSX.Element[] = [];
+                          Object.keys(environmentVariables).forEach(key => {
+                            environment.push(
+                              <>
+                                <li className="enviroment-variables" key={key}>
+                                  {key}: {environmentVariables[key]}
+                                </li>
+                              </>,
+                            );
+                          });
+                          valueJSX = (
+                            <span className="command-values">
+                              <ul>{environment}</ul>
+                            </span>
+                          );
+                        } else if (command === 'env_file' && env_file.length) {
+                          let envFileArray: JSX.Element[] = [];
+                          env_file.forEach(el => {
+                            envFileArray.push(
+                              <li className="env-file-values" key={el}>
+                                {el}
+                              </li>,
+                            );
+                          });
+                          valueJSX = (
+                            <span className="command-values">
+                              <ul>{envFileArray}</ul>
+                            </span>
+                          );
+                        } else {
+                          valueJSX = (
+                            <span className="command-values">
+                              {serviceOverview[command]}
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <div key={`command${i}`}>
+                            {commandJSX}
+                            {valueJSX}
+                          </div>
+                        );
+                      })}
+                </div>
+              </div>
             </Card.Body>
           </Accordion.Collapse>
         </Card>

@@ -17,7 +17,7 @@ import Title from './Title';
 import { FileUpload, Service } from '../App.d';
 
 type Props = {
-  service?: Service;
+  service: Service;
   selectedContainer: string;
   fileUpload: FileUpload;
   fileUploaded: boolean;

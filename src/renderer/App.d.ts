@@ -51,19 +51,20 @@ type SGraph = {
 
 export type Service = {
   build?: string;
+  context?: string;
+  dockerfile?: string;
+  args?: string[];
+  cache_from?: string[];
+  labels?: string[];
+  shm_size?: string;
+  target?: string;
+  image?: string;
   command?: string;
   environment?: ReadOnlyObj;
-  image?: string;
-  depends_on: string[];
+  envfile?: string[];
   ports: string[];
   volumes: string[];
-  working_dir?: string;
-  security_opt?: string[];
-  stop_grace_Period?: string;
-  stop_signal?: string;
-  tmpfs?: string[];
-  restart?: string;
-  pid?: string;
+  depends_on: string[];
 };
 
 export type Services = {

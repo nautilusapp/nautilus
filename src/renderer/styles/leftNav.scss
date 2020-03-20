@@ -4,11 +4,13 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  max-height: 100vh;
   min-width: 220px;
   max-width: 220px;
 
   .title {
     margin: 10%;
+
     h1 {
       color: $fourth-color;
     }
@@ -18,9 +20,33 @@
     color: $fourth-color;
   }
 
+  // .service-info-display {}
+
   .info-dropdown {
     padding: 10%;
     background: none;
+
+    .card-body {
+      font-size: .80em;
+      max-height: 30%;
+      overflow: auto;
+
+      .overflow-container {
+
+        .overview-display {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .command {
+        color: $primary-color;
+      }
+
+      ul {
+        padding-inline-start: 1.30em;
+      }
+    }
   }
 
   .card-header {
@@ -39,11 +65,13 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+
     .select-file-button:hover {
       cursor: hand;
       cursor: pointer;
       opacity: 0.9;
     }
+
     button {
       background: none;
       color: inherit;
@@ -55,5 +83,10 @@
       opacity: 0.9;
       outline: inherit;
     }
+  }
+
+  .leftNavContainerTitle {
+    text-align: center;
+    color: $fifth-color;
   }
 }
