@@ -12,6 +12,7 @@ import React from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+// import YAML from 'yamljs';
 
 // import { Service } from '../App.d';
 
@@ -19,7 +20,7 @@ type ReactProps = {
   service?: any;
 };
 
-type DockerComposeProperties = {
+type DockerComposeCommands = {
   [prop: string]: string;
 };
 
@@ -31,17 +32,13 @@ type ServiceOverview = {
 //   [prop: string]: string | {};
 // };
 
-type context = {
-  [prop: string]: string;
-}
-
-type EnvironmentVariables = {
-  [prop: string]: string;
+type TwoDimension = {
+  [prop: string]: any;
 };
 
 const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
   // Create an object to house text intros for each docker-compose property
-  const dockerComposeProperties: DockerComposeProperties = {
+  const dockerComposeCommands: DockerComposeCommands = {
     build: 'Build: ',
     context: 'Context: ',
     dockerfile: 'Dockerfile: ',
@@ -57,40 +54,50 @@ const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
     ports: 'Ports: ',
   };
 
-  // Objects to hold filtered 1D service properties
+  // Objects to hold filtered 1D service Commands
   const serviceOverview: ServiceOverview = {};
 
-  // Arrays/Objects to hold filtered 2D service properties
-  const context: Context = 
-  const environmentVariables: EnvironmentVariables = {};
+  // Arrays/Objects to hold filtered 2D service Commands
+  const environmentVariables: TwoDimension = {};
+  const env_file: string[] = [];
 
   // if service exists
   if (service) {
-    // loop through the properties in each service
-    Object.keys(service).forEach((key: string) => {
-      // and if the service property can be found in the list of docker-compose properties...
-      if (dockerComposeProperties[key]) {
-        // ASIDE: if any of the below keys equal the specified strings,
-        if (key === 'environment') {
-          // ASIDE: set the key at the 2d arrays/objects between lines 55 and x, to be the service's property and set it equal to service's property
-          environmentVariables[key] = key;
-          console.log(environmentVariables);
-        }
-        // ...then set the key in the serviceOverview's object to equal the service property and its value to be the service property value
+    // console.log(YAML.stringify(service, 4));
+    // loop through the Commands in each service
+    Object.keys(service).forEach(command => {
+      // and if the service command can be found in the list of docker-compose Commands...
+      if (dockerComposeCommands[command]) {
+        // ...then set the command in the serviceOverview's object to equal the service property and its value to be the service property value
         // ie {Build: ./result}
-        serviceOverview[key] = service[key];
-        // if the service property is build and it's value is an object,
-        if (key === 'build' && typeof service[key] === 'object') {
-          // set the key in the serviceOverview object to 'build' and set the value to an empty object
-          serviceOverview[key] = '';
+        serviceOverview[command] = '';
+        // ASIDE: if any of the below keys equal the specified strings,
+        if (command === 'environment') {
+          // loop through the environment variable's values (array)
+          service[command].forEach((value: string) => {
+            const valueArray = value.split('=');
+            environmentVariables[valueArray[0]] = valueArray[1];
+          });
+        } else if (command === 'env_file') {
+          if (typeof service[command] === 'string') {
+            serviceOverview[command] = service[command];
+          } else {
+            for (let i = 0; i < service[command].length; i += 1) {
+              env_file.push(service[command][i]);
+            }
+          }
         }
+        // if the service property is build and it's value is an object,
+        else if (command === 'build' && typeof service[command] === 'object') {
+          // set the command in the serviceOverview object to 'build' and set the value to an empty object
+        } else serviceOverview[command] = service[command];
       }
     });
   }
 
   return (
     <div className="info-dropdown">
-      <Accordion>
+      <Accordion defaultActiveKey="0">
         {/* OVERVIEW */}
         <Card>
           <Card.Header>
@@ -100,12 +107,67 @@ const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
           </Card.Header>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
-              {Object.keys(serviceOverview).length === 0
-                ? 'There are no overview details in your Docker-Compose file'
-                : Object.keys(serviceOverview).map(
-                    el =>
-                      `${dockerComposeProperties[el]}${serviceOverview[el]}`,
-                  )}
+              <div className="overflow-container">
+                <div className="overview-display">
+                  {Object.keys(serviceOverview).length === 0
+                    ? 'There are no overview details in your Docker-Compose file'
+                    : Object.keys(serviceOverview).map((command, i) => {
+                        let commandJSX = (
+                          <span className="command">
+                            {dockerComposeCommands[command]}
+                          </span>
+                        );
+                        let valueJSX: JSX.Element;
+                        if (
+                          command === 'environment' &&
+                          !serviceOverview[command].length
+                        ) {
+                          const environment: JSX.Element[] = [];
+                          Object.keys(environmentVariables).forEach(key => {
+                            environment.push(
+                              <>
+                                <li className="enviroment-variables" key={key}>
+                                  {key}: {environmentVariables[key]}
+                                </li>
+                              </>,
+                            );
+                          });
+                          valueJSX = (
+                            <span className="command-values">
+                              <ul>{environment}</ul>
+                            </span>
+                          );
+                        } else if (command === 'env_file' && env_file.length) {
+                          let envFileArray: JSX.Element[] = [];
+                          env_file.forEach(el => {
+                            envFileArray.push(
+                              <li className="env-file-values" key={el}>
+                                {el}
+                              </li>,
+                            );
+                          });
+                          valueJSX = (
+                            <span className="command-values">
+                              <ul>{envFileArray}</ul>
+                            </span>
+                          );
+                        } else {
+                          valueJSX = (
+                            <span className="command-values">
+                              {serviceOverview[command]}
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <div key={`command${i}`}>
+                            {commandJSX}
+                            {valueJSX}
+                          </div>
+                        );
+                      })}
+                </div>
+              </div>
             </Card.Body>
           </Accordion.Collapse>
         </Card>

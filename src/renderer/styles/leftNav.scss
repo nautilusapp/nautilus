@@ -6,6 +6,7 @@
   // grid-area: 1 / 1 / 11 / 2;
   // height: 100vh;
   height: 100%;
+  max-height: 100vh;
   min-width: 220px;
   max-width: 220px;
 
@@ -21,9 +22,33 @@
     color: $fourth-color;
   }
 
+  // .service-info-display {}
+
   .info-dropdown {
     padding: 10%;
     background: none;
+
+    .card-body {
+      font-size: .80em;
+      max-height: 30%;
+      overflow: auto;
+
+      .overflow-container {
+
+        .overview-display {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .command {
+        color: $primary-color;
+      }
+
+      ul {
+        padding-inline-start: 1.30em;
+      }
+    }
   }
 
   .card-header {
