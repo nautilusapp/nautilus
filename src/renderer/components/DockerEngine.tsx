@@ -17,15 +17,15 @@ type Props = {
 };
 
 const DockerEngine: React.FC<Props> = ({ volumes }) => {
-  const volumeData = ['export-volume:/app/data', './result:/app'];
-  let volumeBoxes: ReactElement[] = [];
+  let volumeNames: ReactElement[] = [];
 
-  for (let x = 0; x < volumeData.length; x++) {
-    volumeBoxes.push(<Volume key={'vol' + x} volume={volumeData[x]} />);
-  }
+  Object.keys(volumes).map((el, i) => {
+    volumeNames.push(<Volume key={'vol' + i} volume={el} />);
+  });
+
   return (
     <div className="docker-engine">
-      <div>{volumeBoxes}</div>
+      <div>{volumeNames}</div>
     </div>
   );
 };

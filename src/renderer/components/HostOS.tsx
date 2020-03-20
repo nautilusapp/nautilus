@@ -16,18 +16,15 @@ type Props = {
 };
 
 const HostOS: React.FC<Props> = ({ bindMounts }) => {
-  const bindMountData = [
-    './docker/postgres:/docker-entrypoint-initdb.d',
-    './jacocoReport/dpc-attribution:/jacoco-report',
-  ];
-  const bindMountBoxes: ReactElement[] = [];
-  //generate bindmount boxes using volume component
-  for (let i = 0; i < bindMountData.length; i++) {
-    bindMountBoxes.push(<Volume key={'bd' + i} volume={bindMountData[i]} />);
-  }
+  const bindMountNames: ReactElement[] = [];
+  //generate bindmount names using volume component
+  bindMounts.map((el, i) => {
+    bindMountNames.push(<Volume key={'bd' + i} volume={el} />);
+  });
+
   return (
     <div className="host-os">
-      <div>{bindMountBoxes}</div>
+      <div>{bindMountNames}</div>
     </div>
   );
 };

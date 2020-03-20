@@ -11,7 +11,6 @@ import React from 'react';
 import DockerEngine from './DockerEngine';
 import { ReadOnlyObj } from '../App.d';
 import HostOS from './HostOS';
-// import HostOS from './HostOS';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;

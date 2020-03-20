@@ -17,6 +17,7 @@ type Props = {
 const Volume: React.FC<Props> = props => {
   return (
     <div className="volume">
+      <svg className="volumeBox"></svg>
       <div>{props.volume}</div>
     </div>
   );
