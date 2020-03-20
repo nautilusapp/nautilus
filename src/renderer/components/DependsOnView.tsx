@@ -9,7 +9,6 @@
  * ************************************
  */
 import React, { useEffect } from 'react';
-//import Services from './Service';
 import * as d3 from 'd3';
 const d3dag = require('d3-dag');
 import { getStatic } from '../scripts/static';
@@ -22,7 +21,6 @@ import {
   Options,
   Roots,
 } from '../App.d';
-// import Ports from './Ports';
 
 type Props = {
   services: Services;
@@ -168,7 +166,9 @@ const DependsOnView: React.FC<Props> = ({
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
-    const height = parseInt(container.style('height'), 10);
+    // const height = parseInt(container.style('height'), 10);
+    const topMargin = 20;
+    const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
 
     //create roots object that starts with all of the keys of services and values of true (just a placeholder)
@@ -192,17 +192,23 @@ const DependsOnView: React.FC<Props> = ({
 
     //set location when ticked
     const ticked = () => {
-      const w = parseInt(container.style('width'), 10);
-      const h = parseInt(container.style('height'), 10);
+      const w = parseInt(container.style('width'));
+      const h = parseInt(container.style('height'));
       // Enforces borders
       textsAndNodes
-        .attr('cx', (d: any) => {
-          return (d.x = Math.max(0, Math.min(w - radius, d.x)));
+        .attr('cx', (d: SNode) => {
+          return (d.x = Math.max(
+            sideMargin,
+            Math.min(w - sideMargin - radius, d.x as number),
+          ));
         })
-        .attr('cy', (d: any) => {
-          return (d.y = Math.max(15, Math.min(h - radius, d.y)));
+        .attr('cy', (d: SNode) => {
+          return (d.y = Math.max(
+            15 + topMargin,
+            Math.min(h - topMargin - radius, d.y as number),
+          ));
         })
-        .attr('transform', (d: any) => {
+        .attr('transform', (d: SNode) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
@@ -212,7 +218,7 @@ const DependsOnView: React.FC<Props> = ({
         .attr('x2', (d: any) => d.target.x + 30)
         .attr('y2', (d: any) => d.target.y + 30);
 
-      simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
+      // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     };
 
     // move force graph with resizing window
@@ -229,7 +235,7 @@ const DependsOnView: React.FC<Props> = ({
           .id((node: SNode) => node.name),
       )
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
+      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
     forceGraph
@@ -260,22 +266,20 @@ const DependsOnView: React.FC<Props> = ({
       .attr('class', 'link')
       .attr('marker-end', 'url(#end)');
 
-    const dragstarted = (d: any) => {
+    const dragstarted = (d: SNode) => {
       // simulation.alphaTarget(0.3).restart();
-      // d.fx = d3.event.x;
-      // d.fy = d3.event.y;
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d3.event.x;
-      d.fy = d3.event.y;
+      d3.event.y;
     };
 
-    const dragged = (d: any) => {
+    const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
       d.fx = d3.event.x;
       d.fy = d3.event.y;
     };
 
-    const dragended = (d: any) => {
+    const dragended = (d: SNode) => {
       // alpha min is 0, head there
       // simulation.alphaTarget(0);
       // d.fx = null;
@@ -286,7 +290,7 @@ const DependsOnView: React.FC<Props> = ({
     };
 
     //sets 'clicked' nodes back to unfixed position
-    const dblClick = (d: any) => {
+    const dblClick = (d: SNode) => {
       simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
@@ -306,18 +310,26 @@ const DependsOnView: React.FC<Props> = ({
       .data<SNode>(serviceGraph.nodes)
       .enter()
       .append('g')
-      .on('click', (node: any) => {
+      .on('click', (node: SNode) => {
         setSelectedContainer(node.name);
       })
       .on('dblclick', dblClick)
       .call(drag)
-      .attr('fx', (d: any) => {
+      .attr('fx', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
+<<<<<<< HEAD
         return (d.fx =
           (width / (servicePosition[d.name].rowLength + 1)) *
           servicePosition[d.name].column);
+=======
+        if (roots[d.name]) {
+          return (d.fx = roots[d.name] as number);
+        } else {
+          return (d.fx = null);
+        }
+>>>>>>> cf82e2b58b041446b031890b98c71ee17385ee61
       })
-      .attr('fy', (d: any) => {
+      .attr('fy', (d: SNode) => {
         if (roots[d.name]) {
           return (d.fy = 30); // fixed y position
         } else {
@@ -326,12 +338,12 @@ const DependsOnView: React.FC<Props> = ({
       });
 
     // create texts
-    textsAndNodes.append('text').text((d: any) => d.name);
+    textsAndNodes.append('text').text((d: SNode) => d.name);
 
     //create container images
     textsAndNodes
       .append('svg:image')
-      .attr('xlink:href', (d: any) => {
+      .attr('xlink:href', (d: SNode) => {
         return getStatic('container.svg');
       })
       .attr('height', 60)
