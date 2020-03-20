@@ -11,6 +11,7 @@
 import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
+const d3dag = require('d3-dag');
 import { getStatic } from '../scripts/static';
 import {
   Services,
@@ -51,6 +52,7 @@ const DependsOnView: React.FC<Props> = ({
     if (services[sName].hasOwnProperty('depends_on')) {
       services[sName].depends_on.forEach(el => {
         links.push({ source: el, target: sName });
+        // linkageData.push({ parent: el, name: sName });
       });
     }
     return {
@@ -60,7 +62,97 @@ const DependsOnView: React.FC<Props> = ({
       volumes: volumes,
     };
   });
+  const roots = Object.keys(services).reduce((acc: Roots, el) => {
+    acc[el] = true;
+    return acc;
+  }, {});
+  //iterate through links and find if the roots object contains any of the link targets
+  links.forEach(el => {
+    if (roots[el.target]) {
+      //filter the roots
+      delete roots[el.target];
+    }
+  });
 
+  const dagData = nodes.reduce((acc: any, el: SNode) => {
+    acc[el.name] = { id: el.name };
+    return acc;
+  }, {});
+  links.forEach((el: Link) => {
+    if (!dagData[el.target].parentIds) {
+      dagData[el.target].parentIds = [];
+    }
+    dagData[el.target].parentIds.push(el.source);
+  });
+  const dagArray = Object.keys(dagData).reduce((acc: any, el: string) => {
+    acc.push(dagData[el]);
+    return acc;
+  }, []);
+  const tree = d3dag.dagStratify()(dagArray);
+  const treeMap: any = {};
+  const servicePosition = Object.keys(services).reduce((acc: any, el) => {
+    acc[el] = {};
+    return acc;
+  }, {});
+
+  const createTreeMapSingleRoot = (node: any, height: number = 0, row = []) => {
+    if (!treeMap[height]) treeMap[height] = [];
+    treeMap[height].push(node);
+    if (node.children) {
+      node.children.forEach((el: any) => {
+        createTreeMapSingleRoot(el, height + 1);
+      });
+    }
+  };
+
+  const createTreeMap = (node: any, height: number = 0) => {
+    if (!treeMap[height]) treeMap[height] = [];
+    if (node.children) {
+      node.children.forEach((el: any) => {
+        treeMap[height].push(el);
+        createTreeMap(el, height + 1);
+      });
+    }
+  };
+
+  Object.keys(roots).length === 1
+    ? createTreeMapSingleRoot(tree)
+    : createTreeMap(tree);
+
+  console.log('preduplicateremoval', treeMap);
+
+  //remove duplicates
+  Object.keys(treeMap).forEach((row: any) => {
+    const services: any = {};
+    treeMap[row].forEach((node: any, i: number) => {
+      if (services[node.id]) {
+        treeMap[row].splice(i, 1);
+      } else {
+        services[node.id] = true;
+      }
+    });
+  });
+  const treeDepth = Object.keys(treeMap).length;
+
+  const storePositionLocation = (service: any) => {
+    Object.keys(treeMap).forEach((row: any) => {
+      treeMap[row].forEach((node: any, i: number) => {
+        if (node.id === service) {
+          servicePosition[service] = {
+            row: Number(row),
+            column: i + 1,
+            rowLength: treeMap[row].length,
+          };
+        }
+      });
+    });
+  };
+
+  Object.keys(servicePosition).forEach((service: any) => {
+    storePositionLocation(service);
+  });
+
+  console.log('serviceposition', servicePosition);
   const serviceGraph: SGraph = {
     nodes,
     links,
@@ -81,17 +173,6 @@ const DependsOnView: React.FC<Props> = ({
 
     //create roots object that starts with all of the keys of services and values of true (just a placeholder)
 
-    const roots = Object.keys(services).reduce((acc: Roots, el) => {
-      acc[el] = true;
-      return acc;
-    }, {});
-    //iterate through links and find if the roots object contains any of the link targets
-    links.forEach(el => {
-      if (roots[el.target]) {
-        //filter the roots
-        delete roots[el.target];
-      }
-    });
     //evaluate number of roots and determine the width of the d3 simulation to
     //determine how many segments it can be split into with the roots in the middle
     const rootNumbers = Object.keys(roots).length;
@@ -232,17 +313,15 @@ const DependsOnView: React.FC<Props> = ({
       .call(drag)
       .attr('fx', (d: any) => {
         //assign the initial x location to the relative displacement from the left
-        if (roots[d.name]) {
-          return (d.fx = roots[d.name]);
-        } else {
-          return (d.fx = null);
-        }
+        return (d.fx =
+          (width / (servicePosition[d.name].rowLength + 1)) *
+          servicePosition[d.name].column);
       })
       .attr('fy', (d: any) => {
         if (roots[d.name]) {
           return (d.fy = 30); // fixed y position
         } else {
-          return (d.fy = null);
+          return (d.fy = (height / treeDepth) * servicePosition[d.name].row);
         }
       });
 
