@@ -10,12 +10,15 @@
  */
 import React from 'react';
 
-type Props = {};
+type Props = {
+  volume: string;
+};
 
 const Volume: React.FC<Props> = props => {
   return (
     <div className="volume">
-      <div>Place Volume Here:</div>
+      <svg className="volumeBox"></svg>
+      <div>{props.volume}</div>
     </div>
   );
 };
