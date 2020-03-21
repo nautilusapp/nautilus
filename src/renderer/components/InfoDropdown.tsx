@@ -18,6 +18,7 @@ import Card from 'react-bootstrap/Card';
 
 type ReactProps = {
   service?: any;
+  selectedContainer: string;
 };
 
 type DockerComposeCommands = {
@@ -36,7 +37,7 @@ type TwoDimension = {
   [prop: string]: any;
 };
 
-const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
+const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   // Create an object to house text intros for each docker-compose property
   const dockerComposeCommands: DockerComposeCommands = {
     build: 'Build: ',
@@ -97,77 +98,76 @@ const InfoDropdown: React.FC<ReactProps> = ({ service }) => {
 
   return (
     <div className="info-dropdown">
+      <h3>
+        {selectedContainer !== ''
+          ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
+          : selectedContainer}{' '}
+      </h3>
       <Accordion defaultActiveKey="0">
         {/* OVERVIEW */}
         <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Card.Header} eventKey="0">
-              Overview <FaAngleDown />
-            </Accordion.Toggle>
-          </Card.Header>
+          <Accordion.Toggle as={Card.Header} eventKey="0">
+            Overview <FaAngleDown />
+          </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
-              <div className="overflow-container">
-                <div className="overview-display">
-                  {Object.keys(serviceOverview).length === 0
-                    ? 'There are no overview details in your Docker-Compose file'
-                    : Object.keys(serviceOverview).map((command, i) => {
-                        let commandJSX = (
-                          <span className="command">
-                            {dockerComposeCommands[command]}
-                          </span>
+              {Object.keys(serviceOverview).length === 0
+                ? 'There are no overview details in your Docker-Compose file'
+                : Object.keys(serviceOverview).map((command, i) => {
+                    let commandJSX = (
+                      <span className="command">
+                        {dockerComposeCommands[command]}
+                      </span>
+                    );
+                    let valueJSX: JSX.Element;
+                    if (
+                      command === 'environment' &&
+                      !serviceOverview[command].length
+                    ) {
+                      const environment: JSX.Element[] = [];
+                      Object.keys(environmentVariables).forEach(key => {
+                        environment.push(
+                          <>
+                            <li className="enviroment-variables" key={key}>
+                              {key}: {environmentVariables[key]}
+                            </li>
+                          </>,
                         );
-                        let valueJSX: JSX.Element;
-                        if (
-                          command === 'environment' &&
-                          !serviceOverview[command].length
-                        ) {
-                          const environment: JSX.Element[] = [];
-                          Object.keys(environmentVariables).forEach(key => {
-                            environment.push(
-                              <>
-                                <li className="enviroment-variables" key={key}>
-                                  {key}: {environmentVariables[key]}
-                                </li>
-                              </>,
-                            );
-                          });
-                          valueJSX = (
-                            <span className="command-values">
-                              <ul>{environment}</ul>
-                            </span>
-                          );
-                        } else if (command === 'env_file' && env_file.length) {
-                          let envFileArray: JSX.Element[] = [];
-                          env_file.forEach(el => {
-                            envFileArray.push(
-                              <li className="env-file-values" key={el}>
-                                {el}
-                              </li>,
-                            );
-                          });
-                          valueJSX = (
-                            <span className="command-values">
-                              <ul>{envFileArray}</ul>
-                            </span>
-                          );
-                        } else {
-                          valueJSX = (
-                            <span className="command-values">
-                              {serviceOverview[command]}
-                            </span>
-                          );
-                        }
+                      });
+                      valueJSX = (
+                        <span className="command-values">
+                          <ul>{environment}</ul>
+                        </span>
+                      );
+                    } else if (command === 'env_file' && env_file.length) {
+                      let envFileArray: JSX.Element[] = [];
+                      env_file.forEach(el => {
+                        envFileArray.push(
+                          <li className="env-file-values" key={el}>
+                            {el}
+                          </li>,
+                        );
+                      });
+                      valueJSX = (
+                        <span className="command-values">
+                          <ul>{envFileArray}</ul>
+                        </span>
+                      );
+                    } else {
+                      valueJSX = (
+                        <span className="command-values">
+                          {serviceOverview[command]}
+                        </span>
+                      );
+                    }
 
-                        return (
-                          <div key={`command${i}`}>
-                            {commandJSX}
-                            {valueJSX}
-                          </div>
-                        );
-                      })}
-                </div>
-              </div>
+                    return (
+                      <div key={`command${i}`}>
+                        {commandJSX}
+                        {valueJSX}
+                      </div>
+                    );
+                  })}
             </Card.Body>
           </Accordion.Collapse>
         </Card>
