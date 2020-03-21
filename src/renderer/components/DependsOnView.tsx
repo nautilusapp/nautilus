@@ -161,14 +161,10 @@ const DependsOnView: React.FC<Props> = ({
     storePositionLocation(service);
   });
 
-  console.log(servicePosition);
-
   const serviceGraph: SGraph = {
     nodes,
     links,
   };
-
-  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
 
   /**
    *********************
@@ -195,12 +191,6 @@ const DependsOnView: React.FC<Props> = ({
       rootLocation += rootDisplacement;
     });
 
-    //initialize graph
-    const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
-
     //set location when ticked
     const ticked = () => {
       const w = parseInt(container.style('width'));
@@ -223,7 +213,7 @@ const DependsOnView: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-      link
+      linkLines
         .attr('x1', (d: any) => d.source.x + 30)
         .attr('y1', (d: any) => d.source.y + 30)
         .attr('x2', (d: any) => d.target.x + 30)
@@ -248,41 +238,6 @@ const DependsOnView: React.FC<Props> = ({
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
       // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
-
-    forceGraph
-      .append('svg:defs')
-      .selectAll('marker')
-      .data(['end']) // Different link/path types can be defined here
-      .enter()
-      .append('svg:marker') // This section adds in the arrows
-      .attr('id', String)
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
-
-    //create Links with arrowheads
-    const link = forceGraph
-      .append('g')
-      .selectAll('line')
-      .data(serviceGraph.links)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
-      .attr('class', 'link')
-      .attr('marker-end', 'url(#end)');
-
-    const dragstarted = (d: SNode) => {
-      // simulation.alphaTarget(0.3).restart();
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d3.event.x;
-      d3.event.y;
-    };
 
     const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
@@ -309,12 +264,53 @@ const DependsOnView: React.FC<Props> = ({
 
     let drag = d3
       .drag<SVGGElement, SNode>()
-      .on('start', dragstarted)
+      .on('start', function dragstarted(d: SNode) {
+        d3.select(this).raise();
+        // simulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d3.event.x;
+        d3.event.y;
+      })
       .on('drag', dragged)
       .on('end', dragended);
 
+    //initialize graph
+    const forceGraph = d3
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('class', 'graph');
+
+    forceGraph
+      .append('svg:defs')
+      .attr('class', 'arrowsGroup')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22.5)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    const linkLines = forceGraph
+      .append('g')
+      .attr('class', 'linksGroup')
+      .selectAll('line')
+      .data(serviceGraph.links)
+      .enter()
+      .append('line')
+      .attr('stroke-width', 3)
+      .attr('stroke', 'pink')
+      .attr('class', 'link')
+      .attr('marker-end', 'url(#end)');
+
     //create textAndNodes Group
-    textsAndNodes = forceGraph
+    const textsAndNodes = forceGraph
       .append('g')
       .attr('class', 'nodes')
       .selectAll('g')
@@ -415,6 +411,21 @@ const DependsOnView: React.FC<Props> = ({
     };
     // only fire when options.ports changes
   }, [options.ports]);
+
+  /**
+   *********************
+   * DEPENDS ON OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    if (options.dependsOn) {
+      d3.select('.arrowsGroup').classed('hide', false);
+      d3.select('.linksGroup').classed('hide', false);
+    } else {
+      d3.select('.arrowsGroup').classed('hide', true);
+      d3.select('.linksGroup').classed('hide', true);
+    }
+  }, [options.dependsOn]);
 
   return (
     <>
