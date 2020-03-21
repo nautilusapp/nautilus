@@ -20,7 +20,7 @@ const DockerEngine: React.FC<Props> = ({ volumes }) => {
   let volumeNames: ReactElement[] = [];
 
   Object.keys(volumes).map((el, i) => {
-    volumeNames.push(<Volume key={'vol' + i} volume={el} index={i} />);
+    volumeNames.push(<Volume key={'vol' + i} volume={el} />);
   });
 
   return <div className="docker-engine">{volumeNames}</div>;

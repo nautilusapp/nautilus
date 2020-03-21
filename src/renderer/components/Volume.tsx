@@ -13,7 +13,6 @@ import { colorSchemeHash } from '../common';
 
 type Props = {
   volume: string;
-  index: number;
 };
 
 const Volume: React.FC<Props> = props => {

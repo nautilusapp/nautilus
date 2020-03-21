@@ -19,7 +19,7 @@ const HostOS: React.FC<Props> = ({ bindMounts }) => {
   const bindMountNames: ReactElement[] = [];
   //generate bindmount names using volume component
   bindMounts.map((el, i) => {
-    bindMountNames.push(<Volume key={'bd' + i} volume={el} index={i} />);
+    bindMountNames.push(<Volume key={'bd' + i} volume={el} />);
   });
 
   return <div className="host-os">{bindMountNames}</div>;
