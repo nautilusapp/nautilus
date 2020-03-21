@@ -32,11 +32,6 @@ export type Options = {
   [key: string]: boolean;
 };
 
-//d3 force graph - Node ,Link, Graph
-// interface iNode extends SimulationNodeDatum {
-//   name: string;
-// }
-
 interface SNode extends SimulationNodeDatum {
   id: number;
   name: string;
@@ -81,12 +76,16 @@ export type FileUpload = {
 };
 
 export type UpdateOption = {
-  (option: string): void;
+  (e: React.MouseEvent<Element, MouseEvent>): void;
 };
 export type UpdateView = {
-  (view: 'networks' | 'depends_on'): void;
+  (e: React.MouseEvent<Element, MouseEvent>): void;
 };
 
 export type SetSelectedContainer = {
   (containerName: string): void;
+};
+
+export type Roots = {
+  [service: string]: boolean | number;
 };

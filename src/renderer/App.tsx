@@ -52,15 +52,12 @@ class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = initialState;
-    this.fileUpload = this.fileUpload.bind(this);
-    this.updateOption = this.updateOption.bind(this);
-    this.updateView = this.updateView.bind(this);
-    this.setSelectedContainer = this.setSelectedContainer.bind(this);
   }
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView: UpdateView = view => {
+  updateView: UpdateView = e => {
+    const view = e.currentTarget.id as 'networks' | 'depends_on';
     if (view === 'depends_on') {
       this.setState(state => {
         return {
@@ -79,7 +76,8 @@ class App extends Component<{}, State> {
     }
   };
 
-  updateOption: UpdateOption = option => {
+  updateOption: UpdateOption = e => {
+    const option = e.currentTarget.id;
     this.setState(state => {
       return {
         ...state,
@@ -92,13 +90,7 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
     localStorage.setItem('state', JSON.stringify(yamlState));
-    this.setState(
-      Object.assign(
-        initialState,
-        { options: this.state.options, view: this.state.view },
-        yamlState,
-      ),
-    );
+    this.setState(Object.assign(initialState, yamlState));
   };
 
   fileUpload: FileUpload = (file: File) => {
@@ -149,6 +141,8 @@ class App extends Component<{}, State> {
             services={this.state.services}
             setSelectedContainer={this.setSelectedContainer}
             options={this.state.options}
+            volumes={this.state.volumes}
+            bindMounts={this.state.bindMounts}
           />
         </div>
       </div>

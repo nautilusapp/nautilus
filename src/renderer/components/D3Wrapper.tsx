@@ -14,7 +14,13 @@ import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
 
 //type import
-import { FileUpload, Services, SetSelectedContainer, Options } from '../App.d';
+import {
+  FileUpload,
+  Services,
+  SetSelectedContainer,
+  Options,
+  ReadOnlyObj,
+} from '../App.d';
 
 type Props = {
   fileUpload: FileUpload;
@@ -22,6 +28,8 @@ type Props = {
   fileUploaded: boolean;
   services: Services;
   options: Options;
+  volumes: Array<ReadOnlyObj>;
+  bindMounts: Array<string>;
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -30,11 +38,13 @@ const D3Wrapper: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
+  volumes,
+  bindMounts,
 }) => {
   return (
     <div className="d3-wrapper">
       {!fileUploaded ? (
-        <FileSelector fileUpload={fileUpload} locatedWithinVisualizer={true} />
+        <FileSelector fileUpload={fileUpload} />
       ) : (
         <>
           <ServicesWrapper
@@ -42,7 +52,7 @@ const D3Wrapper: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             options={options}
           />
-          <VolumesWrapper />
+          <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />
         </>
       )}
     </div>

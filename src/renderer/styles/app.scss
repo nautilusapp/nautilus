@@ -23,6 +23,7 @@ h2 {
 .app-class {
   background-color: $fourth-color;
   display: flex;
+  min-height: 650px;
   height: 100vh;
   width: 100vw;
   .main {

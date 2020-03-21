@@ -8,15 +8,23 @@
  *
  * ************************************
  */
-import React from 'react';
-// import Volume from './Volume';
+import React, { ReactElement } from 'react';
+import Volume from './Volume';
 
-type Props = {};
+type Props = {
+  bindMounts: Array<string>;
+};
 
-const HostOS: React.FC<Props> = props => {
+const HostOS: React.FC<Props> = ({ bindMounts }) => {
+  const bindMountNames: ReactElement[] = [];
+  //generate bindmount names using volume component
+  bindMounts.map((el, i) => {
+    bindMountNames.push(<Volume key={'bd' + i} volume={el} />);
+  });
+
   return (
     <div className="host-os">
-      <div></div>
+      <div>{bindMountNames}</div>
     </div>
   );
 };
