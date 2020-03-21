@@ -108,7 +108,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
       <h3>
         {selectedContainer !== ''
           ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
-          : selectedContainer}{' '}
+          : selectedContainer}
       </h3>
       <Accordion defaultActiveKey="0">
         {/* OVERVIEW */}

@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/oslabs-beta/nautilis#readme",
   "dependencies": {
-    "@types/yamljs": "^0.2.30",
     "bootstrap": "^4.4.1",
     "d3": "^5.15.0",
     "eslint": "^6.8.0",
@@ -34,8 +33,7 @@
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.13.0",
-    "react-icons": "^3.9.0",
-    "yamljs": "^0.3.0"
+    "react-icons": "^3.9.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.8.3",
@@ -71,5 +69,5 @@
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
-  }
+    }
 }
