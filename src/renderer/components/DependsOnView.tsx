@@ -439,6 +439,8 @@ const DependsOnView: React.FC<Props> = ({
         const node = this;
         // iterate through all volumes of node
         d.volumes.forEach((vString, i) => {
+          let onClick = false;
+          let onceClicked = false;
           // add svg volume
           const volume = d3
             .select<SVGElement, SNode>(node)
@@ -458,7 +460,18 @@ const DependsOnView: React.FC<Props> = ({
               return vText.style('visibility', 'visible');
             })
             .on('mouseout', () => {
-              return vText.style('visibility', 'hidden');
+              !onClick
+                ? vText.style('visibility', 'hidden')
+                : vText.style('visibility', 'visible');
+            })
+            .on('click', () => {
+              if (!onceClicked) {
+                onClick = true;
+                onceClicked = true;
+              } else {
+                onClick = false;
+                onceClicked = false;
+              }
             });
           // store d3 object in volumes array
           volumes.push(volume);
