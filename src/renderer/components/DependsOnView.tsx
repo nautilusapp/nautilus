@@ -11,6 +11,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 const d3dag = require('d3-dag');
+//import { colorSchemeHash } from '../common';
 import { getStatic } from '../scripts/static';
 import {
   Services,
@@ -50,7 +51,6 @@ const DependsOnView: React.FC<Props> = ({
     if (services[sName].hasOwnProperty('depends_on')) {
       services[sName].depends_on.forEach(el => {
         links.push({ source: el, target: sName });
-        // linkageData.push({ parent: el, name: sName });
       });
     }
     return {
@@ -61,22 +61,26 @@ const DependsOnView: React.FC<Props> = ({
     };
   });
 
+  //roots object creation
   const roots = Object.keys(services).reduce((acc: Roots, el) => {
     acc[el] = true;
     return acc;
   }, {});
   //iterate through links and find if the roots object contains any of the link targets
-  links.forEach(el => {
+  links.forEach((el: Link) => {
     if (roots[el.target]) {
       //filter the roots
       delete roots[el.target];
     }
   });
 
+  //create dagdata in a format to create a tree
+  //start by creating an object containing an id key with the service name
   const dagData = nodes.reduce((acc: any, el: SNode) => {
     acc[el.name] = { id: el.name };
     return acc;
   }, {});
+  // populate nodes with parentIds key as an array of nodes
   links.forEach((el: Link) => {
     if (!dagData[el.target].parentIds) {
       dagData[el.target].parentIds = [];
@@ -87,13 +91,20 @@ const DependsOnView: React.FC<Props> = ({
     acc.push(dagData[el]);
     return acc;
   }, []);
+
+  //create tree from dagdata
   const tree = d3dag.dagStratify()(dagArray);
+
+  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
   const treeMap: any = {};
+  //create an object with all the service names
   const servicePosition = Object.keys(services).reduce((acc: any, el) => {
     acc[el] = {};
     return acc;
   }, {});
+  //the tree functions creates trees differently if there are multiple parents so we need two functions for either case
 
+  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
   const createTreeMapSingleRoot = (node: any, height: number = 0, row = []) => {
     if (!treeMap[height]) treeMap[height] = [];
     treeMap[height].push(node);
@@ -103,7 +114,7 @@ const DependsOnView: React.FC<Props> = ({
       });
     }
   };
-
+  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
   const createTreeMap = (node: any, height: number = 0) => {
     if (!treeMap[height]) treeMap[height] = [];
     if (node.children) {
@@ -113,15 +124,15 @@ const DependsOnView: React.FC<Props> = ({
       });
     }
   };
-
+  // if only one root, run singleroot function, else run other function
   Object.keys(roots).length === 1
     ? createTreeMapSingleRoot(tree)
     : createTreeMap(tree);
 
-  //remove duplicates
-  Object.keys(treeMap).forEach((row: any) => {
+  //remove duplicates from arrays for each row within Treemap
+  Object.keys(treeMap).forEach((row: string) => {
     const services: any = {};
-    treeMap[row].forEach((node: any, i: number) => {
+    treeMap[row].forEach((node: SNode, i: number) => {
       if (services[node.id]) {
         treeMap[row].splice(i, 1);
       } else {
@@ -129,10 +140,11 @@ const DependsOnView: React.FC<Props> = ({
       }
     });
   });
+  //evaluate the depth of the tree
   const treeDepth = Object.keys(treeMap).length;
 
-  const storePositionLocation = (service: any) => {
-    Object.keys(treeMap).forEach((row: any) => {
+  const storePositionLocation = (service: string) => {
+    Object.keys(treeMap).forEach((row: string) => {
       treeMap[row].forEach((node: any, i: number) => {
         if (node.id === service) {
           servicePosition[service] = {
@@ -145,7 +157,7 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
 
-  Object.keys(servicePosition).forEach((service: any) => {
+  Object.keys(servicePosition).forEach((service: string) => {
     storePositionLocation(service);
   });
 
@@ -318,11 +330,7 @@ const DependsOnView: React.FC<Props> = ({
           servicePosition[d.name].column);
       })
       .attr('fy', (d: SNode) => {
-        if (roots[d.name]) {
-          return (d.fy = 30); // fixed y position
-        } else {
-          return (d.fy = (height / treeDepth) * servicePosition[d.name].row);
-        }
+        return (d.fy = (height / treeDepth) * servicePosition[d.name].row);
       });
 
     // create texts

@@ -39,6 +39,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        max-height: 50%;
       }
       h2 {
         margin: 0.75em 0 0.5em 0;
@@ -48,14 +49,21 @@
         width: 80%;
         margin: 0 0 0.75em 0;
       }
-    }
-    .volume {
-      margin: 0.5em;
-    }
-    .volumeBox {
-      fill: 'pink';
-      height: 1em;
-      width: 1em;
+      .volume {
+        margin: 0 0 2em 0.5em;
+        .volumeBox {
+          height: 2em;
+          width: 2em;
+          .volumeSq {
+            height: 2em;
+            width: 2em;
+          }
+        }
+      }
+      .scroll {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
     }
   }
 
