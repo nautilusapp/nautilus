@@ -1,0 +1,79 @@
+#------------------------------------------------------------------------------
+# Copyright 2019 Robert Cowart
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#------------------------------------------------------------------------------
+
+version: '3'
+services:
+  # The usage convention for samplicate is:
+  #   $ samplicate [<option>...] [<destination>...]
+  #
+  # The following <option> parameters are available:
+  #   -d <level>       to set the debugging level
+  #   -s <address>     to set interface address on which to listen for incoming packets (default any)
+  #   -p <port>        to set the UDP port on which to listen for incoming packets (default 2000)
+  #   -b <buflen>      size of receive buffer (default 65536)
+  #   -c <configfile>  specify a config file to read
+  #   -x <delay>       to specify a transmission delay after each packet, in units of microseconds
+  #   -S               maintain (spoof) source addresses
+  #   -n               don't compute UDP checksum (only relevant with -S)
+  #   -f               fork program into background
+  #   -m <pidfile>     write the process ID to a file
+  #   -4               IPv4 only
+  #   -6               IPv6 only
+  #   -h               to print a usage message and exit
+  #   -u <pdulen>      size of max pdu on listened socket (default 65536)
+  #
+  # Each <destination> is specified as <addr>[/<port>[/<interval>[,ttl]]]
+  #   <addr>  IP address of the receiver
+  #   <port>  port UDP number of the receiver (default 2000)
+  #   <freq>  number of received datagrams between successive copied datagrams for this receiver.
+  #   <ttl>   The TTL (IPv4) or hop-limit (IPv6) for outgoing datagrams.
+
+  # The following services are examples for forwarding common UDP packets to multiple sources.
+  
+  samplicator-netflow:
+    image: robcowart/samplicator:1.0.0_1.3.8rc1
+    container_name: samplicator-netflow
+    restart: unless-stopped
+    network_mode: host
+    command: -s 192.0.2.1 -p 2055 -S -d 0 127.0.0.1/2055 192.0.2.111/2055
+
+  samplicator-ipfix:
+    image: robcowart/samplicator:1.0.0_1.3.8rc1
+    container_name: samplicator-ipfix
+    restart: unless-stopped
+    network_mode: host
+    command: -s 192.0.2.1 -p 4739 -S -d 0 127.0.0.1/4739 192.0.2.111/4739
+    
+  samplicator-sflow:
+    image: robcowart/samplicator:1.0.0_1.3.8rc1
+    container_name: samplicator-sflow
+    restart: unless-stopped
+    network_mode: host
+    command: -s 192.0.2.1 -p 6343 -S -d 0 127.0.0.1/6343 192.0.2.111/6343
+
+  samplicator-syslog:
+    image: robcowart/samplicator:1.0.0_1.3.8rc1
+    container_name: samplicator-syslog
+    restart: unless-stopped
+    network_mode: host
+    command: -s 192.0.2.1 -p 514 -S -d 0 127.0.0.1/514 192.0.2.111/514
+
+  samplicator-snmptrap:
+    image: robcowart/samplicator:1.0.0_1.3.8rc1
+    container_name: samplicator-snmptrap
+    restart: unless-stopped
+    network_mode: host
+    command: -s 192.0.2.1 -p 162 -S -d 0 127.0.0.1/162 192.0.2.111/162
