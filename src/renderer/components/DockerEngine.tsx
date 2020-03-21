@@ -23,11 +23,7 @@ const DockerEngine: React.FC<Props> = ({ volumes }) => {
     volumeNames.push(<Volume key={'vol' + i} volume={el} />);
   });
 
-  return (
-    <div className="docker-engine">
-      <div>{volumeNames}</div>
-    </div>
-  );
+  return <div className="docker-engine">{volumeNames}</div>;
 };
 
 export default DockerEngine;

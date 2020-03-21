@@ -22,11 +22,7 @@ const HostOS: React.FC<Props> = ({ bindMounts }) => {
     bindMountNames.push(<Volume key={'bd' + i} volume={el} />);
   });
 
-  return (
-    <div className="host-os">
-      <div>{bindMountNames}</div>
-    </div>
-  );
+  return <div className="host-os">{bindMountNames}</div>;
 };
 
 export default HostOS;
