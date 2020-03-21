@@ -60,6 +60,7 @@ const DependsOnView: React.FC<Props> = ({
       volumes: volumes,
     };
   });
+
   const roots = Object.keys(services).reduce((acc: Roots, el) => {
     acc[el] = true;
     return acc;
@@ -153,7 +154,6 @@ const DependsOnView: React.FC<Props> = ({
     links,
   };
 
-  let linkLines: d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
   /**
    *********************
    * Depends On View
@@ -179,12 +179,6 @@ const DependsOnView: React.FC<Props> = ({
       rootLocation += rootDisplacement;
     });
 
-    //initialize graph
-    const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
-
     //set location when ticked
     const ticked = () => {
       const w = parseInt(container.style('width'));
@@ -207,15 +201,13 @@ const DependsOnView: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-      if (linkLines) {
-        linkLines
-          .attr('x1', (d: any) => d.source.x + 30)
-          .attr('y1', (d: any) => d.source.y + 30)
-          .attr('x2', (d: any) => d.target.x + 30)
-          .attr('y2', (d: any) => d.target.y + 30);
-      }
+      linkLines
+        .attr('x1', (d: any) => d.source.x + 30)
+        .attr('y1', (d: any) => d.source.y + 30)
+        .attr('x2', (d: any) => d.target.x + 30)
+        .attr('y2', (d: any) => d.target.y + 30);
 
-      // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
+      simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     };
 
     // move force graph with resizing window
@@ -232,7 +224,7 @@ const DependsOnView: React.FC<Props> = ({
           .id((node: SNode) => node.name),
       )
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
+      .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
     const dragstarted = (d: SNode) => {
@@ -270,6 +262,41 @@ const DependsOnView: React.FC<Props> = ({
       .on('start', dragstarted)
       .on('drag', dragged)
       .on('end', dragended);
+
+    //initialize graph
+    const forceGraph = d3
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('class', 'graph');
+
+    forceGraph
+      .append('svg:defs')
+      .attr('class', 'arrowsGroup')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22.5)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    const linkLines = forceGraph
+      .append('g')
+      .attr('class', 'linksGroup')
+      .selectAll('line')
+      .data(serviceGraph.links)
+      .enter()
+      .append('line')
+      .attr('stroke-width', 3)
+      .attr('stroke', 'pink')
+      .attr('class', 'link')
+      .attr('marker-end', 'url(#end)');
 
     //create textAndNodes Group
     const textsAndNodes = forceGraph
@@ -384,44 +411,13 @@ const DependsOnView: React.FC<Props> = ({
    *********************
    */
   useEffect(() => {
-    let arrowsG: d3.Selection<d3.BaseType, unknown, HTMLElement, any>;
-    let linksG: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
     if (options.dependsOn) {
-      const forceGraph = d3.select('.graph');
-      arrowsG = forceGraph.append('svg:defs').attr('class', 'arrows');
-
-      const arrow = arrowsG
-        .selectAll('marker')
-        .data(['end']) // Different link/path types can be defined here
-        .enter()
-        .append('svg:marker') // This section adds in the arrows
-        .attr('id', String)
-        .attr('viewBox', '0 -5 10 10')
-        .attr('refX', 22.5)
-        .attr('refY', 0)
-        .attr('markerWidth', 6)
-        .attr('markerHeight', 6)
-        .attr('orient', 'auto')
-        .append('svg:path')
-        .attr('d', 'M0,-5L10,0L0,5');
-
-      linksG = forceGraph.append('g').attr('class', 'links');
-
-      linkLines = linksG
-        .selectAll('line')
-        .data(serviceGraph.links)
-        .enter()
-        .append('line')
-        .attr('stroke-width', 3)
-        .attr('stroke', 'pink')
-        .attr('class', 'link')
-        .attr('marker-end', 'url(#end)');
+      d3.select('.arrowsGroup').classed('hide', false);
+      d3.select('.linksGroup').classed('hide', false);
+    } else {
+      d3.select('.arrowsGroup').classed('hide', true);
+      d3.select('.linksGroup').classed('hide', true);
     }
-
-    return () => {
-      arrowsG.remove();
-      linksG.remove();
-    };
   }, [options.dependsOn]);
 
   return (
