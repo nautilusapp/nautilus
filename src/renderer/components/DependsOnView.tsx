@@ -160,8 +160,6 @@ const DependsOnView: React.FC<Props> = ({
     storePositionLocation(service);
   });
 
-  console.log(servicePosition);
-
   const serviceGraph: SGraph = {
     nodes,
     links,
@@ -181,18 +179,6 @@ const DependsOnView: React.FC<Props> = ({
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
-
-    //create roots object that starts with all of the keys of services and values of true (just a placeholder)
-
-    //evaluate number of roots and determine the width of the d3 simulation to
-    //determine how many segments it can be split into with the roots in the middle
-    const rootNumbers = Object.keys(roots).length;
-    const rootDisplacement = width / (rootNumbers + 1);
-    let rootLocation = rootDisplacement;
-    Object.keys(roots).forEach(el => {
-      roots[el] = rootLocation;
-      rootLocation += rootDisplacement;
-    });
 
     //initialize graph
     const forceGraph = d3
