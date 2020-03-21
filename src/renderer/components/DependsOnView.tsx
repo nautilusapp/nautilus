@@ -453,7 +453,13 @@ const DependsOnView: React.FC<Props> = ({
             .attr('width', width)
             .attr('height', height)
             .attr('x', x)
-            .attr('y', y + i * 12);
+            .attr('y', y + i * 12)
+            .on('mouseover', () => {
+              return vText.style('visibility', 'visible');
+            })
+            .on('mouseout', () => {
+              return vText.style('visibility', 'hidden');
+            });
           // store d3 object in volumes array
           volumes.push(volume);
           // add svg volume text
@@ -462,9 +468,11 @@ const DependsOnView: React.FC<Props> = ({
             .append('text')
             .text(vString)
             .attr('class', 'volume-text')
-            .attr('color', 'black')
-            .attr('dx', x + 10)
-            .attr('dy', y + (i + 1) * 11);
+            .attr('fill', 'black')
+            .attr('text-anchor', 'end')
+            .attr('dx', x - 5)
+            .attr('dy', y + (i + 1) * 11)
+            .style('visibility', 'hidden');
           // store d3 object in volumes text array
           volumeText.push(vText);
         });
