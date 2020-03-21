@@ -11,6 +11,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 const d3dag = require('d3-dag');
+//import { colorSchemeHash } from '../common';
 import { getStatic } from '../scripts/static';
 import {
   Services,
