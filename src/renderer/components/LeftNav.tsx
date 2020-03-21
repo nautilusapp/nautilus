@@ -17,7 +17,7 @@ import Title from './Title';
 import { FileUpload, Service } from '../App.d';
 
 type Props = {
-  service?: Service;
+  service: Service;
   selectedContainer: string;
   fileUpload: FileUpload;
   fileUploaded: boolean;
@@ -31,16 +31,12 @@ const LeftNav: React.FC<Props> = ({
 }) => {
   return (
     <div className="left-nav">
-      <Title />
-      {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
-      <div className="leftNavContainerTitle">
-        {/* display name if there is a selected container */}
-        {selectedContainer !== ''
-          ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
-          : selectedContainer}
+      <div className="top-half">
+        <Title />
+        {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       </div>
       <div className="service-info-display">
-        <InfoDropdown service={service} />
+        <InfoDropdown selectedContainer={selectedContainer} service={service} />
       </div>
     </div>
   );

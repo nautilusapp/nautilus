@@ -26,15 +26,16 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
         onSubmit={handleSubmit}
         encType="multipart/form-data"
       >
-        <h5>{!fileSelected ? 'Upload your Docker-Compose file' : fileName}</h5>
         <Form.Label htmlFor="files">
           {!fileSelected ? (
-            <div className="select-file-button">
-              <FaUpload size={32} />
+            <div className="select-file-button upload-flex">
+              <FaUpload className="upload-button" size={24} />
+              <h5>Upload</h5>
             </div>
           ) : (
-            <button type="submit" className="uploadButton">
-              <FaUpload size={32} />
+            <button type="submit" className="upload-flex">
+              <FaUpload className="upload-button" size={24} />
+              <h5>{fileName}</h5>
             </button>
           )}
         </Form.Label>
