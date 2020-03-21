@@ -102,7 +102,31 @@
             font-weight: 800;
           }
 
-          .environment-variables {
+          .options {
+            padding: 0;
+
+            div {
+              padding-left: 1em;
+              padding-bottom: 0;
+
+              ul {
+                padding: 0;
+                padding-inline-start: 1.3em;
+
+                li {
+                  span {
+                    font-weight: 600;
+                  }
+                }
+              }
+
+              .option-key {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .second-level {
             span {
               font-weight: 600;
             }
