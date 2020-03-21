@@ -117,8 +117,6 @@ const DependsOnView: React.FC<Props> = ({
     ? createTreeMapSingleRoot(tree)
     : createTreeMap(tree);
 
-  console.log('preduplicateremoval', treeMap);
-
   //remove duplicates
   Object.keys(treeMap).forEach((row: any) => {
     const services: any = {};
@@ -150,7 +148,6 @@ const DependsOnView: React.FC<Props> = ({
     storePositionLocation(service);
   });
 
-  console.log('serviceposition', servicePosition);
   const serviceGraph: SGraph = {
     nodes,
     links,
@@ -166,7 +163,7 @@ const DependsOnView: React.FC<Props> = ({
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
-    // const height = parseInt(container.style('height'), 10);
+    const height = parseInt(container.style('height'), 10);
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
@@ -178,7 +175,6 @@ const DependsOnView: React.FC<Props> = ({
     const rootNumbers = Object.keys(roots).length;
     const rootDisplacement = width / (rootNumbers + 1);
     let rootLocation = rootDisplacement;
-    // store the x location of the root within the roots object
     Object.keys(roots).forEach(el => {
       roots[el] = rootLocation;
       rootLocation += rootDisplacement;
@@ -317,17 +313,9 @@ const DependsOnView: React.FC<Props> = ({
       .call(drag)
       .attr('fx', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
-<<<<<<< HEAD
         return (d.fx =
           (width / (servicePosition[d.name].rowLength + 1)) *
           servicePosition[d.name].column);
-=======
-        if (roots[d.name]) {
-          return (d.fx = roots[d.name] as number);
-        } else {
-          return (d.fx = null);
-        }
->>>>>>> cf82e2b58b041446b031890b98c71ee17385ee61
       })
       .attr('fy', (d: SNode) => {
         if (roots[d.name]) {
