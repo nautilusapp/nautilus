@@ -1,88 +1,115 @@
 .left-nav {
   background-color: $primary-color;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  display: grid;
+  grid-template-columns: 220px;
+  grid-template-rows: 320px 1fr;
+  grid-template-areas: 'top-half' 'info';
+  min-height: 650px;
   max-height: 100vh;
-  min-width: 220px;
-  max-width: 220px;
 
-  .title {
-    margin: 10%;
+  .top-half {
+    grid-area: top-half;
+    .title {
+      margin: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-    h1 {
+      h1 {
+        color: $fourth-color;
+      }
+    }
+    .file-upload {
+      margin: 10%;
+      background: none;
       color: $fourth-color;
+      font-size: 1em;
+      display: flex;
+      justify-content: center;
+
+      h5 {
+        font-size: 1em;
+        align-self: center;
+        padding-left: 0.5em;
+        margin: 0;
+      }
+
+      .upload-flex {
+        display: flex;
+        justify-content: center;
+        padding: 0.3em;
+      }
+
+      .select-file-button:hover {
+        cursor: hand;
+        cursor: pointer;
+        color: $fifth-color;
+      }
+
+      button {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: hand;
+        cursor: pointer;
+        opacity: 0.9;
+        outline: inherit;
+      }
     }
   }
 
-  .leftNavContainerTitle {
-    color: $fourth-color;
-  }
-
-  // .service-info-display {}
-
-  .info-dropdown {
-    padding: 10%;
-    background: none;
-
-    .card-body {
-      font-size: .80em;
-      max-height: 30%;
-      overflow: auto;
-
-      .overflow-container {
-
-        .overview-display {
-          display: flex;
-          flex-direction: column;
+  .service-info-display {
+    grid-area: info;
+    min-height: 0;
+    .info-dropdown {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'name' 'card';
+      height: 100%;
+      max-width: 100%;
+      h3 {
+        grid-area: name;
+        text-align: center;
+        color: $fourth-color;
+        margin-bottom: 0.5em;
+        font-size: 16px;
+      }
+      .accordion {
+        overflow: scroll;
+        grid-area: card;
+        max-width: 100%;
+        .card {
+          border-top: 1px solid $fourth-color !important;
+          border-bottom: 1px solid $fourth-color !important;
+          border-right: 1px solid $primary-color !important;
+          border-left: 1px solid $primary-color !important;
+          border-radius: 0em !important;
         }
-      }
+        .card-body {
+          background-color: $fourth-color;
+          font-size: 0.8em;
+          overflow: auto;
+          .command {
+            color: $primary-color;
+          }
 
-      .command {
-        color: $primary-color;
-      }
-
-      ul {
-        padding-inline-start: 1.30em;
+          ul {
+            padding-inline-start: 1.3em;
+          }
+        }
       }
     }
   }
 
   .card-header {
+    position: sticky;
     background: none;
     color: $fourth-color;
     background-color: $primary-color;
-    padding: 0.5em;
-  }
-
-  .file-upload {
-    margin: 10%;
-    background: none;
-    color: $fourth-color;
-    font-size: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    .select-file-button:hover {
-      cursor: hand;
-      cursor: pointer;
-      opacity: 0.9;
-    }
-
-    button {
-      background: none;
-      color: inherit;
-      border: none;
-      padding: 0;
-      font: inherit;
-      cursor: hand;
-      cursor: pointer;
-      opacity: 0.9;
-      outline: inherit;
-    }
+    padding: 1em;
   }
 
   .leftNavContainerTitle {
