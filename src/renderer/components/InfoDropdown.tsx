@@ -41,13 +41,6 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   // Create an object to house text intros for each docker-compose property
   const dockerComposeCommands: DockerComposeCommands = {
     build: 'Build: ',
-    context: 'Context: ',
-    dockerfile: 'Dockerfile: ',
-    args: 'Args: ',
-    cache_from: 'Cache_from: ',
-    labels: 'Labels: ',
-    shm_size: 'Shm_size: ',
-    target: 'Target: ',
     image: 'Image: ',
     command: 'Command: ',
     environment: 'Environment: ',
@@ -97,10 +90,54 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
         //  * Build
         //  *********************
         else if (command === 'build' && typeof service[command] !== 'string') {
+        } else if (command === 'command' && Array.isArray(service[command])) {
         } else serviceOverview[command] = service[command];
       }
     });
   }
+
+  const commandToJSX = (command: any) => {
+    const optionJSX = Object.keys(command).map(option => {
+      if (typeof command[option] === 'string') {
+        return (
+          <div>
+            <span className="option-key">{option}:</span>
+            {command[option]}
+          </div>
+        );
+      } else if (Array.isArray(command[option])) {
+        const optionJSX = (command[option] as []).map((element: string, i) => {
+          const valueArray = element.split('=');
+          return (
+            <li key={i}>
+              <span>{valueArray[0]}:</span> {valueArray[1]}
+            </li>
+          );
+        });
+        return (
+          <div>
+            <span className="option-key">{option}:</span>
+            <ul>{optionJSX}</ul>
+          </div>
+        );
+      } else {
+        const optionJSX = Object.keys(command[option]).map((key: string, i) => {
+          return (
+            <li key={i}>
+              <span>{key}:</span> {command[option][key]}
+            </li>
+          );
+        });
+        return (
+          <div>
+            <span className="option-key">{option}:</span>
+            <ul>{optionJSX}</ul>
+          </div>
+        );
+      }
+    });
+    return <div className="options">{optionJSX}</div>;
+  };
 
   const infoToJsx = (
     serviceOverview: ServiceOverview,
@@ -150,35 +187,23 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
                 <ul>{envFileArray}</ul>
               </span>
             );
+            //  *********************
+            //  Build
+            //  *********************
           } else if (command === 'build' && !serviceOverview[command].length) {
-            const build = service[command];
-            Object.keys(build).forEach(option => {
-              if (typeof build[option] === 'string') {
-                valueJSX = <span className="options">{build[option]}</span>;
-              } else if (Array.isArray(build[option])) {
-                const optionJSX = (build[option] as []).map(
-                  (element: string, i) => {
-                    return <li key={i}>{element}</li>;
-                  },
-                );
-                valueJSX = (
-                  <span className="third-level">
-                    <ul>{optionJSX}</ul>
-                  </span>
-                );
-              } else {
-                const optionJSX = Object.keys(build[option]).map(
-                  (key: string, i) => {
-                    return <li key={i}>{`${key}: ${build[option][key]}`}</li>;
-                  },
-                );
-                valueJSX = (
-                  <span className="third-level">
-                    <ul>{optionJSX}</ul>
-                  </span>
-                );
-              }
-            });
+            valueJSX = commandToJSX(service[command]);
+            //  *********************
+            //  Command
+            //  *********************
+          } else if (
+            command === 'command' &&
+            !serviceOverview[command].length
+          ) {
+            valueJSX = (
+              <span className="command-values">
+                {service[command].join(', ')}
+              </span>
+            );
           } else {
             valueJSX = (
               <span className="command-values">{serviceOverview[command]}</span>
@@ -202,7 +227,6 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
           : selectedContainer}
       </h3>
       <Accordion defaultActiveKey="0">
-        {/* OVERVIEW */}
         <Card>
           <Accordion.Toggle as={Card.Header} eventKey="0">
             Overview <FaAngleDown />
