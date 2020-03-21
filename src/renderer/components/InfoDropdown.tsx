@@ -74,11 +74,18 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
         serviceOverview[command] = '';
         // ASIDE: if any of the below keys equal the specified strings,
         if (command === 'environment') {
-          // loop through the environment variable's values (array)
-          service[command].forEach((value: string) => {
-            const valueArray = value.split('=');
-            environmentVariables[valueArray[0]] = valueArray[1];
-          });
+          if (Array.isArray(service[command])) {
+            // loop through the environment variable's values (array)
+            service[command].forEach((value: string) => {
+              const valueArray = value.split('=');
+              environmentVariables[valueArray[0]] = valueArray[1];
+            });
+          } else {
+            const environment = service[command];
+            Object.keys(environment).forEach(key => {
+              environmentVariables[key] = environment[key];
+            });
+          }
         } else if (command === 'env_file') {
           if (typeof service[command] === 'string') {
             serviceOverview[command] = service[command];
@@ -127,11 +134,9 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
                       const environment: JSX.Element[] = [];
                       Object.keys(environmentVariables).forEach(key => {
                         environment.push(
-                          <>
-                            <li className="enviroment-variables" key={key}>
-                              {key}: {environmentVariables[key]}
-                            </li>
-                          </>,
+                          <li className="environment-variables" key={key}>
+                            <span>{key}:</span> {environmentVariables[key]}
+                          </li>,
                         );
                       });
                       valueJSX = (

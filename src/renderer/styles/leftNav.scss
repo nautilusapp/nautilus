@@ -3,12 +3,13 @@
   display: grid;
   grid-template-columns: 220px;
   grid-template-rows: 320px 1fr;
-  grid-template-areas: 'top-half' 'info';
+  grid-template-areas: 'top-half''info';
   min-height: 650px;
   max-height: 100vh;
 
   .top-half {
     grid-area: top-half;
+
     .title {
       margin: 10%;
       display: flex;
@@ -19,6 +20,7 @@
         color: $fourth-color;
       }
     }
+
     .file-upload {
       margin: 10%;
       background: none;
@@ -63,13 +65,15 @@
   .service-info-display {
     grid-area: info;
     min-height: 0;
+
     .info-dropdown {
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: auto 1fr;
-      grid-template-areas: 'name' 'card';
+      grid-template-areas: 'name''card';
       height: 100%;
       max-width: 100%;
+
       h3 {
         grid-area: name;
         text-align: center;
@@ -77,27 +81,36 @@
         margin-bottom: 0.5em;
         font-size: 16px;
       }
+
       .accordion {
+        margin: 0 1em 1em 1em;
         overflow: scroll;
         grid-area: card;
         max-width: 100%;
-        .card {
-          border-top: 1px solid $fourth-color !important;
-          border-bottom: 1px solid $fourth-color !important;
-          border-right: 1px solid $primary-color !important;
-          border-left: 1px solid $primary-color !important;
-          border-radius: 0em !important;
-        }
+
         .card-body {
           background-color: $fourth-color;
           font-size: 0.8em;
           overflow: auto;
+
+          div {
+            padding-bottom: 0.5em;
+          }
+
           .command {
             color: $primary-color;
+            font-weight: 800;
+          }
+
+          .environment-variables {
+            span {
+              font-weight: 600;
+            }
           }
 
           ul {
             padding-inline-start: 1.3em;
+            margin: 0;
           }
         }
       }
