@@ -219,7 +219,7 @@ const DependsOnView: React.FC<Props> = ({
         .attr('x2', (d: any) => d.target.x + 30)
         .attr('y2', (d: any) => d.target.y + 30);
 
-      simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
+      // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     };
 
     // move force graph with resizing window
@@ -236,7 +236,7 @@ const DependsOnView: React.FC<Props> = ({
           .id((node: SNode) => node.name),
       )
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
+      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
     const dragstarted = (d: SNode) => {
