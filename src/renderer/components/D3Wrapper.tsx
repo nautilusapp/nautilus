@@ -49,7 +49,7 @@ const D3Wrapper: React.FC<Props> = ({
         <>
           <ServicesWrapper
             services={services}
-            setSelectedContainer={setSelectedContainer}
+            // setSelectedContainer={setSelectedContainer}
             options={options}
           />
           <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />

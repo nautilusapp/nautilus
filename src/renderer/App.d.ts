@@ -65,6 +65,7 @@ export type Service = {
   ports: string[];
   volumes: string[];
   depends_on: string[];
+  networks: string[];
 };
 
 export type Services = {
