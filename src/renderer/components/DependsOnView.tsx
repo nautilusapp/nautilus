@@ -465,13 +465,8 @@ const DependsOnView: React.FC<Props> = ({
                 : vText.style('visibility', 'visible');
             })
             .on('click', () => {
-              if (!onceClicked) {
-                onClick = true;
-                onceClicked = true;
-              } else {
-                onClick = false;
-                onceClicked = false;
-              }
+              onceClicked = !onceClicked;
+              onClick = onceClicked;
             });
           // store d3 object in volumes array
           volumes.push(volume);
