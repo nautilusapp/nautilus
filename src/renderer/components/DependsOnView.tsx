@@ -153,8 +153,7 @@ const DependsOnView: React.FC<Props> = ({
     links,
   };
 
-  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
-
+  let linkLines: d3.Selection<SVGLineElement, Link, SVGGElement, unknown>;
   /**
    *********************
    * Depends On View
@@ -208,11 +207,13 @@ const DependsOnView: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-      link
-        .attr('x1', (d: any) => d.source.x + 30)
-        .attr('y1', (d: any) => d.source.y + 30)
-        .attr('x2', (d: any) => d.target.x + 30)
-        .attr('y2', (d: any) => d.target.y + 30);
+      if (linkLines) {
+        linkLines
+          .attr('x1', (d: any) => d.source.x + 30)
+          .attr('y1', (d: any) => d.source.y + 30)
+          .attr('x2', (d: any) => d.target.x + 30)
+          .attr('y2', (d: any) => d.target.y + 30);
+      }
 
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     };
@@ -233,34 +234,6 @@ const DependsOnView: React.FC<Props> = ({
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
       // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
-
-    forceGraph
-      .append('svg:defs')
-      .selectAll('marker')
-      .data(['end']) // Different link/path types can be defined here
-      .enter()
-      .append('svg:marker') // This section adds in the arrows
-      .attr('id', String)
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
-
-    //create Links with arrowheads
-    const link = forceGraph
-      .append('g')
-      .selectAll('line')
-      .data(serviceGraph.links)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
-      .attr('class', 'link')
-      .attr('marker-end', 'url(#end)');
 
     const dragstarted = (d: SNode) => {
       // simulation.alphaTarget(0.3).restart();
@@ -299,7 +272,7 @@ const DependsOnView: React.FC<Props> = ({
       .on('end', dragended);
 
     //create textAndNodes Group
-    textsAndNodes = forceGraph
+    const textsAndNodes = forceGraph
       .append('g')
       .attr('class', 'nodes')
       .selectAll('g')
@@ -404,6 +377,52 @@ const DependsOnView: React.FC<Props> = ({
     };
     // only fire when options.ports changes
   }, [options.ports]);
+
+  /**
+   *********************
+   * DEPENDS ON OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    let arrowsG: d3.Selection<d3.BaseType, unknown, HTMLElement, any>;
+    let linksG: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+    if (options.dependsOn) {
+      const forceGraph = d3.select('.graph');
+      arrowsG = forceGraph.append('svg:defs').attr('class', 'arrows');
+
+      const arrow = arrowsG
+        .selectAll('marker')
+        .data(['end']) // Different link/path types can be defined here
+        .enter()
+        .append('svg:marker') // This section adds in the arrows
+        .attr('id', String)
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 22.5)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('svg:path')
+        .attr('d', 'M0,-5L10,0L0,5');
+
+      linksG = forceGraph.append('g').attr('class', 'links');
+
+      linkLines = linksG
+        .selectAll('line')
+        .data(serviceGraph.links)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 3)
+        .attr('stroke', 'pink')
+        .attr('class', 'link')
+        .attr('marker-end', 'url(#end)');
+    }
+
+    return () => {
+      arrowsG.remove();
+      linksG.remove();
+    };
+  }, [options.dependsOn]);
 
   return (
     <>
