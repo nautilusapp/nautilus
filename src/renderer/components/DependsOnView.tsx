@@ -239,13 +239,6 @@ const DependsOnView: React.FC<Props> = ({
       // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    const dragstarted = (d: SNode) => {
-      // simulation.alphaTarget(0.3).restart();
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d3.event.x;
-      d3.event.y;
-    };
-
     const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
       d.fx = d3.event.x;
@@ -271,7 +264,13 @@ const DependsOnView: React.FC<Props> = ({
 
     let drag = d3
       .drag<SVGGElement, SNode>()
-      .on('start', dragstarted)
+      .on('start', function dragstarted(d: SNode) {
+        d3.select(this).raise();
+        // simulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d3.event.x;
+        d3.event.y;
+      })
       .on('drag', dragged)
       .on('end', dragended);
 
