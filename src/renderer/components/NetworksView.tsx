@@ -44,6 +44,10 @@ const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       name: sName,
       ports: ports,
       volumes: volumes,
+      children: {},
+      row: 0,
+      rowLength: 0,
+      column: 0,
     };
   });
 
