@@ -21,6 +21,8 @@ import {
   SetSelectedContainer,
   Options,
   NodesObject,
+  TreeMap,
+  NodeChild,
 } from '../App.d';
 
 type Props = {
@@ -80,8 +82,8 @@ const DependsOnView: React.FC<Props> = ({
     }
   });
 
-  const createTree = (node: any) => {
-    Object.keys(node).forEach((root: any) => {
+  const createTree = (node: NodeChild) => {
+    Object.keys(node).forEach((root: string) => {
       links.forEach((link: Link) => {
         if (link.source === root) {
           node[root].children[link.target] = nodesObject[link.target];
@@ -91,8 +93,8 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
   createTree(roots);
-  const treeMap: any = {};
-  const createTreeMap = (node: any, height: number = 0) => {
+  const treeMap: TreeMap = {};
+  const createTreeMap = (node: NodeChild, height: number = 0) => {
     if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
     Object.keys(node).forEach((sName: string) => {
       treeMap[height].push(sName);
@@ -101,7 +103,7 @@ const DependsOnView: React.FC<Props> = ({
   };
   createTreeMap(roots);
 
-  const storePositionLocation = (treeHierarchy: any) => {
+  const storePositionLocation = (treeHierarchy: TreeMap) => {
     Object.keys(treeHierarchy).forEach((row: string) => {
       treeHierarchy[row].forEach((sName: string, column: number) => {
         nodesObject[sName].row = Number(row);
