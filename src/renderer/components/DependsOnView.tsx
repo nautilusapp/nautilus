@@ -85,6 +85,7 @@ const DependsOnView: React.FC<Props> = ({
     }
   });
 
+  //create Tree
   const createTree = (node: NodeChild) => {
     Object.keys(node).forEach((root: string) => {
       links.forEach((link: Link) => {
@@ -96,7 +97,8 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
   createTree(roots);
-  console.log(roots);
+
+  //traverse tree and create object outlining the rows/columns in each tree
   const treeMap: TreeMap = {};
   const createTreeMap = (node: NodeChild, height: number = 0) => {
     if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
@@ -107,6 +109,7 @@ const DependsOnView: React.FC<Props> = ({
   };
   createTreeMap(roots);
 
+  // populate nodesObject with column, row, and rowLength
   const storePositionLocation = (treeHierarchy: TreeMap) => {
     Object.keys(treeHierarchy).forEach((row: string) => {
       treeHierarchy[row].forEach((sName: string, column: number) => {
