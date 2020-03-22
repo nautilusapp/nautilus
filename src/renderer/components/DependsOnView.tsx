@@ -62,8 +62,8 @@ const DependsOnView: React.FC<Props> = ({
       const node = {
         id: i,
         name: sName,
-        ports: ports,
-        volumes: volumes,
+        ports,
+        volumes,
         children: {},
         row: 0,
         rowLength: 0,
@@ -75,7 +75,7 @@ const DependsOnView: React.FC<Props> = ({
     {},
   );
 
-  //roots object creation
+  //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
   const roots = JSON.parse(JSON.stringify(nodesObject));
   //iterate through links and find if the roots object contains any of the link targets
   links.forEach((link: Link) => {
