@@ -43,7 +43,7 @@ const initialState: State = {
   options: {
     ports: false,
     volumes: false,
-    dependsOn: false,
+    dependsOn: true,
   },
   version: '',
 };
@@ -63,7 +63,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
-          options: { ...state.options, dependsOn: false },
+          options: { ...state.options, dependsOn: true },
         };
       });
     } else {
@@ -71,6 +71,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
+          options: { ...state.options, dependsOn: false },
         };
       });
     }

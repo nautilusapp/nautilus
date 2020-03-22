@@ -52,13 +52,6 @@ type SGraph = {
 
 export type Service = {
   build?: string;
-  context?: string;
-  dockerfile?: string;
-  args?: string[];
-  cache_from?: string[];
-  labels?: string[];
-  shm_size?: string;
-  target?: string;
   image?: string;
   command?: string;
   environment?: ReadOnlyObj;

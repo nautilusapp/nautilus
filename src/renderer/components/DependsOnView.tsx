@@ -11,7 +11,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 const d3dag = require('d3-dag');
-//import { colorSchemeHash } from '../common';
+import { colorSchemeHash } from '../common';
 import { getStatic } from '../scripts/static';
 import {
   Services,
@@ -161,14 +161,10 @@ const DependsOnView: React.FC<Props> = ({
     storePositionLocation(service);
   });
 
-  console.log(servicePosition);
-
   const serviceGraph: SGraph = {
     nodes,
     links,
   };
-
-  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
 
   /**
    *********************
@@ -195,12 +191,6 @@ const DependsOnView: React.FC<Props> = ({
       rootLocation += rootDisplacement;
     });
 
-    //initialize graph
-    const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
-
     //set location when ticked
     const ticked = () => {
       const w = parseInt(container.style('width'));
@@ -223,7 +213,7 @@ const DependsOnView: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-      link
+      linkLines
         .attr('x1', (d: any) => d.source.x + 30)
         .attr('y1', (d: any) => d.source.y + 30)
         .attr('x2', (d: any) => d.target.x + 30)
@@ -248,41 +238,6 @@ const DependsOnView: React.FC<Props> = ({
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
       // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
-
-    forceGraph
-      .append('svg:defs')
-      .selectAll('marker')
-      .data(['end']) // Different link/path types can be defined here
-      .enter()
-      .append('svg:marker') // This section adds in the arrows
-      .attr('id', String)
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
-
-    //create Links with arrowheads
-    const link = forceGraph
-      .append('g')
-      .selectAll('line')
-      .data(serviceGraph.links)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
-      .attr('class', 'link')
-      .attr('marker-end', 'url(#end)');
-
-    const dragstarted = (d: SNode) => {
-      // simulation.alphaTarget(0.3).restart();
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d3.event.x;
-      d3.event.y;
-    };
 
     const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
@@ -309,12 +264,53 @@ const DependsOnView: React.FC<Props> = ({
 
     let drag = d3
       .drag<SVGGElement, SNode>()
-      .on('start', dragstarted)
+      .on('start', function dragstarted(d: SNode) {
+        d3.select(this).raise();
+        // simulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d3.event.x;
+        d3.event.y;
+      })
       .on('drag', dragged)
       .on('end', dragended);
 
+    //initialize graph
+    const forceGraph = d3
+      .select('.depends-wrapper')
+      .append('svg')
+      .attr('class', 'graph');
+
+    forceGraph
+      .append('svg:defs')
+      .attr('class', 'arrowsGroup')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22.5)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    const linkLines = forceGraph
+      .append('g')
+      .attr('class', 'linksGroup')
+      .selectAll('line')
+      .data(serviceGraph.links)
+      .enter()
+      .append('line')
+      .attr('stroke-width', 3)
+      .attr('stroke', 'pink')
+      .attr('class', 'link')
+      .attr('marker-end', 'url(#end)');
+
     //create textAndNodes Group
-    textsAndNodes = forceGraph
+    const textsAndNodes = forceGraph
       .append('g')
       .attr('class', 'nodes')
       .selectAll('g')
@@ -415,6 +411,106 @@ const DependsOnView: React.FC<Props> = ({
     };
     // only fire when options.ports changes
   }, [options.ports]);
+
+  /**
+   *********************
+   * VOLUMES OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    // VOLUMES LOCATION
+    const x = 8;
+    const y = 20;
+    const width = 10;
+    const height = 10;
+    // VOLUMES VARIABLES
+    let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
+    const volumes: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
+    const volumeText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
+    if (options.volumes) {
+      // select all nodes with volumes
+      nodesWithVolumes = d3
+        .select('.nodes')
+        .selectAll<SVGGElement, SNode>('g')
+        .filter((d: SNode) => d.volumes.length > 0);
+
+      // iterate through all nodes with volumes
+      nodesWithVolumes.each(function(d: SNode) {
+        const node = this;
+        // iterate through all volumes of node
+        d.volumes.forEach((vString, i) => {
+          let onClick = false;
+          let onceClicked = false;
+          // add svg volume
+          const volume = d3
+            .select<SVGElement, SNode>(node)
+            .append('rect')
+            .attr('class', 'volumeSVG')
+            .attr('fill', () => {
+              let slicedVString: string = colorSchemeHash(
+                vString.slice(0, vString.indexOf(':')),
+              );
+              return slicedVString;
+            })
+            .attr('width', width)
+            .attr('height', height)
+            .attr('x', x)
+            .attr('y', y + i * 12)
+            .on('mouseover', () => {
+              return vText.style('visibility', 'visible');
+            })
+            .on('mouseout', () => {
+              !onClick
+                ? vText.style('visibility', 'hidden')
+                : vText.style('visibility', 'visible');
+            })
+            .on('click', () => {
+              onceClicked = !onceClicked;
+              onClick = onceClicked;
+            });
+          // store d3 object in volumes array
+          volumes.push(volume);
+          // add svg volume text
+          const vText = d3
+            .select<SVGElement, SNode>(node)
+            .append('text')
+            .text(vString)
+            .attr('class', 'volume-text')
+            .attr('fill', 'black')
+            .attr('text-anchor', 'end')
+            .attr('dx', x - 5)
+            .attr('dy', y + (i + 1) * 11)
+            .style('visibility', 'hidden');
+          // store d3 object in volumes text array
+          volumeText.push(vText);
+        });
+      });
+    }
+
+    return () => {
+      // before unmounting, if volumes option was on, remove the volumes
+      if (options.volumes) {
+        volumes.forEach(node => node.remove());
+        volumeText.forEach(node => node.remove());
+      }
+    };
+    // only fire when options.volumes changes
+  }, [options.volumes]);
+
+  /**
+   *********************
+   * DEPENDS ON OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    if (options.dependsOn) {
+      d3.select('.arrowsGroup').classed('hide', false);
+      d3.select('.linksGroup').classed('hide', false);
+    } else {
+      d3.select('.arrowsGroup').classed('hide', true);
+      d3.select('.linksGroup').classed('hide', true);
+    }
+  }, [options.dependsOn]);
 
   return (
     <>

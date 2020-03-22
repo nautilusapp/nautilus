@@ -1,0 +1,22 @@
+version: '3'
+services:
+  dashua:
+    build:
+      context: .
+      args:
+        - 'HI=friends'
+        - 'BYE=sad'
+
+  joshanny:
+    build:
+      context: .aaaayyyy
+      args:
+        icantgetno: 'satisfaction'
+        war: 'what is it good for?'
+      labels:
+        noFuckYou: 'moarexamples!'
+    command: ['bundle', 'exec', 'thin', '-p', '3000']
+    environment:
+      - 'justastring=aGstring'
+      - 'morethanjustfriends=NOTyouarefriendzoned'
+    security_opt:
