@@ -56,9 +56,10 @@ const NetworksView: React.FC<Props> = ({
       });
     }
     if (services[name].hasOwnProperty('depends_on')) {
-      services[name].depends_on.forEach(el => {
-        links.push({ source: el, target: name });
-      });
+      // services[name].depends_on.forEach(el => {
+      //   links.push({ source: el, target: name });
+      // });
+      console.log('hey there stop bugging out');
     }
     return {
       id,
@@ -75,6 +76,11 @@ const NetworksView: React.FC<Props> = ({
   };
 
   let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
+
+  const factorial = (n: number): number => {
+    if (n === 1) return n;
+    return n * factorial(n - 1);
+  };
 
   useEffect(() => {
     const container = d3.select('.networks-wrapper');
@@ -128,35 +134,48 @@ const NetworksView: React.FC<Props> = ({
     const forceX = d3.forceX((d: SNode): any => {
       const networksArray = Object.keys(networks);
       if (networksArray.length > 2) {
-        console.log('> 2')
-        networksArray.forEach((ntw, i): number => {
-          console.log('find: ', ntw)
-          if(d.networks){
-            console.log('looking in: ', d.name)
-            d.networks.forEach((n, j): void => {
-              console.log(n)
-              if(n === ntw){
-                console.log('it\'s a match')
-              } else console.log('sorry not this time')
-  
-            })
-          } return width / 2;
-        })
-      } else if(networksArray.length === 2){
-        if(d.networks){
-        if(d.networks.length === 2){
-          console.log(d.name, 'has both')
-          return width / 2
-        } else if (d.networks.length === 1){
-          if(d.networks[0] === networksArray[0]){
-            console.log(d.name, 'has', d.networks[0])
-            return width / 4
-          } else { 
-            console.log(d.name, 'has', d.networks[0])
-            return (width / 2 + width / 4)
+        if (d.networks) {
+          console.log(d.name);
+          let dNetIndexCount = 0;
+          let netIndexCount = 0;
+          let hash = 0;
+          d.networks.forEach((dnet, i) => {
+            console.log(dnet);
+            networksArray.forEach((net, j) => {
+              if (dnet === net) {
+                dNetIndexCount += i;
+                netIndexCount += j;
+              }
+            });
+          });
+          hash =
+            ((dNetIndexCount + d.networks.length * 17) *
+              (netIndexCount + d.networks.length * 23) *
+              199) %
+            factorial(networksArray.length);
+          if (hash === 0) hash = 13;
+          console.log('dnic', dNetIndexCount);
+          console.log('nic', netIndexCount);
+          console.log('hash', hash);
+          return width / hash;
+        }
+      } else if (networksArray.length === 2) {
+        if (d.networks) {
+          if (d.networks.length === 2) {
+            console.log(d.name, 'has both');
+            return width / 2;
+          } else if (d.networks.length === 1) {
+            if (d.networks[0] === networksArray[0]) {
+              console.log(d.name, 'has', d.networks[0]);
+              return width / 4;
+            } else {
+              console.log(d.name, 'has', d.networks[0]);
+              return width / 2 + width / 4;
+            }
           }
-        }}
-      } return width / 2;
+        }
+      }
+      return width / 2;
     });
     const forceY = d3.forceY(height / 2);
     //create force simulation
