@@ -92,6 +92,7 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
   createTree(roots);
+  console.log(roots);
   const treeMap: TreeMap = {};
   const createTreeMap = (node: NodeChild, height: number = 0) => {
     if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
@@ -106,7 +107,7 @@ const DependsOnView: React.FC<Props> = ({
     Object.keys(treeHierarchy).forEach((row: string) => {
       treeHierarchy[row].forEach((sName: string, column: number) => {
         nodesObject[sName].row = Number(row);
-        nodesObject[sName].column = column + 1;
+        if (!nodesObject[sName].column) nodesObject[sName].column = column + 1;
         nodesObject[sName].rowLength = treeHierarchy[row].length;
       });
     });
@@ -268,7 +269,8 @@ const DependsOnView: React.FC<Props> = ({
         //assign the initial x location to the relative displacement from the left
         return (d.fx =
           (width / (nodesObject[d.name].rowLength + 1)) *
-          nodesObject[d.name].column);
+            nodesObject[d.name].column -
+          15);
       })
       .attr('fy', (d: SNode) => {
         return (d.fy = (height / treeDepth) * nodesObject[d.name].row);
