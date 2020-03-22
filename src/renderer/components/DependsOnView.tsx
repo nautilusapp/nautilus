@@ -148,25 +148,19 @@ const DependsOnView: React.FC<Props> = ({
       // Enforces borders
       textsAndNodes
         .attr('cx', (d: SNode) => {
-          return d.fx && d.fy
-            ? (d.fx = getHorizontalPosition(d, w))
-            : (d.x = Math.max(
-                sideMargin,
-                Math.min(w - sideMargin - radius, d.x as number),
-              ));
+          return (d.x = Math.max(
+            sideMargin,
+            Math.min(w - sideMargin - radius, d.x as number),
+          ));
         })
         .attr('cy', (d: SNode) => {
-          return d.fx && d.fy
-            ? (d.fy = getVerticalPosition(d, treeDepth, h))
-            : (d.y = Math.max(
-                15 + topMargin,
-                Math.min(h - topMargin - radius, d.y as number),
-              ));
+          return (d.y = Math.max(
+            15 + topMargin,
+            Math.min(h - topMargin - radius, d.y as number),
+          ));
         })
         .attr('transform', (d: SNode) => {
-          return d.fx && d.fy
-            ? 'translate(' + d.fx + ',' + d.fy + ')'
-            : 'translate(' + d.x + ',' + d.y + ')';
+          return 'translate(' + d.x + ',' + d.y + ')';
         });
 
       linkLines
