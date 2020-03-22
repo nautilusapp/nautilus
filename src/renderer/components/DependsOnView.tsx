@@ -10,7 +10,11 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-import { colorSchemeHash } from '../common';
+import { colorSchemeHash } from '../helpers/colorSchemeHash';
+import {
+  getHorizontalPosition,
+  getVerticalPosition,
+} from '../helpers/getSimulationDimensions';
 import { getStatic } from '../scripts/static';
 import {
   Services,
@@ -135,25 +139,31 @@ const DependsOnView: React.FC<Props> = ({
     const radius = 60; // Used to determine the size of each container for border enforcement
 
     //set location when ticked
-    const ticked = () => {
+    function ticked() {
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
       textsAndNodes
         .attr('cx', (d: SNode) => {
-          return (d.x = Math.max(
-            sideMargin,
-            Math.min(w - sideMargin - radius, d.x as number),
-          ));
+          return d.fx && d.fy
+            ? (d.fx = getHorizontalPosition(d, w))
+            : (d.x = Math.max(
+                sideMargin,
+                Math.min(w - sideMargin - radius, d.x as number),
+              ));
         })
         .attr('cy', (d: SNode) => {
-          return (d.y = Math.max(
-            15 + topMargin,
-            Math.min(h - topMargin - radius, d.y as number),
-          ));
+          return d.fx && d.fy
+            ? (d.fy = getVerticalPosition(d, treeDepth, h))
+            : (d.y = Math.max(
+                15 + topMargin,
+                Math.min(h - topMargin - radius, d.y as number),
+              ));
         })
         .attr('transform', (d: SNode) => {
-          return 'translate(' + d.x + ',' + d.y + ')';
+          return d.fx && d.fy
+            ? 'translate(' + d.fx + ',' + d.fy + ')'
+            : 'translate(' + d.x + ',' + d.y + ')';
         });
 
       linkLines
@@ -163,7 +173,7 @@ const DependsOnView: React.FC<Props> = ({
         .attr('y2', (d: any) => d.target.y + 30);
 
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
-    };
+    }
 
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
@@ -267,13 +277,10 @@ const DependsOnView: React.FC<Props> = ({
       .call(drag)
       .attr('fx', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
-        return (d.fx =
-          (width / (nodesObject[d.name].rowLength + 1)) *
-            nodesObject[d.name].column -
-          15);
+        return (d.fx = getHorizontalPosition(d, width));
       })
       .attr('fy', (d: SNode) => {
-        return (d.fy = (height / treeDepth) * nodesObject[d.name].row);
+        return (d.fy = getVerticalPosition(d, treeDepth, height));
       });
 
     // create texts
