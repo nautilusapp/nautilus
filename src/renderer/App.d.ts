@@ -37,6 +37,7 @@ interface SNode extends SimulationNodeDatum {
   name: string;
   ports: string[];
   volumes: string[];
+  networks?: string[];
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -89,4 +90,8 @@ export type SetSelectedContainer = {
 
 export type Roots = {
   [service: string]: boolean | number;
+};
+
+export type Networks = {
+  [network: string]: any;
 };
