@@ -9,7 +9,7 @@
  * ************************************
  */
 import React, { useEffect } from 'react';
-//import Services from './Service';
+// import Services from './Service';
 import * as d3 from 'd3';
 import { getStatic } from '../scripts/static';
 import {
@@ -59,7 +59,6 @@ const NetworksView: React.FC<Props> = ({
       // services[name].depends_on.forEach(el => {
       //   links.push({ source: el, target: name });
       // });
-      console.log('hey there stop bugging out');
     }
     return {
       id,
@@ -67,6 +66,10 @@ const NetworksView: React.FC<Props> = ({
       ports,
       volumes,
       networks,
+      children: {},
+      row: 0,
+      rowLength: 0,
+      column: 0,
     };
   });
 
@@ -133,11 +136,16 @@ const NetworksView: React.FC<Props> = ({
     const networkHolder: { [networkString: string]: boolean } = {};
 
     const getSpacing = (): number => {
+      console.log('-->');
       nodes.forEach((d: SNode): void => {
+        console.log('<--');
+        console.log(d);
         if (d.networks) {
+          console.log('--*');
           let networkString = '';
           d.networks.sort();
           d.networks.forEach(network => {
+            console.log('*--');
             networkString += network;
           });
           networkHolder[networkString] = true;
@@ -146,7 +154,7 @@ const NetworksView: React.FC<Props> = ({
       return width / (Object.keys(networkHolder).length + 1);
     };
     const spacing = getSpacing();
-
+    console.log(networkHolder);
     const forceX = d3
       .forceX((d: SNode): any => {
         if (d.networks) {
@@ -279,20 +287,18 @@ const NetworksView: React.FC<Props> = ({
       .attr('width', radius);
 
     // create texts
-    textsAndNodes
-      // .append('text')
-      // .text((d: SNode) => d.name)
-      .append('text')
-      .text((d: SNode): string => {
-        let networkString = '';
-        if (d.networks) {
-          d.networks.forEach((n: string) => {
-            networkString += n + ' ';
-          });
-        }
-        console.error(d);
-        return networkString;
-      });
+    textsAndNodes.append('text').text((d: SNode) => d.name);
+    // .append('text')
+    // .text((d: SNode): string => {
+    //   let networkString = '';
+    //   if (d.networks) {
+    //     d.networks.forEach((n: string) => {
+    //       networkString += n + ' ';
+    //     });
+    //   }
+    //   console.error(d);
+    //   return networkString;
+    // });
     return () => {
       forceGraph.remove();
     };
