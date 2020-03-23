@@ -19,6 +19,8 @@ import { getStatic } from '../helpers/static';
 import { colorSchemeHash } from '../helpers/colorSchemeHash';
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
+// IMPORT COMPONENTS
+import Ports from './Ports';
 
 type Props = {
   services: Services;
@@ -111,69 +113,6 @@ const Nodes: React.FC<Props> = ({
 
   /**
    *********************
-   * PORTS OPTION TOGGLE
-   *********************
-   */
-  useEffect(() => {
-    // PORTS LOCATION
-    const cx = 58;
-    const cy = 18;
-    const radius = 5;
-    const dx = cx + radius;
-    const dy = cy + radius;
-    // PORTS VARIABLES
-    let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
-    const ports: d3.Selection<SVGCircleElement, SNode, any, any>[] = [];
-    const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
-    if (options.ports) {
-      // select all nodes with ports
-      nodesWithPorts = d3
-        .select('.nodes')
-        .selectAll<SVGGElement, SNode>('g')
-        .filter((d: SNode) => d.ports.length > 0);
-
-      // iterate through all nodes with ports
-      nodesWithPorts.each(function(d: SNode) {
-        const node = this;
-        // iterate through all ports of node
-        d.ports.forEach((pString, i) => {
-          // add svg port
-          const port = d3
-            .select<SVGElement, SNode>(node)
-            .append('circle')
-            .attr('class', 'port')
-            .attr('cx', cx)
-            .attr('cy', cy + i * 12)
-            .attr('r', radius);
-          // store d3 object in ports array
-          ports.push(port);
-          // add svg port text
-          const pText = d3
-            .select<SVGElement, SNode>(node)
-            .append('text')
-            .text(pString)
-            .attr('class', 'ports-text')
-            .attr('color', 'white')
-            .attr('dx', dx)
-            .attr('dy', dy + i * 12);
-          // store d3 object in ports text array
-          portText.push(pText);
-        });
-      });
-    }
-
-    return () => {
-      // before unmoutning, if ports option was on, remove the ports
-      if (options.ports) {
-        ports.forEach(node => node.remove());
-        portText.forEach(node => node.remove());
-      }
-    };
-    // only fire when options.ports changes
-  }, [options.ports]);
-
-  /**
-   *********************
    * VOLUMES OPTION TOGGLE
    *********************
    */
@@ -257,7 +196,11 @@ const Nodes: React.FC<Props> = ({
     // only fire when options.volumes changes
   }, [options.volumes]);
 
-  return <g className="nodes"></g>;
+  return (
+    <g className="nodes">
+      <Ports portsOn={options.ports} />
+    </g>
+  );
 };
 
 export default Nodes;
