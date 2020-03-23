@@ -10,13 +10,13 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-// import helper functions
+// IMPORT HELPER FUNCTIONS
 import {
   getHorizontalPosition,
   getVerticalPosition,
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
-//import types
+// IMPORT TYPES
 import { SNode, SetSelectedContainer, Services } from '../App.d';
 
 type Props = {
@@ -35,26 +35,9 @@ const Nodes: React.FC<Props> = ({
   services,
 }) => {
   useEffect(() => {
-    console.log('nodes');
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
-
-    const dragged = (d: SNode) => {
-      //alpha hit 0 it stops. make it run again
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    };
-
-    const dragended = (d: SNode) => {
-      // alpha min is 0, head there
-      // simulation.alphaTarget(0);
-      // d.fx = null;
-      // d.fy = null;
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = d.x;
-      d.fy = d.y;
-    };
 
     //sets 'clicked' nodes back to unfixed position
     const dblClick = (d: SNode) => {
@@ -66,16 +49,23 @@ const Nodes: React.FC<Props> = ({
     let drag = d3
       .drag<SVGGElement, SNode>()
       .on('start', function dragstarted(d: SNode) {
-        d3.select(this).raise();
-        // simulation.alphaTarget(0.3).restart();
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d3.event.x;
         d3.event.y;
       })
-      .on('drag', dragged)
-      .on('end', dragended);
-    //create textAndNodes Group
-    const textsAndNodes = d3
+      .on('drag', function dragged(d: SNode) {
+        d3.select(this).raise();
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      })
+      .on('end', function dragended(d: SNode) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = d.x;
+        d.fy = d.y;
+      });
+
+    // create container svgs
+    const nodeContainers = d3
       .select('.nodes')
       .selectAll('g')
       .data<SNode>(nodes)
@@ -94,11 +84,11 @@ const Nodes: React.FC<Props> = ({
         return (d.fy = getVerticalPosition(d, treeDepth, height));
       });
 
-    // create texts
-    textsAndNodes.append('text').text((d: SNode) => d.name);
+    // add names of services
+    nodeContainers.append('text').text((d: SNode) => d.name);
 
-    //create container images
-    textsAndNodes
+    //add container images
+    nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
         return getStatic('container.svg');
@@ -107,7 +97,7 @@ const Nodes: React.FC<Props> = ({
       .attr('width', 60);
 
     return () => {
-      textsAndNodes.remove();
+      nodeContainers.remove();
     };
   }, [services]);
 
