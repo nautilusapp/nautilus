@@ -166,7 +166,7 @@ services:
     volumes:
       - "tweak-data:/var/lib/postgresql/data"
     networks:
-      - imaginaaaaation
+      - southpark-elementary
 
   lean:
     image: postgres:9.4
