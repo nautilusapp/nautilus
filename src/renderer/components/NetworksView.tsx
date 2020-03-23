@@ -132,50 +132,19 @@ const NetworksView: React.FC<Props> = ({
 
     // const forceX = d3.forceX(width/2)
     const forceX = d3.forceX((d: SNode): any => {
-      const networksArray = Object.keys(networks);
-      if (networksArray.length > 2) {
-        if (d.networks) {
-          console.log(d.name);
-          let dNetIndexCount = 0;
-          let netIndexCount = 0;
-          let hash = 0;
-          d.networks.forEach((dnet, i) => {
-            console.log(dnet);
-            networksArray.forEach((net, j) => {
-              if (dnet === net) {
-                dNetIndexCount += i;
-                netIndexCount += j;
-              }
-            });
-          });
-          hash =
-            ((dNetIndexCount + d.networks.length * 17) *
-              (netIndexCount + d.networks.length * 23) *
-              199) %
-            factorial(networksArray.length);
-          if (hash === 0) hash = 13;
-          console.log('dnic', dNetIndexCount);
-          console.log('nic', netIndexCount);
-          console.log('hash', hash);
-          return width / hash;
-        }
-      } else if (networksArray.length === 2) {
-        if (d.networks) {
-          if (d.networks.length === 2) {
-            console.log(d.name, 'has both');
-            return width / 2;
-          } else if (d.networks.length === 1) {
-            if (d.networks[0] === networksArray[0]) {
-              console.log(d.name, 'has', d.networks[0]);
-              return width / 4;
-            } else {
-              console.log(d.name, 'has', d.networks[0]);
-              return width / 2 + width / 4;
-            }
-          }
-        }
+      // const networksArray = Object.keys(networks);
+      const networkHolder: any = {};
+      if (d.networks) {
+        if (d.networks.length === 0) return width / 2;
+        let networkString = '';
+        d.networks.sort();
+        d.networks.forEach(network => {
+          networkString += network;
+        });
+        networkHolder[networkString] = true;
+        const place = Object.keys(networkHolder).indexOf(networkString);
+        return width / place + 1;
       }
-      return width / 2;
     });
     const forceY = d3.forceY(height / 2);
     //create force simulation
@@ -292,7 +261,20 @@ const NetworksView: React.FC<Props> = ({
       .attr('width', radius);
 
     // create texts
-    textsAndNodes.append('text').text((d: SNode) => d.name);
+    textsAndNodes
+      // .append('text')
+      // .text((d: SNode) => d.name)
+      .append('text')
+      .text((d: SNode): string => {
+        let networkString = '';
+        if (d.networks) {
+          d.networks.forEach((n: string) => {
+            networkString += n + ' ';
+          });
+        }
+        console.error(d);
+        return networkString;
+      });
     return () => {
       forceGraph.remove();
     };
