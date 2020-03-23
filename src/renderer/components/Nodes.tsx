@@ -10,16 +10,36 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+// import helper functions
+import {
+  getHorizontalPosition,
+  getVerticalPosition,
+} from '../helpers/getSimulationDimensions';
+import { getStatic } from '../helpers/static';
 //import types
-import { SNode, SetSelectedContainer } from '../App.d';
+import { SNode, SetSelectedContainer, Services } from '../App.d';
 
 type Props = {
+  services: Services;
   nodes: SNode[];
   setSelectedContainer: SetSelectedContainer;
+  simulation: d3.Simulation<SNode, undefined>;
+  treeDepth: number;
 };
 
-const Nodes: React.FC<Props> = ({ nodes, setSelectedContainer }) => {
+const Nodes: React.FC<Props> = ({
+  nodes,
+  setSelectedContainer,
+  simulation,
+  treeDepth,
+  services,
+}) => {
   useEffect(() => {
+    console.log('nodes');
+    const container = d3.select('.depends-wrapper');
+    const width = parseInt(container.style('width'), 10);
+    const height = parseInt(container.style('height'), 10);
+
     const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
       d.fx = d3.event.x;
@@ -85,7 +105,11 @@ const Nodes: React.FC<Props> = ({ nodes, setSelectedContainer }) => {
       })
       .attr('height', 60)
       .attr('width', 60);
-  });
+
+    return () => {
+      textsAndNodes.remove();
+    };
+  }, [services]);
 
   return <g className="nodes"></g>;
 };

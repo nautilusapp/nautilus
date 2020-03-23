@@ -11,11 +11,16 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { colorSchemeHash } from '../helpers/colorSchemeHash';
-import {
-  getHorizontalPosition,
-  getVerticalPosition,
-} from '../helpers/getSimulationDimensions';
-import { getStatic } from '../helpers/static';
+// import {
+//   getHorizontalPosition,
+//   getVerticalPosition,
+// } from '../helpers/getSimulationDimensions';
+// import { getStatic } from '../helpers/static';
+
+// IMPORT COMPONENTS
+import Nodes from './Nodes';
+
+// IMPORT STYLES
 import {
   Services,
   Link,
@@ -120,14 +125,17 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
   storePositionLocation(treeMap);
+  /**
+   *********************
+   * Variables for d3 visualizer
+   *********************
+   */
   const treeDepth = Object.keys(treeMap).length;
-
   const nodes = Object.values(nodesObject);
   const serviceGraph: SGraph = {
     nodes,
     links,
   };
-
   const simulation = d3
     .forceSimulation<SNode>(serviceGraph.nodes)
     .force(
@@ -139,6 +147,8 @@ const DependsOnView: React.FC<Props> = ({
     )
     .force('charge', d3.forceManyBody<SNode>().strength(-400));
 
+  console.log('links', JSON.stringify(links));
+
   /**
    *********************
    * Depends On View
@@ -146,31 +156,34 @@ const DependsOnView: React.FC<Props> = ({
    */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
-    const width = parseInt(container.style('width'), 10);
-    const height = parseInt(container.style('height'), 10);
+    // const width = parseInt(container.style('width'), 10);
+    // const height = parseInt(container.style('height'), 10);
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
+
+    const nodes = d3.select('.nodes').selectAll('g');
+    console.log('depends-on');
 
     //set location when ticked
     function ticked() {
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
-      textsAndNodes
-        .attr('cx', (d: SNode) => {
+      nodes
+        .attr('cx', (d: any) => {
           return (d.x = Math.max(
             sideMargin,
             Math.min(w - sideMargin - radius, d.x as number),
           ));
         })
-        .attr('cy', (d: SNode) => {
+        .attr('cy', (d: any) => {
           return (d.y = Math.max(
             15 + topMargin,
             Math.min(h - topMargin - radius, d.y as number),
           ));
         })
-        .attr('transform', (d: SNode) => {
+        .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
@@ -188,40 +201,40 @@ const DependsOnView: React.FC<Props> = ({
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
 
-    const dragged = (d: SNode) => {
-      //alpha hit 0 it stops. make it run again
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    };
+    // const dragged = (d: SNode) => {
+    //   //alpha hit 0 it stops. make it run again
+    //   d.fx = d3.event.x;
+    //   d.fy = d3.event.y;
+    // };
 
-    const dragended = (d: SNode) => {
-      // alpha min is 0, head there
-      // simulation.alphaTarget(0);
-      // d.fx = null;
-      // d.fy = null;
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = d.x;
-      d.fy = d.y;
-    };
+    // const dragended = (d: SNode) => {
+    //   // alpha min is 0, head there
+    //   // simulation.alphaTarget(0);
+    //   // d.fx = null;
+    //   // d.fy = null;
+    //   if (!d3.event.active) simulation.alphaTarget(0);
+    //   d.fx = d.x;
+    //   d.fy = d.y;
+    // };
 
-    //sets 'clicked' nodes back to unfixed position
-    const dblClick = (d: SNode) => {
-      simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    };
+    // //sets 'clicked' nodes back to unfixed position
+    // const dblClick = (d: SNode) => {
+    //   simulation.alphaTarget(0);
+    //   d.fx = null;
+    //   d.fy = null;
+    // };
 
-    let drag = d3
-      .drag<SVGGElement, SNode>()
-      .on('start', function dragstarted(d: SNode) {
-        d3.select(this).raise();
-        // simulation.alphaTarget(0.3).restart();
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d3.event.x;
-        d3.event.y;
-      })
-      .on('drag', dragged)
-      .on('end', dragended);
+    // let drag = d3
+    //   .drag<SVGGElement, SNode>()
+    //   .on('start', function dragstarted(d: SNode) {
+    //     d3.select(this).raise();
+    //     // simulation.alphaTarget(0.3).restart();
+    //     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    //     d.fx = d3.event.x;
+    //     d3.event.y;
+    //   })
+    //   .on('drag', dragged)
+    //   .on('end', dragended);
 
     //initialize graph
     const forceGraph = d3.select('.graph');
@@ -256,40 +269,39 @@ const DependsOnView: React.FC<Props> = ({
       .attr('marker-end', 'url(#end)');
 
     //create textAndNodes Group
-    const textsAndNodes = forceGraph
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('g')
-      .data<SNode>(serviceGraph.nodes)
-      .enter()
-      .append('g')
-      .on('click', (node: SNode) => {
-        setSelectedContainer(node.name);
-      })
-      .on('dblclick', dblClick)
-      .call(drag)
-      .attr('fx', (d: SNode) => {
-        //assign the initial x location to the relative displacement from the left
-        return (d.fx = getHorizontalPosition(d, width));
-      })
-      .attr('fy', (d: SNode) => {
-        return (d.fy = getVerticalPosition(d, treeDepth, height));
-      });
+    // const textsAndNodes = forceGraph
+    //   .append('g')
+    //   .attr('class', 'nodes')
+    //   .selectAll('g')
+    //   .data<SNode>(serviceGraph.nodes)
+    //   .enter()
+    //   .append('g')
+    //   .on('click', (node: SNode) => {
+    //     setSelectedContainer(node.name);
+    //   })
+    //   .on('dblclick', dblClick)
+    //   .call(drag)
+    //   .attr('fx', (d: SNode) => {
+    //     //assign the initial x location to the relative displacement from the left
+    //     return (d.fx = getHorizontalPosition(d, width));
+    //   })
+    //   .attr('fy', (d: SNode) => {
+    //     return (d.fy = getVerticalPosition(d, treeDepth, height));
+    //   });
 
-    // create texts
-    textsAndNodes.append('text').text((d: SNode) => d.name);
+    // // create texts
+    // textsAndNodes.append('text').text((d: SNode) => d.name);
 
-    //create container images
-    textsAndNodes
-      .append('svg:image')
-      .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
-      })
-      .attr('height', 60)
-      .attr('width', 60);
-
+    // //create container images
+    // textsAndNodes
+    //   .append('svg:image')
+    //   .attr('xlink:href', (d: SNode) => {
+    //     return getStatic('container.svg');
+    //   })
+    //   .attr('height', 60)
+    //   .attr('width', 60);
     return () => {
-      forceGraph.remove();
+      linkLines.remove();
     };
   }, [services]);
 
@@ -391,7 +403,7 @@ const DependsOnView: React.FC<Props> = ({
             .append('rect')
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
-              let slicedVString: string = colorSchemeHash(
+              let slicedVString = colorSchemeHash(
                 vString.slice(0, vString.indexOf(':')),
               );
               return slicedVString;
@@ -459,7 +471,15 @@ const DependsOnView: React.FC<Props> = ({
   return (
     <>
       <div className="depends-wrapper">
-        <svg className="graph"></svg>
+        <svg className="graph">
+          <Nodes
+            simulation={simulation}
+            treeDepth={treeDepth}
+            nodes={serviceGraph.nodes}
+            setSelectedContainer={setSelectedContainer}
+            services={services}
+          />
+        </svg>
       </div>
     </>
   );
