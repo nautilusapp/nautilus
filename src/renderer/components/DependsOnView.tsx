@@ -15,7 +15,7 @@ import {
   getHorizontalPosition,
   getVerticalPosition,
 } from '../helpers/getSimulationDimensions';
-import { getStatic } from '../scripts/static';
+import { getStatic } from '../helpers/static';
 import {
   Services,
   Link,
@@ -128,6 +128,17 @@ const DependsOnView: React.FC<Props> = ({
     links,
   };
 
+  const simulation = d3
+    .forceSimulation<SNode>(serviceGraph.nodes)
+    .force(
+      'link',
+      d3
+        .forceLink<SNode, Link>(serviceGraph.links)
+        .distance(130)
+        .id((node: SNode) => node.name),
+    )
+    .force('charge', d3.forceManyBody<SNode>().strength(-400));
+
   /**
    *********************
    * Depends On View
@@ -172,22 +183,10 @@ const DependsOnView: React.FC<Props> = ({
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
+    simulation.nodes(serviceGraph.nodes).on('tick', ticked);
+
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
-
-    //create force simulation
-    const simulation = d3
-      .forceSimulation<SNode>(serviceGraph.nodes)
-      .force(
-        'link',
-        d3
-          .forceLink<SNode, Link>(serviceGraph.links)
-          .distance(130)
-          .id((node: SNode) => node.name),
-      )
-      .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
-      .on('tick', ticked);
 
     const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
@@ -225,10 +224,7 @@ const DependsOnView: React.FC<Props> = ({
       .on('end', dragended);
 
     //initialize graph
-    const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
+    const forceGraph = d3.select('.graph');
 
     forceGraph
       .append('svg:defs')
@@ -462,7 +458,9 @@ const DependsOnView: React.FC<Props> = ({
 
   return (
     <>
-      <div className="depends-wrapper" />
+      <div className="depends-wrapper">
+        <svg className="graph"></svg>
+      </div>
     </>
   );
 };

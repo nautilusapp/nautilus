@@ -11,7 +11,7 @@
 import React, { useEffect } from 'react';
 //import Services from './Service';
 import * as d3 from 'd3';
-import { getStatic } from '../scripts/static';
+import { getStatic } from '../helpers/static';
 import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
 
 type Props = {
@@ -60,7 +60,7 @@ const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     const container = d3.select('.networks-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
-    const radius = 60;  // Used to determine the size of each container for border enforcement
+    const radius = 60; // Used to determine the size of each container for border enforcement
 
     //initialize graph
     const forceGraph = d3
@@ -82,7 +82,7 @@ const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
         .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
-        
+
       link
         .attr('x1', (d: any) => d.source.x + 30)
         .attr('y1', (d: any) => d.source.y + 30)
