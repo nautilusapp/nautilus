@@ -10,7 +10,6 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-import { colorSchemeHash } from '../helpers/colorSchemeHash';
 
 // IMPORT COMPONENTS
 import Nodes from './Nodes';
@@ -27,14 +26,14 @@ import {
   NodesObject,
   TreeMap,
   NodeChild,
-  View,
+  ViewT,
 } from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
-  view: View;
+  view: ViewT;
 };
 
 const DependsOnView: React.FC<Props> = ({
@@ -200,169 +199,6 @@ const DependsOnView: React.FC<Props> = ({
     window.addEventListener('resize', ticked);
   }, [view, services]);
 
-  /**
-   *********************
-   * PORTS OPTION TOGGLE
-   *********************
-   */
-  useEffect(() => {
-    // PORTS LOCATION
-    const cx = 58;
-    const cy = 18;
-    const radius = 5;
-    const dx = cx + radius;
-    const dy = cy + radius;
-    // PORTS VARIABLES
-    let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
-    const ports: d3.Selection<SVGCircleElement, SNode, any, any>[] = [];
-    const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
-    if (options.ports) {
-      // select all nodes with ports
-      nodesWithPorts = d3
-        .select('.nodes')
-        .selectAll<SVGGElement, SNode>('g')
-        .filter((d: SNode) => d.ports.length > 0);
-
-      // iterate through all nodes with ports
-      nodesWithPorts.each(function(d: SNode) {
-        const node = this;
-        // iterate through all ports of node
-        d.ports.forEach((pString, i) => {
-          // add svg port
-          const port = d3
-            .select<SVGElement, SNode>(node)
-            .append('circle')
-            .attr('class', 'port')
-            .attr('cx', cx)
-            .attr('cy', cy + i * 12)
-            .attr('r', radius);
-          // store d3 object in ports array
-          ports.push(port);
-          // add svg port text
-          const pText = d3
-            .select<SVGElement, SNode>(node)
-            .append('text')
-            .text(pString)
-            .attr('class', 'ports-text')
-            .attr('color', 'white')
-            .attr('dx', dx)
-            .attr('dy', dy + i * 12);
-          // store d3 object in ports text array
-          portText.push(pText);
-        });
-      });
-    }
-
-    return () => {
-      // before unmoutning, if ports option was on, remove the ports
-      if (options.ports) {
-        ports.forEach(node => node.remove());
-        portText.forEach(node => node.remove());
-      }
-    };
-    // only fire when options.ports changes
-  }, [options.ports]);
-
-  /**
-   *********************
-   * VOLUMES OPTION TOGGLE
-   *********************
-   */
-  useEffect(() => {
-    // VOLUMES LOCATION
-    const x = 8;
-    const y = 20;
-    const width = 10;
-    const height = 10;
-    // VOLUMES VARIABLES
-    let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
-    const volumes: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
-    const volumeText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
-    if (options.volumes) {
-      // select all nodes with volumes
-      nodesWithVolumes = d3
-        .select('.nodes')
-        .selectAll<SVGGElement, SNode>('g')
-        .filter((d: SNode) => d.volumes.length > 0);
-
-      // iterate through all nodes with volumes
-      nodesWithVolumes.each(function(d: SNode) {
-        const node = this;
-        // iterate through all volumes of node
-        d.volumes.forEach((vString, i) => {
-          let onClick = false;
-          let onceClicked = false;
-          // add svg volume
-          const volume = d3
-            .select<SVGElement, SNode>(node)
-            .append('rect')
-            .attr('class', 'volumeSVG')
-            .attr('fill', () => {
-              let slicedVString = colorSchemeHash(
-                vString.slice(0, vString.indexOf(':')),
-              );
-              return slicedVString;
-            })
-            .attr('width', width)
-            .attr('height', height)
-            .attr('x', x)
-            .attr('y', y + i * 12)
-            .on('mouseover', () => {
-              return vText.style('visibility', 'visible');
-            })
-            .on('mouseout', () => {
-              !onClick
-                ? vText.style('visibility', 'hidden')
-                : vText.style('visibility', 'visible');
-            })
-            .on('click', () => {
-              onceClicked = !onceClicked;
-              onClick = onceClicked;
-            });
-          // store d3 object in volumes array
-          volumes.push(volume);
-          // add svg volume text
-          const vText = d3
-            .select<SVGElement, SNode>(node)
-            .append('text')
-            .text(vString)
-            .attr('class', 'volume-text')
-            .attr('fill', 'black')
-            .attr('text-anchor', 'end')
-            .attr('dx', x - 5)
-            .attr('dy', y + (i + 1) * 11)
-            .style('visibility', 'hidden');
-          // store d3 object in volumes text array
-          volumeText.push(vText);
-        });
-      });
-    }
-
-    return () => {
-      // before unmounting, if volumes option was on, remove the volumes
-      if (options.volumes) {
-        volumes.forEach(node => node.remove());
-        volumeText.forEach(node => node.remove());
-      }
-    };
-    // only fire when options.volumes changes
-  }, [options.volumes]);
-
-  /**
-   *********************
-   * DEPENDS ON OPTION TOGGLE
-   *********************
-   */
-  useEffect(() => {
-    if (options.dependsOn) {
-      d3.select('.arrowsGroup').classed('hide', false);
-      d3.select('.links').classed('hide', false);
-    } else {
-      d3.select('.arrowsGroup').classed('hide', true);
-      d3.select('.links').classed('hide', true);
-    }
-  }, [options.dependsOn]);
-
   return (
     <>
       <div className="depends-wrapper">
@@ -373,8 +209,13 @@ const DependsOnView: React.FC<Props> = ({
             nodes={serviceGraph.nodes}
             setSelectedContainer={setSelectedContainer}
             services={services}
+            options={options}
           />
-          <Links links={serviceGraph.links} services={services} />
+          <Links
+            links={serviceGraph.links}
+            services={services}
+            options={options}
+          />
         </svg>
       </div>
     </>
