@@ -12,18 +12,20 @@ import React from 'react';
 // import Service from './Service';
 import DependsOnView from './DependsOnView';
 
-import { Services, SetSelectedContainer, Options } from '../App.d';
+import { Services, SetSelectedContainer, Options, View } from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
+  view: View;
 };
 
 const ServicesWrapper: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
+  view,
 }) => {
   return (
     <div className="services-wrapper">
@@ -32,6 +34,7 @@ const ServicesWrapper: React.FC<Props> = ({
         services={services}
         setSelectedContainer={setSelectedContainer}
         options={options}
+        view={view}
       />
     </div>
   );

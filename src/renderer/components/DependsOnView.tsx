@@ -14,6 +14,7 @@ import { colorSchemeHash } from '../helpers/colorSchemeHash';
 
 // IMPORT COMPONENTS
 import Nodes from './Nodes';
+import Links from './Links';
 
 // IMPORT STYLES
 import {
@@ -26,18 +27,21 @@ import {
   NodesObject,
   TreeMap,
   NodeChild,
+  View,
 } from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
+  view: View;
 };
 
 const DependsOnView: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
+  view,
 }) => {
   let links: Link[] = [];
   const nodesObject: NodesObject = Object.keys(services).reduce(
@@ -131,16 +135,18 @@ const DependsOnView: React.FC<Props> = ({
     nodes,
     links,
   };
-  const simulation = d3
-    .forceSimulation<SNode>(serviceGraph.nodes)
-    .force(
-      'link',
-      d3
-        .forceLink<SNode, Link>(serviceGraph.links)
-        .distance(130)
-        .id((node: SNode) => node.name),
-    )
-    .force('charge', d3.forceManyBody<SNode>().strength(-400));
+
+  console.log('dependson first', JSON.stringify(serviceGraph.links));
+
+  const simulation = d3.forceSimulation<SNode>(serviceGraph.nodes).force(
+    'link',
+    d3
+      .forceLink<SNode, Link>(serviceGraph.links)
+      .distance(130)
+      .id((node: SNode) => node.name),
+  );
+
+  console.log('dependson', JSON.stringify(serviceGraph.links));
 
   /**
    *********************
@@ -156,6 +162,7 @@ const DependsOnView: React.FC<Props> = ({
     const radius = 60; // Used to determine the size of each container for border enforcement
 
     const nodes = d3.select('.nodes').selectAll('g');
+    const linkLines = d3.select('.links').selectAll('line');
 
     //set location when ticked
     function ticked() {
@@ -188,49 +195,14 @@ const DependsOnView: React.FC<Props> = ({
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
-    simulation.nodes(serviceGraph.nodes).on('tick', ticked);
+    simulation
+      .nodes(serviceGraph.nodes)
+      .force('charge', d3.forceManyBody<SNode>().strength(-400))
+      .on('tick', ticked);
 
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
-
-    //initialize graph
-    const forceGraph = d3.select('.graph');
-
-    forceGraph
-      .append('svg:defs')
-      .attr('class', 'arrowsGroup')
-      .selectAll('marker')
-      .data(['end']) // Different link/path types can be defined here
-      .enter()
-      .append('svg:marker') // This section adds in the arrows
-      .attr('id', String)
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
-
-    const linkGroup = forceGraph.append('g').attr('class', 'linksGroup');
-
-    const linkLines = linkGroup
-      .selectAll('line')
-      .data(serviceGraph.links)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
-      .attr('class', 'link')
-      .attr('marker-end', 'url(#end)');
-
-    linkGroup.lower();
-
-    return () => {
-      linkGroup.remove();
-    };
-  }, [services]);
+  }, [view, services]);
 
   /**
    *********************
@@ -388,10 +360,10 @@ const DependsOnView: React.FC<Props> = ({
   useEffect(() => {
     if (options.dependsOn) {
       d3.select('.arrowsGroup').classed('hide', false);
-      d3.select('.linksGroup').classed('hide', false);
+      d3.select('.links').classed('hide', false);
     } else {
       d3.select('.arrowsGroup').classed('hide', true);
-      d3.select('.linksGroup').classed('hide', true);
+      d3.select('.links').classed('hide', true);
     }
   }, [options.dependsOn]);
 
@@ -406,6 +378,7 @@ const DependsOnView: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             services={services}
           />
+          <Links links={serviceGraph.links} services={services} />
         </svg>
       </div>
     </>
