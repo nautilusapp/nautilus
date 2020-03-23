@@ -130,11 +130,9 @@ const NetworksView: React.FC<Props> = ({
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
 
-    // const forceX = d3.forceX(width / 2);
     const networkHolder: { [networkString: string]: boolean } = {};
 
     const getSpacing = (): number => {
-      console.log('<---');
       nodes.forEach((d: SNode): void => {
         if (d.networks) {
           let networkString = '';
@@ -143,21 +141,14 @@ const NetworksView: React.FC<Props> = ({
             networkString += network;
           });
           networkHolder[networkString] = true;
-          console.log('-->', networkHolder);
-          networkString = '';
         }
       });
-      console.log(networkHolder);
-      // if (Object.keys(networkHolder).length <= 0) {
-      //   return width / 2;
-      // }
       return width / (Object.keys(networkHolder).length + 1);
     };
     const spacing = getSpacing();
-    console.log('spacing', spacing);
+
     const forceX = d3
       .forceX((d: SNode): any => {
-        // const networksArray = Object.keys(networks);
         if (d.networks) {
           if (d.networks.length === 0) return width / 2;
           let networkString = '';
@@ -173,7 +164,7 @@ const NetworksView: React.FC<Props> = ({
       })
       .strength(0.5);
 
-    const forceY = d3.forceY(height / 2);
+    const forceY = d3.forceY(height / 2).strength(0.5);
     //create force simulation
     const simulation = d3
       .forceSimulation<SNode>(serviceGraph.nodes)
@@ -289,8 +280,8 @@ const NetworksView: React.FC<Props> = ({
 
     // create texts
     textsAndNodes
-      .append('text')
-      .text((d: SNode) => d.name)
+      // .append('text')
+      // .text((d: SNode) => d.name)
       .append('text')
       .text((d: SNode): string => {
         let networkString = '';
