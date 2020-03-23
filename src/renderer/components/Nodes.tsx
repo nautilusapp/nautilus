@@ -20,7 +20,7 @@ import { colorSchemeHash } from '../helpers/colorSchemeHash';
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
 // IMPORT COMPONENTS
-import Ports from './Ports';
+import NodePorts from './NodePorts';
 
 type Props = {
   services: Services;
@@ -198,7 +198,7 @@ const Nodes: React.FC<Props> = ({
 
   return (
     <g className="nodes">
-      <Ports portsOn={options.ports} />
+      <NodePorts portsOn={options.ports} />
     </g>
   );
 };

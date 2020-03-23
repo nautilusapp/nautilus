@@ -18,7 +18,7 @@ type Props = {
   portsOn: boolean;
 };
 
-const Ports: React.FC<Props> = ({ portsOn }) => {
+const NodePorts: React.FC<Props> = ({ portsOn }) => {
   useEffect(() => {
     // PORTS LOCATION
     const cx = 58;
@@ -80,4 +80,4 @@ const Ports: React.FC<Props> = ({ portsOn }) => {
   return <></>;
 };
 
-export default Ports;
+export default NodePorts;
