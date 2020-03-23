@@ -16,4 +16,5 @@ jobs:
   include:
     - stage: Test
       script:
+        - npm install
         - npm run dev
