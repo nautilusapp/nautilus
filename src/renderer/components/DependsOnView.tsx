@@ -10,8 +10,11 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-const d3dag = require('d3-dag');
-import { colorSchemeHash } from '../common';
+import { colorSchemeHash } from '../helpers/colorSchemeHash';
+import {
+  getHorizontalPosition,
+  getVerticalPosition,
+} from '../helpers/getSimulationDimensions';
 import { getStatic } from '../scripts/static';
 import {
   Services,
@@ -20,7 +23,9 @@ import {
   SNode,
   SetSelectedContainer,
   Options,
-  Roots,
+  NodesObject,
+  TreeMap,
+  NodeChild,
 } from '../App.d';
 
 type Props = {
@@ -35,132 +40,89 @@ const DependsOnView: React.FC<Props> = ({
   options,
 }) => {
   let links: Link[] = [];
-  const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
-    const ports: string[] = [];
-    const volumes: string[] = [];
-    if (services[sName].hasOwnProperty('ports')) {
-      services[sName].ports.forEach(port => {
-        ports.push(port);
-      });
-    }
-    if (services[sName].hasOwnProperty('volumes')) {
-      services[sName].volumes.forEach(vol => {
-        volumes.push(vol);
-      });
-    }
-    if (services[sName].hasOwnProperty('depends_on')) {
-      services[sName].depends_on.forEach(el => {
-        links.push({ source: el, target: sName });
-      });
-    }
-    return {
-      id: i,
-      name: sName,
-      ports: ports,
-      volumes: volumes,
-    };
-  });
-
-  //roots object creation
-  const roots = Object.keys(services).reduce((acc: Roots, el) => {
-    acc[el] = true;
-    return acc;
-  }, {});
-  //iterate through links and find if the roots object contains any of the link targets
-  links.forEach((el: Link) => {
-    if (roots[el.target]) {
-      //filter the roots
-      delete roots[el.target];
-    }
-  });
-
-  //create dagdata in a format to create a tree
-  //start by creating an object containing an id key with the service name
-  const dagData = nodes.reduce((acc: any, el: SNode) => {
-    acc[el.name] = { id: el.name };
-    return acc;
-  }, {});
-  // populate nodes with parentIds key as an array of nodes
-  links.forEach((el: Link) => {
-    if (!dagData[el.target].parentIds) {
-      dagData[el.target].parentIds = [];
-    }
-    dagData[el.target].parentIds.push(el.source);
-  });
-  const dagArray = Object.keys(dagData).reduce((acc: any, el: string) => {
-    acc.push(dagData[el]);
-    return acc;
-  }, []);
-
-  //create tree from dagdata
-  const tree = d3dag.dagStratify()(dagArray);
-
-  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
-  const treeMap: any = {};
-  //create an object with all the service names
-  const servicePosition = Object.keys(services).reduce((acc: any, el) => {
-    acc[el] = {};
-    return acc;
-  }, {});
-  //the tree functions creates trees differently if there are multiple parents so we need two functions for either case
-
-  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
-  const createTreeMapSingleRoot = (node: any, height: number = 0, row = []) => {
-    if (!treeMap[height]) treeMap[height] = [];
-    treeMap[height].push(node);
-    if (node.children) {
-      node.children.forEach((el: any) => {
-        createTreeMapSingleRoot(el, height + 1);
-      });
-    }
-  };
-  //create a tree map as an object as follows {[row]: [Node,Node,Node]}
-  const createTreeMap = (node: any, height: number = 0) => {
-    if (!treeMap[height]) treeMap[height] = [];
-    if (node.children) {
-      node.children.forEach((el: any) => {
-        treeMap[height].push(el);
-        createTreeMap(el, height + 1);
-      });
-    }
-  };
-  // if only one root, run singleroot function, else run other function
-  Object.keys(roots).length === 1
-    ? createTreeMapSingleRoot(tree)
-    : createTreeMap(tree);
-
-  //remove duplicates from arrays for each row within Treemap
-  Object.keys(treeMap).forEach((row: string) => {
-    const services: any = {};
-    treeMap[row].forEach((node: SNode, i: number) => {
-      if (services[node.id]) {
-        treeMap[row].splice(i, 1);
-      } else {
-        services[node.id] = true;
+  const nodesObject: NodesObject = Object.keys(services).reduce(
+    (acc: NodesObject, sName: string, i) => {
+      const ports: string[] = [];
+      const volumes: string[] = [];
+      if (services[sName].hasOwnProperty('ports')) {
+        services[sName].ports.forEach(port => {
+          ports.push(port);
+        });
       }
-    });
-  });
-  //evaluate the depth of the tree
-  const treeDepth = Object.keys(treeMap).length;
+      if (services[sName].hasOwnProperty('volumes')) {
+        services[sName].volumes.forEach(vol => {
+          volumes.push(vol);
+        });
+      }
+      if (services[sName].hasOwnProperty('depends_on')) {
+        services[sName].depends_on.forEach(el => {
+          links.push({ source: el, target: sName });
+        });
+      }
+      const node = {
+        id: i,
+        name: sName,
+        ports,
+        volumes,
+        children: {},
+        row: 0,
+        rowLength: 0,
+        column: 0,
+      };
+      acc[sName] = node;
+      return acc;
+    },
+    {},
+  );
 
-  const storePositionLocation = (service: string) => {
-    Object.keys(treeMap).forEach((row: string) => {
-      treeMap[row].forEach((node: any, i: number) => {
-        if (node.id === service) {
-          servicePosition[service] = {
-            row: Number(row),
-            column: i + 1,
-            rowLength: treeMap[row].length,
-          };
+  //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
+  const roots = JSON.parse(JSON.stringify(nodesObject));
+  //iterate through links and find if the roots object contains any of the link targets
+  links.forEach((link: Link) => {
+    if (roots[link.target]) {
+      //filter the roots
+      delete roots[link.target];
+    }
+  });
+
+  //create Tree
+  const createTree = (node: NodeChild) => {
+    Object.keys(node).forEach((root: string) => {
+      links.forEach((link: Link) => {
+        if (link.source === root) {
+          node[root].children[link.target] = nodesObject[link.target];
         }
       });
+      createTree(node[root].children);
     });
   };
+  createTree(roots);
 
-  Object.keys(servicePosition).forEach((service: string) => {
-    storePositionLocation(service);
-  });
+  //traverse tree and create object outlining the rows/columns in each tree
+  const treeMap: TreeMap = {};
+  const createTreeMap = (node: NodeChild, height: number = 0) => {
+    if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
+    Object.keys(node).forEach((sName: string) => {
+      treeMap[height].push(sName);
+      createTreeMap(node[sName].children, height + 1);
+    });
+  };
+  createTreeMap(roots);
 
+  // populate nodesObject with column, row, and rowLength
+  const storePositionLocation = (treeHierarchy: TreeMap) => {
+    Object.keys(treeHierarchy).forEach((row: string) => {
+      treeHierarchy[row].forEach((sName: string, column: number) => {
+        nodesObject[sName].row = Number(row);
+        if (!nodesObject[sName].column) nodesObject[sName].column = column + 1;
+        nodesObject[sName].rowLength = treeHierarchy[row].length;
+      });
+    });
+  };
+  storePositionLocation(treeMap);
+  const treeDepth = Object.keys(treeMap).length;
+
+  const nodes = Object.values(nodesObject);
   const serviceGraph: SGraph = {
     nodes,
     links,
@@ -179,20 +141,8 @@ const DependsOnView: React.FC<Props> = ({
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
 
-    //create roots object that starts with all of the keys of services and values of true (just a placeholder)
-
-    //evaluate number of roots and determine the width of the d3 simulation to
-    //determine how many segments it can be split into with the roots in the middle
-    const rootNumbers = Object.keys(roots).length;
-    const rootDisplacement = width / (rootNumbers + 1);
-    let rootLocation = rootDisplacement;
-    Object.keys(roots).forEach(el => {
-      roots[el] = rootLocation;
-      rootLocation += rootDisplacement;
-    });
-
     //set location when ticked
-    const ticked = () => {
+    function ticked() {
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
@@ -220,7 +170,7 @@ const DependsOnView: React.FC<Props> = ({
         .attr('y2', (d: any) => d.target.y + 30);
 
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
-    };
+    }
 
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
@@ -324,12 +274,10 @@ const DependsOnView: React.FC<Props> = ({
       .call(drag)
       .attr('fx', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
-        return (d.fx =
-          (width / (servicePosition[d.name].rowLength + 1)) *
-          servicePosition[d.name].column);
+        return (d.fx = getHorizontalPosition(d, width));
       })
       .attr('fy', (d: SNode) => {
-        return (d.fy = (height / treeDepth) * servicePosition[d.name].row);
+        return (d.fy = getVerticalPosition(d, treeDepth, height));
       });
 
     // create texts

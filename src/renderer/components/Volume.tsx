@@ -9,7 +9,7 @@
  * ************************************
  */
 import React from 'react';
-import { colorSchemeHash } from '../common';
+import { colorSchemeHash } from '../helpers/colorSchemeHash';
 
 type Props = {
   volume: string;

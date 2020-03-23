@@ -32,11 +32,19 @@ export type Options = {
   [key: string]: boolean;
 };
 
+export type NodeChild = {
+  [service: string]: SNode;
+};
+
 interface SNode extends SimulationNodeDatum {
   id: number;
   name: string;
   ports: string[];
   volumes: string[];
+  row: number;
+  column: number;
+  rowLength: number;
+  children: NodeChild;
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -79,6 +87,10 @@ export type SetSelectedContainer = {
   (containerName: string): void;
 };
 
-export type Roots = {
-  [service: string]: boolean | number;
+export type NodesObject = {
+  [service: string]: SNode;
+};
+
+export type TreeMap = {
+  [row: string]: string[];
 };
