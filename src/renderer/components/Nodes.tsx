@@ -17,13 +17,7 @@ import {
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
 // IMPORT TYPES
-import {
-  SNode,
-  SetSelectedContainer,
-  Services,
-  Options,
-  ViewT,
-} from '../App.d';
+import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
 // IMPORT COMPONENTS
 import NodePorts from './NodePorts';
 import NodeVolumes from './NodeVolumes';
@@ -34,7 +28,6 @@ type Props = {
   setSelectedContainer: SetSelectedContainer;
   simulation: d3.Simulation<SNode, undefined>;
   treeDepth: number;
-  view: ViewT;
   options: Options;
 };
 
@@ -44,7 +37,6 @@ const Nodes: React.FC<Props> = ({
   simulation,
   treeDepth,
   services,
-  view,
   options,
 }) => {
   /**
@@ -117,7 +109,7 @@ const Nodes: React.FC<Props> = ({
     return () => {
       nodeContainers.remove();
     };
-  }, [view, services]);
+  }, [services]);
 
   return (
     <g className="nodes">

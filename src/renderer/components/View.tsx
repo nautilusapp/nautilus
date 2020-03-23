@@ -199,7 +199,13 @@ const DependsOnView: React.FC<Props> = ({
     } else {
       console.log(view);
       console.log(simulation);
-      d3Nodes.attr('fx', (d: SNode) => (d.fx = null)).attr('fy', null);
+      d3Nodes
+        .attr('fx', (d: any) => {
+          return (d.fx = null);
+        })
+        .attr('fy', (d: any) => {
+          return (d.fy = null);
+        });
 
       const networkHolder: { [networkString: string]: boolean } = {};
       const getSpacing = (): number => {
