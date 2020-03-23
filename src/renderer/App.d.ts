@@ -10,12 +10,12 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: View;
+  view: ViewT;
   options: Options;
   version: string;
 };
 
-type View = 'networks' | 'depends_on';
+type ViewT = 'networks' | 'depends_on';
 
 type Clicked = {
   readonly [propName: string]: string;

@@ -17,7 +17,16 @@ import {
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
 // IMPORT TYPES
-import { SNode, SetSelectedContainer, Services, View } from '../App.d';
+import {
+  SNode,
+  SetSelectedContainer,
+  Services,
+  Options,
+  ViewT,
+} from '../App.d';
+// IMPORT COMPONENTS
+import NodePorts from './NodePorts';
+import NodeVolumes from './NodeVolumes';
 
 type Props = {
   services: Services;
@@ -25,7 +34,8 @@ type Props = {
   setSelectedContainer: SetSelectedContainer;
   simulation: d3.Simulation<SNode, undefined>;
   treeDepth: number;
-  view: View;
+  view: ViewT;
+  options: Options;
 };
 
 const Nodes: React.FC<Props> = ({
@@ -35,7 +45,13 @@ const Nodes: React.FC<Props> = ({
   treeDepth,
   services,
   view,
+  options,
 }) => {
+  /**
+   *********************
+   * RENDER NODES
+   *********************
+   */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);
@@ -103,7 +119,12 @@ const Nodes: React.FC<Props> = ({
     };
   }, [view, services]);
 
-  return <g className="nodes"></g>;
+  return (
+    <g className="nodes">
+      <NodePorts portsOn={options.ports} />
+      <NodeVolumes volumesOn={options.volumes} />
+    </g>
+  );
 };
 
 export default Nodes;
