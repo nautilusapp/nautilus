@@ -11,7 +11,7 @@
 import React, { useEffect } from 'react';
 // import Services from './Service';
 import * as d3 from 'd3';
-import { getStatic } from '../scripts/static';
+import { getStatic } from '../helpers/static';
 import {
   Services,
   Link,
@@ -122,11 +122,11 @@ const NetworksView: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-      link
-        .attr('x1', (d: any) => d.source.x + 30)
-        .attr('y1', (d: any) => d.source.y + 30)
-        .attr('x2', (d: any) => d.target.x + 30)
-        .attr('y2', (d: any) => d.target.y + 30);
+      // link
+      //   .attr('x1', (d: any) => d.source.x + 30)
+      //   .attr('y1', (d: any) => d.source.y + 30)
+      //   .attr('x2', (d: any) => d.target.x + 30)
+      //   .attr('y2', (d: any) => d.target.y + 30);
     };
 
     // move force graph with resizing window
@@ -135,16 +135,11 @@ const NetworksView: React.FC<Props> = ({
     const networkHolder: { [networkString: string]: boolean } = {};
 
     const getSpacing = (): number => {
-      console.log('-->');
       nodes.forEach((d: SNode): void => {
-        console.log('<--');
-        console.log(d);
         if (d.networks) {
-          console.log('--*');
           let networkString = '';
           d.networks.sort();
           d.networks.forEach(network => {
-            console.log('*--');
             networkString += network;
           });
           networkHolder[networkString] = true;
@@ -153,7 +148,7 @@ const NetworksView: React.FC<Props> = ({
       return width / (Object.keys(networkHolder).length + 1);
     };
     const spacing = getSpacing();
-    console.log(networkHolder);
+
     const forceX = d3
       .forceX((d: SNode): any => {
         if (d.networks) {
@@ -295,7 +290,6 @@ const NetworksView: React.FC<Props> = ({
     //       networkString += n + ' ';
     //     });
     //   }
-    //   console.error(d);
     //   return networkString;
     // });
     return () => {
