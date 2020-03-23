@@ -145,6 +145,7 @@ class App extends Component<{}, State> {
             volumes={this.state.volumes}
             bindMounts={this.state.bindMounts}
             view={this.state.view}
+            networks={this.state.networks}
           />
         </div>
       </div>

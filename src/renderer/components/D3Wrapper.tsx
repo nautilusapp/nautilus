@@ -21,6 +21,7 @@ import {
   Options,
   ReadOnlyObj,
   ViewT,
+  Networks,
 } from '../App.d';
 
 type Props = {
@@ -32,6 +33,7 @@ type Props = {
   volumes: Array<ReadOnlyObj>;
   bindMounts: Array<string>;
   view: ViewT;
+  networks: Networks;
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -43,6 +45,7 @@ const D3Wrapper: React.FC<Props> = ({
   volumes,
   bindMounts,
   view,
+  networks,
 }) => {
   return (
     <div className="d3-wrapper">
@@ -55,6 +58,7 @@ const D3Wrapper: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             options={options}
             view={view}
+            networks={networks}
           />
           <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />
         </>

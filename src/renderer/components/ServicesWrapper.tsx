@@ -9,15 +9,23 @@
  * ************************************
  */
 import React from 'react';
-import View from './View';
+// import View from './View';
+import NetworksView from './NetworksView';
 
-import { Services, SetSelectedContainer, Options, ViewT } from '../App.d';
+import {
+  Services,
+  SetSelectedContainer,
+  Options,
+  ViewT,
+  Networks,
+} from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
   view: ViewT;
+  networks: Networks;
 };
 
 const ServicesWrapper: React.FC<Props> = ({
@@ -25,14 +33,21 @@ const ServicesWrapper: React.FC<Props> = ({
   setSelectedContainer,
   options,
   view,
+  networks,
 }) => {
   return (
     <div className="services-wrapper">
-      <View
+      {/*  <View
         services={services}
         setSelectedContainer={setSelectedContainer}
         options={options}
         view={view}
+      /> */}
+      <NetworksView
+        services={services}
+        setSelectedContainer={setSelectedContainer}
+        options={options}
+        networks={networks}
       />
     </div>
   );
