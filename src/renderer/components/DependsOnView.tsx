@@ -11,11 +11,12 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { colorSchemeHash } from '../helpers/colorSchemeHash';
-import {
-  getHorizontalPosition,
-  getVerticalPosition,
-} from '../helpers/getSimulationDimensions';
-import { getStatic } from '../scripts/static';
+
+// IMPORT COMPONENTS
+import Nodes from './Nodes';
+import Links from './Links';
+
+// IMPORT STYLES
 import {
   Services,
   Link,
@@ -26,18 +27,21 @@ import {
   NodesObject,
   TreeMap,
   NodeChild,
+  View,
 } from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
+  view: View;
 };
 
 const DependsOnView: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
+  view,
 }) => {
   let links: Link[] = [];
   const nodesObject: NodesObject = Object.keys(services).reduce(
@@ -120,13 +124,25 @@ const DependsOnView: React.FC<Props> = ({
     });
   };
   storePositionLocation(treeMap);
+  /**
+   *********************
+   * Variables for d3 visualizer
+   *********************
+   */
   const treeDepth = Object.keys(treeMap).length;
-
   const nodes = Object.values(nodesObject);
   const serviceGraph: SGraph = {
     nodes,
     links,
   };
+
+  const simulation = d3.forceSimulation<SNode>(serviceGraph.nodes).force(
+    'link',
+    d3
+      .forceLink<SNode, Link>(serviceGraph.links)
+      .distance(130)
+      .id((node: SNode) => node.name),
+  );
 
   /**
    *********************
@@ -135,31 +151,34 @@ const DependsOnView: React.FC<Props> = ({
    */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
-    const width = parseInt(container.style('width'), 10);
-    const height = parseInt(container.style('height'), 10);
+    // const width = parseInt(container.style('width'), 10);
+    // const height = parseInt(container.style('height'), 10);
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
+
+    const nodes = d3.select('.nodes').selectAll('g');
+    const linkLines = d3.select('.links').selectAll('line');
 
     //set location when ticked
     function ticked() {
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
-      textsAndNodes
-        .attr('cx', (d: SNode) => {
+      nodes
+        .attr('cx', (d: any) => {
           return (d.x = Math.max(
             sideMargin,
             Math.min(w - sideMargin - radius, d.x as number),
           ));
         })
-        .attr('cy', (d: SNode) => {
+        .attr('cy', (d: any) => {
           return (d.y = Math.max(
             15 + topMargin,
             Math.min(h - topMargin - radius, d.y as number),
           ));
         })
-        .attr('transform', (d: SNode) => {
+        .attr('transform', (d: any) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
@@ -172,130 +191,14 @@ const DependsOnView: React.FC<Props> = ({
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
-    // move force graph with resizing window
-    window.addEventListener('resize', ticked);
-
-    //create force simulation
-    const simulation = d3
-      .forceSimulation<SNode>(serviceGraph.nodes)
-      .force(
-        'link',
-        d3
-          .forceLink<SNode, Link>(serviceGraph.links)
-          .distance(130)
-          .id((node: SNode) => node.name),
-      )
+    simulation
+      .nodes(serviceGraph.nodes)
       .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    const dragged = (d: SNode) => {
-      //alpha hit 0 it stops. make it run again
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    };
-
-    const dragended = (d: SNode) => {
-      // alpha min is 0, head there
-      // simulation.alphaTarget(0);
-      // d.fx = null;
-      // d.fy = null;
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = d.x;
-      d.fy = d.y;
-    };
-
-    //sets 'clicked' nodes back to unfixed position
-    const dblClick = (d: SNode) => {
-      simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    };
-
-    let drag = d3
-      .drag<SVGGElement, SNode>()
-      .on('start', function dragstarted(d: SNode) {
-        d3.select(this).raise();
-        // simulation.alphaTarget(0.3).restart();
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d3.event.x;
-        d3.event.y;
-      })
-      .on('drag', dragged)
-      .on('end', dragended);
-
-    //initialize graph
-    const forceGraph = d3
-      .select('.depends-wrapper')
-      .append('svg')
-      .attr('class', 'graph');
-
-    forceGraph
-      .append('svg:defs')
-      .attr('class', 'arrowsGroup')
-      .selectAll('marker')
-      .data(['end']) // Different link/path types can be defined here
-      .enter()
-      .append('svg:marker') // This section adds in the arrows
-      .attr('id', String)
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
-
-    const linkLines = forceGraph
-      .append('g')
-      .attr('class', 'linksGroup')
-      .selectAll('line')
-      .data(serviceGraph.links)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
-      .attr('class', 'link')
-      .attr('marker-end', 'url(#end)');
-
-    //create textAndNodes Group
-    const textsAndNodes = forceGraph
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('g')
-      .data<SNode>(serviceGraph.nodes)
-      .enter()
-      .append('g')
-      .on('click', (node: SNode) => {
-        setSelectedContainer(node.name);
-      })
-      .on('dblclick', dblClick)
-      .call(drag)
-      .attr('fx', (d: SNode) => {
-        //assign the initial x location to the relative displacement from the left
-        return (d.fx = getHorizontalPosition(d, width));
-      })
-      .attr('fy', (d: SNode) => {
-        return (d.fy = getVerticalPosition(d, treeDepth, height));
-      });
-
-    // create texts
-    textsAndNodes.append('text').text((d: SNode) => d.name);
-
-    //create container images
-    textsAndNodes
-      .append('svg:image')
-      .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
-      })
-      .attr('height', 60)
-      .attr('width', 60);
-
-    return () => {
-      forceGraph.remove();
-    };
-  }, [services]);
+    // move force graph with resizing window
+    window.addEventListener('resize', ticked);
+  }, [view, services]);
 
   /**
    *********************
@@ -395,7 +298,7 @@ const DependsOnView: React.FC<Props> = ({
             .append('rect')
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
-              let slicedVString: string = colorSchemeHash(
+              let slicedVString = colorSchemeHash(
                 vString.slice(0, vString.indexOf(':')),
               );
               return slicedVString;
@@ -453,16 +356,27 @@ const DependsOnView: React.FC<Props> = ({
   useEffect(() => {
     if (options.dependsOn) {
       d3.select('.arrowsGroup').classed('hide', false);
-      d3.select('.linksGroup').classed('hide', false);
+      d3.select('.links').classed('hide', false);
     } else {
       d3.select('.arrowsGroup').classed('hide', true);
-      d3.select('.linksGroup').classed('hide', true);
+      d3.select('.links').classed('hide', true);
     }
   }, [options.dependsOn]);
 
   return (
     <>
-      <div className="depends-wrapper" />
+      <div className="depends-wrapper">
+        <svg className="graph">
+          <Nodes
+            simulation={simulation}
+            treeDepth={treeDepth}
+            nodes={serviceGraph.nodes}
+            setSelectedContainer={setSelectedContainer}
+            services={services}
+          />
+          <Links links={serviceGraph.links} services={services} />
+        </svg>
+      </div>
     </>
   );
 };

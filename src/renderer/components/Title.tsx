@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Image from 'react-bootstrap/Image';
-import { getStatic } from '../scripts/static';
+import { getStatic } from '../helpers/static';
 
 type Props = {
   // projectName: string;
