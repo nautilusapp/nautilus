@@ -199,6 +199,21 @@ const DependsOnView: React.FC<Props> = ({
     window.addEventListener('resize', ticked);
   }, [view, services]);
 
+  /**
+   *********************
+   * DEPENDS ON OPTION TOGGLE
+   *********************
+   */
+  useEffect(() => {
+    if (options.dependsOn) {
+      d3.select('.arrowsGroup').classed('hide', false);
+      d3.select('.links').classed('hide', false);
+    } else {
+      d3.select('.arrowsGroup').classed('hide', true);
+      d3.select('.links').classed('hide', true);
+    }
+  }, [options.dependsOn]);
+
   return (
     <>
       <div className="depends-wrapper">
