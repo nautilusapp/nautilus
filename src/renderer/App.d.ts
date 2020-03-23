@@ -47,6 +47,7 @@ interface SNode extends SimulationNodeDatum {
   column: number;
   rowLength: number;
   children: NodeChild;
+  networks?: string[];
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -68,6 +69,7 @@ export type Service = {
   ports: string[];
   volumes: string[];
   depends_on: string[];
+  networks: string[];
 };
 
 export type Services = {
@@ -95,4 +97,8 @@ export type NodesObject = {
 
 export type TreeMap = {
   [row: string]: string[];
+};
+
+export type Networks = {
+  [network: string]: any;
 };

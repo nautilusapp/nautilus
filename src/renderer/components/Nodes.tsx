@@ -17,7 +17,7 @@ import {
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
 // IMPORT TYPES
-import { SNode, SetSelectedContainer, Services } from '../App.d';
+import { SNode, SetSelectedContainer, Services, View } from '../App.d';
 
 type Props = {
   services: Services;
@@ -25,6 +25,7 @@ type Props = {
   setSelectedContainer: SetSelectedContainer;
   simulation: d3.Simulation<SNode, undefined>;
   treeDepth: number;
+  view: View;
 };
 
 const Nodes: React.FC<Props> = ({
@@ -33,6 +34,7 @@ const Nodes: React.FC<Props> = ({
   simulation,
   treeDepth,
   services,
+  view,
 }) => {
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
@@ -99,7 +101,7 @@ const Nodes: React.FC<Props> = ({
     return () => {
       nodeContainers.remove();
     };
-  }, [services]);
+  }, [view, services]);
 
   return <g className="nodes"></g>;
 };
