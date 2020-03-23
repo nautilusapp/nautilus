@@ -20,7 +20,6 @@ type Props = {
 };
 
 const Links: React.FC<Props> = ({ links, services }) => {
-  console.log('links', JSON.stringify(links));
   useEffect(() => {
     //initialize graph
     const forceGraph = d3.select('.graph');

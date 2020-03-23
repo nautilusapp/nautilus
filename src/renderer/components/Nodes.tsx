@@ -34,7 +34,6 @@ const Nodes: React.FC<Props> = ({
   treeDepth,
   services,
 }) => {
-  console.log('nodes', JSON.stringify(nodes));
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
     const width = parseInt(container.style('width'), 10);

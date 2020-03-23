@@ -136,8 +136,6 @@ const DependsOnView: React.FC<Props> = ({
     links,
   };
 
-  console.log('dependson first', JSON.stringify(serviceGraph.links));
-
   const simulation = d3.forceSimulation<SNode>(serviceGraph.nodes).force(
     'link',
     d3
@@ -145,8 +143,6 @@ const DependsOnView: React.FC<Props> = ({
       .distance(130)
       .id((node: SNode) => node.name),
   );
-
-  console.log('dependson', JSON.stringify(serviceGraph.links));
 
   /**
    *********************
