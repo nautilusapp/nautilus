@@ -24,14 +24,9 @@ import {
 // IMPORT STYLES
 import {
   Services,
-  Link,
-  SGraph,
   SNode,
   SetSelectedContainer,
   Options,
-  NodesObject,
-  TreeMap,
-  NodeChild,
   Networks,
   ViewT,
 } from '../App.d';
@@ -51,100 +46,7 @@ const DependsOnView: React.FC<Props> = ({
   view,
   networks,
 }) => {
-  let links: Link[] = [];
-  const nodesObject: NodesObject = Object.keys(services).reduce(
-    (acc: NodesObject, sName: string, i) => {
-      const ports: string[] = [];
-      const volumes: string[] = [];
-      if (services[sName].hasOwnProperty('ports')) {
-        services[sName].ports.forEach(port => {
-          ports.push(port);
-        });
-      }
-      if (services[sName].hasOwnProperty('volumes')) {
-        services[sName].volumes.forEach(vol => {
-          volumes.push(vol);
-        });
-      }
-      if (services[sName].hasOwnProperty('depends_on')) {
-        services[sName].depends_on.forEach(el => {
-          links.push({ source: el, target: sName });
-        });
-      }
-      const node = {
-        id: i,
-        name: sName,
-        ports,
-        volumes,
-        children: {},
-        row: 0,
-        rowLength: 0,
-        column: 0,
-      };
-      acc[sName] = node;
-      return acc;
-    },
-    {},
-  );
-
-  //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
-  const roots = JSON.parse(JSON.stringify(nodesObject));
-  //iterate through links and find if the roots object contains any of the link targets
-  links.forEach((link: Link) => {
-    if (roots[link.target]) {
-      //filter the roots
-      delete roots[link.target];
-    }
-  });
-
-  //create Tree
-  const createTree = (node: NodeChild) => {
-    Object.keys(node).forEach((root: string) => {
-      links.forEach((link: Link) => {
-        if (link.source === root) {
-          node[root].children[link.target] = nodesObject[link.target];
-        }
-      });
-      createTree(node[root].children);
-    });
-  };
-  createTree(roots);
-
-  //traverse tree and create object outlining the rows/columns in each tree
-  const treeMap: TreeMap = {};
-  const createTreeMap = (node: NodeChild, height: number = 0) => {
-    if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
-    Object.keys(node).forEach((sName: string) => {
-      treeMap[height].push(sName);
-      createTreeMap(node[sName].children, height + 1);
-    });
-  };
-  createTreeMap(roots);
-
-  // populate nodesObject with column, row, and rowLength
-  const storePositionLocation = (treeHierarchy: TreeMap) => {
-    Object.keys(treeHierarchy).forEach((row: string) => {
-      treeHierarchy[row].forEach((sName: string, column: number) => {
-        nodesObject[sName].row = Number(row);
-        if (!nodesObject[sName].column) nodesObject[sName].column = column + 1;
-        nodesObject[sName].rowLength = treeHierarchy[row].length;
-      });
-    });
-  };
-  storePositionLocation(treeMap);
-  /**
-   *********************
-   * Variables for d3 visualizer
-   *********************
-   */
-  const treeDepth = Object.keys(treeMap).length;
-  const nodes = Object.values(nodesObject);
-  const serviceGraph: SGraph = {
-    nodes,
-    links,
-  };
-
-  window.simulation = d3.forceSimulation<SNode>(serviceGraph.nodes);
+  const { treeDepth } = window;
 
   /**
    *********************
@@ -208,6 +110,7 @@ const DependsOnView: React.FC<Props> = ({
           return (d.fy = getVerticalPosition(d, treeDepth, height));
         });
       window.simulation.on('tick', ticked);
+      window.simulation.tick();
     } else {
       d3Nodes
         .attr('fx', (d: any) => {
@@ -219,11 +122,12 @@ const DependsOnView: React.FC<Props> = ({
 
       const networkHolder: { [networkString: string]: boolean } = {};
       const getSpacing = (): number => {
-        nodes.forEach((d: SNode): void => {
+        d3Nodes.each((d: any) => {
+          console.log(d.networks);
           if (d.networks) {
             let networkString = '';
             d.networks.sort();
-            d.networks.forEach(network => {
+            d.networks.forEach((network: string) => {
               networkString += network;
             });
             networkHolder[networkString] = true;
@@ -260,27 +164,21 @@ const DependsOnView: React.FC<Props> = ({
     }
 
     // move force graph with resizing window
-    window.addEventListener('resize', ticked);
-  }, [view]);
+    window.addEventListener('resize', () => {
+      window.simulation.tick();
+    });
+  }, [view, services]);
 
   return (
     <>
       <div className="depends-wrapper">
         <svg className="graph">
           <Nodes
-            simulation={window.simulation}
-            treeDepth={treeDepth}
-            nodes={serviceGraph.nodes}
             setSelectedContainer={setSelectedContainer}
             services={services}
             options={options}
           />
-          <Links
-            simulation={window.simulation}
-            links={serviceGraph.links}
-            services={services}
-            options={options}
-          />
+          <Links services={services} options={options} />
         </svg>
       </div>
     </>

@@ -1,8 +1,8 @@
-import { ReadOnlyObj, DependsOn } from '../App.d';
+import { ReadOnlyObj, DependsOn, Services } from '../App.d';
 
 type YamlState = {
   fileUploaded: boolean;
-  services?: ReadOnlyObj;
+  services: Services;
   dependsOn?: DependsOn;
   networks?: ReadOnlyObj;
   volumes?: Array<ReadOnlyObj>;
