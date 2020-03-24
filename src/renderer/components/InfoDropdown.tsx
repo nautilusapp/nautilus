@@ -2,19 +2,13 @@
  * ************************************
  *
  * @module  InfoDropdown.tsx
- * @author Aris Razuri, not danny
+ * @author Aris Razuri, but mostly Danny Scheiner
  * @date 3/11/20
  * @description Dropdown display to show categories of service info
  *
  * ************************************
  */
 import React from 'react';
-import { FaAngleDown } from 'react-icons/fa';
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
-// import YAML from 'yamljs';
-
-// import { Service } from '../App.d';
 
 type ReactProps = {
   service?: any;
@@ -147,7 +141,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
     service: any,
   ) => {
     return Object.keys(serviceOverview).length === 0
-      ? 'There are no overview details in your Docker-Compose file'
+      ? 'Please select a container with details to display.'
       : Object.keys(serviceOverview).map((command, i) => {
           let commandJSX = (
             <span className="command">{dockerComposeCommands[command]}</span>
@@ -204,6 +198,10 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
                 {service[command].join(', ')}
               </span>
             );
+            //  *********************
+            //  Ports
+            //  *********************
+          } else if (command === 'ports' && !serviceOverview[command].length) {
           } else {
             valueJSX = (
               <span className="command-values">{serviceOverview[command]}</span>
@@ -226,24 +224,19 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
           ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
           : selectedContainer}
       </h3>
-      <Accordion defaultActiveKey="0">
-        <Card>
-          <Accordion.Toggle as={Card.Header} eventKey="0">
-            Overview <FaAngleDown />
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="0">
-            <Card.Body>
-              {infoToJsx(
-                serviceOverview,
-                dockerComposeCommands,
-                environmentVariables,
-                env_file,
-                service,
-              )}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
+      <div className="content-wrapper">
+        <div className="overflow-container">
+          <div className="overview">
+            {infoToJsx(
+              serviceOverview,
+              dockerComposeCommands,
+              environmentVariables,
+              env_file,
+              service,
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

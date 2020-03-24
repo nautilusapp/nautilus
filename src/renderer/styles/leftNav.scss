@@ -1,9 +1,9 @@
 .left-nav {
-  background-color: $primary-color;
   display: grid;
   grid-template-columns: 220px;
   grid-template-rows: 320px 1fr;
   grid-template-areas: 'top-half' 'info';
+  background-color: $primary-color;
   min-height: 650px;
   max-height: 100vh;
 
@@ -15,6 +15,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      img {
+        width: 100%;
+      }
 
       h1 {
         color: $fourth-color;
@@ -62,37 +66,46 @@
     }
   }
 
-  .service-info-display {
+  .info-dropdown {
+    padding: 0 1em 1em 1em;
     grid-area: info;
+    height: 100%;
     min-height: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'name' 'card';
+    max-width: 100%;
 
-    .info-dropdown {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-      grid-template-areas: 'name' 'card';
+    h3 {
+      grid-area: name;
+      text-align: center;
+      color: $fourth-color;
+      margin-bottom: 0.5em;
+      font-size: 16px;
+    }
+
+    .content-wrapper {
+      grid-area: card;
       height: 100%;
       max-width: 100%;
 
-      h3 {
-        grid-area: name;
-        text-align: center;
-        color: $fourth-color;
-        margin-bottom: 0.5em;
-        font-size: 16px;
-      }
-
-      .accordion {
-        margin: 0 1em 1em 1em;
-        overflow-y: scroll;
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      .overflow-container {
+        flex: 1;
+        overflow-y: auto;
         scroll-behavior: smooth;
-        grid-area: card;
-        max-width: 100%;
 
-        .card-body {
+        .overview {
+          min-height: min-content;
+          flex-direction: column;
+          padding: 1em;
           background-color: $fourth-color;
           font-size: 0.8em;
-          overflow: auto;
+          overflow-wrap: break-word;
+          border-radius: 0.25em;
 
           div {
             padding-bottom: 0.5em;

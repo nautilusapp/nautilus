@@ -35,9 +35,7 @@ const LeftNav: React.FC<Props> = ({
         <Title />
         {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       </div>
-      <div className="service-info-display">
-        <InfoDropdown selectedContainer={selectedContainer} service={service} />
-      </div>
+      <InfoDropdown selectedContainer={selectedContainer} service={service} />
     </div>
   );
 };
