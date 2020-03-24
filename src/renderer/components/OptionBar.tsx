@@ -31,7 +31,11 @@ const OptionBar: React.FC<Props> = ({
 
   const optionsDisplay = Object.keys(options).map((opt, i) => {
     const display = view === 'depends_on' && opt === 'dependsOn' ? 'none' : '';
-    const title = opt === 'dependsOn' ? 'depends on' : opt;
+    let title = '';
+    if (opt === 'dependsOn') title = 'depends on';
+    else if (opt === 'selectAll') title = 'select all';
+    else title = opt;
+
     return (
       <Navbar.Text
         key={`opt${i}`}
