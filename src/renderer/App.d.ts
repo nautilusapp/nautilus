@@ -6,6 +6,7 @@ export type State = {
   services: Services;
   dependsOn: DependsOn;
   networks: ReadOnlyObj;
+  selectedNetwork: string;
   volumes: Array<ReadOnlyObj>;
   volumesClicked: Clicked;
   bindMounts: Array<string>;
@@ -83,7 +84,12 @@ export type FileUpload = {
 export type UpdateOption = {
   (e: React.MouseEvent<Element, MouseEvent>): void;
 };
+
 export type UpdateView = {
+  (e: React.MouseEvent<Element, MouseEvent>): void;
+};
+
+export type SelectNetwork = {
   (e: React.MouseEvent<Element, MouseEvent>): void;
 };
 

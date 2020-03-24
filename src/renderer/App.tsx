@@ -27,7 +27,7 @@ import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
-import { State, FileUpload, UpdateOption, UpdateView } from './App.d';
+import { State, FileUpload, UpdateOption, UpdateView, SelectNetwork } from './App.d';
 
 const initialState: State = {
   selectedContainer: '',
@@ -37,6 +37,7 @@ const initialState: State = {
     name: 'placeholder',
   },
   networks: {},
+  selectedNetwork: '',
   volumes: [],
   volumesClicked: {},
   bindMounts: [],
@@ -136,6 +137,15 @@ class App extends Component<{}, State> {
     });
   };
 
+  // selectNetwork: SelectNetwork = e => {
+  //   const network = e.currentTarget.id
+  //   if (view === 'networks') {
+  //     this.setState({selectedNetwork: network});
+  //   } else {
+  //     this.setState({selectedNetwork: ''});
+  //   }
+  // };
+
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
@@ -186,6 +196,7 @@ class App extends Component<{}, State> {
             options={this.state.options}
             updateView={this.updateView}
             updateOption={this.updateOption}
+            selectNetworks={this.selectNetworks}
           />
           <D3Wrapper
             fileUploaded={this.state.fileUploaded}
