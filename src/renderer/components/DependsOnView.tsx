@@ -284,13 +284,14 @@ const DependsOnView: React.FC<Props> = ({
     textsAndNodes.append('text').text((d: SNode) => d.name);
 
     //create container images
+    const containerSize = 60;
     textsAndNodes
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
         return getStatic('container.svg');
       })
-      .attr('height', 60)
-      .attr('width', 60);
+      .attr('height', containerSize)
+      .attr('width', containerSize);
 
     return () => {
       forceGraph.remove();
@@ -367,10 +368,10 @@ const DependsOnView: React.FC<Props> = ({
    */
   useEffect(() => {
     // VOLUMES LOCATION
-    const x = 8;
-    const y = 20;
-    const width = 10;
-    const height = 10;
+    const x = 0;
+    const y = 0;
+    const width = 60;
+    const height = 60;
     // VOLUMES VARIABLES
     let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
     const volumes: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
@@ -382,7 +383,7 @@ const DependsOnView: React.FC<Props> = ({
         .selectAll<SVGGElement, SNode>('g')
         .filter((d: SNode) => d.volumes.length > 0);
 
-      // iterate through all nodes with volumes
+      // iterate through all nodes with volumes- add stroke, click func, volume name
       nodesWithVolumes.each(function(d: SNode) {
         const node = this;
         // iterate through all volumes of node
@@ -394,20 +395,24 @@ const DependsOnView: React.FC<Props> = ({
             .select<SVGElement, SNode>(node)
             .append('rect')
             .attr('class', 'volumeSVG')
-            .attr('fill', () => {
+            .attr('fill', 'none')
+            .attr('stroke-width', 5)
+            .attr('stroke', () => {
               let slicedVString: string = colorSchemeHash(
                 vString.slice(0, vString.indexOf(':')),
               );
               return slicedVString;
             })
-            .attr('width', width)
-            .attr('height', height)
-            .attr('x', x)
-            .attr('y', y + i * 12)
+            .attr('width', width + i * 10)
+            .attr('height', height + i * 10)
+            .attr('x', x - i * 5)
+            .attr('y', y - i * 5)
             .on('mouseover', () => {
-              return vText.style('visibility', 'visible');
+              vText.style('visibility', 'visible');
+              volume.style('opacity', 0.5);
             })
             .on('mouseout', () => {
+              volume.style('opacity', 1);
               !onClick
                 ? vText.style('visibility', 'hidden')
                 : vText.style('visibility', 'visible');
@@ -426,7 +431,7 @@ const DependsOnView: React.FC<Props> = ({
             .attr('class', 'volume-text')
             .attr('fill', 'black')
             .attr('text-anchor', 'end')
-            .attr('dx', x - 5)
+            .attr('dx', x - volumes.length * 5)
             .attr('dy', y + (i + 1) * 11)
             .style('visibility', 'hidden');
           // store d3 object in volumes text array
