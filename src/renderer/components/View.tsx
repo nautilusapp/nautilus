@@ -15,6 +15,12 @@ import * as d3 from 'd3';
 import Nodes from './Nodes';
 import Links from './Links';
 
+//IMPORT HELPER FNS
+import {
+  getHorizontalPosition,
+  getVerticalPosition,
+} from '../helpers/getSimulationDimensions';
+
 // IMPORT STYLES
 import {
   Services,
@@ -26,6 +32,7 @@ import {
   NodesObject,
   TreeMap,
   NodeChild,
+  Networks,
   ViewT,
 } from '../App.d';
 
@@ -33,6 +40,7 @@ type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
+  networks: Networks;
   view: ViewT;
 };
 
@@ -41,6 +49,7 @@ const DependsOnView: React.FC<Props> = ({
   setSelectedContainer,
   options,
   view,
+  networks,
 }) => {
   let links: Link[] = [];
   const nodesObject: NodesObject = Object.keys(services).reduce(
@@ -150,13 +159,13 @@ const DependsOnView: React.FC<Props> = ({
    */
   useEffect(() => {
     const container = d3.select('.depends-wrapper');
-    // const width = parseInt(container.style('width'), 10);
-    // const height = parseInt(container.style('height'), 10);
+    const width = parseInt(container.style('width'), 10);
+    const height = parseInt(container.style('height'), 10);
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
 
-    const nodes = d3.select('.nodes').selectAll('g');
+    const d3Nodes = d3.select('.nodes').selectAll('g');
     const linkLines = d3.select('.links').selectAll('line');
 
     //set location when ticked
@@ -164,7 +173,8 @@ const DependsOnView: React.FC<Props> = ({
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
-      nodes
+
+      d3Nodes
         .attr('cx', (d: any) => {
           return (d.x = Math.max(
             sideMargin,
@@ -190,14 +200,71 @@ const DependsOnView: React.FC<Props> = ({
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
-    simulation
-      .nodes(serviceGraph.nodes)
-      .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      .on('tick', ticked);
+    if (view === 'depends_on') {
+      simulation.force('charge', d3.forceManyBody<SNode>().strength(-400));
+      d3Nodes
+        .attr('fx', (d: any) => {
+          //assign the initial x location to the relative displacement from the left
+          return (d.fx = getHorizontalPosition(d, width));
+        })
+        .attr('fy', (d: any) => {
+          return (d.fy = getVerticalPosition(d, treeDepth, height));
+        });
+      simulation.on('tick', ticked);
+    } else {
+      d3Nodes
+        .attr('fx', (d: any) => {
+          return (d.fx = null);
+        })
+        .attr('fy', (d: any) => {
+          return (d.fy = null);
+        });
+
+      const networkHolder: { [networkString: string]: boolean } = {};
+      const getSpacing = (): number => {
+        nodes.forEach((d: SNode): void => {
+          if (d.networks) {
+            let networkString = '';
+            d.networks.sort();
+            d.networks.forEach(network => {
+              networkString += network;
+            });
+            networkHolder[networkString] = true;
+          }
+        });
+        return width / (Object.keys(networkHolder).length + 1);
+      };
+      const spacing = getSpacing();
+      const forceX = d3
+        .forceX((d: SNode): any => {
+          if (d.networks) {
+            if (d.networks.length === 0) return width / 2;
+            let networkString = '';
+            d.networks.sort();
+            d.networks.forEach(network => {
+              networkString += network;
+            });
+            const place = Object.keys(networkHolder).indexOf(networkString);
+            networkString = '';
+            return (place + 1) * spacing;
+          }
+          return width / 2;
+        })
+        .strength(0.5);
+
+      const forceY = d3.forceY(height / 2).strength(0.5);
+      //create force simulation
+      simulation
+        .force('x', forceX)
+        .force('y', forceY)
+        .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
+        .force('collide', d3.forceCollide(radius / 2))
+        .on('tick', ticked);
+    }
 
     // move force graph with resizing window
     window.addEventListener('resize', ticked);
-  }, [view, services]);
+  }, [view]);
 
   /**
    *********************

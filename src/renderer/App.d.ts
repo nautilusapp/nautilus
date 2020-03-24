@@ -48,6 +48,7 @@ interface SNode extends SimulationNodeDatum {
   column: number;
   rowLength: number;
   children: NodeChild;
+  networks?: string[];
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
