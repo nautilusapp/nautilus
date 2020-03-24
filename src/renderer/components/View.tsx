@@ -61,7 +61,7 @@ const DependsOnView: React.FC<Props> = ({
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
 
-    const d3Nodes = d3.select('.nodes').selectAll('g');
+    const d3Nodes = d3.select('.nodes').selectAll('.node');
     const linkLines = d3.select('.links').selectAll('line');
 
     //set location when ticked
