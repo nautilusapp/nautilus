@@ -16,6 +16,10 @@
       flex-direction: column;
       align-items: center;
 
+      img {
+        width: 100%;
+      }
+
       h1 {
         color: $fourth-color;
       }
