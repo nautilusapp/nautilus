@@ -9,41 +9,67 @@
  * ************************************
  */
 import React, { useEffect } from 'react';
-//import Services from './Service';
+// import Services from './Service';
 import * as d3 from 'd3';
-import { getStatic } from '../scripts/static';
-import { Services, Link, SGraph, SNode, SetSelectedContainer } from '../App.d';
+import { getStatic } from '../helpers/static';
+import {
+  Services,
+  Link,
+  SGraph,
+  SNode,
+  SetSelectedContainer,
+  Options,
+  Networks,
+} from '../App.d';
 
 type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
+  options: Options;
+  networks: Networks;
 };
 
-const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
+const NetworksView: React.FC<Props> = ({
+  services,
+  setSelectedContainer,
+  options,
+  networks,
+}) => {
   let links: Link[] = [];
-  const nodes: SNode[] = Object.keys(services).map((sName: string, i) => {
+  const nodes: SNode[] = Object.keys(services).map((name: string, id) => {
+    const networks: string[] = [];
     const ports: string[] = [];
     const volumes: string[] = [];
-    if (services[sName].hasOwnProperty('ports')) {
-      services[sName].ports.forEach(port => {
+    if (services[name].hasOwnProperty('networks')) {
+      services[name].networks.forEach(network => {
+        networks.push(network);
+      });
+    }
+    if (services[name].hasOwnProperty('ports')) {
+      services[name].ports.forEach(port => {
         ports.push(port);
       });
     }
-    if (services[sName].hasOwnProperty('volumes')) {
-      services[sName].volumes.forEach(vol => {
+    if (services[name].hasOwnProperty('volumes')) {
+      services[name].volumes.forEach(vol => {
         volumes.push(vol);
       });
     }
-    if (services[sName].hasOwnProperty('depends_on')) {
-      services[sName].depends_on.forEach(el => {
-        links.push({ source: el, target: sName });
-      });
+    if (services[name].hasOwnProperty('depends_on')) {
+      // services[name].depends_on.forEach(el => {
+      //   links.push({ source: el, target: name });
+      // });
     }
     return {
-      id: i,
-      name: sName,
-      ports: ports,
-      volumes: volumes,
+      id,
+      name,
+      ports,
+      volumes,
+      networks,
+      children: {},
+      row: 0,
+      rowLength: 0,
+      column: 0,
     };
   });
 
@@ -52,78 +78,165 @@ const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
     links,
   };
 
+  let textsAndNodes: d3.Selection<SVGGElement, SNode, any, any>;
+
+  const factorial = (n: number): number => {
+    if (n === 1) return n;
+    return n * factorial(n - 1);
+  };
+
   useEffect(() => {
     const container = d3.select('.networks-wrapper');
-    const width = parseInt(container.style('width'), 10);
-    const height = parseInt(container.style('height'), 10);
-    const radius = 60;  // Used to determine the size of each container for border enforcement
+    const width = parseInt(container.style('width'));
+    const height = parseInt(container.style('height'));
+    const topMargin = 20;
+    const sideMargin = 20;
+    const radius = 60; // Used to determine the size of each container for border enforcement
 
     //initialize graph
     const forceGraph = d3
       .select('.networks-wrapper')
       .append('svg')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('class', 'graph')
+      .attr('transform', `translate(${0}${0})`);
 
     //set location when ticked
     const ticked = () => {
+      const w = parseInt(container.style('width'));
+      const h = parseInt(container.style('height'));
       // Enforces borders
       textsAndNodes
-        .attr('cx', (d: any) => {
-          return (d.x = Math.max(radius, Math.min(width - radius, d.x)));
+        .attr('cx', (d: SNode) => {
+          return (d.x = Math.max(
+            sideMargin,
+            Math.min(w - sideMargin - radius, d.x as number),
+          ));
         })
-        .attr('cy', (d: any) => {
-          return (d.y = Math.max(radius, Math.min(height - radius, d.y)));
+        .attr('cy', (d: SNode) => {
+          return (d.y = Math.max(
+            15 + topMargin,
+            Math.min(h - topMargin - radius, d.y as number),
+          ));
         })
-        .attr('transform', (d: any) => {
+        .attr('transform', (d: SNode) => {
           return 'translate(' + d.x + ',' + d.y + ')';
         });
-        
-      link
-        .attr('x1', (d: any) => d.source.x + 30)
-        .attr('y1', (d: any) => d.source.y + 30)
-        .attr('x2', (d: any) => d.target.x + 30)
-        .attr('y2', (d: any) => d.target.y + 30);
+
+      // link
+      //   .attr('x1', (d: any) => d.source.x + 30)
+      //   .attr('y1', (d: any) => d.source.y + 30)
+      //   .attr('x2', (d: any) => d.target.x + 30)
+      //   .attr('y2', (d: any) => d.target.y + 30);
     };
 
+    // move force graph with resizing window
+    window.addEventListener('resize', ticked);
+
+    const networkHolder: { [networkString: string]: boolean } = {};
+
+    const getSpacing = (): number => {
+      nodes.forEach((d: SNode): void => {
+        if (d.networks) {
+          let networkString = '';
+          d.networks.sort();
+          d.networks.forEach(network => {
+            networkString += network;
+          });
+          networkHolder[networkString] = true;
+        }
+      });
+      return width / (Object.keys(networkHolder).length + 1);
+    };
+    const spacing = getSpacing();
+
+    const forceX = d3
+      .forceX((d: SNode): any => {
+        if (d.networks) {
+          if (d.networks.length === 0) return width / 2;
+          let networkString = '';
+          d.networks.sort();
+          d.networks.forEach(network => {
+            networkString += network;
+          });
+          const place = Object.keys(networkHolder).indexOf(networkString);
+          networkString = '';
+          return (place + 1) * spacing;
+        }
+        return width / 2;
+      })
+      .strength(0.5);
+
+    const forceY = d3.forceY(height / 2).strength(0.5);
     //create force simulation
     const simulation = d3
       .forceSimulation<SNode>(serviceGraph.nodes)
-      .force(
-        'link',
-        d3
-          .forceLink<SNode, Link>(serviceGraph.links)
-          .distance(130)
-          .id((node: SNode) => node.name),
-      )
-      .force('charge', d3.forceManyBody<SNode>().strength(-400))
-      .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
+      // .force(
+      //   'link',
+      //   d3
+      //     .forceLink<SNode, Link>(serviceGraph.links)
+      //     .distance(130)
+      //     .id((node: SNode) => node.name),
+      // )
+      .force('x', forceX)
+      .force('y', forceY)
+      .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
+      .force('collide', d3.forceCollide(radius / 2))
+      // .force('center', d3.forceCenter<SNode>(width / 2, height / 2))
       .on('tick', ticked);
 
-    //create Links
-    const link = forceGraph
-      .append('g')
-      .selectAll('line')
-      .data(serviceGraph.links)
+    forceGraph
+      .append('svg:defs')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
       .enter()
-      .append('line')
-      .attr('stroke-width', (d: any) => 3)
-      .attr('stroke', 'pink');
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22.5)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
 
-    const dragstarted = (d: any) => {
-      simulation.alphaTarget(0.3).restart();
+    //create Links with arrowheads
+    // const link = forceGraph
+    //   .append('g')
+    //   .selectAll('line')
+    //   .data(serviceGraph.links)
+    //   .enter()
+    //   .append('line')
+    //   .attr('stroke-width', 3)
+    //   .attr('stroke', 'pink')
+    //   .attr('class', 'link')
+    //   .attr('marker-end', 'url(#end)');
+
+    const dragstarted = (d: SNode) => {
+      // simulation.alphaTarget(0.3).restart();
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d3.event.x;
-      d.fy = d3.event.y;
+      d3.event.y;
     };
 
-    const dragged = (d: any) => {
+    const dragged = (d: SNode) => {
       //alpha hit 0 it stops. make it run again
       d.fx = d3.event.x;
       d.fy = d3.event.y;
     };
 
-    const dragended = (d: any) => {
+    const dragended = (d: SNode) => {
       // alpha min is 0, head there
+      // simulation.alphaTarget(0);
+      // d.fx = null;
+      // d.fy = null;
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = d.x;
+      d.fy = d.y;
+    };
+
+    //sets 'clicked' nodes back to unfixed position
+    const dblClick = (d: SNode) => {
       simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
@@ -136,29 +249,49 @@ const NetworksView: React.FC<Props> = ({ services, setSelectedContainer }) => {
       .on('end', dragended);
 
     //create textAndNodes Group
-    let textsAndNodes = forceGraph
+    textsAndNodes = forceGraph
       .append('g')
-      .selectAll('g')
+      .attr('class', 'nodes')
+      .selectAll('.nodes')
       .data<SNode>(serviceGraph.nodes)
       .enter()
       .append('g')
-      .on('click', (node: any) => {
+      .on('click', (node: SNode) => {
         setSelectedContainer(node.name);
       })
+      .on('dblclick', dblClick)
       .call(drag);
-
-    // create texts
-    textsAndNodes.append('text').text((d: any) => d.name);
+    // .attr('fx', (d: SNode) => {
+    //   //assign the initial x location to the relative displacement from the left
+    //   return (d.fx =
+    //     (width / (servicePosition[d.name].rowLength + 1)) *
+    //     servicePosition[d.name].column);
+    // })
+    // .attr('fy', (d: SNode) => {
+    //   return (d.fy = (height / treeDepth) * servicePosition[d.name].row);
+    // });
 
     //create container images
     textsAndNodes
       .append('svg:image')
-      .attr('xlink:href', (d: any) => {
+      .attr('xlink:href', (d: SNode) => {
         return getStatic('container.svg');
       })
-      .attr('height', 60)
-      .attr('width', 60);
+      .attr('height', radius)
+      .attr('width', radius);
 
+    // create texts
+    textsAndNodes.append('text').text((d: SNode) => d.name);
+    // .append('text')
+    // .text((d: SNode): string => {
+    //   let networkString = '';
+    //   if (d.networks) {
+    //     d.networks.forEach((n: string) => {
+    //       networkString += n + ' ';
+    //     });
+    //   }
+    //   return networkString;
+    // });
     return () => {
       forceGraph.remove();
     };

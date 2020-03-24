@@ -10,10 +10,12 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: 'networks' | 'depends_on';
+  view: ViewT;
   options: Options;
   version: string;
 };
+
+type ViewT = 'networks' | 'depends_on';
 
 type Clicked = {
   readonly [propName: string]: string;
@@ -32,11 +34,20 @@ export type Options = {
   [key: string]: boolean;
 };
 
+export type NodeChild = {
+  [service: string]: SNode;
+};
+
 interface SNode extends SimulationNodeDatum {
   id: number;
   name: string;
   ports: string[];
   volumes: string[];
+  networks?: string[];
+  row: number;
+  column: number;
+  rowLength: number;
+  children: NodeChild;
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -51,13 +62,6 @@ type SGraph = {
 
 export type Service = {
   build?: string;
-  context?: string;
-  dockerfile?: string;
-  args?: string[];
-  cache_from?: string[];
-  labels?: string[];
-  shm_size?: string;
-  target?: string;
   image?: string;
   command?: string;
   environment?: ReadOnlyObj;
@@ -65,6 +69,7 @@ export type Service = {
   ports: string[];
   volumes: string[];
   depends_on: string[];
+  networks: string[];
 };
 
 export type Services = {
@@ -86,6 +91,14 @@ export type SetSelectedContainer = {
   (containerName: string): void;
 };
 
-export type Roots = {
-  [service: string]: boolean | number;
+export type NodesObject = {
+  [service: string]: SNode;
+};
+
+export type TreeMap = {
+  [row: string]: string[];
+};
+
+export type Networks = {
+  [network: string]: any;
 };
