@@ -257,7 +257,7 @@ const DependsOnView: React.FC<Props> = ({
       simulation
         .force('x', forceX)
         .force('y', forceY)
-        .force('charge', d3.forceManyBody<SNode>().strength(0))
+        .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
         .force('collide', d3.forceCollide(radius / 2))
         .on('tick', ticked);
     }
