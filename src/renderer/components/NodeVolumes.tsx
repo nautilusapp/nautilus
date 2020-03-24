@@ -25,6 +25,13 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
+  const maxVolumes = d3
+    .select('.links')
+    .selectAll('line')
+    .data()
+    .reduce((acc: number, d: any) => {
+      return acc > d.target.volumes.length ? acc : d.target.volumes.length;
+    }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
     const x = 0;
@@ -95,18 +102,13 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
           volumeText.push(vText);
         });
       });
+      d3.selectAll('.arrowHead').attr('refX', 22.5 + 5 * maxVolumes);
     }
     //move arrowheads based on number of volumes
-    const servicesWithVolumes = d3
-      .select('.links')
-      .selectAll('line')
-      .data()
-      .reduce((acc: any, d: any) => {
-        if (d.target.volumes.length > 0)
-          acc[d.index] = 22.5 + 2.5 * d.target.volumes.length;
-        return acc;
-      }, {});
-    console.log(servicesWithVolumes);
+    else {
+      d3.selectAll('.arrowHead').attr('refX', 22.5);
+    }
+    console.log(maxVolumes);
 
     console.log(
       d3
