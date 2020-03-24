@@ -151,9 +151,9 @@ const DependsOnView: React.FC<Props> = ({
           }
           return width / 2;
         })
-        .strength(0.5);
+        .strength(1);
 
-      const forceY = d3.forceY(height / 2).strength(0.5);
+      const forceY = d3.forceY(height / 2).strength(1);
       //create force simulation
       window.simulation
         .force('x', forceX)

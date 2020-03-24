@@ -122,7 +122,6 @@ const setGlobalVars: SetGlobalVars = services => {
     nodes,
     links,
   };
-
   window.simulation = d3.forceSimulation<SNode>(window.serviceGraph.nodes);
 };
 
