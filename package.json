@@ -31,14 +31,12 @@
     "jquery": "^3.4.1",
     "js-yaml": "^3.13.1",
     "react": "^16.13.0",
-    "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.13.0",
     "react-icons": "^3.9.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.8.3",
     "@types/d3": "^5.7.2",
-    "@types/d3-drag": "^1.2.3",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/eslint": "^6.1.8",
     "@types/express": "^4.17.3",

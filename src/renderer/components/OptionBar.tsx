@@ -10,7 +10,6 @@
  * ************************************
  */
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
 import { Options, UpdateOption, UpdateView } from '../App.d';
 
 type Props = {
@@ -33,7 +32,7 @@ const OptionBar: React.FC<Props> = ({
     const display = view === 'depends_on' && opt === 'dependsOn' ? 'none' : '';
     const title = opt === 'dependsOn' ? 'depends on' : opt;
     return (
-      <Navbar.Text
+      <span
         key={`opt${i}`}
         className={options[opt] ? 'option selected' : 'option'}
         id={opt}
@@ -41,27 +40,19 @@ const OptionBar: React.FC<Props> = ({
         style={{ display }}
       >
         {title}
-      </Navbar.Text>
+      </span>
     );
   });
 
   return (
     <div className="option-bar">
       <div className="views flex">
-        <Navbar.Text
-          className={networksClass}
-          id="networks"
-          onClick={updateView}
-        >
+        <span className={networksClass} id="networks" onClick={updateView}>
           networks
-        </Navbar.Text>
-        <Navbar.Text
-          className={dependsOnClass}
-          id="depends_on"
-          onClick={updateView}
-        >
+        </span>
+        <span className={dependsOnClass} id="depends_on" onClick={updateView}>
           depends on
-        </Navbar.Text>
+        </span>
       </div>
       <div className="titles flex">
         <h2>Views</h2>
