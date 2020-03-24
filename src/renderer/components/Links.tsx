@@ -11,32 +11,41 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPER FUNCTIONS
-import { Link, Services, Options } from '../App.d';
+import { Link, Services, Options, SNode } from '../App.d';
 // IMPORT TYPES
 
 type Props = {
-  links: Link[];
   services: Services;
   options: Options;
 };
 
-const Links: React.FC<Props> = ({ links, services, options }) => {
+const Links: React.FC<Props> = ({ services, options }) => {
+  const {
+    simulation,
+    serviceGraph: { links },
+  } = window;
   useEffect(() => {
+    simulation.force(
+      'link',
+      d3
+        .forceLink<SNode, Link>(links)
+        .distance(130)
+        .id((node: SNode) => node.name),
+    );
+
     //initialize graph
-    const forceGraph = d3.select('.graph');
-
-    const arrowsGroup = forceGraph
+    const arrowsGroup = d3
+      .select('.graph')
       .append('svg:defs')
-      .attr('class', 'arrowsGroup');
-
-    arrowsGroup
+      .attr('class', 'arrowsGroup')
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
       .enter()
       .append('svg:marker') // This section adds in the arrows
       .attr('id', String)
+      .attr('class', 'arrowHead')
       .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
+      .attr('refX', 23)
       .attr('refY', 0)
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
@@ -52,7 +61,6 @@ const Links: React.FC<Props> = ({ links, services, options }) => {
       .enter()
       .append('line')
       .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
       .attr('class', 'link')
       .attr('marker-end', 'url(#end)');
 
