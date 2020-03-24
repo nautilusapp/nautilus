@@ -15,6 +15,7 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
+import setGlobalVars from './helpers/setGlobalVars';
 
 // IMPORT STYLES
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -90,6 +91,7 @@ class App extends Component<{}, State> {
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
+    setGlobalVars(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
   };
@@ -111,6 +113,7 @@ class App extends Component<{}, State> {
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
+      setGlobalVars(stateJS.services);
       this.setState(Object.assign(initialState, stateJS));
     }
   }

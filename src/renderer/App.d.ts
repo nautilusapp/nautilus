@@ -15,6 +15,28 @@ export type State = {
   version: string;
 };
 
+interface SNode extends SimulationNodeDatum {
+  id: number;
+  name: string;
+  ports: string[];
+  volumes: string[];
+  networks?: string[];
+  row: number;
+  column: number;
+  rowLength: number;
+  children: NodeChild;
+}
+
+interface Link extends SimulationLinkDatum<SNode> {
+  source: string;
+  target: string;
+}
+
+type SGraph = {
+  nodes: SNode[];
+  links: Link[];
+};
+
 type ViewT = 'networks' | 'depends_on';
 
 type Clicked = {
@@ -36,29 +58,6 @@ export type Options = {
 
 export type NodeChild = {
   [service: string]: SNode;
-};
-
-interface SNode extends SimulationNodeDatum {
-  id: number;
-  name: string;
-  ports: string[];
-  volumes: string[];
-  networks?: string[];
-  row: number;
-  column: number;
-  rowLength: number;
-  children: NodeChild;
-  networks?: string[];
-}
-
-interface Link extends SimulationLinkDatum<SNode> {
-  source: string;
-  target: string;
-}
-
-type SGraph = {
-  nodes: SNode[];
-  links: Link[];
 };
 
 export type Service = {
@@ -103,3 +102,5 @@ export type TreeMap = {
 export type Networks = {
   [network: string]: any;
 };
+
+export type Simulation = d3.Simulation<SNode, undefined>;
