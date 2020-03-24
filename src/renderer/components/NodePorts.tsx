@@ -32,9 +32,10 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
     if (portsOn) {
       // select all nodes with ports
+      console.log(d3.select('.nodes').selectAll<SVGGElement, SNode>('g'));
       nodesWithPorts = d3
         .select('.nodes')
-        .selectAll<SVGGElement, SNode>('g')
+        .selectAll<SVGGElement, SNode>('.node')
         .filter((d: SNode) => d.ports.length > 0);
 
       // iterate through all nodes with ports

@@ -96,6 +96,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
         });
       });
     }
+    //move arrowheads based on number of volumes
 
     return () => {
       // before unmounting, if volumes option was on, remove the volumes

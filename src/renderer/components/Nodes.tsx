@@ -81,6 +81,7 @@ const Nodes: React.FC<Props> = ({
       .data<SNode>(nodes)
       .enter()
       .append('g')
+      .attr('class', 'node')
       .on('click', (node: SNode) => {
         setSelectedContainer(node.name);
       })

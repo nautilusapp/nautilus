@@ -35,6 +35,7 @@ const Links: React.FC<Props> = ({ links, services, options }) => {
       .enter()
       .append('svg:marker') // This section adds in the arrows
       .attr('id', String)
+      .attr('class', 'arrowHead')
       .attr('viewBox', '0 -5 10 10')
       .attr('refX', 22.5)
       .attr('refY', 0)
@@ -52,7 +53,6 @@ const Links: React.FC<Props> = ({ links, services, options }) => {
       .enter()
       .append('line')
       .attr('stroke-width', 3)
-      .attr('stroke', 'pink')
       .attr('class', 'link')
       .attr('marker-end', 'url(#end)');
 

@@ -199,7 +199,7 @@ const DependsOnView: React.FC<Props> = ({
 
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
-
+    simulation.nodes(serviceGraph.nodes);
     if (view === 'depends_on') {
       simulation.force('charge', d3.forceManyBody<SNode>().strength(-400));
       d3Nodes
