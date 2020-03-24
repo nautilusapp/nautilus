@@ -62,10 +62,10 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
               );
               return slicedVString;
             })
-            .attr('width', width + (d.volumes.length - i) * 10)
-            .attr('height', height + (d.volumes.length - i) * 10)
-            .attr('x', x - (d.volumes.length - i) * 5)
-            .attr('y', y - (d.volumes.length - i) * 5)
+            .attr('width', width + (d.volumes.length - i) * 20)
+            .attr('height', height + (d.volumes.length - i) * 20)
+            .attr('x', x - (d.volumes.length - i) * 10)
+            .attr('y', y - (d.volumes.length - i) * 10)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
@@ -97,6 +97,23 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
       });
     }
     //move arrowheads based on number of volumes
+    const servicesWithVolumes = d3
+      .select('.links')
+      .selectAll('line')
+      .data()
+      .reduce((acc: any, d: any) => {
+        if (d.target.volumes.length > 0)
+          acc[d.index] = 22.5 + 2.5 * d.target.volumes.length;
+        return acc;
+      }, {});
+    console.log(servicesWithVolumes);
+
+    console.log(
+      d3
+        .select('.graph')
+        .append('svg:defs')
+        .attr('class', 'arrowsGroup'),
+    );
 
     return () => {
       // before unmounting, if volumes option was on, remove the volumes

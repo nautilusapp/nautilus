@@ -23,13 +23,10 @@ type Props = {
 const Links: React.FC<Props> = ({ links, services, options }) => {
   useEffect(() => {
     //initialize graph
-    const forceGraph = d3.select('.graph');
-
-    const arrowsGroup = forceGraph
+    const arrowsGroup = d3
+      .select('.graph')
       .append('svg:defs')
-      .attr('class', 'arrowsGroup');
-
-    arrowsGroup
+      .attr('class', 'arrowsGroup')
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
       .enter()
@@ -37,7 +34,7 @@ const Links: React.FC<Props> = ({ links, services, options }) => {
       .attr('id', String)
       .attr('class', 'arrowHead')
       .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 22.5)
+      .attr('refX', 23)
       .attr('refY', 0)
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
