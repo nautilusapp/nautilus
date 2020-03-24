@@ -45,7 +45,7 @@ const Nodes: React.FC<Props> = ({
    *********************
    */
   useEffect(() => {
-    const container = d3.select('.depends-wrapper');
+    const container = d3.select('.view-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
 

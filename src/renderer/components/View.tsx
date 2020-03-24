@@ -44,7 +44,7 @@ type Props = {
   view: ViewT;
 };
 
-const DependsOnView: React.FC<Props> = ({
+const View: React.FC<Props> = ({
   services,
   setSelectedContainer,
   options,
@@ -158,9 +158,9 @@ const DependsOnView: React.FC<Props> = ({
    *********************
    */
   useEffect(() => {
-    const container = d3.select('.depends-wrapper');
-    const width = parseInt(container.style('width'), 10);
-    const height = parseInt(container.style('height'), 10);
+    const container = d3.select('.view-wrapper');
+    const width = parseInt(container.style('width'));
+    const height = parseInt(container.style('height'));
     const topMargin = 20;
     const sideMargin = 20;
     const radius = 60; // Used to determine the size of each container for border enforcement
@@ -283,7 +283,7 @@ const DependsOnView: React.FC<Props> = ({
 
   return (
     <>
-      <div className="depends-wrapper">
+      <div className="view-wrapper">
         <svg className="graph">
           <Nodes
             simulation={simulation}
@@ -304,4 +304,4 @@ const DependsOnView: React.FC<Props> = ({
   );
 };
 
-export default DependsOnView;
+export default View;
