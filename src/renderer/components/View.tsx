@@ -67,9 +67,9 @@ const DependsOnView: React.FC<Props> = ({
         });
       }
       if (services[sName].hasOwnProperty('depends_on')) {
-        // services[sName].depends_on.forEach(el => {
-        //   links.push({ source: el, target: sName });
-        // });
+        services[sName].depends_on.forEach(el => {
+          links.push({ source: el, target: sName });
+        });
       }
       const node = {
         id: i,
