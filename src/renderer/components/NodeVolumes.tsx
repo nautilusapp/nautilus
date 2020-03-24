@@ -14,6 +14,9 @@ import * as d3 from 'd3';
 // IMPORT HELPERS
 import { colorSchemeHash } from '../helpers/colorSchemeHash';
 
+//IMPORT SVG
+import containerPath from '../../../static/containerPath';
+
 // IMPORT TYPES
 import { SNode } from '../App.d';
 
@@ -24,13 +27,13 @@ type Props = {
 const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
   useEffect(() => {
     // VOLUMES LOCATION
-    const x = 8;
-    const y = 20;
-    const width = 10;
-    const height = 10;
+    const x = 0;
+    const y = 0;
+    const width = 60;
+    const height = 60;
     // VOLUMES VARIABLES
     let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
-    const volumes: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
+    const volumes: d3.Selection<SVGSVGElement, SNode, any, any>[] = [];
     const volumeText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
     if (volumesOn) {
       // select all nodes with volumes
@@ -43,13 +46,15 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
       nodesWithVolumes.each(function(d: SNode) {
         const node = this;
         // iterate through all volumes of node
-        d.volumes.forEach((vString, i) => {
+        d.volumes.reverse().forEach((vString, i) => {
           let onClick = false;
           let onceClicked = false;
           // add svg volume
           const volume = d3
             .select<SVGElement, SNode>(node)
-            .append('rect')
+            .insert('svg', 'text')
+            .attr('viewBox', '0 0 127.45 154.34')
+            .html(containerPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
               let slicedVString = colorSchemeHash(
@@ -57,10 +62,10 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
               );
               return slicedVString;
             })
-            .attr('width', width)
-            .attr('height', height)
-            .attr('x', x)
-            .attr('y', y + i * 12)
+            .attr('width', width + (d.volumes.length - i) * 10)
+            .attr('height', height + (d.volumes.length - i) * 10)
+            .attr('x', x - (d.volumes.length - i) * 5)
+            .attr('y', y - (d.volumes.length - i) * 5)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
