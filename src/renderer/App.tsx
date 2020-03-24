@@ -15,6 +15,7 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
+import { firstThree } from './helpers/selectAll';
 import setGlobalVars from './helpers/setGlobalVars';
 
 // IMPORT STYLES
@@ -45,6 +46,7 @@ const initialState: State = {
     ports: false,
     volumes: false,
     dependsOn: true,
+    selectAll: false,
   },
   version: '',
 };
@@ -72,7 +74,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
-          options: { ...state.options, dependsOn: false },
+          options: { ...state.options, dependsOn: false, selectAll: false },
         };
       });
     }
@@ -80,11 +82,57 @@ class App extends Component<{}, State> {
 
   updateOption: UpdateOption = e => {
     const option = e.currentTarget.id;
-    this.setState(state => {
-      return {
-        ...state,
-        options: { ...state.options, [option]: !state.options[option] },
+    const selectAllClicked = option === 'selectAll' ? true : false;
+    let newState: State = {
+      ...this.state,
+      options: { ...this.state.options, [option]: !this.state.options[option] },
+    };
+    if (firstThree(newState) === true) {
+      newState = {
+        ...newState,
+        options: { ...newState.options, selectAll: true },
       };
+    }
+    if (firstThree(this.state) && selectAllClicked) {
+      if (this.state.view === 'depends_on') {
+        newState = {
+          ...this.state,
+          options: {
+            ports: false,
+            volumes: false,
+            dependsOn: true,
+            selectAll: false,
+          },
+        };
+      } else {
+        newState = {
+          ...this.state,
+          options: {
+            ports: false,
+            volumes: false,
+            dependsOn: false,
+            selectAll: false,
+          },
+        };
+      }
+    } else if (!firstThree(this.state) && selectAllClicked) {
+      newState = {
+        ...this.state,
+        options: {
+          ports: true,
+          volumes: true,
+          dependsOn: true,
+          selectAll: true,
+        },
+      };
+    } else if (this.state.options.selectAll === true && !firstThree(newState)) {
+      newState = {
+        ...newState,
+        options: { ...newState.options, selectAll: false },
+      };
+    }
+    this.setState({
+      ...newState,
     });
   };
 
