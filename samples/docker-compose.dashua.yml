@@ -14,9 +14,9 @@ services:
         icantgetno: 'satisfaction'
         war: 'what is it good for?'
       labels:
-        noFuckYou: 'moarexamples!'
+        noYou: 'moarexamples!'
     command: ['bundle', 'exec', 'thin', '-p', '3000']
     environment:
-      - 'justastring=aGstring'
+      - 'justastring=sadly'
       - 'morethanjustfriends=NOTyouarefriendzoned'
     security_opt:

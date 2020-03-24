@@ -82,62 +82,60 @@
         font-size: 16px;
       }
 
-      .accordion {
+      .card-body {
+        background-color: $fourth-color;
+        font-size: 0.8em;
         margin: 0 1em 1em 1em;
-        overflow: scroll;
+        overflow-y: scroll;
         grid-area: card;
         max-width: 100%;
+        flex-shrink: 1;
 
-        .card-body {
-          background-color: $fourth-color;
-          font-size: 0.8em;
-          overflow: auto;
+        div {
+          padding-bottom: 0.5em;
+        }
+
+        .command {
+          color: $primary-color;
+          font-weight: 800;
+        }
+
+        .options {
+          padding: 0;
 
           div {
-            padding-bottom: 0.5em;
-          }
+            padding-left: 1em;
+            padding-bottom: 0;
 
-          .command {
-            color: $primary-color;
-            font-weight: 800;
-          }
+            ul {
+              padding: 0;
+              padding-inline-start: 1.3em;
 
-          .options {
-            padding: 0;
-
-            div {
-              padding-left: 1em;
-              padding-bottom: 0;
-
-              ul {
-                padding: 0;
-                padding-inline-start: 1.3em;
-
-                li {
-                  span {
-                    font-weight: 600;
-                  }
+              li {
+                span {
+                  font-weight: 600;
                 }
               }
-
-              .option-key {
-                font-weight: 600;
-              }
             }
-          }
 
-          .second-level {
-            span {
+            .option-key {
               font-weight: 600;
             }
           }
+        }
 
-          ul {
-            padding-inline-start: 1.3em;
-            margin: 0;
+        .second-level {
+          span {
+            font-weight: 600;
           }
         }
+
+        ul {
+          padding-inline-start: 1.3em;
+          margin: 0;
+        }
       }
+
     }
   }
 

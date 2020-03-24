@@ -4,6 +4,10 @@
 @import 'leftNav';
 @import 'd3Wrapper';
 
+html * {
+  font-family: VisbyRoundCF-Medium;
+}
+
 body {
   font-size: 14px;
   -webkit-user-select: none;
@@ -26,11 +30,13 @@ h2 {
   min-height: 650px;
   height: 100vh;
   width: 100vw;
+
   .main {
     flex-grow: 1;
     min-width: 700px;
     flex-direction: column;
   }
+
   .draggable {
     -webkit-app-region: drag;
     height: 1.5em;
