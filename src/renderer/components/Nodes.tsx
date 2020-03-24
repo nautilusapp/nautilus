@@ -17,7 +17,13 @@ import {
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
 // IMPORT TYPES
-import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
+import {
+  SNode,
+  SetSelectedContainer,
+  Services,
+  Options,
+  Simulation,
+} from '../App.d';
 // IMPORT COMPONENTS
 import NodePorts from './NodePorts';
 import NodeVolumes from './NodeVolumes';
@@ -26,7 +32,7 @@ type Props = {
   services: Services;
   nodes: SNode[];
   setSelectedContainer: SetSelectedContainer;
-  simulation: d3.Simulation<SNode, undefined>;
+  simulation: Simulation;
   treeDepth: number;
   options: Options;
 };

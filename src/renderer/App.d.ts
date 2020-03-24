@@ -48,7 +48,6 @@ interface SNode extends SimulationNodeDatum {
   column: number;
   rowLength: number;
   children: NodeChild;
-  networks?: string[];
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -103,3 +102,5 @@ export type TreeMap = {
 export type Networks = {
   [network: string]: any;
 };
+
+export type Simulation = d3.Simulation<SNode, undefined>;

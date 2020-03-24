@@ -11,17 +11,26 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPER FUNCTIONS
-import { Link, Services, Options } from '../App.d';
+import { Link, Services, Options, Simulation, SNode } from '../App.d';
 // IMPORT TYPES
 
 type Props = {
   links: Link[];
   services: Services;
   options: Options;
+  simulation: Simulation;
 };
 
-const Links: React.FC<Props> = ({ links, services, options }) => {
+const Links: React.FC<Props> = ({ links, services, options, simulation }) => {
   useEffect(() => {
+    simulation.force(
+      'link',
+      d3
+        .forceLink<SNode, Link>(links)
+        .distance(130)
+        .id((node: SNode) => node.name),
+    );
+
     //initialize graph
     const forceGraph = d3.select('.graph');
 

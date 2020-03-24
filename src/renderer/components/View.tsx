@@ -144,13 +144,7 @@ const DependsOnView: React.FC<Props> = ({
     links,
   };
 
-  const simulation = d3.forceSimulation<SNode>(serviceGraph.nodes).force(
-    'link',
-    d3
-      .forceLink<SNode, Link>(serviceGraph.links)
-      .distance(130)
-      .id((node: SNode) => node.name),
-  );
+  window.simulation = d3.forceSimulation<SNode>(serviceGraph.nodes);
 
   /**
    *********************
@@ -201,7 +195,10 @@ const DependsOnView: React.FC<Props> = ({
     }
 
     if (view === 'depends_on') {
-      simulation.force('charge', d3.forceManyBody<SNode>().strength(-400));
+      window.simulation.force(
+        'charge',
+        d3.forceManyBody<SNode>().strength(-400),
+      );
       d3Nodes
         .attr('fx', (d: any) => {
           //assign the initial x location to the relative displacement from the left
@@ -210,7 +207,7 @@ const DependsOnView: React.FC<Props> = ({
         .attr('fy', (d: any) => {
           return (d.fy = getVerticalPosition(d, treeDepth, height));
         });
-      simulation.on('tick', ticked);
+      window.simulation.on('tick', ticked);
     } else {
       d3Nodes
         .attr('fx', (d: any) => {
@@ -254,7 +251,7 @@ const DependsOnView: React.FC<Props> = ({
 
       const forceY = d3.forceY(height / 2).strength(0.5);
       //create force simulation
-      simulation
+      window.simulation
         .force('x', forceX)
         .force('y', forceY)
         .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
@@ -286,7 +283,7 @@ const DependsOnView: React.FC<Props> = ({
       <div className="depends-wrapper">
         <svg className="graph">
           <Nodes
-            simulation={simulation}
+            simulation={window.simulation}
             treeDepth={treeDepth}
             nodes={serviceGraph.nodes}
             setSelectedContainer={setSelectedContainer}
@@ -294,6 +291,7 @@ const DependsOnView: React.FC<Props> = ({
             options={options}
           />
           <Links
+            simulation={window.simulation}
             links={serviceGraph.links}
             services={services}
             options={options}
