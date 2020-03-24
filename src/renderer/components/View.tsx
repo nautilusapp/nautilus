@@ -212,8 +212,6 @@ const DependsOnView: React.FC<Props> = ({
         });
       simulation.on('tick', ticked);
     } else {
-      console.log(view);
-      console.log(simulation);
       d3Nodes
         .attr('fx', (d: any) => {
           return (d.fx = null);
@@ -255,7 +253,6 @@ const DependsOnView: React.FC<Props> = ({
         .strength(0.5);
 
       const forceY = d3.forceY(height / 2).strength(0.5);
-      console.log(width, height);
       //create force simulation
       simulation
         .force('x', forceX)
