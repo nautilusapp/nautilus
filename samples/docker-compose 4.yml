@@ -1,21 +1,21 @@
+--- #------------------------------------------------------------------------------
+
 #------------------------------------------------------------------------------
 # Copyright 2019 Robert Cowart
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#------------------------------------------------------------------------------
-
 version: '3'
-services:
+servicessss:
   influxdb:
     image: influxdb:1.7.9
     container_name: influxdb
@@ -39,8 +39,6 @@ services:
 
       # Bind address to use for the RPC service for backup and restore.
       INFLUXDB_BIND_ADDRESS: 0.0.0.0:8088
- 
-
 
       # The following _USER and _PASSWORD environment variables will only work, if the environment variable
       # INFLUXDB_HTTP_AUTH_ENABLED or the config variable auth-enabled is true:
@@ -53,23 +51,21 @@ services:
 
       # Name for a user with read and write permissions on the INFLUXDB_DB database
       #INFLUXDB_USER: rwuser
-      
+
       # Password for INFLUXDB_USER (Password will be generated and printed if not set)
       #INFLUXDB_USER_PASSWORD: changeme
 
       # Name for a user with read permissions on the INFLUXDB_DB database
       #INFLUXDB_READ_USER: rouser
-      
+
       # Password for INFLUXDB_READ_USER (Password will be generated and printed if not set)
       #INFLUXDB_READ_USER_PASSWORD: changeme
 
       # Name for a user with write permissions on the INFLUXDB_DB database
       #INFLUXDB_WRITE_USER: wouser
-      
+
       # Password for INFLUXDB_WRITE_USER (Password will be generated and printed if not set)
       #INFLUXDB_WRITE_USER_PASSWORD: changeme
-
-
 
       ### Controls the parameters for the Raft consensus group that stores metadata about the InfluxDB cluster.
 
@@ -82,8 +78,6 @@ services:
       # If log messages are printed for the meta service
       #INFLUXDB_META_LOGGING_ENABLED: 'true'
 
-      
-      
       ### Controls where the actual shard data for InfluxDB lives and how it is flushed from the WAL. "dir" may need to
       ### be changed to a suitable place for your system, but the WAL settings are an advanced configuration. The
       ### defaults should work for most systems.
@@ -114,8 +108,6 @@ services:
       # Validates incoming writes to ensure keys only have valid unicode characters. This setting will incur a small
       # overhead because every key must be checked.
       #INFLUXDB_DATA_VALIDATE_KEYS: 'false'
-
-
 
       ### Settings for the TSM engine
 
@@ -169,8 +161,6 @@ services:
       # have slow disks in some cases.
       #INFLUXDB_DATA_TSM_USE_MADV_WILLNEED: 'false'
 
-
-
       ### Controls the clustering service configuration.
 
       # The default time a write request will wait until a "timeout" error is returned to the caller.
@@ -199,8 +189,6 @@ services:
       # buckets unlimited.
       #INFLUXDB_COORDINATOR_MAX_SELECT_BUCKETS: 0
 
-
-
       ### Controls the enforcement of retention policies for evicting old data.
 
       # Determines whether retention policy enforcement enabled.
@@ -208,8 +196,6 @@ services:
 
       # The interval of time when retention policy enforcement checks run.
       INFLUXDB_RETENTION_CHECK_INTERVAL: 30m
-
-
 
       ### Controls the precreation of shards, so they are available before data arrives. Only shards that, after
       ### creation, will have both a start- and end-time in the future, will ever be created. Shards are never
@@ -224,8 +210,6 @@ services:
       # The default period ahead of the endtime of a shard group that its successor group is created.
       #INFLUXDB_SHARD_PRECREATION_ADVANCE_PERIOD: 30m
 
-
-
       ### Controls the system self-monitoring, statistics and diagnostics. The internal database for monitoring data is
       ### created automatically if if it does not already exist. The target retention within this database is called
       ### 'monitor' and is also created with a retention period of 7 days and a replication factor of 1, if it does not
@@ -239,8 +223,6 @@ services:
 
       # The interval at which to record statistics
       #INFLUXDB_MONITOR_STORE_INTERVAL: 10s
-
-
 
       ### Controls how the HTTP endpoints are configured. These are the primary mechanism for getting data into and out
       ### of InfluxDB.
@@ -270,7 +252,7 @@ services:
       # unspecified, the default is to write to stderr, which intermingles HTTP logs with internal InfluxDB logging. If
       # influxd is unable to access the specified path, it will log an error and fall back to writing the request log
       # to stderr.
-      #INFLUXDB_HTTP_ACCESS_LOG_PATH: 
+      #INFLUXDB_HTTP_ACCESS_LOG_PATH:
 
       # Filters which requests should be logged. Each filter is of the pattern NNN, NNX, or NXX where N is a number and
       # X is a wildcard for any number. To filter all 5xx responses, use the string 5xx. If multiple filters are used
@@ -295,10 +277,10 @@ services:
       #INFLUXDB_HTTP_HTTPS_CERTIFICATE: /etc/ssl/influxdb.pem
 
       # Use a separate private key location.
-      #INFLUXDB_HTTP_HTTPS_PRIVATE_KEY: 
+      #INFLUXDB_HTTP_HTTPS_PRIVATE_KEY:
 
       # The JWT auth shared secret to validate requests using JSON web tokens.
-      #INFLUXDB_HTTP_SHARED_SECRET: 
+      #INFLUXDB_HTTP_SHARED_SECRET:
 
       # The default chunk size for result sets that should be chunked.
       #INFLUXDB_HTTP_MAX_ROW_LIMIT: 0
@@ -326,8 +308,6 @@ services:
       # Setting this to 0 or setting max-concurrent-write-limit to 0 disables the limit.
       #INFLUXDB_HTTP_ENQUEUED_WRITE_TIMEOUT: 0
 
-
-
       ### Controls how the logger emits logs to the output.
 
       # Determines which log encoder to use for logs. Available options are auto, logfmt, and json. auto will use a
@@ -342,58 +322,36 @@ services:
       # Suppresses the logo output that is printed when the program is started. The logo is always suppressed if STDOUT
       # is not a TTY.
       INFLUXDB_LOGGING_SUPPRESS_LOGO: 'true'
-
-
-
       ### Controls the subscriptions, which can be used to fork a copy of all data received by the InfluxDB host.
-
       # Determines whether the subscriber service is enabled.
       #INFLUXDB_SUBSCRIBER_ENABLED: 'true'
-
       # The default timeout for HTTP writes to subscribers.
       #INFLUXDB_SUBSCRIBER_HTTP_TIMEOUT: 30s
-
       # Allows insecure HTTPS connections to subscribers. This is useful when testing with self-signed certificates.
       #INFLUXDB_SUBSCRIBER_INSECURE_SKIP_VERIFY: 'false'
-
       # The path to the PEM encoded CA certs file. If the empty string, the default system certs will be used
-      #INFLUXDB_SUBSCRIBER_CA_CERTS: 
-
+      #INFLUXDB_SUBSCRIBER_CA_CERTS:
       # The number of writer goroutines processing the write channel.
       #INFLUXDB_SUBSCRIBER_WRITE_CONCURRENCY: 40
-
       # The number of in-flight writes buffered in the write channel.
       #INFLUXDB_SUBSCRIBER_WRITE_BUFFER_SIZE: 1000
-
-
-
       ### Controls how continuous queries are run within InfluxDB.
-
       # Determines whether the continuous query service is enabled.
       #INFLUXDB_CONTINUOUS_QUERIES_ENABLED: 'true'
-
       # Controls whether queries are logged when executed by the CQ service.
       #INFLUXDB_CONTINUOUS_QUERIES_LOG_ENABLED: 'true'
-
       # Controls whether queries are logged to the self-monitoring data store.
       #INFLUXDB_CONTINUOUS_QUERIES_QUERY_STATS_ENABLED: 'false'
-
       # interval for how often continuous queries will be checked if they need to run
       #INFLUXDB_CONTINUOUS_QUERIES_RUN_INTERVAL: 1s
-
-
-
       ### Global configuration settings for TLS in InfluxDB.
-
       # Determines the available set of cipher suites. See https://golang.org/pkg/crypto/tls/#pkg-constants for a list
       # of available ciphers, which depends on the version of Go (use the query SHOW DIAGNOSTICS to see the version of
       # Go used to build InfluxDB). If not specified, uses the default settings from Go's crypto/tls package.
       #INFLUXDB_TLS_CIPHERS: '["TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"]'
-
       # Minimum version of the tls protocol that will be negotiated. If not specified, uses the
       # default settings from Go's crypto/tls package.
       #INFLUXDB_TLS_MIN_VERSION: tls1.2
-
       # Maximum version of the tls protocol that will be negotiated. If not specified, uses the
       # default settings from Go's crypto/tls package.
       #INFLUXDB_TLS_MAX_VERSION: tls1.2

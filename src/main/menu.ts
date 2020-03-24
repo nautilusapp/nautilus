@@ -1,5 +1,16 @@
 import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
+import child_process from 'child_process';
+
+const validateDockerCompose = (filePath: string) => {
+  console.log(`docker-compose -f ${filePath} config`);
+  child_process.exec(
+    `docker-compose -f ${filePath} config`,
+    (error, stdout, stderr) => {
+      console.log(stdout, 'stdout');
+    },
+  );
+};
 
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
@@ -21,6 +32,7 @@ const createMenu = (window: BrowserWindow) => {
               })
               .then((result: any) => {
                 if (result.filePaths[0]) {
+                  validateDockerCompose(result.filePaths[0]);
                   let yamlText = fs
                     .readFileSync(result.filePaths[0])
                     .toString();
