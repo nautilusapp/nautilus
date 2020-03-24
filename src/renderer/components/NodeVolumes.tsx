@@ -46,7 +46,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
       // select all nodes with volumes
       nodesWithVolumes = d3
         .select('.nodes')
-        .selectAll<SVGGElement, SNode>('g')
+        .selectAll<SVGGElement, SNode>('.node')
         .filter((d: SNode) => d.volumes.length > 0);
 
       // iterate through all nodes with volumes
@@ -108,13 +108,6 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
     else {
       d3.selectAll('.arrowHead').attr('refX', 23);
     }
-
-    console.log(
-      d3
-        .select('.graph')
-        .append('svg:defs')
-        .attr('class', 'arrowsGroup'),
-    );
 
     return () => {
       // before unmounting, if volumes option was on, remove the volumes
