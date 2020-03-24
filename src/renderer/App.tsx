@@ -15,6 +15,7 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
+import { firstThree } from './helpers/selectAll';
 
 // IMPORT STYLES
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -78,19 +79,6 @@ class App extends Component<{}, State> {
     }
   };
 
-  firstThree = (state: State): boolean => {
-    const optionValues = Object.values(state.options).slice(0, 3);
-    console.log('optionValues', optionValues);
-    let selected = 0;
-    optionValues.forEach(val => {
-      if (val === true) {
-        selected += 1;
-      }
-    });
-    if (selected === 3) return true;
-    return false;
-  };
-
   updateOption: UpdateOption = e => {
     const option = e.currentTarget.id;
     const selectAllClicked = option === 'selectAll' ? true : false;
@@ -98,13 +86,13 @@ class App extends Component<{}, State> {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
     };
-    if (this.firstThree(newState) === true) {
+    if (firstThree(newState) === true) {
       newState = {
         ...newState,
         options: { ...newState.options, selectAll: true },
       };
     }
-    if (this.firstThree(this.state) && selectAllClicked) {
+    if (firstThree(this.state) && selectAllClicked) {
       if (this.state.view === 'depends_on') {
         newState = {
           ...this.state,
@@ -126,7 +114,7 @@ class App extends Component<{}, State> {
           },
         };
       }
-    } else if (!this.firstThree(this.state) && selectAllClicked) {
+    } else if (!firstThree(this.state) && selectAllClicked) {
       newState = {
         ...this.state,
         options: {
@@ -136,10 +124,7 @@ class App extends Component<{}, State> {
           selectAll: true,
         },
       };
-    } else if (
-      this.state.options.selectAll === true &&
-      !this.firstThree(newState)
-    ) {
+    } else if (this.state.options.selectAll === true && !firstThree(newState)) {
       newState = {
         ...newState,
         options: { ...newState.options, selectAll: false },
