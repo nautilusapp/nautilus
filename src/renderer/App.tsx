@@ -78,56 +78,33 @@ class App extends Component<{}, State> {
     }
   };
 
-  getSelected = (state: State): number => {
-    console.log('inside getSelected');
-    const optionValues = Object.values(state.options);
+  firstThree = (state: State): boolean => {
+    const optionValues = Object.values(state.options).slice(0, 3);
+    console.log('optionValues', optionValues);
     let selected = 0;
-    console.log(optionValues);
     optionValues.forEach(val => {
       if (val === true) {
         selected += 1;
       }
     });
-    console.log(selected);
-    return selected;
-  };
-
-  allSelected = (state: State): boolean => {
-    console.log('inside allSelected');
-    if (this.getSelected(state) === 4) {
-      console.log('true');
-      return true;
-    } else {
-      console.log('false');
-      return false;
-    }
-  };
-
-  firstThree = (state: State): boolean => {
-    console.log('inside firstThree');
-    const selected = this.getSelected(state);
     if (selected === 3) return true;
-    console.log('first three = false');
     return false;
   };
 
   updateOption: UpdateOption = e => {
     const option = e.currentTarget.id;
-    // const optionValues = Object.values(this.state.options);
     const selectAllClicked = option === 'selectAll' ? true : false;
-    console.log('selectAllClicked clicked = ', selectAllClicked);
     let newState: State = {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
     };
     if (this.firstThree(newState) === true) {
-      console.log('setting selectAll to true because first three are true');
       newState = {
         ...newState,
         options: { ...newState.options, selectAll: true },
       };
     }
-    if (this.allSelected(this.state) && selectAllClicked) {
+    if (this.firstThree(this.state) && selectAllClicked) {
       if (this.state.view === 'depends_on') {
         newState = {
           ...this.state,
@@ -149,7 +126,7 @@ class App extends Component<{}, State> {
           },
         };
       }
-    } else if (!this.allSelected(this.state) && selectAllClicked) {
+    } else if (!this.firstThree(this.state) && selectAllClicked) {
       newState = {
         ...this.state,
         options: {
@@ -159,60 +136,18 @@ class App extends Component<{}, State> {
           selectAll: true,
         },
       };
+    } else if (
+      this.state.options.selectAll === true &&
+      !this.firstThree(newState)
+    ) {
+      newState = {
+        ...newState,
+        options: { ...newState.options, selectAll: false },
+      };
     }
     this.setState({
       ...newState,
     });
-    // if (option != 'selectAll') {
-    //   this.setState(state => {
-    //     return {
-    //       ...state,
-    //       options: { ...state.options, [option]: !state.options[option] },
-    //     };
-    //   });
-    // } else {
-    //   for (let i = 0; i < optionValues.length - 1; i++) {
-    //     if (optionValues[i] === false) {
-    //       return this.setState(state => {
-    //         return {
-    //           ...state,
-    //           options: {
-    //             ports: true,
-    //             volumes: true,
-    //             dependsOn: true,
-    //             selectAll: true,
-    //           },
-    //         };
-    //       });
-    //     } else {
-    //       if (this.state.view === 'depends_on') {
-    //         return this.setState(state => {
-    //           return {
-    //             ...state,
-    //             options: {
-    //               ports: false,
-    //               volumes: false,
-    //               dependsOn: true,
-    //               selectAll: false,
-    //             },
-    //           };
-    //         });
-    //       } else {
-    //         return this.setState(state => {
-    //           return {
-    //             ...state,
-    //             options: {
-    //               ports: false,
-    //               volumes: false,
-    //               dependsOn: false,
-    //               selectAll: false,
-    //             },
-    //           };
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
   };
 
   convertAndStoreYamlJSON = (yamlText: string) => {

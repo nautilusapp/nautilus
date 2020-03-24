@@ -10,7 +10,7 @@
  */
 import React from 'react';
 // import View from './View';
-import NetworksView from './NetworksView';
+import View from './View';
 
 import {
   Services,
@@ -37,16 +37,11 @@ const ServicesWrapper: React.FC<Props> = ({
 }) => {
   return (
     <div className="services-wrapper">
-      {/*  <View
+      <View
         services={services}
         setSelectedContainer={setSelectedContainer}
         options={options}
         view={view}
-      /> */}
-      <NetworksView
-        services={services}
-        setSelectedContainer={setSelectedContainer}
-        options={options}
         networks={networks}
       />
     </div>
