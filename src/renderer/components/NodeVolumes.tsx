@@ -25,6 +25,13 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
+  const maxVolumes = d3
+    .select('.links')
+    .selectAll('line')
+    .data()
+    .reduce((acc: number, d: any) => {
+      return acc > d.target.volumes.length ? acc : d.target.volumes.length;
+    }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
     const x = 0;
@@ -62,10 +69,10 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
               );
               return slicedVString;
             })
-            .attr('width', width + (d.volumes.length - i) * 10)
-            .attr('height', height + (d.volumes.length - i) * 10)
-            .attr('x', x - (d.volumes.length - i) * 5)
-            .attr('y', y - (d.volumes.length - i) * 5)
+            .attr('width', width + (d.volumes.length - i) * 20)
+            .attr('height', height + (d.volumes.length - i) * 20)
+            .attr('x', x - (d.volumes.length - i) * 10)
+            .attr('y', y - (d.volumes.length - i) * 10)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
@@ -95,8 +102,20 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
           volumeText.push(vText);
         });
       });
+      d3.selectAll('.arrowHead').attr('refX', 22.5 + 5 * maxVolumes);
     }
     //move arrowheads based on number of volumes
+    else {
+      d3.selectAll('.arrowHead').attr('refX', 22.5);
+    }
+    console.log(maxVolumes);
+
+    console.log(
+      d3
+        .select('.graph')
+        .append('svg:defs')
+        .attr('class', 'arrowsGroup'),
+    );
 
     return () => {
       // before unmounting, if volumes option was on, remove the volumes

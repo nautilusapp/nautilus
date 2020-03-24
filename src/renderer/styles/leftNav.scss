@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 220px;
   grid-template-rows: 320px 1fr;
-  grid-template-areas: 'top-half''info';
+  grid-template-areas: 'top-half' 'info';
   min-height: 650px;
   max-height: 100vh;
 
@@ -70,7 +70,7 @@
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: auto 1fr;
-      grid-template-areas: 'name''card';
+      grid-template-areas: 'name' 'card';
       height: 100%;
       max-width: 100%;
 
@@ -84,7 +84,8 @@
 
       .accordion {
         margin: 0 1em 1em 1em;
-        overflow: scroll;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
         grid-area: card;
         max-width: 100%;
 
