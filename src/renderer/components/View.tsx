@@ -92,25 +92,28 @@ const View: React.FC<Props> = ({
         .attr('y1', (d: any) => d.source.y + 30)
         .attr('x2', (d: any) => d.target.x + 30)
         .attr('y2', (d: any) => d.target.y + 30);
-
-      // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
     if (view === 'depends_on') {
-      window.simulation.force(
-        'charge',
-        d3.forceManyBody<SNode>().strength(-400),
-      );
-      d3Nodes
-        .attr('fx', (d: any) => {
-          //assign the initial x location to the relative displacement from the left
-          return (d.fx = getHorizontalPosition(d, width));
+      const dependsForceX = d3
+        .forceX((d: SNode) => {
+          return getHorizontalPosition(d, width);
         })
-        .attr('fy', (d: any) => {
-          return (d.fy = getVerticalPosition(d, treeDepth, height));
-        });
-      window.simulation.on('tick', ticked);
-      window.simulation.tick();
+        .strength(0.3);
+
+      const dependsForceY = d3
+        .forceY((d: SNode) => {
+          return getVerticalPosition(d, treeDepth, height);
+        })
+        .strength(0.3);
+
+      window.simulation
+        .alpha(0.5)
+        .force('charge', d3.forceManyBody<SNode>().strength(-400))
+        .force('x', dependsForceX)
+        .force('y', dependsForceY)
+        .on('tick', ticked)
+        .restart();
     } else {
       d3Nodes
         .attr('fx', (d: any) => {
@@ -123,7 +126,6 @@ const View: React.FC<Props> = ({
       const networkHolder: { [networkString: string]: boolean } = {};
       const getSpacing = (): number => {
         d3Nodes.each((d: any) => {
-          console.log(d.networks);
           if (d.networks) {
             let networkString = '';
             d.networks.sort();
@@ -151,21 +153,34 @@ const View: React.FC<Props> = ({
           }
           return width / 2;
         })
-        .strength(1);
+        .strength(0.3);
 
-      const forceY = d3.forceY(height / 2).strength(1);
+      const forceY = d3.forceY(height / 2).strength(0.3);
       //create force simulation
       window.simulation
+        .alpha(1)
         .force('x', forceX)
         .force('y', forceY)
         .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
         .force('collide', d3.forceCollide(radius / 2))
-        .on('tick', ticked);
+        .on('tick', ticked)
+        .restart();
     }
 
     // move force graph with resizing window
     window.addEventListener('resize', () => {
-      window.simulation.tick();
+      if (view === 'depends_on') {
+        const width = parseInt(container.style('width'));
+        const height = parseInt(container.style('height'));
+        d3Nodes
+          .attr('fx', (d: any) => {
+            //assign the initial x location to the relative displacement from the left
+            return (d.fx = getHorizontalPosition(d, width));
+          })
+          .attr('fy', (d: any) => {
+            return (d.fy = getVerticalPosition(d, treeDepth, height));
+          });
+      }
     });
   }, [view, services]);
 
