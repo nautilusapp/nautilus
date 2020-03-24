@@ -43,6 +43,7 @@ interface SNode extends SimulationNodeDatum {
   name: string;
   ports: string[];
   volumes: string[];
+  networks?: string[];
   row: number;
   column: number;
   rowLength: number;

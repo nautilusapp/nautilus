@@ -20,8 +20,8 @@ import {
   SetSelectedContainer,
   Options,
   ReadOnlyObj,
-  Networks,
   ViewT,
+  Networks,
 } from '../App.d';
 
 type Props = {
@@ -32,8 +32,8 @@ type Props = {
   options: Options;
   volumes: Array<ReadOnlyObj>;
   bindMounts: Array<string>;
-  networks: Networks;
   view: ViewT;
+  networks: Networks;
 };
 
 const D3Wrapper: React.FC<Props> = ({

@@ -15,6 +15,12 @@ import * as d3 from 'd3';
 import Nodes from './Nodes';
 import Links from './Links';
 
+//IMPORT HELPER FNS
+import {
+  getHorizontalPosition,
+  getVerticalPosition,
+} from '../helpers/getSimulationDimensions';
+
 // IMPORT STYLES
 import {
   Services,
@@ -167,6 +173,7 @@ const DependsOnView: React.FC<Props> = ({
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
       // Enforces borders
+
       d3Nodes
         .attr('cx', (d: any) => {
           return (d.x = Math.max(
@@ -193,9 +200,17 @@ const DependsOnView: React.FC<Props> = ({
       // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
-    simulation.on('tick', ticked);
     if (view === 'depends_on') {
       simulation.force('charge', d3.forceManyBody<SNode>().strength(-400));
+      d3Nodes
+        .attr('fx', (d: any) => {
+          //assign the initial x location to the relative displacement from the left
+          return (d.fx = getHorizontalPosition(d, width));
+        })
+        .attr('fy', (d: any) => {
+          return (d.fy = getVerticalPosition(d, treeDepth, height));
+        });
+      simulation.on('tick', ticked);
     } else {
       console.log(view);
       console.log(simulation);
@@ -240,12 +255,14 @@ const DependsOnView: React.FC<Props> = ({
         .strength(0.5);
 
       const forceY = d3.forceY(height / 2).strength(0.5);
+      console.log(width, height);
       //create force simulation
       simulation
         .force('x', forceX)
         .force('y', forceY)
-        .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
-        .force('collide', d3.forceCollide(radius / 2));
+        .force('charge', d3.forceManyBody<SNode>().strength(0))
+        .force('collide', d3.forceCollide(radius / 2))
+        .on('tick', ticked);
     }
 
     // move force graph with resizing window
