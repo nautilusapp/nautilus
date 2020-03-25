@@ -116,6 +116,7 @@ const View: React.FC<Props> = ({
       window.simulation
         .alpha(0.5)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
+        .force('collide', null)
         .force('x', dependsForceX(width))
         .force('y', dependsForceY(height))
         .on('tick', ticked)
