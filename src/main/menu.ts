@@ -1,16 +1,6 @@
 import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
-import child_process from 'child_process';
-
-const validateDockerCompose = (filePath: string) => {
-  console.log(`docker-compose -f ${filePath} config`);
-  child_process.exec(
-    `docker-compose -f ${filePath} config`,
-    (error, stdout, stderr) => {
-      console.log(stdout, 'stdout');
-    },
-  );
-};
+import runDockerComposeValidation from '../common/dockerComposeValidation';
 
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
@@ -30,16 +20,31 @@ const createMenu = (window: BrowserWindow) => {
                   { name: 'All Files', extensions: ['*'] },
                 ],
               })
-              .then((result: any) => {
-                if (result.filePaths[0]) {
-                  validateDockerCompose(result.filePaths[0]);
-                  let yamlText = fs
-                    .readFileSync(result.filePaths[0])
-                    .toString();
-                  window.webContents.send(
-                    'file-uploaded-within-electron',
-                    yamlText,
-                  );
+              .then((result: Electron.OpenDialogReturnValue) => {
+                // if user exits out of file upload prompt
+                if (!result.filePaths[0]) return;
+                return runDockerComposeValidation(result.filePaths[0]);
+              })
+              .then((validationResults: any) => {
+                //if validation actually ran and user did not exit out of file upload prompt
+                if (validationResults) {
+                  //if there was an error with the file
+                  console.log(validationResults.error);
+                  if (validationResults.error) {
+                    window.webContents.send(
+                      'file-upload-error-within-electron',
+                      validationResults.error,
+                    );
+                    //process file and send to front end
+                  } else if (validationResults.filePath) {
+                    let yamlText = fs
+                      .readFileSync(validationResults.filePath)
+                      .toString();
+                    window.webContents.send(
+                      'file-uploaded-within-electron',
+                      yamlText,
+                    );
+                  }
                 }
               })
               .catch((err: Error) => console.log('error reading file: ', err));

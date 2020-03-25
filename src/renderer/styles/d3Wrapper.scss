@@ -4,7 +4,16 @@
   min-height: 500px;
   align-items: center;
   justify-content: center;
-
+  .error-upload-wrapper {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    color: red;
+    .error-display {
+      display: flex;
+      flex-direction: column;
+    }
+  }
   .services-wrapper {
     flex: 1 1 0;
     height: 100%;
