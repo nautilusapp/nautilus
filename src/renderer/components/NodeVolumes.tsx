@@ -12,7 +12,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPERS
-import { colorSchemeHash } from '../helpers/colorSchemeHash';
+import { colorSchemeIndex } from '../helpers/colorSchemeHash';
 
 //IMPORT SVG
 import containerPath from '../../../static/containerPath';
@@ -64,10 +64,8 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
             .html(containerPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
-              let slicedVString = colorSchemeHash(
-                vString.slice(0, vString.indexOf(':')),
-              );
-              return slicedVString;
+              let slicedVString = vString.slice(0, vString.indexOf(':'));
+              return getColor(slicedVString);
             })
             .attr('width', width + (d.volumes.length - i) * 20)
             .attr('height', height + (d.volumes.length - i) * 20)
