@@ -1,5 +1,4 @@
-!node_modules/d3-dag/dist/d3-dag.js
-node_modules/*
+node_modules
 dist
 package-lock.json
 .DS_Store
