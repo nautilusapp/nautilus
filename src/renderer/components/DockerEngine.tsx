@@ -14,13 +14,19 @@ import { ReadOnlyObj } from '../App.d';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;
+  getColor: any;
 };
 
-const DockerEngine: React.FC<Props> = ({ volumes }) => {
+const DockerEngine: React.FC<Props> = ({ volumes, getColor }) => {
   let volumeNames: ReactElement[] = [];
 
   Object.keys(volumes).map((el, i) => {
-    volumeNames.push(<Volume key={'vol' + i} volume={el} />);
+    const color: string = getColor(el);
+    const volumeProps = {
+      volume: el,
+      color: color,
+    };
+    volumeNames.push(<Volume key={'vol' + i} {...volumeProps} />);
   });
 
   return <div className="docker-engine">{volumeNames}</div>;

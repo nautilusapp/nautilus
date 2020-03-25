@@ -37,6 +37,7 @@ type Props = {
   options: Options;
   networks: Networks;
   view: ViewT;
+  getColor: any;
 };
 
 const View: React.FC<Props> = ({
@@ -45,6 +46,7 @@ const View: React.FC<Props> = ({
   options,
   view,
   networks,
+  getColor,
 }) => {
   const { treeDepth } = window;
 
@@ -188,6 +190,7 @@ const View: React.FC<Props> = ({
             setSelectedContainer={setSelectedContainer}
             services={services}
             options={options}
+            getColor={getColor}
           />
           <Links services={services} options={options} />
         </svg>

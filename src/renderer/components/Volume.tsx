@@ -9,10 +9,10 @@
  * ************************************
  */
 import React from 'react';
-import { colorSchemeHash } from '../helpers/colorSchemeHash';
 
 type Props = {
   volume: string;
+  color: string;
 };
 
 const Volume: React.FC<Props> = props => {
@@ -23,12 +23,7 @@ const Volume: React.FC<Props> = props => {
     <div className="volumeLegend">
       <div className="volumeColorName">
         <svg className="volumeSvgBox">
-          <rect
-            className="volumeSquare"
-            rx={5}
-            ry={5}
-            fill={colorSchemeHash(props.volume)}
-          />
+          <rect className="volumeSquare" rx={5} ry={5} fill={props.color} />
         </svg>
       </div>
       <div>
