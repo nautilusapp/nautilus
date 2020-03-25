@@ -1,6 +1,7 @@
 import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
 
 export type State = {
+  uploadErrors: string[];
   selectedContainer: string;
   fileUploaded: boolean;
   services: Services;
@@ -104,3 +105,9 @@ export type Networks = {
 };
 
 export type Simulation = d3.Simulation<SNode, undefined>;
+
+export type ValidationResults = {
+  error?: Error;
+  out: string;
+  filePath: string;
+};
