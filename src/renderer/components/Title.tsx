@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getStatic } from '../../common/static';
+import { getStatic } from '../helpers/static';
 
 type Props = {
   // projectName: string;
