@@ -5,9 +5,14 @@ import createMenu from './menu';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
+import fixPath from 'fix-path';
 
 if (module.hot) {
   module.hot.accept();
+}
+
+if (process.env.NODE_ENV === 'production') {
+  fixPath();
 }
 
 const createWindow = () => {
