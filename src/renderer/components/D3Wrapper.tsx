@@ -12,6 +12,7 @@ import React from 'react';
 import ServicesWrapper from './ServicesWrapper';
 import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
+import ErrorDisplay from './ErrorDisplay';
 
 //type import
 import {
@@ -35,6 +36,7 @@ type Props = {
   view: ViewT;
   networks: Networks;
   selectedNetwork: string;
+  uploadErrors: string[];
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -48,11 +50,19 @@ const D3Wrapper: React.FC<Props> = ({
   view,
   networks,
   selectedNetwork,
+  uploadErrors,
 }) => {
   return (
     <div className="d3-wrapper">
       {!fileUploaded ? (
-        <FileSelector fileUpload={fileUpload} />
+        <div className="error-upload-wrapper">
+          {uploadErrors.length > 0 ? (
+            <ErrorDisplay uploadErrors={uploadErrors} />
+          ) : (
+            <></>
+          )}
+          <FileSelector fileUpload={fileUpload} />
+        </div>
       ) : (
         <>
           <ServicesWrapper

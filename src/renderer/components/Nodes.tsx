@@ -81,12 +81,12 @@ const Nodes: React.FC<Props> = ({
       })
       .on('dblclick', dblClick)
       .call(drag)
-      .attr('fx', (d: SNode) => {
+      .attr('x', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
-        return (d.fx = getHorizontalPosition(d, width));
+        return (d.x = getHorizontalPosition(d, width));
       })
-      .attr('fy', (d: SNode) => {
-        return (d.fy = getVerticalPosition(d, window.treeDepth, height));
+      .attr('y', (d: SNode) => {
+        return (d.y = getVerticalPosition(d, window.treeDepth, height));
       });
 
     // add names of services

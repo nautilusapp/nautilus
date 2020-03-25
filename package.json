@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
     "dev": "cross-env NODE_ENV=development electron-webpack dev",
     "compile": "cross-env NODE_ENV=production electron-webpack",
-    "dist": "concurrently \"npm run compile\" \"electron-builder\""
+    "dist": "concurrently \"yarn run compile -mwl\" \"electron-builder\""
   },
   "repository": {
     "type": "git",
@@ -24,11 +24,9 @@
   },
   "homepage": "https://github.com/oslabs-beta/nautilis#readme",
   "dependencies": {
-    "bootstrap": "^4.4.1",
     "d3": "^5.15.0",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
-    "jquery": "^3.4.1",
     "js-yaml": "^3.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",

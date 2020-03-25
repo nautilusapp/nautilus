@@ -17,9 +17,10 @@ import { ipcRenderer } from 'electron';
 import { convertYamlToState } from './helpers/yamlParser';
 import { firstThree } from './helpers/selectAll';
 import setGlobalVars from './helpers/setGlobalVars';
+import parseUploadError from './helpers/parseUploadError';
+import runDockerComposeValidation from '../common/dockerComposeValidation';
 
 // IMPORT STYLES
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.scss';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -36,6 +37,7 @@ import {
 } from './App.d';
 
 const initialState: State = {
+  uploadErrors: [],
   selectedContainer: '',
   fileUploaded: false,
   services: {},
@@ -162,15 +164,29 @@ class App extends Component<{}, State> {
 
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
-    fileReader.onload = () => {
-      if (fileReader.result) {
-        this.convertAndStoreYamlJSON(fileReader.result.toString());
+    runDockerComposeValidation(file.path).then((validationResults: any) => {
+      if (validationResults.error) {
+        this.handleFileUploadError(validationResults.error);
+      } else {
+        fileReader.onload = () => {
+          if (fileReader.result) {
+            this.convertAndStoreYamlJSON(fileReader.result.toString());
+          }
+        };
+        fileReader.readAsText(file);
       }
-    };
-    fileReader.readAsText(file);
+    });
+  };
+
+  handleFileUploadError = (errorText: Error) => {
+    const uploadErrors = parseUploadError(errorText);
+    this.setState({ ...this.state, uploadErrors, fileUploaded: false });
   };
 
   componentDidMount() {
+    ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
+      this.handleFileUploadError(arg);
+    });
     ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
       this.convertAndStoreYamlJSON(arg);
     });
@@ -184,6 +200,7 @@ class App extends Component<{}, State> {
 
   componentWillUnmount() {
     ipcRenderer.removeAllListeners('file-uploaded-within-electron');
+    ipcRenderer.removeAllListeners('file-upload-error-within-electron');
   }
 
   render() {
@@ -206,6 +223,7 @@ class App extends Component<{}, State> {
             selectNetwork={this.selectNetwork}
           />
           <D3Wrapper
+            uploadErrors={this.state.uploadErrors}
             fileUploaded={this.state.fileUploaded}
             fileUpload={this.fileUpload}
             services={this.state.services}

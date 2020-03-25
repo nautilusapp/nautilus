@@ -94,25 +94,40 @@ const View: React.FC<Props> = ({
         .attr('y1', (d: any) => d.source.y + 30)
         .attr('x2', (d: any) => d.target.x + 30)
         .attr('y2', (d: any) => d.target.y + 30);
-
-      // simulation.force('center', d3.forceCenter<SNode>(w / 2, h / 2));
     }
 
     if (view === 'depends_on') {
-      window.simulation.force(
-        'charge',
-        d3.forceManyBody<SNode>().strength(-400),
-      );
-      d3Nodes
-        .attr('fx', (d: any) => {
-          //assign the initial x location to the relative displacement from the left
-          return (d.fx = getHorizontalPosition(d, width));
-        })
-        .attr('fy', (d: any) => {
-          return (d.fy = getVerticalPosition(d, treeDepth, height));
-        });
-      window.simulation.on('tick', ticked);
-      window.simulation.tick();
+      const dependsForceX = (w: number) =>
+        d3
+          .forceX((d: SNode) => {
+            return getHorizontalPosition(d, w);
+          })
+          .strength(0.3);
+
+      const dependsForceY = (h: number) =>
+        d3
+          .forceY((d: SNode) => {
+            return getVerticalPosition(d, treeDepth, h);
+          })
+          .strength(0.3);
+
+      window.simulation
+        .alpha(0.5)
+        .force('charge', d3.forceManyBody<SNode>().strength(-400))
+        .force('x', dependsForceX(width))
+        .force('y', dependsForceY(height))
+        .on('tick', ticked)
+        .restart();
+      // move force graph with resizing window
+      window.addEventListener('resize', () => {
+        const width = parseInt(container.style('width'));
+        const height = parseInt(container.style('height'));
+        window.simulation
+          .alpha(0.5)
+          .force('x', dependsForceX(width))
+          .force('y', dependsForceY(height))
+          .restart();
+      });
     } else {
       d3Nodes
         .attr('fx', (d: any) => {
@@ -169,20 +184,20 @@ const View: React.FC<Props> = ({
                       return width / 2;
                     }
                   }
-                  return 1;
+                  return 0;
                 }
-                return 1;
+                return 0;
               })
               .strength((d: SNode): number => {
                 if (d.networks) {
                   for (let n = 0; n < d.networks.length; n++) {
                     if (d.networks[n] === selectedNetwork) {
-                      return 1;
+                      return 0.5;
                     }
                   }
-                  return 0;
+                  return 1;
                 }
-                return 0;
+                return 1;
               });
             forceY = d3
               .forceY((d: SNode): number => {
@@ -200,31 +215,61 @@ const View: React.FC<Props> = ({
                 if (d.networks) {
                   for (let n = 0; n < d.networks.length; n++) {
                     if (d.networks[n] === selectedNetwork) {
-                      return 0.5;
+                      return 0.3;
                     }
                   }
-                  return 1;
+                  return 0.03;
                 }
-                return 1;
+                return 0;
               });
           }
         }
       }
-      // let forceY = d3.forceY(height / 2).strength(1);
-      //create force simulation
+      // // let forceY = d3.forceY(height / 2).strength(1);
+      // const networkHolder: { [networkString: string]: boolean } = {};
+      // const getSpacing = (): number => {
+      //   d3Nodes.each((d: any) => {
+      //     if (d.networks) {
+      //       let networkString = '';
+      //       d.networks.sort();
+      //       d.networks.forEach((network: string) => {
+      //         networkString += network;
+      //       });
+      //       networkHolder[networkString] = true;
+      //     }
+      //   });
+      //   return width / (Object.keys(networkHolder).length + 1);
+      // };
+      // const spacing = getSpacing();
+      // const forceX = d3
+      //   .forceX((d: SNode): any => {
+      //     if (d.networks) {
+      //       if (d.networks.length === 0) return width / 2;
+      //       let networkString = '';
+      //       d.networks.sort();
+      //       d.networks.forEach(network => {
+      //         networkString += network;
+      //       });
+      //       const place = Object.keys(networkHolder).indexOf(networkString);
+      //       networkString = '';
+      //       return (place + 1) * spacing;
+      //     }
+      //     return width / 2;
+      //   })
+      //   .strength(0.3);
+
+      // const forceY = d3.forceY(height / 2).strength(0.3);
+      // //create force simulation
       window.simulation
+        .alpha(1)
         .force('x', forceX)
         .force('y', forceY)
-        .force('charge', d3.forceManyBody<SNode>().strength(-400))
-        .force('collide', d3.forceCollide(-radius * 3))
-        .on('tick', ticked);
+        .force('charge', d3.forceManyBody<SNode>().strength(0))
+        .force('collide', d3.forceCollide(radius))
+        .on('tick', ticked)
+        .restart();
     }
-
-    // move force graph with resizing window
-    window.addEventListener('resize', () => {
-      window.simulation.tick();
-    });
-  }, [view, services]);
+  }, [view, services, selectedNetwork]);
 
   return (
     <>

@@ -11,7 +11,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPER FUNCTIONS
-import { Link, Services, Options, SNode } from '../App.d';
+import { SNode, Link, Services, Options } from '../App.d';
 // IMPORT TYPES
 
 type Props = {
@@ -30,14 +30,17 @@ const Links: React.FC<Props> = ({ services, options }) => {
       d3
         .forceLink<SNode, Link>(links)
         .distance(130)
-        .id((node: SNode) => node.name),
+        .id((node: SNode) => node.name)
+        .strength(0.01),
     );
 
     //initialize graph
     const arrowsGroup = d3
       .select('.graph')
       .append('svg:defs')
-      .attr('class', 'arrowsGroup')
+      .attr('class', 'arrowsGroup');
+
+    arrowsGroup
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
       .enter()

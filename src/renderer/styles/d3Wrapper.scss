@@ -4,7 +4,16 @@
   min-height: 500px;
   align-items: center;
   justify-content: center;
-
+  .error-upload-wrapper {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    color: red;
+    .error-display {
+      display: flex;
+      flex-direction: column;
+    }
+  }
   .services-wrapper {
     flex: 1 1 0;
     height: 100%;
@@ -14,6 +23,9 @@
       .graph {
         width: 100%;
         height: 100%;
+        .node {
+          cursor: pointer;
+        }
         .hide {
           display: none;
         }
@@ -25,14 +37,6 @@
         }
       }
     }
-    .networks-wrapper {
-      height: 100%;
-      width: 100%;
-      .graph {
-        width: 100%;
-        height: 100%;
-      }
-    }
   }
 
   .volumes-wrapper {
@@ -42,6 +46,7 @@
     align-items: center;
     margin: 0 1em;
     .container {
+      width: 100%;
       height: 90%;
       background-color: $hover-color;
       border-radius: 2em;
@@ -53,6 +58,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: fit-content;
         max-height: 50%;
       }
       h2 {
@@ -63,20 +69,28 @@
         width: 80%;
         margin: 0 0 0.75em 0;
       }
-      .volume {
-        margin: 0 0 2em 0.5em;
-        .volumeBox {
+      .volumeLegend {
+        margin: 0 0 0.75em 0.5em;
+        display: flex;
+        p {
+          margin: 0 0 0 0;
+        }
+        .volumeColorName {
+          align-self: center;
+        }
+        .volumeSvgBox {
           height: 2em;
           width: 2em;
-          .volumeSq {
-            height: 2em;
-            width: 2em;
+          .volumeSquare {
+            height: 1.5em;
+            width: 1.5em;
           }
         }
       }
       .scroll {
         overflow-y: auto;
         scroll-behavior: smooth;
+        min-width: 100%;
       }
     }
   }
@@ -88,7 +102,6 @@
     text-align: center;
     color: #003459;
     .select-file-button:hover {
-      cursor: hand;
       cursor: pointer;
       opacity: 0.9;
     }
@@ -98,7 +111,6 @@
       border: none;
       padding: 0;
       font: inherit;
-      cursor: hand;
       cursor: pointer;
       opacity: 0.9;
       outline: inherit;
