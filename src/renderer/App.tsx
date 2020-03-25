@@ -21,7 +21,6 @@ import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
 
 // IMPORT STYLES
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.scss';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
