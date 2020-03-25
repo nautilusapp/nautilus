@@ -2,7 +2,7 @@
  * ************************************
  *
  * @module  InfoDropdown.tsx
- * @author Aris Razuri, but mostly Danny Scheiner
+ * @author Danny Scheiner & Josh Nordstrom
  * @date 3/11/20
  * @description Dropdown display to show categories of service info
  *
@@ -22,10 +22,6 @@ type DockerComposeCommands = {
 type ServiceOverview = {
   [prop: string]: any;
 };
-
-// type Build = {
-//   [prop: string]: string | {};
-// };
 
 type TwoDimension = {
   [prop: string]: any;
@@ -48,7 +44,18 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   // Arrays/Objects to hold filtered 2D service Commands
   const environmentVariables: TwoDimension = {};
   const env_file: string[] = [];
+  const portsArray: string[] = [];
 
+  // loop through each command in the selected container,
+  // if the command exists in the DC properties, correspond it to an empty string in the serviceOverview object
+  // also, do the following for each of the specific commands with 2D values, as well as the "build" command because it has options:
+  // ENVIRONMENT: we want to take an environment variable such as: "JACOCO=${REPORT_COVERAGE}" and set the 2d line to look like - JACOCO: $(REPORT_COVERAGE)
+  // Thus, if its value is an array, loop through it, split the value at the the '=', and set the key in the environmentVariables cache to the first half, and the value to the second half
+  // Otherwise, if it's an object, it's already split for you, so set the serviceOverview key to the environment variable's key, and the serviceOverview value to the environment's value
+  // ENV_FILE: an env file can have a 1D string, so if it does, just set the key in serviceOverview equal to its value as passed down from state
+  // If it's an array, loop through the env_file values, and push them into the env_file "cache" on line 46
+  // PORTS: if ports incorrectly is given a string, just set the key in serviceOverview equal to its value as passed down from state
+  // Finally, for all commands with 1D values and no options (image and command), just set the key in serviceOverview equal to its value as passed down from state
   if (service) {
     Object.keys(service).forEach(command => {
       if (dockerComposeCommands[command]) {
@@ -79,13 +86,40 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
               env_file.push(service[command][i]);
             }
           }
-        }
-        //  *********************
-        //  * Build
-        //  *********************
-        else if (command === 'build' && typeof service[command] !== 'string') {
+          //  *********************
+          //  Ports
+          //  *********************
+        } else if (command === 'ports') {
+          for (let i = 0; i < service[command].length; i += 1) {
+            if (typeof service[command][i] === 'object') {
+              portsArray.push(
+                `${service[command][i].published}:${
+                  service[command][i].target
+                } - ${service[command][i].protocol.toUpperCase()} : ${
+                  service[command][i].mode
+                }`,
+              );
+            } else if (!service[command][i].includes(':')) {
+              portsArray.push(`Auto-assigned:${service[command][i]}`);
+            } else portsArray.push(service[command][i]);
+          }
+          //  *********************
+          //  * Build
+          //  *********************
+        } else if (
+          command === 'build' &&
+          typeof service[command] !== 'string'
+        ) {
+          //  *********************
+          //  * Command
+          //  *********************
         } else if (command === 'command' && Array.isArray(service[command])) {
-        } else serviceOverview[command] = service[command];
+          //  *********************
+          //  * General 1D Objects
+          //  *********************
+        } else {
+          serviceOverview[command] = service[command];
+        }
       }
     });
   }
@@ -138,6 +172,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
     dockerComposeCommands: DockerComposeCommands,
     environmentVariables: TwoDimension,
     env_file: string[],
+    portsArray: string[],
     service: any,
   ) => {
     return Object.keys(serviceOverview).length === 0
@@ -202,6 +237,21 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
             //  Ports
             //  *********************
           } else if (command === 'ports' && !serviceOverview[command].length) {
+            if (portsArray.length) {
+              let portsArraySquared: JSX.Element[] = [];
+              portsArray.forEach(el => {
+                portsArraySquared.push(
+                  <li className="second-level" key={el}>
+                    {el}
+                  </li>,
+                );
+              });
+              valueJSX = (
+                <span className="command-values">
+                  <ul>{portsArraySquared}</ul>
+                </span>
+              );
+            }
           } else {
             valueJSX = (
               <span className="command-values">{serviceOverview[command]}</span>
@@ -232,6 +282,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
               dockerComposeCommands,
               environmentVariables,
               env_file,
+              portsArray,
               service,
             )}
           </div>
