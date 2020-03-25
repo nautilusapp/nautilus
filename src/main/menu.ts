@@ -29,7 +29,6 @@ const createMenu = (window: BrowserWindow) => {
                 //if validation actually ran and user did not exit out of file upload prompt
                 if (validationResults) {
                   //if there was an error with the file
-                  console.log(validationResults.error);
                   if (validationResults.error) {
                     window.webContents.send(
                       'file-upload-error-within-electron',
