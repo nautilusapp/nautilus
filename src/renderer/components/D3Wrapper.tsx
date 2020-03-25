@@ -35,6 +35,7 @@ type Props = {
   bindMounts: Array<string>;
   view: ViewT;
   networks: Networks;
+  selectedNetwork: string;
   uploadErrors: string[];
 };
 
@@ -48,6 +49,7 @@ const D3Wrapper: React.FC<Props> = ({
   bindMounts,
   view,
   networks,
+  selectedNetwork,
   uploadErrors,
 }) => {
   const getColor: any = colorSchemeIndex();
@@ -79,6 +81,7 @@ const D3Wrapper: React.FC<Props> = ({
             options={options}
             view={view}
             networks={networks}
+            selectedNetwork={selectedNetwork}
             {...dockerEngineProps}
             {...bindMountsProps}
           />

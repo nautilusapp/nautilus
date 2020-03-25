@@ -37,6 +37,7 @@ type Props = {
   options: Options;
   networks: Networks;
   view: ViewT;
+  selectedNetwork: string;
   getColor: any;
 };
 
@@ -46,6 +47,7 @@ const View: React.FC<Props> = ({
   options,
   view,
   networks,
+  selectedNetwork,
   getColor,
 }) => {
   const { treeDepth } = window;
@@ -137,50 +139,139 @@ const View: React.FC<Props> = ({
           return (d.fy = null);
         });
 
-      const networkHolder: { [networkString: string]: boolean } = {};
-      const getSpacing = (): number => {
-        d3Nodes.each((d: any) => {
-          if (d.networks) {
-            let networkString = '';
-            d.networks.sort();
-            d.networks.forEach((network: string) => {
-              networkString += network;
-            });
-            networkHolder[networkString] = true;
+      const networksArray = Object.keys(networks);
+      let forceX: d3.ForceX<SNode> = d3.forceX(0);
+      let forceY: d3.ForceY<SNode> = d3.forceY(0);
+      if (selectedNetwork === 'shared') {
+        const networkHolder: { [networkString: string]: boolean } = {};
+        const getSpacing = (): number => {
+          d3Nodes.each((d: any) => {
+            // console.log(d.networks);
+            if (d.networks) {
+              let networkString = '';
+              d.networks.sort();
+              d.networks.forEach((network: string) => {
+                networkString += network;
+              });
+              networkHolder[networkString] = true;
+            }
+          });
+          return width / (Object.keys(networkHolder).length + 1);
+        };
+        const spacing = getSpacing();
+        forceX = d3
+          .forceX((d: SNode): any => {
+            if (d.networks) {
+              if (d.networks.length === 0) return width / 2;
+              let networkString = '';
+              d.networks.sort();
+              d.networks.forEach(network => {
+                networkString += network;
+              });
+              const place = Object.keys(networkHolder).indexOf(networkString);
+              networkString = '';
+              return (place + 1) * spacing;
+            }
+            return width / 2;
+          })
+          .strength(1);
+      } else {
+        for (let i = 0; i < networksArray.length; i++) {
+          if (selectedNetwork === networksArray[i]) {
+            forceX = d3
+              .forceX((d: SNode): number => {
+                if (d.networks) {
+                  for (let n = 0; n < d.networks.length; n++) {
+                    if (d.networks[n] === selectedNetwork) {
+                      return width / 2;
+                    }
+                  }
+                  return 0;
+                }
+                return 0;
+              })
+              .strength((d: SNode): number => {
+                if (d.networks) {
+                  for (let n = 0; n < d.networks.length; n++) {
+                    if (d.networks[n] === selectedNetwork) {
+                      return 0.5;
+                    }
+                  }
+                  return 1;
+                }
+                return 1;
+              });
+            forceY = d3
+              .forceY((d: SNode): number => {
+                if (d.networks) {
+                  for (let n = 0; n < d.networks.length; n++) {
+                    if (d.networks[n] === selectedNetwork) {
+                      return height / 2;
+                    }
+                  }
+                  return height / 2;
+                }
+                return height / 2;
+              })
+              .strength((d: SNode): number => {
+                if (d.networks) {
+                  for (let n = 0; n < d.networks.length; n++) {
+                    if (d.networks[n] === selectedNetwork) {
+                      return 0.3;
+                    }
+                  }
+                  return 0.03;
+                }
+                return 0;
+              });
           }
-        });
-        return width / (Object.keys(networkHolder).length + 1);
-      };
-      const spacing = getSpacing();
-      const forceX = d3
-        .forceX((d: SNode): any => {
-          if (d.networks) {
-            if (d.networks.length === 0) return width / 2;
-            let networkString = '';
-            d.networks.sort();
-            d.networks.forEach(network => {
-              networkString += network;
-            });
-            const place = Object.keys(networkHolder).indexOf(networkString);
-            networkString = '';
-            return (place + 1) * spacing;
-          }
-          return width / 2;
-        })
-        .strength(0.3);
+        }
+      }
+      // // let forceY = d3.forceY(height / 2).strength(1);
+      // const networkHolder: { [networkString: string]: boolean } = {};
+      // const getSpacing = (): number => {
+      //   d3Nodes.each((d: any) => {
+      //     if (d.networks) {
+      //       let networkString = '';
+      //       d.networks.sort();
+      //       d.networks.forEach((network: string) => {
+      //         networkString += network;
+      //       });
+      //       networkHolder[networkString] = true;
+      //     }
+      //   });
+      //   return width / (Object.keys(networkHolder).length + 1);
+      // };
+      // const spacing = getSpacing();
+      // const forceX = d3
+      //   .forceX((d: SNode): any => {
+      //     if (d.networks) {
+      //       if (d.networks.length === 0) return width / 2;
+      //       let networkString = '';
+      //       d.networks.sort();
+      //       d.networks.forEach(network => {
+      //         networkString += network;
+      //       });
+      //       const place = Object.keys(networkHolder).indexOf(networkString);
+      //       networkString = '';
+      //       return (place + 1) * spacing;
+      //     }
+      //     return width / 2;
+      //   })
+      //   .strength(0.3);
 
-      const forceY = d3.forceY(height / 2).strength(0.3);
-      //create force simulation
+      // const forceY = d3.forceY(height / 2).strength(0.3);
+      // //create force simulation
       window.simulation
         .alpha(1)
         .force('x', forceX)
         .force('y', forceY)
-        .force('charge', d3.forceManyBody<SNode>().strength(-radius * 3))
-        .force('collide', d3.forceCollide(radius / 2))
+        .force('charge', d3.forceManyBody<SNode>().strength(0))
+        .force('collide', d3.forceCollide(radius))
         .on('tick', ticked)
         .restart();
     }
-  }, [view, services]);
+  }, [view, services, selectedNetwork]);
 
   return (
     <>

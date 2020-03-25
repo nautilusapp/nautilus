@@ -28,7 +28,13 @@ import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
-import { State, FileUpload, UpdateOption, UpdateView } from './App.d';
+import {
+  State,
+  FileUpload,
+  UpdateOption,
+  UpdateView,
+  SelectNetwork,
+} from './App.d';
 
 const initialState: State = {
   uploadErrors: [],
@@ -39,6 +45,7 @@ const initialState: State = {
     name: 'placeholder',
   },
   networks: {},
+  selectedNetwork: '',
   volumes: [],
   volumesClicked: {},
   bindMounts: [],
@@ -68,6 +75,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
+          selectedNetwork: '',
           options: { ...state.options, dependsOn: true },
         };
       });
@@ -138,6 +146,14 @@ class App extends Component<{}, State> {
     });
   };
 
+  selectNetwork: SelectNetwork = e => {
+    const selectedNetwork = [...e.currentTarget.children].filter(
+      child => child.id === e.target.value,
+    )[0].id;
+    this.updateView(e);
+    this.setState({ selectedNetwork });
+  };
+
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
@@ -201,8 +217,10 @@ class App extends Component<{}, State> {
           <OptionBar
             view={this.state.view}
             options={this.state.options}
+            networks={this.state.networks}
             updateView={this.updateView}
             updateOption={this.updateOption}
+            selectNetwork={this.selectNetwork}
           />
           <D3Wrapper
             uploadErrors={this.state.uploadErrors}
@@ -215,6 +233,7 @@ class App extends Component<{}, State> {
             bindMounts={this.state.bindMounts}
             view={this.state.view}
             networks={this.state.networks}
+            selectedNetwork={this.state.selectedNetwork}
           />
         </div>
       </div>
