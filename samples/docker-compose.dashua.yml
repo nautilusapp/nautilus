@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   dashua:
     build:
@@ -24,9 +24,8 @@ services:
         icantgetno: 'satisfaction'
         war: 'what is it good for?'
       labels:
-        noYou: 'moarexamples!'
+        com.example.description: 'moarexamples!'
     command: ['bundle', 'exec', 'thin', '-p', '3000']
     environment:
       - 'justastring=sadly'
       - 'morethanjustfriends=NOTyouarefriendzoned'
-    security_opt:

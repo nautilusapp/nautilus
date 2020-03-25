@@ -1,0 +1,128 @@
+/**
+ * ************************************
+ *
+ * @module  setGlobalVars.ts
+ * @author
+ * @date 3/24/20
+ * @description algorithm to set global vars for forcegraph simulation
+ *
+ * ************************************
+ */
+import {
+  Services,
+  NodesObject,
+  TreeMap,
+  NodeChild,
+  Link,
+  SNode,
+} from '../App.d';
+import * as d3 from 'd3';
+
+interface SetGlobalVars {
+  (services: Services): void;
+}
+
+const setGlobalVars: SetGlobalVars = services => {
+  let links: Link[] = [];
+  const nodesObject: NodesObject = Object.keys(services).reduce(
+    (acc: NodesObject, sName: string, i) => {
+      const ports: string[] = [];
+      const volumes: string[] = [];
+      const networks: string[] = [];
+      if (services[sName].hasOwnProperty('ports')) {
+        services[sName].ports.forEach(port => {
+          ports.push(port);
+        });
+      }
+      if (services[sName].hasOwnProperty('volumes')) {
+        services[sName].volumes.forEach(vol => {
+          volumes.push(vol);
+        });
+      }
+      if (services[sName].hasOwnProperty('depends_on')) {
+        services[sName].depends_on.forEach(el => {
+          links.push({ source: el, target: sName });
+        });
+      }
+      if (services[sName].hasOwnProperty('networks')) {
+        services[sName].networks.forEach(net => {
+          networks.push(net);
+        });
+      }
+      const node = {
+        id: i,
+        name: sName,
+        ports,
+        volumes,
+        networks,
+        children: {},
+        row: 0,
+        rowLength: 0,
+        column: 0,
+      };
+      acc[sName] = node;
+      return acc;
+    },
+    {},
+  );
+
+  //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
+  const roots = JSON.parse(JSON.stringify(nodesObject));
+  //iterate through links and find if the roots object contains any of the link targets
+  links.forEach((link: Link) => {
+    if (roots[link.target]) {
+      //filter the roots
+      delete roots[link.target];
+    }
+  });
+
+  //create Tree
+  const createTree = (node: NodeChild) => {
+    Object.keys(node).forEach((root: string) => {
+      links.forEach((link: Link) => {
+        if (link.source === root) {
+          node[root].children[link.target] = nodesObject[link.target];
+        }
+      });
+      createTree(node[root].children);
+    });
+  };
+  createTree(roots);
+
+  //traverse tree and create object outlining the rows/columns in each tree
+  const treeMap: TreeMap = {};
+  const createTreeMap = (node: NodeChild, height: number = 0) => {
+    if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
+    Object.keys(node).forEach((sName: string) => {
+      treeMap[height].push(sName);
+      createTreeMap(node[sName].children, height + 1);
+    });
+  };
+  createTreeMap(roots);
+
+  // populate nodesObject with column, row, and rowLength
+  const storePositionLocation = (treeHierarchy: TreeMap) => {
+    Object.keys(treeHierarchy).forEach((row: string) => {
+      treeHierarchy[row].forEach((sName: string, column: number) => {
+        nodesObject[sName].row = Number(row);
+        if (!nodesObject[sName].column) nodesObject[sName].column = column + 1;
+        nodesObject[sName].rowLength = treeHierarchy[row].length;
+      });
+    });
+  };
+  storePositionLocation(treeMap);
+  /**
+   *********************
+   * Variables for d3 visualizer
+   *********************
+   */
+  window.treeDepth = Object.keys(treeMap).length;
+  const nodes = Object.values(nodesObject);
+  window.serviceGraph = {
+    nodes,
+    links,
+  };
+  window.simulation = d3.forceSimulation<SNode>(window.serviceGraph.nodes);
+};
+
+export default setGlobalVars;

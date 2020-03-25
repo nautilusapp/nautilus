@@ -1,6 +1,7 @@
 import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
 
 export type State = {
+  uploadErrors: string[];
   selectedContainer: string;
   fileUploaded: boolean;
   services: Services;
@@ -10,10 +11,34 @@ export type State = {
   volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: 'networks' | 'depends_on';
+  view: ViewT;
   options: Options;
   version: string;
 };
+
+interface SNode extends SimulationNodeDatum {
+  id: number;
+  name: string;
+  ports: string[];
+  volumes: string[];
+  networks?: string[];
+  row: number;
+  column: number;
+  rowLength: number;
+  children: NodeChild;
+}
+
+interface Link extends SimulationLinkDatum<SNode> {
+  source: string;
+  target: string;
+}
+
+type SGraph = {
+  nodes: SNode[];
+  links: Link[];
+};
+
+type ViewT = 'networks' | 'depends_on';
 
 type Clicked = {
   readonly [propName: string]: string;
@@ -32,21 +57,8 @@ export type Options = {
   [key: string]: boolean;
 };
 
-interface SNode extends SimulationNodeDatum {
-  id: number;
-  name: string;
-  ports: string[];
-  volumes: string[];
-}
-
-interface Link extends SimulationLinkDatum<SNode> {
-  source: string;
-  target: string;
-}
-
-type SGraph = {
-  nodes: SNode[];
-  links: Link[];
+export type NodeChild = {
+  [service: string]: SNode;
 };
 
 export type Service = {
@@ -58,6 +70,7 @@ export type Service = {
   ports: string[];
   volumes: string[];
   depends_on: string[];
+  networks: string[];
 };
 
 export type Services = {
@@ -79,6 +92,22 @@ export type SetSelectedContainer = {
   (containerName: string): void;
 };
 
-export type Roots = {
-  [service: string]: boolean | number;
+export type NodesObject = {
+  [service: string]: SNode;
+};
+
+export type TreeMap = {
+  [row: string]: string[];
+};
+
+export type Networks = {
+  [network: string]: any;
+};
+
+export type Simulation = d3.Simulation<SNode, undefined>;
+
+export type ValidationResults = {
+  error?: Error;
+  out: string;
+  filePath: string;
 };

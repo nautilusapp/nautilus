@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Image from 'react-bootstrap/Image';
-import { getStatic } from '../scripts/static';
+import { getStatic } from '../helpers/static';
 
 type Props = {
   // projectName: string;
@@ -8,7 +7,7 @@ type Props = {
 
 const Title: React.FC<Props> = props => (
   <div className="title">
-    <Image src={getStatic('shell.png')} fluid />
+    <img className="logo" src={getStatic('shell.png')} />
     <h1>Nautilus</h1>
   </div>
 );

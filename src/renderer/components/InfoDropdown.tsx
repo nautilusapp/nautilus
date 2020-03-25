@@ -274,15 +274,19 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
           ? selectedContainer[0].toUpperCase() + selectedContainer.slice(1)
           : selectedContainer}
       </h3>
-      <div className="card-body">
-        {infoToJsx(
-          serviceOverview,
-          dockerComposeCommands,
-          environmentVariables,
-          env_file,
-          portsArray,
-          service,
-        )}
+      <div className="content-wrapper">
+        <div className="overflow-container">
+          <div className="overview">
+            {infoToJsx(
+              serviceOverview,
+              dockerComposeCommands,
+              environmentVariables,
+              env_file,
+              portsArray,
+              service,
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

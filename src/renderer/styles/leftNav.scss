@@ -1,9 +1,9 @@
 .left-nav {
-  background-color: $primary-color;
   display: grid;
   grid-template-columns: 220px;
   grid-template-rows: 320px 1fr;
-  grid-template-areas: 'top-half''info';
+  grid-template-areas: 'top-half' 'info';
+  background-color: $primary-color;
   min-height: 650px;
   max-height: 100vh;
 
@@ -15,6 +15,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      img {
+        width: 100%;
+      }
 
       h1 {
         color: $fourth-color;
@@ -62,80 +66,92 @@
     }
   }
 
-  .service-info-display {
+  .info-dropdown {
+    padding: 0 1em 1em 1em;
     grid-area: info;
+    max-height: 100%;
     min-height: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'name' 'card';
+    max-width: 100%;
 
-    .info-dropdown {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-      grid-template-areas: 'name''card';
+    h3 {
+      grid-area: name;
+      text-align: center;
+      color: $fourth-color;
+      margin-bottom: 0.5em;
+      font-size: 16px;
+    }
+
+    .content-wrapper {
+      grid-area: card;
       height: 100%;
       max-width: 100%;
 
-      h3 {
-        grid-area: name;
-        text-align: center;
-        color: $fourth-color;
-        margin-bottom: 0.5em;
-        font-size: 16px;
-      }
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      .overflow-container {
+        flex: 1;
+        overflow-y: auto;
+        scroll-behavior: smooth;
 
-      .card-body {
-        background-color: $fourth-color;
-        font-size: 0.8em;
-        margin: 0 1em 1em 1em;
-        overflow-y: scroll;
-        grid-area: card;
-        max-width: 100%;
-        flex-shrink: 1;
-
-        div {
-          padding-bottom: 0.5em;
-        }
-
-        .command {
-          color: $primary-color;
-          font-weight: 800;
-        }
-
-        .options {
-          padding: 0;
+        .overview {
+          min-height: min-content;
+          flex-direction: column;
+          padding: 1em;
+          background-color: $fourth-color;
+          font-size: 0.8em;
+          overflow-wrap: break-word;
+          border-radius: 0.25em;
 
           div {
-            padding-left: 1em;
-            padding-bottom: 0;
+            padding-bottom: 0.5em;
+          }
 
-            ul {
-              padding: 0;
-              padding-inline-start: 1.3em;
+          .command {
+            color: $primary-color;
+            font-weight: 800;
+          }
 
-              li {
-                span {
-                  font-weight: 600;
+          .options {
+            padding: 0;
+
+            div {
+              padding-left: 1em;
+              padding-bottom: 0;
+
+              ul {
+                padding: 0;
+                padding-inline-start: 1.3em;
+
+                li {
+                  span {
+                    font-weight: 600;
+                  }
                 }
               }
-            }
 
-            .option-key {
+              .option-key {
+                font-weight: 600;
+              }
+            }
+          }
+
+          .second-level {
+            span {
               font-weight: 600;
             }
           }
-        }
 
-        .second-level {
-          span {
-            font-weight: 600;
+          ul {
+            padding-inline-start: 1.3em;
+            margin: 0;
           }
         }
-
-        ul {
-          padding-inline-start: 1.3em;
-          margin: 0;
-        }
       }
-
     }
   }
 

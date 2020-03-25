@@ -15,9 +15,12 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
+import { firstThree } from './helpers/selectAll';
+import setGlobalVars from './helpers/setGlobalVars';
+import parseUploadError from './helpers/parseUploadError';
+import runDockerComposeValidation from '../common/dockerComposeValidation';
 
 // IMPORT STYLES
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.scss';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -28,6 +31,7 @@ import D3Wrapper from './components/D3Wrapper';
 import { State, FileUpload, UpdateOption, UpdateView } from './App.d';
 
 const initialState: State = {
+  uploadErrors: [],
   selectedContainer: '',
   fileUploaded: false,
   services: {},
@@ -44,6 +48,7 @@ const initialState: State = {
     ports: false,
     volumes: false,
     dependsOn: true,
+    selectAll: false,
   },
   version: '',
 };
@@ -71,7 +76,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
-          options: { ...state.options, dependsOn: false },
+          options: { ...state.options, dependsOn: false, selectAll: false },
         };
       });
     }
@@ -79,44 +84,107 @@ class App extends Component<{}, State> {
 
   updateOption: UpdateOption = e => {
     const option = e.currentTarget.id;
-    this.setState(state => {
-      return {
-        ...state,
-        options: { ...state.options, [option]: !state.options[option] },
+    const selectAllClicked = option === 'selectAll' ? true : false;
+    let newState: State = {
+      ...this.state,
+      options: { ...this.state.options, [option]: !this.state.options[option] },
+    };
+    if (firstThree(newState) === true) {
+      newState = {
+        ...newState,
+        options: { ...newState.options, selectAll: true },
       };
+    }
+    if (firstThree(this.state) && selectAllClicked) {
+      if (this.state.view === 'depends_on') {
+        newState = {
+          ...this.state,
+          options: {
+            ports: false,
+            volumes: false,
+            dependsOn: true,
+            selectAll: false,
+          },
+        };
+      } else {
+        newState = {
+          ...this.state,
+          options: {
+            ports: false,
+            volumes: false,
+            dependsOn: false,
+            selectAll: false,
+          },
+        };
+      }
+    } else if (!firstThree(this.state) && selectAllClicked) {
+      newState = {
+        ...this.state,
+        options: {
+          ports: true,
+          volumes: true,
+          dependsOn: true,
+          selectAll: true,
+        },
+      };
+    } else if (this.state.options.selectAll === true && !firstThree(newState)) {
+      newState = {
+        ...newState,
+        options: { ...newState.options, selectAll: false },
+      };
+    }
+    this.setState({
+      ...newState,
     });
   };
 
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
+    setGlobalVars(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
   };
 
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
-    fileReader.onload = () => {
-      if (fileReader.result) {
-        this.convertAndStoreYamlJSON(fileReader.result.toString());
+    runDockerComposeValidation(file.path).then((validationResults: any) => {
+      if (validationResults.error) {
+        this.handleFileUploadError(validationResults.error);
+      } else {
+        fileReader.onload = () => {
+          if (fileReader.result) {
+            this.convertAndStoreYamlJSON(fileReader.result.toString());
+          }
+        };
+        fileReader.readAsText(file);
       }
-    };
-    fileReader.readAsText(file);
+    });
+  };
+
+  handleFileUploadError = (errorText: Error) => {
+    const uploadErrors = parseUploadError(errorText);
+    this.setState({ ...this.state, uploadErrors, fileUploaded: false });
   };
 
   componentDidMount() {
+    ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
+      this.handleFileUploadError(arg);
+    });
     ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
       this.convertAndStoreYamlJSON(arg);
     });
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
+      setGlobalVars(stateJS.services);
       this.setState(Object.assign(initialState, stateJS));
     }
   }
 
   componentWillUnmount() {
     ipcRenderer.removeAllListeners('file-uploaded-within-electron');
+    ipcRenderer.removeAllListeners('file-upload-error-within-electron');
   }
 
   render() {
@@ -137,6 +205,7 @@ class App extends Component<{}, State> {
             updateOption={this.updateOption}
           />
           <D3Wrapper
+            uploadErrors={this.state.uploadErrors}
             fileUploaded={this.state.fileUploaded}
             fileUpload={this.fileUpload}
             services={this.state.services}
@@ -144,6 +213,8 @@ class App extends Component<{}, State> {
             options={this.state.options}
             volumes={this.state.volumes}
             bindMounts={this.state.bindMounts}
+            view={this.state.view}
+            networks={this.state.networks}
           />
         </div>
       </div>
