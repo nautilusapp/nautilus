@@ -38,7 +38,7 @@ const createWindow = () => {
         .catch((err: Error) => console.log(`An error occurred: ${err}`));
     });
   } else {
-    const startUrl = process.env.ELECTRON_START
+    const startUrl = process.env.NOT_PACKAGE
       ? `file://${app.getAppPath()}/../renderer/index.html`
       : url.format({
           pathname: path.join(__dirname, '/dist/renderer/index.html'),

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Docker Compose Charting Tool",
   "scripts": {
-    "start": "cross-env NODE_ENV=production ELECTRON_START=true electron ./dist/main/main.js",
+    "start": "cross-env NODE_ENV=production NOT_PACKAGE=true electron ./dist/main/main.js",
     "dev": "cross-env NODE_ENV=development electron-webpack dev",
     "compile": "cross-env NODE_ENV=production electron-webpack",
     "package-all": "yarn compile && electron-builder -mwl",
