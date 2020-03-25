@@ -4,7 +4,8 @@
   "title": "Nautilus",
 
   "main": {
-    "sourceDirectory": "src/main"
+    "sourceDirectory": "src/main",
+    "webpackConfig": "webpack.main.ext.js"
   },
 
   "renderer": {

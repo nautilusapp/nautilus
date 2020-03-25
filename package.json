@@ -3,10 +3,61 @@
   "version": "1.0.0",
   "description": "A Docker Compose Charting Tool",
   "scripts": {
-    "start": "cross-env NODE_ENV=production electron ./dist/main.js",
+    "start": "cross-env NODE_ENV=production NOT_PACKAGE=true electron ./dist/main/main.js",
     "dev": "cross-env NODE_ENV=development electron-webpack dev",
     "compile": "cross-env NODE_ENV=production electron-webpack",
-    "dist": "concurrently \"yarn run compile -mwl\" \"electron-builder\""
+    "package-all": "yarn compile && electron-builder -mwl",
+    "package-mac": "yarn compile && electron-builder --mac",
+    "package-linux": "yarn compile && electron-builder --linux",
+    "package-win": "yarn compile && electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.nautilus.app",
+    "productName": "Nautilus",
+    "files": [
+      "dist",
+      "static",
+      "package.json"
+    ],
+    "linux": {
+      "category": "WebDevelopment",
+      "icon": "static/test.icns",
+      "desktop": {
+        "Comment": "Nautilus: A Docker Compose Charting Tool",
+        "Name": "Nautilus",
+        "StartupNotify": "true",
+        "Terminal": "false",
+        "Type": "Application",
+        "Categories": "WebDevelopment"
+      },
+      "executableName": "nautilus",
+      "maintainer": "michaelxhdinh@gmail.com",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "static/test.icns",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "asar": false,
+      "icon": "static/test.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "createStartMenuShortcut": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
+    },
+    "directories": {
+      "output": "release"
+    }
   },
   "repository": {
     "type": "git",
@@ -25,8 +76,11 @@
   "homepage": "https://github.com/oslabs-beta/nautilis#readme",
   "dependencies": {
     "d3": "^5.15.0",
+    "electron-devtools-installer": "^2.2.4",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
+    "fix-path": "^3.0.0",
+    "html-loader": "1.0.0-alpha.0",
     "js-yaml": "^3.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
