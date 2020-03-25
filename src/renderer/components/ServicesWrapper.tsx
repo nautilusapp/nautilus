@@ -27,6 +27,7 @@ type Props = {
   view: ViewT;
   networks: Networks;
   selectedNetwork: string;
+  getColor: any;
 };
 
 const ServicesWrapper: React.FC<Props> = ({
@@ -35,7 +36,8 @@ const ServicesWrapper: React.FC<Props> = ({
   options,
   view,
   networks,
-  selectedNetwork
+  selectedNetwork,
+  getColor,
 }) => {
   return (
     <div className="services-wrapper">
@@ -46,6 +48,7 @@ const ServicesWrapper: React.FC<Props> = ({
         view={view}
         networks={networks}
         selectedNetwork={selectedNetwork}
+        getColor={getColor}
       />
     </div>
   );

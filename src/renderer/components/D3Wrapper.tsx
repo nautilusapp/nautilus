@@ -13,7 +13,7 @@ import ServicesWrapper from './ServicesWrapper';
 import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
 import ErrorDisplay from './ErrorDisplay';
-
+import { colorSchemeIndex } from '../helpers/colorSchemeHash';
 //type import
 import {
   FileUpload,
@@ -52,6 +52,16 @@ const D3Wrapper: React.FC<Props> = ({
   selectedNetwork,
   uploadErrors,
 }) => {
+  const getColor: any = colorSchemeIndex();
+  const bindMountsProps = {
+    bindMounts: bindMounts,
+    getColor: getColor,
+  };
+  const dockerEngineProps = {
+    volumes: volumes,
+    getColor: getColor,
+  };
+
   return (
     <div className="d3-wrapper">
       {!fileUploaded ? (
@@ -72,8 +82,10 @@ const D3Wrapper: React.FC<Props> = ({
             view={view}
             networks={networks}
             selectedNetwork={selectedNetwork}
+            {...dockerEngineProps}
+            {...bindMountsProps}
           />
-          <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />
+          <VolumesWrapper {...dockerEngineProps} {...bindMountsProps} />
         </>
       )}
     </div>
