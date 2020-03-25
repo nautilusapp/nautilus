@@ -42,7 +42,7 @@ const OptionBar: React.FC<Props> = ({
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
   const optionsDisplay = Object.keys(options).map((opt, i) => {
-    const display = view === 'depends_on' && opt === 'dependsOn' ? 'none' : '';
+    const display = opt === 'dependsOn' ? 'none' : '';
     let title = '';
     if (opt === 'dependsOn') title = 'depends on';
     else if (opt === 'selectAll') title = 'select all';
