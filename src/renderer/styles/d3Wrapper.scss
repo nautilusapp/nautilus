@@ -23,6 +23,9 @@
       .graph {
         width: 100%;
         height: 100%;
+        .node {
+          cursor: pointer;
+        }
         .hide {
           display: none;
         }
@@ -34,14 +37,6 @@
         }
       }
     }
-    .networks-wrapper {
-      height: 100%;
-      width: 100%;
-      .graph {
-        width: 100%;
-        height: 100%;
-      }
-    }
   }
 
   .volumes-wrapper {
@@ -51,6 +46,7 @@
     align-items: center;
     margin: 0 1em;
     .container {
+      width: 100%;
       height: 90%;
       background-color: $hover-color;
       border-radius: 2em;
@@ -106,7 +102,6 @@
     text-align: center;
     color: #003459;
     .select-file-button:hover {
-      cursor: hand;
       cursor: pointer;
       opacity: 0.9;
     }
@@ -116,7 +111,6 @@
       border: none;
       padding: 0;
       font: inherit;
-      cursor: hand;
       cursor: pointer;
       opacity: 0.9;
       outline: inherit;
