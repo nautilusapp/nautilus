@@ -8,6 +8,44 @@
     "compile": "cross-env NODE_ENV=production electron-webpack",
     "dist": "concurrently \"npm run compile\" \"electron-builder\""
   },
+  "build": {
+    "appId": "com.nautilus.app",
+    "productName": "Nautilus",
+    "files": [
+      "dist"
+    ],
+    "linux": {
+      "category": "WebDevelopment",
+      "desktop": {
+        "Comment": "Nautilus: A Docker Compose Charting Tool",
+        "Name": "Nautilus",
+        "StartupNotify": "true",
+        "Terminal": "false",
+        "Type": "Application",
+        "Categories": "WebDevelopment"
+      },
+      "executableName": "nautilus",
+      "maintainer": "michaelxhdinh@gmail.com",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "asar": false,
+      "target": [
+        "nsis"
+      ]
+    },
+    "directories": {
+      "output": "release"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/nautilis.git"
