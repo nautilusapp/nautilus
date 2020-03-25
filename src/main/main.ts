@@ -6,6 +6,7 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import fixPath from 'fix-path';
+import { getStatic } from '../common/static';
 
 if (module.hot) {
   module.hot.accept();
@@ -19,6 +20,7 @@ const createWindow = () => {
   let window = new BrowserWindow({
     width: 1000,
     height: 750,
+    icon: getStatic('test.icns'),
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,

@@ -11,7 +11,7 @@
 import React, { useEffect } from 'react';
 // import Services from './Service';
 import * as d3 from 'd3';
-import { getStatic } from '../helpers/static';
+import { getStatic } from '../../common/static';
 import {
   Services,
   Link,

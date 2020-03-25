@@ -15,7 +15,7 @@ import {
   getHorizontalPosition,
   getVerticalPosition,
 } from '../helpers/getSimulationDimensions';
-import { getStatic } from '../helpers/static';
+import { getStatic } from '../../common/static';
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
 // IMPORT COMPONENTS

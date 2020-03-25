@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Docker Compose Charting Tool",
   "scripts": {
-    "start": "cross-env NODE_ENV=production electron ./dist/main/main.js",
+    "start": "cross-env NODE_ENV=production ELECTRON_START=true electron ./dist/main/main.js",
     "dev": "cross-env NODE_ENV=development electron-webpack dev",
     "compile": "cross-env NODE_ENV=production electron-webpack",
     "package-all": "yarn compile && electron-builder -mwl",
@@ -20,6 +20,7 @@
     ],
     "linux": {
       "category": "WebDevelopment",
+      "icon": "static/test.icns",
       "desktop": {
         "Comment": "Nautilus: A Docker Compose Charting Tool",
         "Name": "Nautilus",
@@ -36,6 +37,7 @@
     },
     "mac": {
       "category": "public.app-category.developer-tools",
+      "icon": "static/test.icns",
       "target": [
         "dmg"
       ]
@@ -56,6 +58,7 @@
     },
     "win": {
       "asar": false,
+      "icon": "static/test.ico",
       "target": [
         "nsis"
       ]
