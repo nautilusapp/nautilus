@@ -4,8 +4,23 @@
 @import 'leftNav';
 @import 'd3Wrapper';
 
+@font-face {
+  font-family: 'VisbyRoundCF-Medium';
+  src: url(./fonts/VisbyRoundCF-Medium.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'VisbyRoundCF-DemiBold';
+  src: url(./fonts/VisbyRoundCF-DemiBold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'VisbyRoundCF-Bold';
+  src: url(./fonts/VisbyRoundCF-Heavy.otf) format('opentype');
+}
+
 html * {
-  font-family: VisbyRoundCF-Medium;
+  font-family: 'VisbyRoundCF-Medium';
 }
 
 body {
@@ -15,6 +30,10 @@ body {
 
 .flex {
   display: flex;
+}
+
+h1 {
+  font-family: 'VisbyRoundCF-DemiBold';
 }
 
 h2 {
