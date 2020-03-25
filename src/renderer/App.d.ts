@@ -86,11 +86,15 @@ export type UpdateOption = {
 };
 
 export type UpdateView = {
-  (e: React.MouseEvent<Element, MouseEvent>): void;
+  (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.MouseEvent<Element, MouseEvent>,
+  ): void;
 };
 
 export type SelectNetwork = {
-  (e: React.MouseEvent<Element, MouseEvent>): void;
+  (e: React.ChangeEvent<HTMLSelectElement>): void;
 };
 
 export type SetSelectedContainer = {

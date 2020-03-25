@@ -34,6 +34,7 @@ type Props = {
   bindMounts: Array<string>;
   view: ViewT;
   networks: Networks;
+  selectedNetwork: string;
 };
 
 const D3Wrapper: React.FC<Props> = ({
@@ -46,6 +47,7 @@ const D3Wrapper: React.FC<Props> = ({
   bindMounts,
   view,
   networks,
+  selectedNetwork,
 }) => {
   return (
     <div className="d3-wrapper">
@@ -59,6 +61,7 @@ const D3Wrapper: React.FC<Props> = ({
             options={options}
             view={view}
             networks={networks}
+            selectedNetwork={selectedNetwork}
           />
           <VolumesWrapper volumes={volumes} bindMounts={bindMounts} />
         </>

@@ -9,23 +9,36 @@
  *
  * ************************************
  */
-import React from 'react';
-import { Options, UpdateOption, UpdateView } from '../App.d';
+import React /*{ JSXElementConstructor }*/ from 'react';
+
+import NetworksDropdown from './NetworksDropdown';
+
+import {
+  Options,
+  Networks,
+  UpdateOption,
+  UpdateView,
+  SelectNetwork,
+} from '../App.d';
 
 type Props = {
   view: string;
   options: Options;
+  networks: Networks;
   updateView: UpdateView;
   updateOption: UpdateOption;
+  selectNetwork: SelectNetwork;
 };
 
 const OptionBar: React.FC<Props> = ({
   view,
   options,
+  networks,
   updateView,
   updateOption,
+  selectNetwork,
 }) => {
-  const networksClass = view === 'networks' ? 'option selected' : 'option';
+  // const networksClass = view === 'networks' ? 'option selected' : 'option';
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
   const optionsDisplay = Object.keys(options).map((opt, i) => {
@@ -51,9 +64,12 @@ const OptionBar: React.FC<Props> = ({
   return (
     <div className="option-bar">
       <div className="views flex">
-        <span className={networksClass} id="networks" onClick={updateView}>
-          networks
-        </span>
+        <NetworksDropdown
+          view={view}
+          networks={networks}
+          updateView={updateView}
+          selectNetwork={selectNetwork}
+        />
         <span className={dependsOnClass} id="depends_on" onClick={updateView}>
           depends on
         </span>
