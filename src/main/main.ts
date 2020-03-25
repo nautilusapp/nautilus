@@ -1,9 +1,10 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import url from 'url';
+import createMenu from './menu';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
-import createMenu from './menu';
 
 if (module.hot) {
   module.hot.accept();
@@ -14,14 +15,9 @@ const createWindow = () => {
     width: 1000,
     height: 750,
     titleBarStyle: 'hidden',
-    webPreferences:
-      process.env.NODE_ENV === 'development'
-        ? {
-            nodeIntegration: true,
-          }
-        : {
-            preload: path.join(app.getAppPath(), 'dist/index.js'),
-          },
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
   window.maximize();
   if (process.env.NODE_ENV === 'development') {
@@ -35,7 +31,14 @@ const createWindow = () => {
         .catch((err: Error) => console.log(`An error occurred: ${err}`));
     });
   } else {
-    window.loadURL(`file://${app.getAppPath()}/../index.html`);
+    const startUrl =
+      // process.env.ELECTRON_START_URL ||
+      url.format({
+        pathname: path.join(__dirname, '/dist/renderer/index.html'),
+        protocol: 'file:',
+        slashes: true,
+      });
+    window.loadURL(startUrl);
   }
   return window;
 };
