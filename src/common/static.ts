@@ -14,5 +14,8 @@ export const getStatic: GetStatic = val => {
   if (isDevelopment) {
     return url.resolve(window.location.origin, val);
   }
+  if (process.env.ELECTRON_START) {
+    return path.resolve(__dirname, '../../static/', val);
+  }
   return path.resolve(__static, val);
 };

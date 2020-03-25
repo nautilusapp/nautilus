@@ -16,7 +16,8 @@
     "productName": "Nautilus",
     "files": [
       "dist",
-      "static"
+      "static",
+      "package.json"
     ],
     "linux": {
       "category": "WebDevelopment",
@@ -40,20 +41,6 @@
       "icon": "static/test.icns",
       "target": [
         "dmg"
-      ]
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 110,
-          "y": 150
-        },
-        {
-          "x": 240,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        }
       ]
     },
     "win": {

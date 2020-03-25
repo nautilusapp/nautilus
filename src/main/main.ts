@@ -38,13 +38,13 @@ const createWindow = () => {
         .catch((err: Error) => console.log(`An error occurred: ${err}`));
     });
   } else {
-    const startUrl =
-      // process.env.ELECTRON_START_URL ||
-      url.format({
-        pathname: path.join(__dirname, '/dist/renderer/index.html'),
-        protocol: 'file:',
-        slashes: true,
-      });
+    const startUrl = process.env.ELECTRON_START
+      ? `file://${app.getAppPath()}/../renderer/index.html`
+      : url.format({
+          pathname: path.join(__dirname, '/dist/renderer/index.html'),
+          protocol: 'file:',
+          slashes: true,
+        });
     window.loadURL(startUrl);
   }
   return window;
