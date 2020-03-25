@@ -19,7 +19,7 @@ services:
   front:
     image: dockertaiga/front:5.0.7
     container_name: taiga-front
-    restart: unless-stopped
+    restartd: unless-stopped
     networks:
       - default
     volumes:
