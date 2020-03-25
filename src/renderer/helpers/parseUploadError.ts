@@ -11,11 +11,7 @@ const parseUploadError = (errorText: Error) => {
       return line.includes('Command failed');
     });
   }
-
-  console.log(splitErrorMessage);
   startIndex += 1;
-  console.log(startIndex);
-
   const paragraphIndex = splitErrorMessage.findIndex((line: string) => {
     return line === '';
   });
