@@ -11,23 +11,14 @@ import React from 'react';
 import DockerEngine from './DockerEngine';
 import { ReadOnlyObj } from '../App.d';
 import HostOS from './HostOS';
-import { colorSchemeIndex } from '../helpers/colorSchemeHash';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;
   bindMounts: Array<string>;
+  getColor: any;
 };
 
-const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts }) => {
-  const getColor: any = colorSchemeIndex();
-  const bindMountsProps = {
-    bindMounts: bindMounts,
-    getColor: getColor,
-  };
-  const dockerEngineProps = {
-    volumes: volumes,
-    getColor: getColor,
-  };
+const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts, getColor }) => {
   return (
     <div className="volumes-wrapper">
       <div className="container">
@@ -35,14 +26,14 @@ const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts }) => {
           <h2>Bind Mounts</h2>
           <hr />
           <div className="scroll">
-            <HostOS {...bindMountsProps} />
+            <HostOS bindMounts={bindMounts} getColor={getColor} />
           </div>
         </div>
         <div className="half">
           <h2>Volumes</h2>
           <hr />
           <div className="scroll">
-            <DockerEngine {...dockerEngineProps} />
+            <DockerEngine volumes={volumes} getColor={getColor} />
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPERS
-import { colorSchemeIndex } from '../helpers/colorSchemeHash';
+//import { colorSchemeIndex } from '../helpers/colorSchemeHash';
 
 //IMPORT SVG
 import containerPath from '../../../static/containerPath';
@@ -22,9 +22,10 @@ import { SNode } from '../App.d';
 
 type Props = {
   volumesOn: boolean;
+  getColor: any;
 };
 
-const NodeVolumes: React.FC<Props> = ({ volumesOn }) => {
+const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
   const maxVolumes = d3
     .select('.links')
     .selectAll('line')

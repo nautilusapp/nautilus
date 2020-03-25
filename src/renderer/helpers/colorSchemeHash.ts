@@ -7,7 +7,7 @@
  * @description color hash function for volumes
  * ************************************
  */
-
+//color hash function - with passing down props
 export const colorSchemeIndex = () => {
   let currentIndex: number = 0;
   const cachedColorObj: { [key: string]: number } = {};
@@ -27,7 +27,7 @@ export const colorSchemeIndex = () => {
     return `hsl(${currentColor},80%,60%)`;
   };
 };
-
+//color hash function - w/o passing down props
 export const colorSchemeHash = (str: string) => {
   const cachedColorObj: { [key: string]: number } = {};
 

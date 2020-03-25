@@ -26,12 +26,14 @@ type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
+  getColor: any;
 };
 
 const Nodes: React.FC<Props> = ({
   setSelectedContainer,
   services,
   options,
+  getColor,
 }) => {
   /**
    *********************
@@ -109,7 +111,7 @@ const Nodes: React.FC<Props> = ({
   return (
     <g className="nodes">
       <NodePorts portsOn={options.ports} />
-      <NodeVolumes volumesOn={options.volumes} />
+      <NodeVolumes volumesOn={options.volumes} getColor={getColor} />
     </g>
   );
 };
