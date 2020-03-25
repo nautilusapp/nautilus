@@ -6,6 +6,16 @@ services:
       args:
         - 'HI=friends'
         - 'BYE=sad'
+    ports:
+      # - '3000'
+      - target: 80
+        published: 8080
+        protocol: tcp
+        mode: host
+      - target: 80
+        published: 7000
+        protocol: tcp
+        mode: host
 
   joshanny:
     build:
