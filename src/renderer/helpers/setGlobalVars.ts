@@ -38,13 +38,13 @@ const setGlobalVars: SetGlobalVars = services => {
       if (services[sName].hasOwnProperty('ports')) {
         const portsVar = services[sName].ports;
         // short syntax string
-        if (portsVar === 'string') {
+        if (typeof portsVar === 'string') {
           ports.push(portsVar);
           // short or long syntax
         } else if (Array.isArray(portsVar)) {
           portsVar.forEach((port: string | Port) => {
             // short syntax
-            if (port === 'string') {
+            if (typeof port === 'string') {
               ports.push(port as string);
               // long syntax
             } else if (typeof port === 'object') {
@@ -62,7 +62,7 @@ const setGlobalVars: SetGlobalVars = services => {
         // short syntax string
         volumesVar.forEach((vol: string | Volume) => {
           // short syntax
-          if (vol === 'string') {
+          if (typeof vol === 'string') {
             volumes.push(vol);
             // long syntax
           } else if (typeof vol === 'object') {
