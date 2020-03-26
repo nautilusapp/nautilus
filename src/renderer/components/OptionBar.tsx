@@ -60,12 +60,7 @@ const OptionBar: React.FC<Props> = ({
   return (
     <div className="option-bar">
       <div className="views flex">
-        <NetworksDropdown
-          view={view}
-          networks={networks}
-          updateView={updateView}
-          selectNetwork={selectNetwork}
-        />
+        <NetworksDropdown networks={networks} selectNetwork={selectNetwork} />
         <span className={dependsOnClass} id="depends_on" onClick={updateView}>
           depends on
         </span>

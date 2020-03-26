@@ -1,10 +1,8 @@
 import React /*{ JSXElementConstructor }*/ from 'react';
-import { Networks, UpdateView, SelectNetwork } from '../App.d';
+import { Networks, SelectNetwork } from '../App.d';
 
 type Props = {
-  view: string;
   networks: Networks;
-  updateView: UpdateView;
   selectNetwork: SelectNetwork;
 };
 
