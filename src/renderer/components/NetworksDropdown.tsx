@@ -14,34 +14,34 @@ const NetworksDropDown: React.FC<Props> = ({
 }) => {
   const groupNetworks = (): JSX.Element | void => {
     if (Object.values(networks).length === 0) return;
+    let title = '';
     const serviceValues = Object.values(services);
     for (let i = 0; i < serviceValues.length; i++) {
       if (serviceValues[i].networks.length > 1) {
-        return (
-          <option
-            key={`networks option: group`}
-            id={'groupNetworks'}
-            value={'groupNetworks'}
-          >
-            {'group networks'}
-          </option>
-        );
+        title = 'group networks';
       }
     }
+    if (title === '') title = 'all networks';
     return (
       <option
+        className={'networkOption'}
         key={`networks option: group`}
         id={'groupNetworks'}
         value={'groupNetworks'}
       >
-        {'all networks'}
+        {title}
       </option>
     );
   };
 
   const networksOptions = Object.keys(networks).map((network, i) => {
     return (
-      <option key={`networks option: ${network}`} id={network} value={network}>
+      <option
+        className={'networkOption'}
+        key={`networks option: ${network}`}
+        id={network}
+        value={network}
+      >
         {network}
       </option>
     );
@@ -50,7 +50,12 @@ const NetworksDropDown: React.FC<Props> = ({
   const renderDropdown = () => {
     return (
       <>
-        <select id="networks" name="networks" onChange={selectNetwork}>
+        <select
+          className={'networkOption header'}
+          id="networks"
+          name="networks"
+          onChange={selectNetwork}
+        >
           <option
             key={`networks option header`}
             id={'networkHeader'}
