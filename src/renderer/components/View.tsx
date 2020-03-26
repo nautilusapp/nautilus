@@ -116,6 +116,7 @@ const View: React.FC<Props> = ({
       window.simulation
         .alpha(0.5)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
+        .force('collide', null)
         .force('x', dependsForceX(width))
         .force('y', dependsForceY(height))
         .on('tick', ticked)
@@ -227,40 +228,7 @@ const View: React.FC<Props> = ({
           }
         }
       }
-      // // let forceY = d3.forceY(height / 2).strength(1);
-      // const networkHolder: { [networkString: string]: boolean } = {};
-      // const getSpacing = (): number => {
-      //   d3Nodes.each((d: any) => {
-      //     if (d.networks) {
-      //       let networkString = '';
-      //       d.networks.sort();
-      //       d.networks.forEach((network: string) => {
-      //         networkString += network;
-      //       });
-      //       networkHolder[networkString] = true;
-      //     }
-      //   });
-      //   return width / (Object.keys(networkHolder).length + 1);
-      // };
-      // const spacing = getSpacing();
-      // const forceX = d3
-      //   .forceX((d: SNode): any => {
-      //     if (d.networks) {
-      //       if (d.networks.length === 0) return width / 2;
-      //       let networkString = '';
-      //       d.networks.sort();
-      //       d.networks.forEach(network => {
-      //         networkString += network;
-      //       });
-      //       const place = Object.keys(networkHolder).indexOf(networkString);
-      //       networkString = '';
-      //       return (place + 1) * spacing;
-      //     }
-      //     return width / 2;
-      //   })
-      //   .strength(0.3);
 
-      // const forceY = d3.forceY(height / 2).strength(0.3);
       // //create force simulation
       window.simulation
         .alpha(1)
