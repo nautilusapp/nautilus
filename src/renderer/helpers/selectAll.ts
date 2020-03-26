@@ -1,6 +1,6 @@
 import { State } from '../App.d';
 
-export const firsTwo = (state: State): boolean => {
+export const firstTwo = (state: State): boolean => {
   const optionValues = Object.values(state.options).slice(0, 2);
   let selected = 0;
   optionValues.forEach(val => {
