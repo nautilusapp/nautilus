@@ -12,17 +12,34 @@ const NetworksDropDown: React.FC<Props> = ({
   networks,
   selectNetwork,
 }) => {
-  const AllSeperateNetworks = () => {
-    const networksArray = Object.keys(networks);
+  const groupNetworks = (): JSX.Element | void => {
+    if (Object.values(networks).length === 0) return;
     const serviceValues = Object.values(services);
-    console.log(serviceValues);
-    console.log('networks', networksArray);
     for (let i = 0; i < serviceValues.length; i++) {
-      console.log(serviceValues[i]);
+      if (serviceValues[i].networks.length > 1) {
+        return (
+          <option
+            key={`networks option: group`}
+            id={'groupNetworks'}
+            value={'groupNetworks'}
+          >
+            {'group networks'}
+          </option>
+        );
+      }
     }
+    return (
+      <option
+        key={`networks option: group`}
+        id={'groupNetworks'}
+        value={'groupNetworks'}
+      >
+        {'all networks'}
+      </option>
+    );
   };
 
-  const networksOptions = Object.keys(networks).map(network => {
+  const networksOptions = Object.keys(networks).map((network, i) => {
     return (
       <option key={`networks option: ${network}`} id={network} value={network}>
         {network}
@@ -33,7 +50,6 @@ const NetworksDropDown: React.FC<Props> = ({
   const renderDropdown = () => {
     return (
       <>
-        {AllSeperateNetworks()}
         <select id="networks" name="networks" onChange={selectNetwork}>
           <option
             key={`networks option header`}
@@ -43,6 +59,7 @@ const NetworksDropDown: React.FC<Props> = ({
             {`networks`}
           </option>
           {networksOptions}
+          {groupNetworks()}
         </select>
       </>
     );
