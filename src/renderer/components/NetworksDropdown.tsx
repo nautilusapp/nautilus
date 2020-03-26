@@ -51,8 +51,8 @@ const NetworksDropDown: React.FC<Props> = ({
     return (
       <>
         <select
-          className={'networkOption header'}
           id="networks"
+          className={'selected'}
           name="networks"
           onChange={selectNetwork}
         >

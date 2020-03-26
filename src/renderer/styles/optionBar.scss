@@ -10,6 +10,11 @@
     justify-content: flex-end;
   }
 
+  select {
+    color: $secondary-color;
+    background-color: $fourth-color;
+  }
+
   .titles {
     justify-content: center;
     .vl {
