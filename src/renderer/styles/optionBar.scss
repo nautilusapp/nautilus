@@ -7,6 +7,14 @@
   .views {
     flex: 1 1 0;
     justify-content: flex-end;
+    select {
+      color: $secondary-color;
+      background-color: $fourth-color;
+      font-size: 14px;
+    }
+    select:hover {
+      cursor: pointer;
+    }
   }
 
   .titles {

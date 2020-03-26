@@ -114,7 +114,7 @@ const View: React.FC<Props> = ({
           .strength(0.3);
 
       window.simulation
-        .alpha(0.5)
+        .alpha(0.8)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
         .force('collide', null)
         .force('x', dependsForceX(width))
@@ -142,12 +142,11 @@ const View: React.FC<Props> = ({
 
       const networksArray = Object.keys(networks);
       let forceX: d3.ForceX<SNode> = d3.forceX(0);
-      let forceY: d3.ForceY<SNode> = d3.forceY(0);
-      if (selectedNetwork === 'shared') {
+      let forceY: d3.ForceY<SNode> = d3.forceY(height / 2);
+      if (selectedNetwork === 'groupNetworks') {
         const networkHolder: { [networkString: string]: boolean } = {};
         const getSpacing = (): number => {
           d3Nodes.each((d: any) => {
-            // console.log(d.networks);
             if (d.networks) {
               let networkString = '';
               d.networks.sort();
@@ -221,7 +220,7 @@ const View: React.FC<Props> = ({
                       return 0.3;
                     }
                   }
-                  return 0.03;
+                  return 0.025;
                 }
                 return 0;
               });
@@ -234,8 +233,8 @@ const View: React.FC<Props> = ({
         .alpha(1)
         .force('x', forceX)
         .force('y', forceY)
-        .force('charge', d3.forceManyBody<SNode>().strength(0))
-        .force('collide', d3.forceCollide(radius))
+        .force('charge', d3.forceManyBody<SNode>().strength(-150))
+        .force('collide', d3.forceCollide(radius / 1.3))
         .on('tick', ticked)
         .restart();
     }
