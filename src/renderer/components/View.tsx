@@ -98,21 +98,31 @@ const View: React.FC<Props> = ({
         .attr('y2', (d: any) => d.target.y + 30);
     }
 
+    const dependsForceX = (w: number) =>
+      d3
+        .forceX((d: SNode) => {
+          return getHorizontalPosition(d, w);
+        })
+        .strength(0.3);
+
+    const dependsForceY = (h: number) =>
+      d3
+        .forceY((d: SNode) => {
+          return getVerticalPosition(d, treeDepth, h);
+        })
+        .strength(0.3);
+
+    // const dependsResizer = () => {
+    //   const width = parseInt(container.style('width'));
+    //   const height = parseInt(container.style('height'));
+    //   window.simulation
+    //     .alpha(0.5)
+    //     .force('x', dependsForceX(width))
+    //     .force('y', dependsForceY(height))
+    //     .restart();
+    // };
+
     if (view === 'depends_on') {
-      const dependsForceX = (w: number) =>
-        d3
-          .forceX((d: SNode) => {
-            return getHorizontalPosition(d, w);
-          })
-          .strength(0.3);
-
-      const dependsForceY = (h: number) =>
-        d3
-          .forceY((d: SNode) => {
-            return getVerticalPosition(d, treeDepth, h);
-          })
-          .strength(0.3);
-
       window.simulation
         .alpha(0.8)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
@@ -122,16 +132,9 @@ const View: React.FC<Props> = ({
         .on('tick', ticked)
         .restart();
       // move force graph with resizing window
-      window.addEventListener('resize', () => {
-        const width = parseInt(container.style('width'));
-        const height = parseInt(container.style('height'));
-        window.simulation
-          .alpha(0.5)
-          .force('x', dependsForceX(width))
-          .force('y', dependsForceY(height))
-          .restart();
-      });
+      // window.addEventListener('resize', dependsResizer, true);
     } else {
+      // window.removeEventListener('resize', dependsResizer, true);
       const networksArray = Object.keys(networks);
       let forceX: d3.ForceX<SNode> = d3.forceX(0);
       let forceY: d3.ForceY<SNode> = d3.forceY(height / 2);
