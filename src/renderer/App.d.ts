@@ -69,7 +69,7 @@ export type Service = {
   environment?: ReadOnlyObj;
   envfile?: string[];
   ports: string[] | string | Port[];
-  volumes: string[];
+  volumes: string[] | Volume[];
   depends_on: string[];
   networks: string[];
 };
