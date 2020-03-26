@@ -66,7 +66,9 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
               let slicedVString = vString.slice(0, vString.indexOf(':'));
-              return getColor(slicedVString);
+              return vString.includes(':')
+                ? getColor(slicedVString)
+                : getColor(vString);
             })
             .attr('width', width + (d.volumes.length - i) * 20)
             .attr('height', height + (d.volumes.length - i) * 20)

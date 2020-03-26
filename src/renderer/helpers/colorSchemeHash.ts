@@ -18,7 +18,7 @@ export const colorSchemeIndex = () => {
       currentColor = cachedColorObj[str];
       return `hsl(${currentColor},80%,60%)`;
     }
-    currentColor = (30 * currentIndex + Math.floor(currentIndex / 12)) % 360;
+    currentColor = (40 * currentIndex + Math.floor(currentIndex / 9)) % 360;
     currentIndex++;
     if (str !== undefined) {
       cachedColorObj[str] = currentColor;
