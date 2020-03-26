@@ -14,6 +14,8 @@ import React from 'react';
 import NetworksDropdown from './NetworksDropdown';
 
 import {
+  Services,
+  ViewT,
   Options,
   Networks,
   UpdateOption,
@@ -22,7 +24,8 @@ import {
 } from '../App.d';
 
 type Props = {
-  view: string;
+  services: Services;
+  view: ViewT;
   options: Options;
   networks: Networks;
   updateView: UpdateView;
@@ -31,6 +34,7 @@ type Props = {
 };
 
 const OptionBar: React.FC<Props> = ({
+  services,
   view,
   options,
   networks,
@@ -60,7 +64,11 @@ const OptionBar: React.FC<Props> = ({
   return (
     <div className="option-bar">
       <div className="views flex">
-        <NetworksDropdown networks={networks} selectNetwork={selectNetwork} />
+        <NetworksDropdown
+          services={services}
+          networks={networks}
+          selectNetwork={selectNetwork}
+        />
         <span className={dependsOnClass} id="depends_on" onClick={updateView}>
           depends on
         </span>

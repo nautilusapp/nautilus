@@ -1,12 +1,29 @@
-import React /*{ JSXElementConstructor }*/ from 'react';
-import { Networks, SelectNetwork } from '../App.d';
+import React from 'react';
+import { Services, Networks, SelectNetwork } from '../App.d';
 
 type Props = {
+  services: Services;
   networks: Networks;
   selectNetwork: SelectNetwork;
 };
 
-const NetworksDropDown: React.FC<Props> = ({ networks, selectNetwork }) => {
+const NetworksDropDown: React.FC<Props> = ({
+  services,
+  networks,
+  selectNetwork,
+}) => {
+  const AllSeperateNetworks = () => {
+    const networksArray = Object.keys(networks);
+    const serviceValues = Object.values(services);
+    console.log('networks', networksArray);
+    // for(let i=0; i < serviceValues.length, i++){
+
+    //   if(serviceValues[i].length > 1){
+
+    //   }
+    // }
+  };
+
   const networksOptions = Object.keys(networks).map(network => {
     return (
       <option key={`networks option: ${network}`} id={network} value={network}>
@@ -18,6 +35,7 @@ const NetworksDropDown: React.FC<Props> = ({ networks, selectNetwork }) => {
   const renderDropdown = () => {
     return (
       <>
+        {AllSeperateNetworks()}
         <select id="networks" name="networks" onChange={selectNetwork}>
           <option
             key={`networks option header`}

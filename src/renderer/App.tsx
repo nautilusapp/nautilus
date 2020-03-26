@@ -198,6 +198,7 @@ class App extends Component<{}, State> {
         />
         <div className="main flex">
           <OptionBar
+            services={this.state.services}
             view={this.state.view}
             options={this.state.options}
             networks={this.state.networks}
