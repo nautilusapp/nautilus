@@ -60,11 +60,13 @@ const NetworksDropDown: React.FC<Props> = ({
     );
   });
 
+  let selectClass = selectedNetwork ? 'option selected' : 'option';
+
   return (
     <>
       <select
         id="networks"
-        className="networks-dropdown"
+        className={selectClass}
         name="networks"
         onChange={selectNetwork}
         value={selectedNetwork}
