@@ -113,13 +113,15 @@ const View: React.FC<Props> = ({
         .strength(0.3);
 
     // const dependsResizer = () => {
-    //   const width = parseInt(container.style('width'));
-    //   const height = parseInt(container.style('height'));
-    //   window.simulation
-    //     .alpha(0.5)
-    //     .force('x', dependsForceX(width))
-    //     .force('y', dependsForceY(height))
-    //     .restart();
+
+    //     const width = parseInt(container.style('width'));
+    //     const height = parseInt(container.style('height'));
+    //     window.simulation
+    //       .alpha(0.5)
+    //       .force('x', dependsForceX(width))
+    //       .force('y', dependsForceY(height))
+    //       .restart();
+
     // };
 
     if (view === 'depends_on') {
@@ -134,7 +136,6 @@ const View: React.FC<Props> = ({
       // move force graph with resizing window
       // window.addEventListener('resize', dependsResizer, true);
     } else {
-      // window.removeEventListener('resize', dependsResizer, true);
       const networksArray = Object.keys(networks);
       let forceX: d3.ForceX<SNode> = d3.forceX(0);
       let forceY: d3.ForceY<SNode> = d3.forceY(height / 2);
