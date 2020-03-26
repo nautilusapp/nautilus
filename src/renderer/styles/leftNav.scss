@@ -13,6 +13,7 @@
     .title {
       margin: 12% 10% 2% 10%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       .cls-1 {
@@ -30,12 +31,15 @@
         stroke: url(#linear-gradient);
       }
       .logo {
-        width: 56px;
+        width: 100%;
         padding-right: 0.5em;
+        margin-left: 1.5em;
       }
 
       h1 {
         color: $fourth-color;
+        font-size: 3em;
+        margin-top: 0;
       }
     }
 
