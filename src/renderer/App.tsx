@@ -130,11 +130,7 @@ class App extends Component<{}, State> {
   };
 
   selectNetwork: SelectNetwork = e => {
-    const selectedNetwork = [...e.currentTarget.children].filter(
-      child => child.id === e.target.value,
-    )[0].id;
-    this.updateView(e);
-    this.setState({ selectedNetwork });
+    this.setState({ view: 'networks', selectedNetwork: e.currentTarget.value });
   };
 
   convertAndStoreYamlJSON = (yamlText: string) => {
@@ -205,6 +201,7 @@ class App extends Component<{}, State> {
             updateView={this.updateView}
             updateOption={this.updateOption}
             selectNetwork={this.selectNetwork}
+            selectedNetwork={this.state.selectedNetwork}
           />
           <D3Wrapper
             uploadErrors={this.state.uploadErrors}

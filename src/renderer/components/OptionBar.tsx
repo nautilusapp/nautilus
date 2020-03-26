@@ -31,6 +31,7 @@ type Props = {
   updateView: UpdateView;
   updateOption: UpdateOption;
   selectNetwork: SelectNetwork;
+  selectedNetwork: string;
 };
 
 const OptionBar: React.FC<Props> = ({
@@ -41,6 +42,7 @@ const OptionBar: React.FC<Props> = ({
   updateView,
   updateOption,
   selectNetwork,
+  selectedNetwork,
 }) => {
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
@@ -68,6 +70,7 @@ const OptionBar: React.FC<Props> = ({
           services={services}
           networks={networks}
           selectNetwork={selectNetwork}
+          selectedNetwork={selectedNetwork}
         />
         <span className={dependsOnClass} id="depends_on" onClick={updateView}>
           depends on

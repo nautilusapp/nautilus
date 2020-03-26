@@ -114,7 +114,7 @@ const View: React.FC<Props> = ({
           .strength(0.3);
 
       window.simulation
-        .alpha(0.5)
+        .alpha(0.8)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
         .force('collide', null)
         .force('x', dependsForceX(width))
@@ -220,7 +220,7 @@ const View: React.FC<Props> = ({
                       return 0.3;
                     }
                   }
-                  return 0.02;
+                  return 0.025;
                 }
                 return 0;
               });

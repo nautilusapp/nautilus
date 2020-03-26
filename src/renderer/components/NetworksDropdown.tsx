@@ -5,15 +5,17 @@ type Props = {
   services: Services;
   networks: Networks;
   selectNetwork: SelectNetwork;
+  selectedNetwork: string;
 };
 
 const NetworksDropDown: React.FC<Props> = ({
   services,
   networks,
   selectNetwork,
+  selectedNetwork,
 }) => {
   const groupNetworks = (): JSX.Element | void => {
-    if (Object.values(networks).length === 0) return;
+    if (Object.values(networks).length <= 1) return;
     let title = '';
     const serviceValues = Object.values(services);
     for (let i = 0; i < serviceValues.length; i++) {
@@ -52,16 +54,17 @@ const NetworksDropDown: React.FC<Props> = ({
       <>
         <select
           id="networks"
-          className={'selected'}
           name="networks"
           onChange={selectNetwork}
+          value={selectedNetwork}
         >
           <option
-            key={`networks option header`}
-            id={'networkHeader'}
-            value={''}
+            key="networks option header"
+            id="networkHeader"
+            value=""
+            disabled
           >
-            {`networks`}
+            networks
           </option>
           {networksOptions}
           {groupNetworks()}
