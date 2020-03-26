@@ -15,13 +15,11 @@ const NetworksDropDown: React.FC<Props> = ({
   const AllSeperateNetworks = () => {
     const networksArray = Object.keys(networks);
     const serviceValues = Object.values(services);
+    console.log(serviceValues);
     console.log('networks', networksArray);
-    // for(let i=0; i < serviceValues.length, i++){
-
-    //   if(serviceValues[i].length > 1){
-
-    //   }
-    // }
+    for (let i = 0; i < serviceValues.length; i++) {
+      console.log(serviceValues[i]);
+    }
   };
 
   const networksOptions = Object.keys(networks).map(network => {
