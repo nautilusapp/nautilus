@@ -132,14 +132,6 @@ const View: React.FC<Props> = ({
           .restart();
       });
     } else {
-      d3Nodes
-        .attr('fx', (d: any) => {
-          return (d.fx = null);
-        })
-        .attr('fy', (d: any) => {
-          return (d.fy = null);
-        });
-
       const networksArray = Object.keys(networks);
       let forceX: d3.ForceX<SNode> = d3.forceX(0);
       let forceY: d3.ForceY<SNode> = d3.forceY(height / 2);

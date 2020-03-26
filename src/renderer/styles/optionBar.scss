@@ -15,6 +15,9 @@
     select:hover {
       cursor: pointer;
     }
+    select:focus {
+      outline: none;
+    }
   }
 
   .titles {
