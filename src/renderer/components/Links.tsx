@@ -11,15 +11,16 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPER FUNCTIONS
-import { SNode, Link, Services, Options } from '../App.d';
+import { SNode, Link, Services, ViewT } from '../App.d';
 // IMPORT TYPES
 
 type Props = {
   services: Services;
-  options: Options;
+  // options: Options;
+  view: ViewT;
 };
 
-const Links: React.FC<Props> = ({ services, options }) => {
+const Links: React.FC<Props> = ({ services, view }) => {
   const {
     simulation,
     serviceGraph: { links },
@@ -81,14 +82,14 @@ const Links: React.FC<Props> = ({ services, options }) => {
    *********************
    */
   useEffect(() => {
-    if (options.dependsOn) {
+    if (view === 'depends_on') {
       d3.select('.arrowsGroup').classed('hide', false);
       d3.select('.links').classed('hide', false);
     } else {
       d3.select('.arrowsGroup').classed('hide', true);
       d3.select('.links').classed('hide', true);
     }
-  }, [options.dependsOn]);
+  }, [view]);
 
   return <g className="links"></g>;
 };

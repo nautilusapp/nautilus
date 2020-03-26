@@ -54,7 +54,7 @@ const initialState: State = {
   options: {
     ports: false,
     volumes: false,
-    dependsOn: true,
+    // dependsOn: true,
     selectAll: false,
   },
   version: '',
@@ -76,7 +76,7 @@ class App extends Component<{}, State> {
           ...state,
           view,
           selectedNetwork: '',
-          options: { ...state.options, dependsOn: true },
+          // options: { ...state.options, dependsOn: true },
         };
       });
     } else {
@@ -84,7 +84,7 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
-          options: { ...state.options, dependsOn: false, selectAll: false },
+          // options: { ...state.options, dependsOn: false, selectAll: false },
         };
       });
     }
@@ -110,7 +110,7 @@ class App extends Component<{}, State> {
           options: {
             ports: false,
             volumes: false,
-            dependsOn: true,
+            // dependsOn: true,
             selectAll: false,
           },
         };
@@ -120,7 +120,7 @@ class App extends Component<{}, State> {
           options: {
             ports: false,
             volumes: false,
-            dependsOn: false,
+            // dependsOn: false,
             selectAll: false,
           },
         };
@@ -131,7 +131,7 @@ class App extends Component<{}, State> {
         options: {
           ports: true,
           volumes: true,
-          dependsOn: true,
+          // dependsOn: true,
           selectAll: true,
         },
       };
