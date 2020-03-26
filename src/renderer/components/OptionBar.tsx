@@ -9,7 +9,7 @@
  *
  * ************************************
  */
-import React /*{ JSXElementConstructor }*/ from 'react';
+import React from 'react';
 
 import NetworksDropdown from './NetworksDropdown';
 
@@ -38,14 +38,11 @@ const OptionBar: React.FC<Props> = ({
   updateOption,
   selectNetwork,
 }) => {
-  // const networksClass = view === 'networks' ? 'option selected' : 'option';
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
   const optionsDisplay = Object.keys(options).map((opt, i) => {
-    const display = opt === 'dependsOn' ? 'none' : '';
     let title = '';
-    if (opt === 'dependsOn') title = 'depends on';
-    else if (opt === 'selectAll') title = 'select all';
+    if (opt === 'selectAll') title = 'select all';
     else title = opt;
 
     return (
@@ -54,7 +51,6 @@ const OptionBar: React.FC<Props> = ({
         className={options[opt] ? 'option selected' : 'option'}
         id={opt}
         onClick={updateOption}
-        style={{ display }}
       >
         {title}
       </span>

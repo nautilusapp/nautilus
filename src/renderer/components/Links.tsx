@@ -16,7 +16,6 @@ import { SNode, Link, Services, ViewT } from '../App.d';
 
 type Props = {
   services: Services;
-  // options: Options;
   view: ViewT;
 };
 
