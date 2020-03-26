@@ -21,11 +21,11 @@ const Title: React.FC<Props> = props => (
             y2="162.05"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0" stop-color="#ff1d25" />
-            <stop offset="0.25" stop-color="#ff931e" />
-            <stop offset="0.5" stop-color="#7ac943" />
-            <stop offset="0.75" stop-color="#3fa9f5" />
-            <stop offset="1" stop-color="#ff7bac" />
+            <stop offset="0" stopColor="#ff1d25" />
+            <stop offset="0.25" stopColor="#ff931e" />
+            <stop offset="0.5" stopColor="#7ac943" />
+            <stop offset="0.75" stopColor="#3fa9f5" />
+            <stop offset="1" stopColor="#ff7bac" />
           </linearGradient>
         </defs>
         <title>Nautilus Logo</title>

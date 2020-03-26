@@ -29,11 +29,34 @@ const setGlobalVars: SetGlobalVars = services => {
       const ports: string[] = [];
       const volumes: string[] = [];
       const networks: string[] = [];
+      /**
+       * EXTRACT PORT DATA
+       * https://docs.docker.com/compose/compose-file/#ports
+       * */
+
       if (services[sName].hasOwnProperty('ports')) {
-        services[sName].ports.forEach(port => {
-          ports.push(port);
-        });
+        const portsVar = services[sName].ports;
+        // short syntax string
+        if (portsVar === 'string') {
+          ports.push(portsVar);
+          // short or long syntax
+        } else if (Array.isArray(portsVar)) {
+          portsVar.forEach((port: any) => {
+            // short syntax
+            if (port === 'string') {
+              ports.push(port as string);
+              // long syntax
+            } else {
+              ports.push(port.published + ':' + port.target);
+            }
+          });
+        }
       }
+      /**
+       * EXTRACT PORT DATA
+       * https://docs.docker.com/compose/compose-file/#volumes
+       * */
+
       if (services[sName].hasOwnProperty('volumes')) {
         services[sName].volumes.forEach(vol => {
           volumes.push(vol);
