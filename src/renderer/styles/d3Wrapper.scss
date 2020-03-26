@@ -4,34 +4,44 @@
   min-height: 500px;
   align-items: center;
   justify-content: center;
+  margin-right: 1em;
+
   .error-upload-wrapper {
     width: 70%;
     display: flex;
     flex-direction: column;
     color: red;
+
     .error-display {
       display: flex;
       flex-direction: column;
     }
   }
+
   .services-wrapper {
     flex: 1 1 0;
     height: 100%;
+
     .view-wrapper {
       height: 100%;
       width: 100%;
+
       .graph {
         width: 100%;
         height: 100%;
+
         .node {
           cursor: pointer;
         }
+
         .hide {
           display: none;
         }
+
         .arrowHead {
           fill: pink;
         }
+
         .link {
           stroke: black;
         }
@@ -45,6 +55,7 @@
     display: flex;
     align-items: center;
     margin: 0 1em;
+
     .container {
       width: 100%;
       height: 90%;
@@ -53,6 +64,7 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
+
       .half {
         flex: 1 1 0;
         display: flex;
@@ -60,33 +72,42 @@
         align-items: center;
         height: fit-content;
         max-height: 50%;
+        padding: 1.5em;
       }
+
       h2 {
         margin: 0.75em 0 0.5em 0;
       }
+
       hr {
         border-top: $border;
         width: 80%;
         margin: 0 0 0.75em 0;
       }
+
       .volumeLegend {
         margin: 0 0 0.75em 0.5em;
         display: flex;
+
         p {
           margin: 0 0 0 0;
         }
+
         .volumeColorName {
           align-self: center;
         }
+
         .volumeSvgBox {
           height: 2em;
           width: 2em;
+
           .volumeSquare {
             height: 1.5em;
             width: 1.5em;
           }
         }
       }
+
       .scroll {
         overflow-y: auto;
         scroll-behavior: smooth;
@@ -101,10 +122,12 @@
     align-items: center;
     text-align: center;
     color: #003459;
+
     .select-file-button:hover {
       cursor: pointer;
       opacity: 0.9;
     }
+
     button {
       background: none;
       color: inherit;
