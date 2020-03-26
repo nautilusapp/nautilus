@@ -15,6 +15,8 @@ import {
   NodeChild,
   Link,
   SNode,
+  Volume,
+  Port,
 } from '../App.d';
 import * as d3 from 'd3';
 
@@ -29,21 +31,58 @@ const setGlobalVars: SetGlobalVars = services => {
       const ports: string[] = [];
       const volumes: string[] = [];
       const networks: string[] = [];
+      /**
+       * EXTRACT PORT DATA
+       * https://docs.docker.com/compose/compose-file/#ports
+       * */
       if (services[sName].hasOwnProperty('ports')) {
-        services[sName].ports.forEach(port => {
-          ports.push(port);
-        });
+        const portsVar = services[sName].ports;
+        // short syntax string
+        if (typeof portsVar === 'string') {
+          ports.push(portsVar);
+          // short or long syntax
+        } else if (Array.isArray(portsVar)) {
+          portsVar.forEach((port: string | Port) => {
+            // short syntax
+            if (typeof port === 'string') {
+              ports.push(port as string);
+              // long syntax
+            } else if (typeof port === 'object') {
+              ports.push(port.published + ':' + port.target);
+            }
+          });
+        }
       }
+      /**
+       * EXTRACT VOLUME DATA
+       * https://docs.docker.com/compose/compose-file/#volumes
+       * */
       if (services[sName].hasOwnProperty('volumes')) {
-        services[sName].volumes.forEach(vol => {
-          volumes.push(vol);
+        const volumesVar = services[sName].volumes;
+        // short syntax string
+        volumesVar.forEach((vol: string | Volume) => {
+          // short syntax
+          if (typeof vol === 'string') {
+            volumes.push(vol);
+            // long syntax
+          } else if (typeof vol === 'object') {
+            volumes.push(vol.source + ':' + vol.target);
+          }
         });
       }
+      /**
+       * EXTRACT DEPENDS ON DATA
+       * https://docs.docker.com/compose/compose-file/#depends_on
+       * */
       if (services[sName].hasOwnProperty('depends_on')) {
         services[sName].depends_on.forEach(el => {
           links.push({ source: el, target: sName });
         });
       }
+      /**
+       * EXTRACT NETWORKS DATA
+       * https://docs.docker.com/compose/compose-file/#networks
+       * */
       if (services[sName].hasOwnProperty('networks')) {
         services[sName].networks.forEach(net => {
           networks.push(net);

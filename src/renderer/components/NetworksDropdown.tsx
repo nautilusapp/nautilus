@@ -15,7 +15,18 @@ const NetworksDropDown: React.FC<Props> = ({
   selectedNetwork,
 }) => {
   const groupNetworks = (): JSX.Element | void => {
-    if (Object.values(networks).length <= 1) return;
+    if (!Object.values(networks).length) {
+      return (
+        <option
+          className="networkOption"
+          key={'default'}
+          id="groupNetworks"
+          value="groupNetworks"
+        >
+          default
+        </option>
+      );
+    }
     let title = '';
     const serviceValues = Object.values(services);
     for (let i = 0; i < serviceValues.length; i++) {
@@ -26,10 +37,10 @@ const NetworksDropDown: React.FC<Props> = ({
     if (title === '') title = 'all networks';
     return (
       <option
-        className={'networkOption'}
-        key={`networks option: group`}
-        id={'groupNetworks'}
-        value={'groupNetworks'}
+        className="networkOption"
+        key={title}
+        id="groupNetworks"
+        value="groupNetworks"
       >
         {title}
       </option>
@@ -39,7 +50,7 @@ const NetworksDropDown: React.FC<Props> = ({
   const networksOptions = Object.keys(networks).map((network, i) => {
     return (
       <option
-        className={'networkOption'}
+        className="networkOption"
         key={`networks option: ${network}`}
         id={network}
         value={network}
@@ -49,31 +60,30 @@ const NetworksDropDown: React.FC<Props> = ({
     );
   });
 
-  const renderDropdown = () => {
-    return (
-      <>
-        <select
-          id="networks"
-          name="networks"
-          onChange={selectNetwork}
-          value={selectedNetwork}
-        >
-          <option
-            key="networks option header"
-            id="networkHeader"
-            value=""
-            disabled
-          >
-            networks
-          </option>
-          {networksOptions}
-          {groupNetworks()}
-        </select>
-      </>
-    );
-  };
+  let selectClass = selectedNetwork ? 'option selected' : 'option';
 
-  return renderDropdown();
+  return (
+    <>
+      <select
+        id="networks"
+        className={selectClass}
+        name="networks"
+        onChange={selectNetwork}
+        value={selectedNetwork}
+      >
+        <option
+          key="networks option header"
+          id="networkHeader"
+          value=""
+          disabled
+        >
+          networks
+        </option>
+        {networksOptions}
+        {groupNetworks()}
+      </select>
+    </>
+  );
 };
 
 export default NetworksDropDown;
