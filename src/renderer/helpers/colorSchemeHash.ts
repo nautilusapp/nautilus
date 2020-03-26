@@ -10,21 +10,34 @@
 //color hash function - with passing down props
 export const colorSchemeIndex = () => {
   let currentIndex: number = 0;
-  const cachedColorObj: { [key: string]: number } = {};
+  const cachedColorObj: {
+    [key: string]: { color: number; light: number };
+  } = {};
 
   return (str: string | undefined) => {
     let currentColor: number;
+    let currentLightness: number = 60;
     if (str !== undefined && cachedColorObj[str] !== undefined) {
-      currentColor = cachedColorObj[str];
-      return `hsl(${currentColor},80%,60%)`;
+      currentColor = cachedColorObj[str].color;
+      currentLightness = cachedColorObj[str].light;
+      return `hsl(${currentColor},80%,${currentLightness}%)`;
     }
-    currentColor = (30 * currentIndex + Math.floor(currentIndex / 12)) % 360;
-    currentIndex++;
-    if (str !== undefined) {
-      cachedColorObj[str] = currentColor;
+    currentColor = (40 * currentIndex + Math.floor(currentIndex / 9)) % 360;
+
+    if (currentIndex >= 18 && currentIndex <= 27) {
+      currentLightness = 30;
+    } else if (currentIndex >= 9) {
+      currentLightness = 80;
     }
 
-    return `hsl(${currentColor},80%,60%)`;
+    currentIndex++;
+    if (str !== undefined) {
+      cachedColorObj[str] = {
+        color: currentColor,
+        light: currentLightness,
+      };
+    }
+    return `hsl(${currentColor},80%,${currentLightness}%)`;
   };
 };
 //color hash function - w/o passing down props
