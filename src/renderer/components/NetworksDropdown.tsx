@@ -1,29 +1,12 @@
 import React /*{ JSXElementConstructor }*/ from 'react';
-import {
-  // Options,
-  Networks,
-  // UpdateOption,
-  UpdateView,
-  SelectNetwork,
-} from '../App.d';
+import { Networks, SelectNetwork } from '../App.d';
 
 type Props = {
-  view: string;
-  // options: Options;
   networks: Networks;
-  updateView: UpdateView;
-  // updateOption: UpdateOption;
   selectNetwork: SelectNetwork;
 };
 
-const NetworksDropDown: React.FC<Props> = ({
-  view,
-  // options,
-  networks,
-  updateView,
-  // updateOption,
-  selectNetwork,
-}) => {
+const NetworksDropDown: React.FC<Props> = ({ networks, selectNetwork }) => {
   const networksOptions = Object.keys(networks).map(network => {
     return (
       <option key={`networks option: ${network}`} id={network} value={network}>

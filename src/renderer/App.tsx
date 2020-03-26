@@ -15,7 +15,7 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import { convertYamlToState } from './helpers/yamlParser';
-import { firstThree } from './helpers/selectAll';
+import { firstTwo } from './helpers/selectAll';
 import setGlobalVars from './helpers/setGlobalVars';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
@@ -54,7 +54,6 @@ const initialState: State = {
   options: {
     ports: false,
     volumes: false,
-    dependsOn: true,
     selectAll: false,
   },
   version: '',
@@ -76,7 +75,6 @@ class App extends Component<{}, State> {
           ...state,
           view,
           selectedNetwork: '',
-          options: { ...state.options, dependsOn: true },
         };
       });
     } else {
@@ -84,7 +82,6 @@ class App extends Component<{}, State> {
         return {
           ...state,
           view,
-          options: { ...state.options, dependsOn: false, selectAll: false },
         };
       });
     }
@@ -97,45 +94,31 @@ class App extends Component<{}, State> {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
     };
-    if (firstThree(newState) === true) {
+    if (firstTwo(newState) === true) {
       newState = {
         ...newState,
         options: { ...newState.options, selectAll: true },
       };
     }
-    if (firstThree(this.state) && selectAllClicked) {
-      if (this.state.view === 'depends_on') {
-        newState = {
-          ...this.state,
-          options: {
-            ports: false,
-            volumes: false,
-            dependsOn: true,
-            selectAll: false,
-          },
-        };
-      } else {
-        newState = {
-          ...this.state,
-          options: {
-            ports: false,
-            volumes: false,
-            dependsOn: false,
-            selectAll: false,
-          },
-        };
-      }
-    } else if (!firstThree(this.state) && selectAllClicked) {
+    if (firstTwo(this.state) && selectAllClicked) {
+      newState = {
+        ...this.state,
+        options: {
+          ports: false,
+          volumes: false,
+          selectAll: false,
+        },
+      };
+    } else if (!firstTwo(this.state) && selectAllClicked) {
       newState = {
         ...this.state,
         options: {
           ports: true,
           volumes: true,
-          dependsOn: true,
           selectAll: true,
         },
       };
-    } else if (this.state.options.selectAll === true && !firstThree(newState)) {
+    } else if (this.state.options.selectAll === true && !firstTwo(newState)) {
       newState = {
         ...newState,
         options: { ...newState.options, selectAll: false },

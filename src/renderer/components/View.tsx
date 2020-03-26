@@ -251,7 +251,7 @@ const View: React.FC<Props> = ({
             options={options}
             getColor={getColor}
           />
-          <Links services={services} options={options} />
+          <Links services={services} view={view} />
         </svg>
       </div>
     </>
