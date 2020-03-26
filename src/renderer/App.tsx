@@ -110,7 +110,6 @@ class App extends Component<{}, State> {
           options: {
             ports: false,
             volumes: false,
-            // dependsOn: true,
             selectAll: false,
           },
         };
@@ -120,7 +119,6 @@ class App extends Component<{}, State> {
           options: {
             ports: false,
             volumes: false,
-            // dependsOn: false,
             selectAll: false,
           },
         };
@@ -131,7 +129,6 @@ class App extends Component<{}, State> {
         options: {
           ports: true,
           volumes: true,
-          // dependsOn: true,
           selectAll: true,
         },
       };
