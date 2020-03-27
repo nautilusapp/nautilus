@@ -43,6 +43,19 @@
         "dmg"
       ]
     },
+    "dmg": {
+      "background": "static/background.tiff",
+      "contents": [
+        {
+          "x": 75,
+          "y": 300
+        },
+        {
+          "x": 200,
+          "y": 300
+        }
+      ]
+    },
     "win": {
       "asar": false,
       "icon": "static/nautilus_logo.ico",

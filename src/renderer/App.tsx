@@ -159,7 +159,11 @@ class App extends Component<{}, State> {
 
   handleFileUploadError = (errorText: Error) => {
     const uploadErrors = parseUploadError(errorText);
-    this.setState({ ...this.state, uploadErrors, fileUploaded: false });
+    this.setState({
+      ...initialState,
+      uploadErrors,
+      fileUploaded: false,
+    });
   };
 
   componentDidMount() {
