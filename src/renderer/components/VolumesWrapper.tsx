@@ -8,9 +8,12 @@
  * ************************************
  */
 import React from 'react';
-import DockerEngine from './DockerEngine';
+// IMPORT COMPONENTS
+import Volumes from './Volumes';
+import BindMounts from './BindMounts';
+
+// IMPORT TYPES
 import { ReadOnlyObj } from '../App.d';
-import HostOS from './HostOS';
 
 type Props = {
   volumes: Array<ReadOnlyObj>;
@@ -26,14 +29,14 @@ const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts, getColor }) => {
           <h2>Bind Mounts</h2>
           <hr />
           <div className="scroll">
-            <HostOS bindMounts={bindMounts} getColor={getColor} />
+            <BindMounts bindMounts={bindMounts} getColor={getColor} />
           </div>
         </div>
         <div className="half">
           <h2>Volumes</h2>
           <hr />
           <div className="scroll">
-            <DockerEngine volumes={volumes} getColor={getColor} />
+            <Volumes volumes={volumes} getColor={getColor} />
           </div>
         </div>
       </div>
