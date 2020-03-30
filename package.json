@@ -47,12 +47,14 @@
       "background": "static/background.tiff",
       "contents": [
         {
-          "x": 75,
-          "y": 300
+          "x": 100,
+          "y": 400
         },
         {
-          "x": 200,
-          "y": 300
+          "x": 550,
+          "y": 400,
+          "type": "link",
+          "path": "/Applications"
         }
       ]
     },
