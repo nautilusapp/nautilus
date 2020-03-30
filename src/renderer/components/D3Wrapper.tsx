@@ -9,12 +9,16 @@
  * ************************************
  */
 import React from 'react';
-import ServicesWrapper from './ServicesWrapper';
+// IMPORT COMPONENTS
 import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
 import ErrorDisplay from './ErrorDisplay';
+import View from './view';
+
+// IMPORT HELPER FUNCTIONS
 import { colorSchemeIndex } from '../helpers/colorSchemeHash';
-//type import
+
+// IMPORT TYPES
 import {
   FileUpload,
   Services,
@@ -53,14 +57,6 @@ const D3Wrapper: React.FC<Props> = ({
   uploadErrors,
 }) => {
   const getColor: any = colorSchemeIndex();
-  const bindMountsProps = {
-    bindMounts: bindMounts,
-    getColor: getColor,
-  };
-  const dockerEngineProps = {
-    volumes: volumes,
-    getColor: getColor,
-  };
 
   return (
     <div className="d3-wrapper">
@@ -75,17 +71,22 @@ const D3Wrapper: React.FC<Props> = ({
         </div>
       ) : (
         <>
-          <ServicesWrapper
-            services={services}
-            setSelectedContainer={setSelectedContainer}
-            options={options}
-            view={view}
-            networks={networks}
-            selectedNetwork={selectedNetwork}
-            {...dockerEngineProps}
-            {...bindMountsProps}
+          <div className="services-wrapper">
+            <View
+              services={services}
+              setSelectedContainer={setSelectedContainer}
+              options={options}
+              view={view}
+              networks={networks}
+              selectedNetwork={selectedNetwork}
+              getColor={getColor}
+            />
+          </div>
+          <VolumesWrapper
+            bindMounts={bindMounts}
+            volumes={volumes}
+            getColor={getColor}
           />
-          <VolumesWrapper {...dockerEngineProps} {...bindMountsProps} />
         </>
       )}
     </div>

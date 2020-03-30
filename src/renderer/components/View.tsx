@@ -112,17 +112,15 @@ const View: React.FC<Props> = ({
         })
         .strength(0.3);
 
-    // const dependsResizer = () => {
-
-    //     const width = parseInt(container.style('width'));
-    //     const height = parseInt(container.style('height'));
-    //     window.simulation
-    //       .alpha(0.5)
-    //       .force('x', dependsForceX(width))
-    //       .force('y', dependsForceY(height))
-    //       .restart();
-
-    // };
+    function dependsResizer() {
+      const width = parseInt(container.style('width'));
+      const height = parseInt(container.style('height'));
+      window.simulation
+        .alpha(0.5)
+        .force('x', dependsForceX(width))
+        .force('y', dependsForceY(height))
+        .restart();
+    }
 
     if (view === 'depends_on') {
       window.simulation
@@ -134,7 +132,7 @@ const View: React.FC<Props> = ({
         .on('tick', ticked)
         .restart();
       // move force graph with resizing window
-      // window.addEventListener('resize', dependsResizer, true);
+      window.onresize = dependsResizer;
     } else {
       const networksArray = Object.keys(networks);
       let forceX: d3.ForceX<SNode> = d3.forceX(0);
@@ -182,7 +180,6 @@ const View: React.FC<Props> = ({
                       return width / 2;
                     }
                   }
-                  return 0;
                 }
                 return 0;
               })
@@ -193,22 +190,11 @@ const View: React.FC<Props> = ({
                       return 0.5;
                     }
                   }
-                  return 1;
                 }
                 return 1;
               });
             forceY = d3
-              .forceY((d: SNode): number => {
-                if (d.networks) {
-                  for (let n = 0; n < d.networks.length; n++) {
-                    if (d.networks[n] === selectedNetwork) {
-                      return height / 2;
-                    }
-                  }
-                  return height / 2;
-                }
-                return height / 2;
-              })
+              .forceY((d: SNode) => height / 2)
               .strength((d: SNode): number => {
                 if (d.networks) {
                   for (let n = 0; n < d.networks.length; n++) {
@@ -234,6 +220,12 @@ const View: React.FC<Props> = ({
         .on('tick', ticked)
         .restart();
     }
+
+    return () => {
+      if (view === 'depends_on') {
+        window.onresize = null;
+      }
+    };
   }, [view, services, selectedNetwork]);
 
   return (
