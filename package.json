@@ -10,7 +10,8 @@
     "package-mac": "yarn compile && electron-builder --mac",
     "package-linux": "yarn compile && electron-builder --linux",
     "package-win": "yarn compile && electron-builder --win --x64",
-    "test": "jest"
+    "test": "jest",
+    "test-hh": "bash ./scripts/run-test.sh"
   },
   "build": {
     "appId": "com.nautilus.app",
