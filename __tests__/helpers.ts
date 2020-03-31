@@ -9,14 +9,14 @@ import {
 // IMPORT TYPES
 import { SNode } from '../src/renderer/App.d';
 
-describe('Helper Functions', () => {
+describe('HELPER FUNCTIONS', () => {
   describe('set global vars', () => {});
 
   describe('color scheme index', () => {});
 
   describe('set yaml state', () => {});
 
-  describe('get simulation dimensions', () => {
+  describe('Get Simulation Dimensions', () => {
     let node: SNode;
     let treeDepth: number;
     let width: number;
@@ -38,7 +38,7 @@ describe('Helper Functions', () => {
       treeDepth = 0;
     });
 
-    describe('getHorizontalPosition', () => {
+    describe('getHorizontalPosition()', () => {
       it('should return the horizontal position of node', () => {
         node.rowLength = 1;
         node.column = 1;
@@ -47,15 +47,15 @@ describe('Helper Functions', () => {
       });
     });
 
-    describe('getVerticalPosition', () => {
-      it('sould return vertical position of node with treeDepth 1, row 1', () => {
+    describe('getVerticalPosition()', () => {
+      it('should return vertical position of node with treeDepth 1, row 1', () => {
         treeDepth = 1;
         node.row = 1;
         const verticalPosition = getVerticalPosition(node, treeDepth, height);
         expect(verticalPosition).toBe(500);
       });
 
-      it('sould return vertical position of node with treeDepth 2', () => {
+      it('should return vertical position of node with treeDepth 2', () => {
         treeDepth = 2;
         node.row = 1;
         let verticalPosition = getVerticalPosition(node, treeDepth, height);
