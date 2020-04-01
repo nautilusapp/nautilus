@@ -1,4 +1,5 @@
 language: node_js
+<<<<<<< HEAD
 
 node_js:
   - '11.6.0'
@@ -28,11 +29,23 @@ notifications:
 # cache some files for faster builds
 cache:
   yarn: true
+=======
+node_js: '9.11.1'
+addons:
+  apt:
+    packages:
+      - xvfb
+install:
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+cache:
+>>>>>>> 81bb0d189cfda3115312610d59f18f059c067345
   directories:
     - node_modules
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
+<<<<<<< HEAD
 # on PRs and merges to master and prod run tests and build the app
 script:
   - |
@@ -55,3 +68,11 @@ before_cache:
 branches:
   only:
     - master
+=======
+jobs:
+  include:
+    - stage: Test
+      script:
+        - npm install
+        - npm run dev
+>>>>>>> 81bb0d189cfda3115312610d59f18f059c067345
