@@ -58,7 +58,6 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
-  multipleNetworks: false,
 };
 
 class App extends Component<{}, State> {
@@ -203,7 +202,6 @@ class App extends Component<{}, State> {
         />
         <div className="main flex">
           <OptionBar
-            multipleNetworks={this.state.multipleNetworks}
             view={this.state.view}
             options={this.state.options}
             networks={this.state.networks}

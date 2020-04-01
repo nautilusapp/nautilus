@@ -7,7 +7,6 @@ type YamlState = {
   networks?: ReadOnlyObj;
   volumes?: Array<ReadOnlyObj>;
   bindMounts?: Array<string>;
-  multipleNetworks?: boolean;
 };
 
 const convertYamlToState = (file: any) => {
@@ -31,12 +30,6 @@ const convertYamlToState = (file: any) => {
           bindMounts.push(v);
         }
       });
-    }
-    //check for multiple networks
-    if (services[name].networks) {
-      if (services[name].networks.length > 1 && !state.multipleNetworks) {
-        state.multipleNetworks = true;
-      }
     }
   });
   state.bindMounts = bindMounts;

@@ -11,7 +11,6 @@ describe('Test Networks Dropdown Component', () => {
     networks: { hello: null },
     selectNetwork: jest.fn(() => {}),
     selectedNetwork: '',
-    multipleNetworks: false,
   };
 
   beforeAll(() => {

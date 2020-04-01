@@ -30,11 +30,9 @@ type Props = {
   updateOption: UpdateOption;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
-  multipleNetworks: boolean;
 };
 
 const OptionBar: React.FC<Props> = ({
-  multipleNetworks,
   view,
   options,
   networks,
@@ -66,7 +64,6 @@ const OptionBar: React.FC<Props> = ({
     <div className="option-bar">
       <div className="views flex">
         <NetworksDropdown
-          multipleNetworks={multipleNetworks}
           networks={networks}
           selectNetwork={selectNetwork}
           selectedNetwork={selectedNetwork}

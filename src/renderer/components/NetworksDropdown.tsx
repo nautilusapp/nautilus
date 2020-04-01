@@ -5,30 +5,19 @@ type Props = {
   networks: Networks;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
-  multipleNetworks: boolean;
 };
 
 const NetworksDropDown: React.FC<Props> = ({
-  multipleNetworks,
   networks,
   selectNetwork,
   selectedNetwork,
 }) => {
   const groupNetworks = (): JSX.Element | void => {
-    //if no networks
-    if (!Object.values(networks).length) {
-      return (
-        <option
-          className="networkOption"
-          key={'default'}
-          id="groupNetworks"
-          value="groupNetworks"
-        >
-          default
-        </option>
-      );
+    if (Object.keys(networks).length === 1) return;
+    let title: string = 'default';
+    if (Object.keys(networks).length > 1) {
+      title = 'group networks';
     }
-    const title = multipleNetworks ? 'group networks' : 'all networks';
     return (
       <option
         className="networkOption"
@@ -40,7 +29,6 @@ const NetworksDropDown: React.FC<Props> = ({
       </option>
     );
   };
-
   const networksOptions = Object.keys(networks).map((network, i) => {
     return (
       <option
