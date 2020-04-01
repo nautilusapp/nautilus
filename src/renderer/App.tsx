@@ -14,7 +14,7 @@ import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
-import { convertYamlToState } from './helpers/yamlParser';
+import convertYamlToState from './helpers/yamlParser';
 import { firstTwo } from './helpers/selectAll';
 import setGlobalVars from './helpers/setGlobalVars';
 import parseUploadError from './helpers/parseUploadError';

@@ -9,7 +9,7 @@ type YamlState = {
   bindMounts?: Array<string>;
 };
 
-export const convertYamlToState = (file: any) => {
+const convertYamlToState = (file: any) => {
   const services = file.services;
   const volumes = file.volumes ? file.volumes : {};
   const networks = file.networks ? file.networks : {};
@@ -36,3 +36,5 @@ export const convertYamlToState = (file: any) => {
   state.bindMounts = bindMounts;
   return state;
 };
+
+export default convertYamlToState;
