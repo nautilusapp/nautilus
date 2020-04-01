@@ -15,6 +15,7 @@ export type State = {
   view: ViewT;
   options: Options;
   version: string;
+  multipleNetworks: boolean;
 };
 
 interface SNode extends SimulationNodeDatum {

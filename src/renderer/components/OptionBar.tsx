@@ -14,7 +14,6 @@ import React from 'react';
 import NetworksDropdown from './NetworksDropdown';
 
 import {
-  Services,
   ViewT,
   Options,
   Networks,
@@ -24,7 +23,6 @@ import {
 } from '../App.d';
 
 type Props = {
-  services: Services;
   view: ViewT;
   options: Options;
   networks: Networks;
@@ -32,10 +30,11 @@ type Props = {
   updateOption: UpdateOption;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
+  multipleNetworks: boolean;
 };
 
 const OptionBar: React.FC<Props> = ({
-  services,
+  multipleNetworks,
   view,
   options,
   networks,
@@ -67,7 +66,7 @@ const OptionBar: React.FC<Props> = ({
     <div className="option-bar">
       <div className="views flex">
         <NetworksDropdown
-          services={services}
+          multipleNetworks={multipleNetworks}
           networks={networks}
           selectNetwork={selectNetwork}
           selectedNetwork={selectedNetwork}

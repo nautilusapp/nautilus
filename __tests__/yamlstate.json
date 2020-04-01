@@ -81,5 +81,6 @@
     "./jacocoReport/dpc-attribution",
     "./jacocoReport/dpc-api",
     "./jacocoReport/dpc-consent"
-  ]
+  ],
+  "multipleNetworks": false
 }

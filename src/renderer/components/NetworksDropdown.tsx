@@ -1,15 +1,15 @@
 import React from 'react';
-import { Services, Networks, SelectNetwork } from '../App.d';
+import { Networks, SelectNetwork } from '../App.d';
 
 type Props = {
-  services: Services;
   networks: Networks;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
+  multipleNetworks: boolean;
 };
 
 const NetworksDropDown: React.FC<Props> = ({
-  services,
+  multipleNetworks,
   networks,
   selectNetwork,
   selectedNetwork,
@@ -28,13 +28,7 @@ const NetworksDropDown: React.FC<Props> = ({
         </option>
       );
     }
-    let title = 'all networks';
-    const serviceValues = Object.values(services);
-    for (let i = 0; i < serviceValues.length; i++) {
-      if (serviceValues[i].networks!.length > 1) {
-        title = 'group networks';
-      }
-    }
+    const title = multipleNetworks ? 'group networks' : 'all networks';
     return (
       <option
         className="networkOption"
