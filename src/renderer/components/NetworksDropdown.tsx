@@ -1,8 +1,8 @@
 import React from 'react';
-import { Networks, SelectNetwork } from '../App.d';
+import { ReadOnlyObj, SelectNetwork } from '../App.d';
 
 type Props = {
-  networks: Networks;
+  networks: ReadOnlyObj;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
 };
