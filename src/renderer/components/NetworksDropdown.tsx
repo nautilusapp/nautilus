@@ -15,6 +15,7 @@ const NetworksDropDown: React.FC<Props> = ({
   selectedNetwork,
 }) => {
   const groupNetworks = (): JSX.Element | void => {
+    //if no networks
     if (!Object.values(networks).length) {
       return (
         <option
@@ -27,14 +28,13 @@ const NetworksDropDown: React.FC<Props> = ({
         </option>
       );
     }
-    let title = '';
+    let title = 'all networks';
     const serviceValues = Object.values(services);
     for (let i = 0; i < serviceValues.length; i++) {
       if (serviceValues[i].networks.length > 1) {
         title = 'group networks';
       }
     }
-    if (title === '') title = 'all networks';
     return (
       <option
         className="networkOption"
@@ -61,7 +61,6 @@ const NetworksDropDown: React.FC<Props> = ({
   });
 
   let selectClass = selectedNetwork ? 'option selected' : 'option';
-
   return (
     <>
       <select

@@ -13,7 +13,7 @@ import React from 'react';
 import FileSelector from './FileUpload';
 import VolumesWrapper from './VolumesWrapper';
 import ErrorDisplay from './ErrorDisplay';
-import View from './view';
+import View from './View';
 
 // IMPORT HELPER FUNCTIONS
 import { colorSchemeIndex } from '../helpers/colorSchemeHash';
