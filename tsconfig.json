@@ -9,10 +9,5 @@
     "target": "es6",
     "allowJs": true
   },
-  "exclude": [
-    "dist/**/*",
-    "release/**/*",
-    "webpack.main.ext.js",
-    "jest.config.js"
-  ]
+  "exclude": ["dist/**/*", "release/**/*", "webpack.main.ext.js"]
 }
