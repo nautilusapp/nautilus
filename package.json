@@ -104,7 +104,6 @@
     "react-icons": "^3.9.0"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
     "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
