@@ -1,4 +1,4 @@
-import { convertYamlToState } from '../src/renderer/helpers/yamlParser';
+import convertYamlToState from '../src/renderer/helpers/yamlParser';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
