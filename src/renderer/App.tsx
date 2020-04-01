@@ -16,7 +16,7 @@ import { ipcRenderer } from 'electron';
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
 import { firstTwo } from './helpers/selectAll';
-import setGlobalVars from './helpers/setGlobalVars';
+import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
 import fs from 'fs';
@@ -139,7 +139,7 @@ class App extends Component<{}, State> {
     const yamlState = convertYamlToState(yamlJSON);
     fs.writeFileSync('./yamlstate.json', JSON.stringify(yamlState));
     // set global variables for d3 simulation
-    setGlobalVars(yamlState.services);
+    window.d3State = setD3State(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
   };
@@ -181,7 +181,8 @@ class App extends Component<{}, State> {
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
-      setGlobalVars(stateJS.services);
+      // set d3 state
+      window.d3State = setD3State(stateJS.services);
       this.setState(Object.assign(initialState, stateJS));
     }
   }

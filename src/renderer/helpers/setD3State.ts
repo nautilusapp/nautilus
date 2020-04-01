@@ -17,14 +17,15 @@ import {
   SNode,
   Volume,
   Port,
+  D3State,
 } from '../App.d';
 import * as d3 from 'd3';
 
 interface SetGlobalVars {
-  (services: Services): void;
+  (services: Services): D3State;
 }
 
-const setGlobalVars: SetGlobalVars = services => {
+const setD3State: SetGlobalVars = services => {
   let links: Link[] = [];
   const nodesObject: NodesObject = Object.keys(services).reduce(
     (acc: NodesObject, sName: string, i) => {
@@ -155,13 +156,17 @@ const setGlobalVars: SetGlobalVars = services => {
    * Variables for d3 visualizer
    *********************
    */
-  window.treeDepth = Object.keys(treeMap).length;
   const nodes = Object.values(nodesObject);
-  window.serviceGraph = {
-    nodes,
-    links,
+  const d3State: D3State = {
+    treeDepth: Object.keys(treeMap).length,
+    serviceGraph: {
+      nodes,
+      links,
+    },
+    simulation: d3.forceSimulation<SNode>(nodes),
   };
-  window.simulation = d3.forceSimulation<SNode>(window.serviceGraph.nodes);
+
+  return d3State;
 };
 
-export default setGlobalVars;
+export default setD3State;

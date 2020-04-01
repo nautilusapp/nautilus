@@ -91,6 +91,12 @@ export type SetSelectedContainer = {
  * D3 SIMULATION TYPES
  * **********************
  */
+type D3State = {
+  simulation: Simulation;
+  treeDepth: number;
+  serviceGraph: SGraph;
+};
+
 interface SNode extends SimulationNodeDatum {
   id: number;
   name: string;
