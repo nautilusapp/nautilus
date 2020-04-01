@@ -21,92 +21,109 @@ import {
 } from '../App.d';
 import * as d3 from 'd3';
 
-interface SetGlobalVars {
+interface SetD3State {
   (services: Services): D3State;
 }
 
-const setD3State: SetGlobalVars = services => {
-  let links: Link[] = [];
-  const nodesObject: NodesObject = Object.keys(services).reduce(
-    (acc: NodesObject, sName: string, i) => {
-      const ports: string[] = [];
-      const volumes: string[] = [];
-      const networks: string[] = [];
-      /**
-       * EXTRACT PORT DATA
-       * https://docs.docker.com/compose/compose-file/#ports
-       * */
-      if (services[sName].hasOwnProperty('ports')) {
-        const portsVar = services[sName].ports;
-        // short syntax string
-        if (typeof portsVar === 'string') {
-          ports.push(portsVar);
-          // short or long syntax
-        } else if (Array.isArray(portsVar)) {
-          portsVar.forEach((port: string | Port) => {
-            // short syntax
-            if (typeof port === 'string') {
-              ports.push(port as string);
-              // long syntax
-            } else if (typeof port === 'object') {
-              ports.push(port.published + ':' + port.target);
-            }
-          });
-        }
-      }
-      /**
-       * EXTRACT VOLUME DATA
-       * https://docs.docker.com/compose/compose-file/#volumes
-       * */
-      if (services[sName].hasOwnProperty('volumes')) {
-        const volumesVar = services[sName].volumes;
-        // short syntax string
-        volumesVar!.forEach((vol: string | Volume) => {
-          // short syntax
-          if (typeof vol === 'string') {
-            volumes.push(vol);
-            // long syntax
-          } else if (typeof vol === 'object') {
-            volumes.push(vol.source + ':' + vol.target);
-          }
-        });
-      }
-      /**
-       * EXTRACT DEPENDS ON DATA
-       * https://docs.docker.com/compose/compose-file/#depends_on
-       * */
-      if (services[sName].hasOwnProperty('depends_on')) {
-        services[sName].depends_on!.forEach(el => {
-          links.push({ source: el, target: sName });
-        });
-      }
-      /**
-       * EXTRACT NETWORKS DATA
-       * https://docs.docker.com/compose/compose-file/#networks
-       * */
-      if (services[sName].hasOwnProperty('networks')) {
-        services[sName].networks!.forEach(net => {
-          networks.push(net);
-        });
-      }
-      const node = {
-        id: i,
-        name: sName,
-        ports,
-        volumes,
-        networks,
-        children: {},
-        row: 0,
-        rowLength: 0,
-        column: 0,
-      };
-      acc[sName] = node;
-      return acc;
-    },
-    {},
-  );
+/**
+ * ********************
+ * EXTRACTOR FUNCTIONS
+ * ********************
+ */
 
+// PORTS: https://docs.docker.com/compose/compose-file/#ports
+interface ExtractPorts {
+  (portsData: Port[]): string[];
+}
+
+export const extractPorts: ExtractPorts = portsData => {
+  const ports: string[] = [];
+  // short syntax string
+  if (typeof portsData === 'string') {
+    ports.push(portsData);
+    // short or long syntax
+  } else if (Array.isArray(portsData)) {
+    portsData.forEach((port: string | Port) => {
+      // short syntax
+      if (typeof port === 'string') {
+        ports.push(port as string);
+        // long syntax
+      } else if (typeof port === 'object') {
+        ports.push(port.published + ':' + port.target);
+      }
+    });
+  }
+
+  return ports;
+};
+
+// VOLUMES: https://docs.docker.com/compose/compose-file/#volumes
+interface ExtractVolumes {
+  (VolumesData: Volume[]): string[];
+}
+
+export const extractVolumes: ExtractVolumes = volumesData => {
+  const volumes: string[] = [];
+  // short syntax string
+  volumesData!.forEach((vol: string | Volume) => {
+    // short syntax
+    if (typeof vol === 'string') {
+      volumes.push(vol);
+      // long syntax
+    } else if (typeof vol === 'object') {
+      volumes.push(vol.source + ':' + vol.target);
+    }
+  });
+  return volumes;
+};
+
+// NETWORKS: https://docs.docker.com/compose/compose-file/#networks
+interface ExtractNetworks {
+  (networksData: string[]): string[];
+}
+
+export const extractNetworks: ExtractNetworks = networksData => {
+  const networks: string[] = [];
+  networksData.forEach(net => {
+    networks.push(net);
+  });
+  return networks;
+};
+
+// DEPENDS_ON: https://docs.docker.com/compose/compose-file/#depends_on
+interface ExtractDependsOn {
+  (services: Services): Link[];
+}
+export const extractDependsOn: ExtractDependsOn = services => {
+  const links: Link[] = [];
+
+  Object.keys(services).forEach((sName: string) => {
+    if (services[sName].hasOwnProperty('depends_on')) {
+      services[sName].depends_on!.forEach(el => {
+        links.push({ source: el, target: sName });
+      });
+    }
+  });
+
+  return links;
+};
+
+/**
+ * *************
+ * DAG CREATOR
+ * *************
+ * adds dag properties a d3 array of nodes passed in and returns depth of tree
+ */
+interface DagCreator {
+  (nodesObject: SNode[], Links: Link[]): number;
+}
+export const dagCreator: DagCreator = (nodes, links) => {
   //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
+  const nodesObject: NodesObject = {};
+  nodes.forEach(node => {
+    nodesObject[node.name] = node;
+  });
+
   const roots = JSON.parse(JSON.stringify(nodesObject));
   //iterate through links and find if the roots object contains any of the link targets
   links.forEach((link: Link) => {
@@ -151,14 +168,48 @@ const setD3State: SetGlobalVars = services => {
     });
   };
   storePositionLocation(treeMap);
+
+  return Object.keys(treeMap).length;
+};
+
+const setD3State: SetD3State = services => {
+  const links = extractDependsOn(services);
+
+  const nodes = Object.keys(services).map((sName: string, i) => {
+    // extract ports data if available
+    const ports = services[sName].hasOwnProperty('ports')
+      ? extractPorts(services[sName].ports as Port[])
+      : [];
+    // extract volumes data if available
+    const volumes: string[] = services[sName].hasOwnProperty('volumes')
+      ? extractVolumes(services[sName].volumes as Volume[])
+      : [];
+    // extract networks data if available
+    const networks: string[] = services[sName].hasOwnProperty('networks')
+      ? extractNetworks(services[sName].networks as string[])
+      : [];
+    const node: SNode = {
+      id: i,
+      name: sName,
+      ports,
+      volumes,
+      networks,
+      children: {},
+      row: 0,
+      rowLength: 0,
+      column: 0,
+    };
+    return node;
+  });
+
+  const treeDepth = dagCreator(nodes, links);
   /**
    *********************
    * Variables for d3 visualizer
    *********************
    */
-  const nodes = Object.values(nodesObject);
   const d3State: D3State = {
-    treeDepth: Object.keys(treeMap).length,
+    treeDepth,
     serviceGraph: {
       nodes,
       links,
