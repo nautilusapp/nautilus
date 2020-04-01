@@ -19,6 +19,7 @@ import { firstTwo } from './helpers/selectAll';
 import setGlobalVars from './helpers/setGlobalVars';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
+import fs from 'fs';
 
 // IMPORT STYLES
 import './styles/app.scss';
@@ -136,6 +137,7 @@ class App extends Component<{}, State> {
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
+    fs.writeFileSync('./yamlstate.json', JSON.stringify(yamlState));
     setGlobalVars(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));

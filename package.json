@@ -9,7 +9,8 @@
     "package-all": "yarn compile && electron-builder -mwl",
     "package-mac": "yarn compile && electron-builder --mac",
     "package-linux": "yarn compile && electron-builder --linux",
-    "package-win": "yarn compile && electron-builder --win --x64"
+    "package-win": "yarn compile && electron-builder --win --x64",
+    "test": "jest"
   },
   "build": {
     "appId": "com.nautilus.app",
@@ -90,6 +91,7 @@
   },
   "homepage": "https://github.com/oslabs-beta/nautilis#readme",
   "dependencies": {
+    "@types/jest": "^25.1.4",
     "d3": "^5.15.0",
     "electron-devtools-installer": "^2.2.4",
     "eslint": "^6.8.0",
@@ -102,7 +104,10 @@
     "react-icons": "^3.9.0"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.8.3",
+    "@babel/core": "^7.0.0-0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/d3": "^5.7.2",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/eslint": "^6.1.8",
@@ -114,6 +119,7 @@
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "babel": "^6.23.0",
+    "babel-jest": "^25.2.4",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.4.2",
@@ -121,10 +127,12 @@
     "electron-builder": "^22.4.1",
     "electron-devtools-installer": "^2.2.4",
     "electron-webpack": "^2.7.4",
+    "jest": "^25.2.4",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
     "react-hot-loader": "^4.12.20",
+    "react-test-renderer": "^16.13.1",
     "sass-loader": "^8.0.2",
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.1.3",
