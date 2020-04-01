@@ -14,10 +14,8 @@ const NetworksDropDown: React.FC<Props> = ({
 }) => {
   const groupNetworks = (): JSX.Element | void => {
     if (Object.keys(networks).length === 1) return;
-    let title: string = 'default';
-    if (Object.keys(networks).length > 1) {
-      title = 'group networks';
-    }
+    const title: string =
+      Object.keys(networks).length > 1 ? 'group networks' : 'default';
     return (
       <option
         className="networkOption"
