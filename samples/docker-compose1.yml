@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   vote:
@@ -7,7 +7,7 @@ services:
     volumes:
       - ./vote:/app
     ports:
-      - "5000:80"
+      - '5000:80'
     networks:
       - front-tier
       - back-tier
@@ -18,8 +18,8 @@ services:
     volumes:
       - ./result:/app
     ports:
-      - "5001:80"
-      - "5858:5858"
+      - '5001:80'
+      - '5858:5858'
     networks:
       - front-tier
       - back-tier
@@ -28,15 +28,15 @@ services:
     build:
       context: ./worker
     depends_on:
-      - "redis"
-      - "db"
+      - 'redis'
+      - 'db'
     networks:
       - back-tier
 
   redis:
     image: redis:alpine
     container_name: redis
-    ports: ["6379"]
+    ports: ['6379']
     networks:
       - back-tier
 
@@ -44,10 +44,10 @@ services:
     image: postgres:9.4
     container_name: db
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
     volumes:
-      - "db-data:/var/lib/postgresql/data"
+      - 'db-data:/var/lib/postgresql/data'
     networks:
       - back-tier
 

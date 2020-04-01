@@ -145,18 +145,20 @@ class App extends Component<{}, State> {
 
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
-    runDockerComposeValidation(file.path).then((validationResults: any) => {
-      if (validationResults.error) {
-        this.handleFileUploadError(validationResults.error);
-      } else {
-        fileReader.onload = () => {
-          if (fileReader.result) {
-            this.convertAndStoreYamlJSON(fileReader.result.toString());
-          }
-        };
-        fileReader.readAsText(file);
-      }
-    });
+    if (file.path) {
+      runDockerComposeValidation(file.path).then((validationResults: any) => {
+        if (validationResults.error) {
+          this.handleFileUploadError(validationResults.error);
+        } else {
+          fileReader.onload = () => {
+            if (fileReader.result) {
+              this.convertAndStoreYamlJSON(fileReader.result.toString());
+            }
+          };
+          fileReader.readAsText(file);
+        }
+      });
+    }
   };
 
   handleFileUploadError = (errorText: Error) => {
@@ -200,7 +202,6 @@ class App extends Component<{}, State> {
         />
         <div className="main flex">
           <OptionBar
-            services={this.state.services}
             view={this.state.view}
             options={this.state.options}
             networks={this.state.networks}

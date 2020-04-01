@@ -18,7 +18,6 @@ const convertYamlToState = (file: any) => {
     { fileUploaded: true, services, volumes, networks },
   );
   const bindMounts: string[] = [];
-
   // iterate through each service
   Object.keys(services).forEach((name): void => {
     // IF SERVICE HAS VOLUMES PROPERTY

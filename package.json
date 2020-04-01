@@ -13,6 +13,12 @@
     "test": "jest",
     "test-hh": "bash ./scripts/run-test.sh"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./src/setupTests.ts"
+    ],
+    "testEnvironment": "enzyme"
+  },
   "build": {
     "appId": "com.nautilus.app",
     "productName": "Nautilus",
@@ -110,6 +116,8 @@
     "@babel/preset-typescript": "^7.9.0",
     "@types/d3": "^5.7.2",
     "@types/electron-devtools-installer": "^2.2.0",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/eslint": "^6.1.8",
     "@types/express": "^4.17.3",
     "@types/jest": "^25.1.4",
@@ -128,7 +136,11 @@
     "electron-builder": "^22.4.1",
     "electron-devtools-installer": "^2.2.4",
     "electron-webpack": "^2.7.4",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "jest": "^25.2.4",
+    "jest-environment-enzyme": "^7.1.2",
+    "jest-enzyme": "^7.1.2",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",

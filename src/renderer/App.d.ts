@@ -67,11 +67,11 @@ export type Service = {
   image?: string;
   command?: string;
   environment?: ReadOnlyObj;
-  envfile?: string[];
-  ports: string[] | string | Port[];
-  volumes: string[] | Volume[];
-  depends_on: string[];
-  networks: string[];
+  env_file?: string[];
+  ports?: string[] | string | Port[];
+  volumes?: string[] | Volume[];
+  depends_on?: string[];
+  networks?: string[];
 };
 
 export type Port = {

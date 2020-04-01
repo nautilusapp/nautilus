@@ -1,40 +1,21 @@
 import React from 'react';
-import { Services, Networks, SelectNetwork } from '../App.d';
+import { Networks, SelectNetwork } from '../App.d';
 
 type Props = {
-  services: Services;
   networks: Networks;
   selectNetwork: SelectNetwork;
   selectedNetwork: string;
 };
 
 const NetworksDropDown: React.FC<Props> = ({
-  services,
   networks,
   selectNetwork,
   selectedNetwork,
 }) => {
   const groupNetworks = (): JSX.Element | void => {
-    //if no networks
-    if (!Object.values(networks).length) {
-      return (
-        <option
-          className="networkOption"
-          key={'default'}
-          id="groupNetworks"
-          value="groupNetworks"
-        >
-          default
-        </option>
-      );
-    }
-    let title = 'all networks';
-    const serviceValues = Object.values(services);
-    for (let i = 0; i < serviceValues.length; i++) {
-      if (serviceValues[i].networks.length > 1) {
-        title = 'group networks';
-      }
-    }
+    if (Object.keys(networks).length === 1) return;
+    const title: string =
+      Object.keys(networks).length > 1 ? 'group networks' : 'default';
     return (
       <option
         className="networkOption"
@@ -46,7 +27,6 @@ const NetworksDropDown: React.FC<Props> = ({
       </option>
     );
   };
-
   const networksOptions = Object.keys(networks).map((network, i) => {
     return (
       <option
