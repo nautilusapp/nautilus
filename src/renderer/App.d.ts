@@ -67,7 +67,7 @@ export type Service = {
   image?: string;
   command?: string;
   environment?: ReadOnlyObj;
-  envfile?: string[];
+  env_file?: string[];
   ports?: string[] | string | Port[];
   volumes?: string[] | Volume[];
   depends_on?: string[];

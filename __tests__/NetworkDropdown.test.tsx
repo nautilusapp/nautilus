@@ -15,6 +15,7 @@ describe('Test Networks Dropdown Component', () => {
         volumes: ['./docker/postgres:/docker-entrypoint-initdb.d'],
         networks: ['hello'],
         depends_on: ['aggregation'],
+        environments: ['HELLO=hello'],
       },
       aggregation: {
         image:
