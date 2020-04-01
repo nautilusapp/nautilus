@@ -138,6 +138,7 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
     fs.writeFileSync('./yamlstate.json', JSON.stringify(yamlState));
+    // set global variables for d3 simulation
     setGlobalVars(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
