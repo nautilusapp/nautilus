@@ -68,10 +68,10 @@ export type Service = {
   command?: string;
   environment?: ReadOnlyObj;
   envfile?: string[];
-  ports: string[] | string | Port[];
-  volumes: string[] | Volume[];
-  depends_on: string[];
-  networks: string[];
+  ports?: string[] | string | Port[];
+  volumes?: string[] | Volume[];
+  depends_on?: string[];
+  networks?: string[];
 };
 
 export type Port = {

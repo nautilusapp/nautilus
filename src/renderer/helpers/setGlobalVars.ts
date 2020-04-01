@@ -60,7 +60,7 @@ const setGlobalVars: SetGlobalVars = services => {
       if (services[sName].hasOwnProperty('volumes')) {
         const volumesVar = services[sName].volumes;
         // short syntax string
-        volumesVar.forEach((vol: string | Volume) => {
+        volumesVar!.forEach((vol: string | Volume) => {
           // short syntax
           if (typeof vol === 'string') {
             volumes.push(vol);
@@ -75,7 +75,7 @@ const setGlobalVars: SetGlobalVars = services => {
        * https://docs.docker.com/compose/compose-file/#depends_on
        * */
       if (services[sName].hasOwnProperty('depends_on')) {
-        services[sName].depends_on.forEach(el => {
+        services[sName].depends_on!.forEach(el => {
           links.push({ source: el, target: sName });
         });
       }
@@ -84,7 +84,7 @@ const setGlobalVars: SetGlobalVars = services => {
        * https://docs.docker.com/compose/compose-file/#networks
        * */
       if (services[sName].hasOwnProperty('networks')) {
-        services[sName].networks.forEach(net => {
+        services[sName].networks!.forEach(net => {
           networks.push(net);
         });
       }

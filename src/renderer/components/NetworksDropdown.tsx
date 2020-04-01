@@ -31,7 +31,7 @@ const NetworksDropDown: React.FC<Props> = ({
     let title = 'all networks';
     const serviceValues = Object.values(services);
     for (let i = 0; i < serviceValues.length; i++) {
-      if (serviceValues[i].networks.length > 1) {
+      if (serviceValues[i].networks!.length > 1) {
         title = 'group networks';
       }
     }
