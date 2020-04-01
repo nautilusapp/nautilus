@@ -35,6 +35,7 @@ const Nodes: React.FC<Props> = ({
   options,
   getColor,
 }) => {
+  const { simulation, serviceGraph, treeDepth } = window.d3State;
   /**
    *********************
    * RENDER NODES
@@ -47,7 +48,7 @@ const Nodes: React.FC<Props> = ({
 
     //sets 'clicked' nodes back to unfixed position
     const dblClick = (d: SNode) => {
-      window.simulation.alphaTarget(0);
+      simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
     };
@@ -55,7 +56,7 @@ const Nodes: React.FC<Props> = ({
     let drag = d3
       .drag<SVGGElement, SNode>()
       .on('start', function dragstarted(d: SNode) {
-        if (!d3.event.active) window.simulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d3.event.x;
         d3.event.y;
       })
@@ -65,7 +66,7 @@ const Nodes: React.FC<Props> = ({
         d.fy = d3.event.y;
       })
       .on('end', function dragended(d: SNode) {
-        if (!d3.event.active) window.simulation.alphaTarget(0);
+        if (!d3.event.active) simulation.alphaTarget(0);
         d.fx = d.x;
         d.fy = d.y;
       });
@@ -74,7 +75,7 @@ const Nodes: React.FC<Props> = ({
     const nodeContainers = d3
       .select('.nodes')
       .selectAll('g')
-      .data<SNode>(window.serviceGraph.nodes)
+      .data<SNode>(serviceGraph.nodes)
       .enter()
       .append('g')
       .attr('class', 'node')
@@ -88,7 +89,7 @@ const Nodes: React.FC<Props> = ({
         return (d.x = getHorizontalPosition(d, width));
       })
       .attr('y', (d: SNode) => {
-        return (d.y = getVerticalPosition(d, window.treeDepth, height));
+        return (d.y = getVerticalPosition(d, treeDepth, height));
       });
 
     // add names of services
