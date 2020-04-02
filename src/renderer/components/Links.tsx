@@ -24,7 +24,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
   const {
     simulation,
     serviceGraph: { links },
-  } = window;
+  } = window.d3State;
   useEffect(() => {
     simulation.force(
       'link',
