@@ -10,7 +10,7 @@
  */
 import React from 'react';
 // IMPORT COMPONENTS
-import FileSelector from './FileUpload';
+import FileSelector from './FileSelector';
 import VolumesWrapper from './VolumesWrapper';
 import ErrorDisplay from './ErrorDisplay';
 import View from './View';
