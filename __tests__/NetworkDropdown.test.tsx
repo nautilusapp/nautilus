@@ -17,7 +17,7 @@ describe('Test Networks Dropdown Component', () => {
     wrapper = shallow(<NetworksDropDown {...props} />);
   });
 
-  test('should have a disabled networks option', () => {
+  it('should have a disabled networks option', () => {
     expect(wrapper.find('#networkHeader')).toBeDisabled();
   });
 });
