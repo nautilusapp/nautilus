@@ -40,4 +40,21 @@ describe('Test Networks Dropdown Component', () => {
     );
     expect(wrapper.find('option.networkOption')).toHaveLength(4);
   });
+
+  // Test Select
+  it('If select value is `` selectedNetwork should be ``', () => {
+    const wrapper = shallow(<NetworksDropDown {...props} />);
+    expect(wrapper.find('select').props().value).toBe('');
+  });
+
+  it('If select value is `` selectedNetwork should be ``', () => {
+    const wrapper = shallow(
+      <NetworksDropDown
+        {...props}
+        networks={{ a: 'test' }}
+        selectedNetwork="a"
+      />,
+    );
+    expect(wrapper.find('select').props().value).toBe('a');
+  });
 });
