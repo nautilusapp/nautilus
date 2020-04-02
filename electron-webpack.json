@@ -9,6 +9,7 @@
   },
 
   "renderer": {
-    "sourceDirectory": "src/renderer"
+    "sourceDirectory": "src/renderer",
+    "webpackConfig": "webpack.renderer.ext.js"
   }
 }

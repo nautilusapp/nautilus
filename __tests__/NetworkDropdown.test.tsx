@@ -8,7 +8,7 @@ configure({ adapter: new Adapter() });
 describe('Test Networks Dropdown Component', () => {
   let wrapper: any;
   const props = {
-    networks: { hello: 'test' },
+    networks: { hello: 'hello' },
     selectNetwork: jest.fn(() => {}),
     selectedNetwork: '',
   };

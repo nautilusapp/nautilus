@@ -1,10 +1,4 @@
 module.exports = function(config) {
-  config.module.rules.push({
-    test: /\.js$/,
-    use: ['source-map-loader'],
-    enforce: 'pre',
-  });
-
   const tsxRule = config.module.rules.filter(rule =>
     rule.test.toString().match(/tsx/),
   )[0];

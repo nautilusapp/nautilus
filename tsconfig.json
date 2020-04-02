@@ -13,6 +13,7 @@
     "dist/**/*",
     "release/**/*",
     "webpack.main.ext.js",
+    "webpack.renderer.ext.js",
     "babel.config.js"
   ]
 }
