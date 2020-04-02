@@ -7,7 +7,7 @@ type Props = {
   fileUpload: FileUpload;
 };
 
-const FileUpload: React.FC<Props> = ({ fileUpload }) => {
+const FileSelector: React.FC<Props> = ({ fileUpload }) => {
   return (
     <div className="file-upload">
       <label htmlFor="files">
@@ -33,4 +33,4 @@ const FileUpload: React.FC<Props> = ({ fileUpload }) => {
     </div>
   );
 };
-export default FileUpload;
+export default FileSelector;
