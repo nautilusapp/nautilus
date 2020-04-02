@@ -12,7 +12,7 @@ import React from 'react';
 
 // IMPORT REACT COMPONENTS
 import InfoDropdown from './InfoDropdown';
-import FileSelector from './FileUpload';
+import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileUpload, Service } from '../App.d';
 
