@@ -6,32 +6,38 @@ import NetworksDropDown from '../src/renderer/components/NetworksDropdown';
 configure({ adapter: new Adapter() });
 
 const props = {
-  networks: {
-    hello: 'test1',
-    yellow: 'test2',
-    mellow: 'test3',
-  },
+  networks: {},
   selectNetwork: jest.fn(() => {}),
   selectedNetwork: '',
 };
 
 describe('Test Networks Dropdown Component', () => {
-  let wrapper: any;
-
-  beforeAll(() => {
-    wrapper = shallow(<NetworksDropDown {...props} />);
-  });
-
+  // Test Network Header
   it('should have a disabled networks option', () => {
-    expect(wrapper.find('#networkHeader')).toBeDisabled();
+    const wrapper = shallow(<NetworksDropDown {...props} />);
+    expect(wrapper.find('option#networkHeader')).toBeDisabled();
   });
 
-  // it('should render as many options as there are networks, except if there are 1 or less networks in networks object', () => {
-  //   const networksLength = Object.keys(props.networks).length;
-  //   if (networksLength <= 1) {
-  //     expect(wrapper.find('.networkOption')).toHaveLength(2);
-  //   } else {
-  //     expect(wrapper.find('.networkOption')).toHaveLength(networksLength + 2);
-  //   }
-  // });
+  // Test Options
+  it('should render one option with className networkOption if networks is empty', () => {
+    const wrapper = shallow(<NetworksDropDown {...props} />);
+    expect(wrapper.find('option.networkOption')).toHaveLength(1);
+  });
+
+  it('should render one option with className networkOption if there is only 1 item in networks', () => {
+    const wrapper = shallow(
+      <NetworksDropDown {...props} networks={{ a: 'test' }} />,
+    );
+    expect(wrapper.find('option.networkOption')).toHaveLength(1);
+  });
+
+  it('Should render one more networkOption than the number of networks if networks has more than 1 item', () => {
+    const wrapper = shallow(
+      <NetworksDropDown
+        {...props}
+        networks={{ a: 'test1', b: 'test2', c: 'test3' }}
+      />,
+    );
+    expect(wrapper.find('option.networkOption')).toHaveLength(4);
+  });
 });
