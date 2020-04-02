@@ -1,9 +1,31 @@
+import runDockerComposeValidation from '../src/common/dockerComposeValidation';
 import convertYamlToState from '../src/renderer/helpers/yamlParser';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import util from 'util';
 
 describe('Process Yaml File', () => {
+  test('should run docker file validation and populate result object with errors', () => {
+    try {
+      expect(
+        runDockerComposeValidation(
+          path.resolve(__dirname, '../samples/docker-composeBAD.yml'),
+        ),
+      ).resolves.toMatchObject({
+        out: '',
+        filePath:
+          '/Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml',
+      });
+    } catch (e) {
+      expect(e.cmd).toBe(
+        'docker-compose -f /Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml config',
+      );
+      expect(e.code).toBe(1);
+      expect(e.killed).toBe(false);
+      expect(e.signal).toBe(null);
+    }
+  });
   test('should convert yaml file into state', () => {
     const yamlText = fs.readFileSync(
       path.resolve(__dirname, '../samples/docker-compose.bpc.yml'),

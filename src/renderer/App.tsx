@@ -137,7 +137,6 @@ class App extends Component<{}, State> {
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
-    fs.writeFileSync('./yamlstate.json', JSON.stringify(yamlState));
     setGlobalVars(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
