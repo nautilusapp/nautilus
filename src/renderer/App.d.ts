@@ -45,10 +45,27 @@ export type Service = {
   command?: string;
   environment?: ReadOnlyObj;
   env_file?: string[];
-  ports?: string[] | string | Port[];
-  volumes?: string[] | Volume[];
+  ports?: Ports;
+  volumes?: Volumes;
   depends_on?: string[];
-  networks?: string[];
+  networks?: string[] | {};
+};
+
+export type Ports = string[] | string | Port[];
+
+export type Port = {
+  mode: string;
+  protocol: string;
+  published: number;
+  target: number;
+};
+
+export type Volumes = string[] | Volume[];
+
+export type Volume = {
+  type: string;
+  source: string;
+  target: string;
 };
 
 type ViewT = 'networks' | 'depends_on';
@@ -106,7 +123,7 @@ interface SNode extends SimulationNodeDatum {
   row: number;
   column: number;
   rowLength: number;
-  children: NodeChild;
+  children: NodesObject;
 }
 
 interface Link extends SimulationLinkDatum<SNode> {
@@ -119,33 +136,12 @@ type SGraph = {
   links: Link[];
 };
 
-export type NodeChild = {
-  [service: string]: SNode;
-};
-
-export type Port = {
-  mode: string;
-  protocol: string;
-  published: number;
-  target: number;
-};
-
-export type Volume = {
-  type: string;
-  source: string;
-  target: string;
-};
-
 export type NodesObject = {
   [service: string]: SNode;
 };
 
 export type TreeMap = {
   [row: string]: string[];
-};
-
-export type Networks = {
-  [network: string]: any;
 };
 
 export type Simulation = d3.Simulation<SNode, undefined>;

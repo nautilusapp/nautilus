@@ -12,12 +12,13 @@ import {
   Services,
   NodesObject,
   TreeMap,
-  NodeChild,
   Link,
   SNode,
   Volume,
   Port,
   D3State,
+  Volumes,
+  Ports,
 } from '../App.d';
 import * as d3 from 'd3';
 
@@ -33,9 +34,8 @@ interface SetD3State {
 
 // PORTS: https://docs.docker.com/compose/compose-file/#ports
 interface ExtractPorts {
-  (portsData: Port[]): string[];
+  (portsData: Ports): string[];
 }
-
 export const extractPorts: ExtractPorts = portsData => {
   const ports: string[] = [];
   // short syntax string
@@ -59,9 +59,8 @@ export const extractPorts: ExtractPorts = portsData => {
 
 // VOLUMES: https://docs.docker.com/compose/compose-file/#volumes
 interface ExtractVolumes {
-  (VolumesData: Volume[]): string[];
+  (VolumesData: Volumes): string[];
 }
-
 export const extractVolumes: ExtractVolumes = volumesData => {
   const volumes: string[] = [];
   // short syntax string
@@ -79,14 +78,12 @@ export const extractVolumes: ExtractVolumes = volumesData => {
 
 // NETWORKS: https://docs.docker.com/compose/compose-file/#networks
 interface ExtractNetworks {
-  (networksData: string[]): string[];
+  (networksData: string[] | {}): string[];
 }
-
 export const extractNetworks: ExtractNetworks = networksData => {
-  const networks: string[] = [];
-  networksData.forEach(net => {
-    networks.push(net);
-  });
+  const networks = Array.isArray(networksData)
+    ? networksData
+    : Object.keys(networksData);
   return networks;
 };
 
@@ -134,7 +131,7 @@ export const dagCreator: DagCreator = (nodes, links) => {
   });
 
   //create Tree
-  const createTree = (node: NodeChild) => {
+  const createTree = (node: NodesObject) => {
     Object.keys(node).forEach((root: string) => {
       links.forEach((link: Link) => {
         if (link.source === root) {
@@ -148,7 +145,7 @@ export const dagCreator: DagCreator = (nodes, links) => {
 
   //traverse tree and create object outlining the rows/columns in each tree
   const treeMap: TreeMap = {};
-  const createTreeMap = (node: NodeChild, height: number = 0) => {
+  const createTreeMap = (node: NodesObject, height: number = 0) => {
     if (!treeMap[height] && Object.keys(node).length > 0) treeMap[height] = [];
     Object.keys(node).forEach((sName: string) => {
       treeMap[height].push(sName);
@@ -173,16 +170,23 @@ export const dagCreator: DagCreator = (nodes, links) => {
 };
 
 const setD3State: SetD3State = services => {
-  const links = extractDependsOn(services);
+  const links: Link[] = [];
+  Object.keys(services).forEach((sName: string) => {
+    if (services[sName].hasOwnProperty('depends_on')) {
+      services[sName].depends_on!.forEach(el => {
+        links.push({ source: el, target: sName });
+      });
+    }
+  });
 
   const nodes = Object.keys(services).map((sName: string, i) => {
     // extract ports data if available
     const ports = services[sName].hasOwnProperty('ports')
-      ? extractPorts(services[sName].ports as Port[])
+      ? extractPorts(services[sName].ports as Ports)
       : [];
     // extract volumes data if available
     const volumes: string[] = services[sName].hasOwnProperty('volumes')
-      ? extractVolumes(services[sName].volumes as Volume[])
+      ? extractVolumes(services[sName].volumes as Volumes)
       : [];
     // extract networks data if available
     const networks: string[] = services[sName].hasOwnProperty('networks')
