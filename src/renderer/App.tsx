@@ -60,31 +60,22 @@ class App extends Component<{}, State> {
     super(props);
     this.state = initialState;
   }
+
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView: UpdateView = e => {
-    const view = e.currentTarget.id as 'networks' | 'depends_on';
-    if (view === 'depends_on') {
-      this.setState(state => {
-        return {
-          ...state,
-          view,
-          selectedNetwork: '',
-        };
-      });
-    } else {
-      this.setState(state => {
-        return {
-          ...state,
-          view,
-        };
-      });
-    }
+
+  updateView: UpdateView = view => {
+    this.setState(state => {
+      return {
+        ...state,
+        view,
+        selectedNetwork: '',
+      };
+    });
   };
 
-  updateOption: UpdateOption = e => {
-    const option = e.currentTarget.id as 'ports' | 'volumes' | 'selectAll';
+  updateOption: UpdateOption = option => {
     const newState: State = {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
@@ -112,8 +103,8 @@ class App extends Component<{}, State> {
     });
   };
 
-  selectNetwork: SelectNetwork = e => {
-    this.setState({ view: 'networks', selectedNetwork: e.currentTarget.value });
+  selectNetwork: SelectNetwork = network => {
+    this.setState({ view: 'networks', selectedNetwork: network });
   };
 
   convertAndStoreYamlJSON = (yamlText: string) => {

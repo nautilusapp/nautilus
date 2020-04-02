@@ -20,6 +20,7 @@ import {
   UpdateView,
   SelectNetwork,
   ReadOnlyObj,
+  Handler,
 } from '../App.d';
 
 type Props = {
@@ -43,6 +44,16 @@ const OptionBar: React.FC<Props> = ({
 }) => {
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
+  const handleViewUpdate: Handler = e => {
+    const view = e.currentTarget.id as 'networks' | 'depends_on';
+    updateView(view);
+  };
+
+  const handleOptionUpdate: Handler = e => {
+    const option = e.currentTarget.id as 'ports' | 'volumes' | 'selectAll';
+    updateOption(option);
+  };
+
   const optionsDisplay = Object.keys(options).map((opt, i) => {
     let title = '';
     if (opt === 'selectAll') title = 'select all';
@@ -57,7 +68,7 @@ const OptionBar: React.FC<Props> = ({
             : 'option'
         }
         id={opt}
-        onClick={updateOption}
+        onClick={handleOptionUpdate}
       >
         {title}
       </span>
@@ -72,7 +83,11 @@ const OptionBar: React.FC<Props> = ({
           selectNetwork={selectNetwork}
           selectedNetwork={selectedNetwork}
         />
-        <span className={dependsOnClass} id="depends_on" onClick={updateView}>
+        <span
+          className={dependsOnClass}
+          id="depends_on"
+          onClick={handleViewUpdate}
+        >
           depends on
         </span>
       </div>
