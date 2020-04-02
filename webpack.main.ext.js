@@ -12,7 +12,5 @@ module.exports = function(config) {
   const tsLoader = tsxRule.use.filter(use => use.loader === 'ts-loader')[0];
   tsLoader.options.configFile = path.join(__dirname, 'tsconfig-webpack.json');
 
-  console.log(tsLoader.options.configFile);
-
   return config;
 };
