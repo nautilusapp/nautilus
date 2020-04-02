@@ -24,6 +24,7 @@ matrix:
 
 notifications:
   email: false
+  slack: nautilus27:HZhDaJlZZK80zNaPCmueIiWk
 
 # cache some files for faster builds
 cache:
