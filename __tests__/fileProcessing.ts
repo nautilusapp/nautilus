@@ -18,7 +18,10 @@ describe('Process Yaml File', () => {
       });
     } catch (e) {
       expect(e.cmd).toBe(
-        'docker-compose -f /Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml config',
+        `docker-compose -f ${path.resolve(
+          __dirname,
+          '../samples/docker-composeBAD.yml',
+        )} config`,
       );
       expect(e.code).toBe(1);
       expect(e.killed).toBe(false);
