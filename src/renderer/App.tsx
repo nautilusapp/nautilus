@@ -20,9 +20,6 @@ import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
 
-// IMPORT STYLES
-import './styles/app.scss';
-
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
@@ -170,12 +167,14 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
-    ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
-      this.handleFileUploadError(arg);
-    });
-    ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
-      this.convertAndStoreYamlJSON(arg);
-    });
+    if (ipcRenderer) {
+      ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
+        this.handleFileUploadError(arg);
+      });
+      ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
+        this.convertAndStoreYamlJSON(arg);
+      });
+    }
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
@@ -186,8 +185,10 @@ class App extends Component<{}, State> {
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeAllListeners('file-uploaded-within-electron');
-    ipcRenderer.removeAllListeners('file-upload-error-within-electron');
+    if (ipcRenderer) {
+      ipcRenderer.removeAllListeners('file-uploaded-within-electron');
+      ipcRenderer.removeAllListeners('file-upload-error-within-electron');
+    }
   }
 
   render() {
