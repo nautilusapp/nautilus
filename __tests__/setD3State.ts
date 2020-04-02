@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 import setD3State, {
   extractPorts,
   extractVolumes,
