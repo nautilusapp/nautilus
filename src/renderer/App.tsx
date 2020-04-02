@@ -19,10 +19,6 @@ import { firstTwo } from './helpers/selectAll';
 import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
-<<<<<<< HEAD
-=======
-//import fs from 'fs';
->>>>>>> Volume Component test
 
 // IMPORT STYLES
 import './styles/app.scss';
