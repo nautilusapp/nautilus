@@ -29,7 +29,7 @@
     ],
     "linux": {
       "category": "WebDevelopment",
-      "icon": "static/nautilus_logo.icns",
+      "icon": "build/nautilus_logo.icns",
       "desktop": {
         "Comment": "Nautilus: A Docker Compose Charting Tool",
         "Name": "Nautilus",
@@ -46,13 +46,13 @@
     },
     "mac": {
       "category": "public.app-category.developer-tools",
-      "icon": "static/nautilus_logo.icns",
+      "icon": "build/nautilus_logo.icns",
       "target": [
         "dmg"
       ]
     },
     "dmg": {
-      "background": "static/background.tiff",
+      "background": "build/background.tiff",
       "contents": [
         {
           "x": 100,
@@ -68,7 +68,7 @@
     },
     "win": {
       "asar": false,
-      "icon": "static/nautilus_logo.ico",
+      "icon": "build/nautilus_logo.ico",
       "target": [
         "nsis"
       ]
@@ -101,7 +101,6 @@
     "d3": "^5.15.0",
     "electron-devtools-installer": "^2.2.4",
     "eslint": "^6.8.0",
-    "express": "^4.17.1",
     "fix-path": "^3.0.0",
     "html-loader": "1.0.0-alpha.0",
     "js-yaml": "^3.13.1",
