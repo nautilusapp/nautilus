@@ -19,7 +19,6 @@ import { firstTwo } from './helpers/selectAll';
 import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
-import fs from 'fs';
 
 // IMPORT STYLES
 import './styles/app.scss';
