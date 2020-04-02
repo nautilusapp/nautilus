@@ -103,7 +103,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           volumeText.push(vText);
         });
       });
-      d3.selectAll('.arrowHead').attr('refX', 23 + 3 * maxVolumes);
+      d3.selectAll('.arrowHead').attr('refX', 23 + 4.5 * maxVolumes);
     }
     //move arrowheads based on number of volumes
     else {

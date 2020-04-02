@@ -14,9 +14,9 @@ import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
-import { convertYamlToState } from './helpers/yamlParser';
+import convertYamlToState from './helpers/yamlParser';
 import { firstTwo } from './helpers/selectAll';
-import setGlobalVars from './helpers/setGlobalVars';
+import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
 
@@ -136,30 +136,37 @@ class App extends Component<{}, State> {
   convertAndStoreYamlJSON = (yamlText: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON);
-    setGlobalVars(yamlState.services);
+    // set global variables for d3 simulation
+    window.d3State = setD3State(yamlState.services);
     localStorage.setItem('state', JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlState));
   };
 
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
-    runDockerComposeValidation(file.path).then((validationResults: any) => {
-      if (validationResults.error) {
-        this.handleFileUploadError(validationResults.error);
-      } else {
-        fileReader.onload = () => {
-          if (fileReader.result) {
-            this.convertAndStoreYamlJSON(fileReader.result.toString());
-          }
-        };
-        fileReader.readAsText(file);
-      }
-    });
+    if (file.path) {
+      runDockerComposeValidation(file.path).then((validationResults: any) => {
+        if (validationResults.error) {
+          this.handleFileUploadError(validationResults.error);
+        } else {
+          fileReader.onload = () => {
+            if (fileReader.result) {
+              this.convertAndStoreYamlJSON(fileReader.result.toString());
+            }
+          };
+          fileReader.readAsText(file);
+        }
+      });
+    }
   };
 
   handleFileUploadError = (errorText: Error) => {
     const uploadErrors = parseUploadError(errorText);
-    this.setState({ ...this.state, uploadErrors, fileUploaded: false });
+    this.setState({
+      ...initialState,
+      uploadErrors,
+      fileUploaded: false,
+    });
   };
 
   componentDidMount() {
@@ -172,7 +179,8 @@ class App extends Component<{}, State> {
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
-      setGlobalVars(stateJS.services);
+      // set d3 state
+      window.d3State = setD3State(stateJS.services);
       this.setState(Object.assign(initialState, stateJS));
     }
   }
@@ -194,7 +202,6 @@ class App extends Component<{}, State> {
         />
         <div className="main flex">
           <OptionBar
-            services={this.state.services}
             view={this.state.view}
             options={this.state.options}
             networks={this.state.networks}

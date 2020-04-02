@@ -32,6 +32,13 @@
 
         .node {
           cursor: pointer;
+          text {
+            font-family: 'VisbyRoundCF-Heavy';
+            fill: $primary-color;
+            stroke: $fourth-color;
+            stroke-width: 1px;
+            font-size: 16px;
+          }
         }
 
         .hide {
@@ -39,7 +46,7 @@
         }
 
         .arrowHead {
-          fill: pink;
+          fill: #000000;
         }
 
         .link {

@@ -11,6 +11,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT HELPER FUNCTIONS
+import { getStatic } from '../helpers/static';
 import { SNode, Link, Services, ViewT } from '../App.d';
 // IMPORT TYPES
 
@@ -23,7 +24,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
   const {
     simulation,
     serviceGraph: { links },
-  } = window;
+  } = window.d3State;
   useEffect(() => {
     simulation.force(
       'link',
@@ -47,14 +48,14 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .append('svg:marker') // This section adds in the arrows
       .attr('id', String)
       .attr('class', 'arrowHead')
-      .attr('viewBox', '0 -5 10 10')
+      .attr('viewBox', '0 0 9.76 11.1')
       .attr('refX', 23)
-      .attr('refY', 0)
+      .attr('refY', 6)
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
       .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
+      .append('svg:image')
+      .attr('xlink:href', getStatic('arrow.svg'));
 
     const linkGroup = d3.select('.links');
 

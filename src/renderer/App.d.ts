@@ -1,52 +1,33 @@
 import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
 
+/**
+ * **********************
+ * REACT STATE TYPES
+ * **********************
+ */
 export type State = {
-  uploadErrors: string[];
-  selectedContainer: string;
-  fileUploaded: boolean;
-  services: Services;
-  dependsOn: DependsOn;
-  networks: ReadOnlyObj;
-  selectedNetwork: string;
-  volumes: Array<ReadOnlyObj>;
-  volumesClicked: Clicked;
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
-  view: ViewT;
+  dependsOn: DependsOn;
+  fileUploaded: boolean;
+  networks: ReadOnlyObj;
   options: Options;
+  selectedContainer: string;
+  selectedNetwork: string;
+  services: Services;
+  uploadErrors: string[];
   version: string;
-};
-
-interface SNode extends SimulationNodeDatum {
-  id: number;
-  name: string;
-  ports: string[];
-  volumes: string[];
-  networks?: string[];
-  row: number;
-  column: number;
-  rowLength: number;
-  children: NodeChild;
-}
-
-interface Link extends SimulationLinkDatum<SNode> {
-  source: string;
-  target: string;
-}
-
-type SGraph = {
-  nodes: SNode[];
-  links: Link[];
-};
-
-type ViewT = 'networks' | 'depends_on';
-
-type Clicked = {
-  readonly [propName: string]: string;
+  view: ViewT;
+  volumes: Array<ReadOnlyObj>;
+  volumesClicked: Clicked;
 };
 
 type ReadOnlyObj = {
   readonly [prop: string]: ReadOnlyObj | Array<string> | string;
+};
+
+type Clicked = {
+  readonly [propName: string]: string;
 };
 
 type DependsOn = {
@@ -54,12 +35,8 @@ type DependsOn = {
   readonly children?: Array<DependsOn>;
 };
 
-export type Options = {
-  [key: string]: boolean;
-};
-
-export type NodeChild = {
-  [service: string]: SNode;
+export type Services = {
+  [service: string]: Service;
 };
 
 export type Service = {
@@ -67,17 +44,41 @@ export type Service = {
   image?: string;
   command?: string;
   environment?: ReadOnlyObj;
-  envfile?: string[];
-  ports: string[];
-  volumes: string[];
-  depends_on: string[];
-  networks: string[];
+  env_file?: string[];
+  ports?: Ports;
+  volumes?: Volumes;
+  depends_on?: string[];
+  networks?: string[] | {};
 };
 
-export type Services = {
-  [service: string]: Service;
+export type Ports = string[] | string | Port[];
+
+export type Port = {
+  mode: string;
+  protocol: string;
+  published: number;
+  target: number;
 };
 
+export type Volumes = string[] | Volume[];
+
+export type Volume = {
+  type: string;
+  source: string;
+  target: string;
+};
+
+type ViewT = 'networks' | 'depends_on';
+
+export type Options = {
+  [key: string]: boolean;
+};
+
+/**
+ * **********************
+ * APP METHOD FUNCTION TYPES
+ * **********************
+ */
 export type FileUpload = {
   (file: File): void;
 };
@@ -102,16 +103,45 @@ export type SetSelectedContainer = {
   (containerName: string): void;
 };
 
+/**
+ * **********************
+ * D3 SIMULATION TYPES
+ * **********************
+ */
+type D3State = {
+  simulation: Simulation;
+  treeDepth: number;
+  serviceGraph: SGraph;
+};
+
+interface SNode extends SimulationNodeDatum {
+  id: number;
+  name: string;
+  ports: string[];
+  volumes: string[];
+  networks?: string[];
+  row: number;
+  column: number;
+  rowLength: number;
+  children: NodesObject;
+}
+
+interface Link extends SimulationLinkDatum<SNode> {
+  source: string;
+  target: string;
+}
+
+type SGraph = {
+  nodes: SNode[];
+  links: Link[];
+};
+
 export type NodesObject = {
   [service: string]: SNode;
 };
 
 export type TreeMap = {
   [row: string]: string[];
-};
-
-export type Networks = {
-  [network: string]: any;
 };
 
 export type Simulation = d3.Simulation<SNode, undefined>;

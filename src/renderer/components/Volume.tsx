@@ -15,7 +15,7 @@ type Props = {
   color: string;
 };
 
-const Volume: React.FC<Props> = props => {
+const Volume: React.FC<Props> = ({ volume, color }) => {
   //create function to fill color based on name in props.volume fill ={fill}
   //const fill = () => {loop colorsVolObj , if colorsVolObj[x] = props.volume return x }
   //colorScheme[props.index % colorScheme.length]
@@ -23,11 +23,11 @@ const Volume: React.FC<Props> = props => {
     <div className="volumeLegend">
       <div className="volumeColorName">
         <svg className="volumeSvgBox">
-          <rect className="volumeSquare" rx={5} ry={5} fill={props.color} />
+          <rect className="volumeSquare" rx={5} ry={5} fill={color} />
         </svg>
       </div>
       <div>
-        <p>{props.volume}</p>
+        <p>{volume}</p>
       </div>
     </div>
   );

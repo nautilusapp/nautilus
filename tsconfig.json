@@ -9,5 +9,10 @@
     "target": "es6",
     "allowJs": true
   },
-  "exclude": ["dist/**/*", "release/**/*", "webpack.main.ext.js"]
+  "exclude": [
+    "dist/**/*",
+    "release/**/*",
+    "webpack.main.ext.js",
+    "babel.config.js"
+  ]
 }
