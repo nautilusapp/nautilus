@@ -3,7 +3,6 @@ import convertYamlToState from '../src/renderer/helpers/yamlParser';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
-import util from 'util';
 
 describe('Process Yaml File', () => {
   test('should run docker file validation and populate result object with errors', () => {
