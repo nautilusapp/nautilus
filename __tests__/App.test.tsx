@@ -33,4 +33,61 @@ describe('Testing App Stateful Component', () => {
       expect(wrapper.state().selectedContainer).toBe('api-service');
     });
   });
+
+  describe('updateView()', () => {
+    it('should update view in state', () => {
+      wrapper.instance().updateView('depends_on');
+      expect(wrapper.state().view).toBe('depends_on');
+    });
+    it('should clear selectedNetwork in state', () => {
+      wrapper.state().selectedNetwork = 'dummy-network';
+      wrapper.instance().updateView('depends_on');
+      expect(wrapper.state().selectedNetwork).toBe('');
+    });
+  });
+
+  describe('updateOption()', () => {
+    beforeEach(() => {
+      wrapper.state().options = {
+        ports: false,
+        volumes: false,
+        selectAll: false,
+      };
+    });
+    it('should toggle ports option', () => {
+      wrapper.instance().updateOption('ports');
+      expect(wrapper.state().options.ports).toBe(true);
+      wrapper.instance().updateOption('ports');
+      expect(wrapper.state().options.ports).toBe(false);
+    });
+    it('should toggle volumes option', () => {
+      wrapper.instance().updateOption('volumes');
+      expect(wrapper.state().options.volumes).toBe(true);
+      wrapper.instance().updateOption('volumes');
+      expect(wrapper.state().options.volumes).toBe(false);
+    });
+    it('should toggle selectAll option', () => {
+      wrapper.instance().updateOption('selectAll');
+      expect(wrapper.state().options.selectAll).toBe(true);
+      wrapper.instance().updateOption('selectAll');
+      expect(wrapper.state().options.selectAll).toBe(false);
+    });
+    it('selectAll should toggle ports and options', () => {
+      wrapper.instance().updateOption('selectAll');
+      expect(wrapper.state().options.ports).toBe(true);
+      expect(wrapper.state().options.volumes).toBe(true);
+      wrapper.instance().updateOption('selectAll');
+      expect(wrapper.state().options.ports).toBe(false);
+      expect(wrapper.state().options.volumes).toBe(false);
+    });
+    it('selectAll should should reflect all being selected or not', () => {
+      wrapper.instance().updateOption('ports');
+      wrapper.instance().updateOption('volumes');
+      expect(wrapper.state().options.selectAll).toBe(true);
+      wrapper.instance().updateOption('ports');
+      expect(wrapper.state().options.selectAll).toBe(false);
+    });
+  });
+
+  describe('selectNetwork()', () => {});
 });
