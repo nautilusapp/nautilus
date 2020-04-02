@@ -5,11 +5,14 @@ module.exports = function(config) {
     enforce: 'pre',
   });
 
+  const path = require('path');
   const tsxRule = config.module.rules.filter(rule =>
     rule.test.toString().match(/tsx/),
   )[0];
   const tsLoader = tsxRule.use.filter(use => use.loader === 'ts-loader')[0];
-  tsLoader.options.configFile = 'tsconfig-webpack.json';
+  tsLoader.options.configFile = path.join(__dirname, 'tsconfig-webpack.json');
+
+  console.log(tsLoader.options.configFile);
 
   return config;
 };
