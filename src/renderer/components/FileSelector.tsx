@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUpload } from 'react-icons/fa';
 
-import { FileUpload } from '../App.d';
+import { FileUpload } from '../App';
 
 type Props = {
   fileUpload: FileUpload;
