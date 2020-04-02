@@ -16,16 +16,16 @@ import NetworksDropdown from './NetworksDropdown';
 import {
   ViewT,
   Options,
-  Networks,
   UpdateOption,
   UpdateView,
   SelectNetwork,
+  ReadOnlyObj,
 } from '../App.d';
 
 type Props = {
   view: ViewT;
   options: Options;
-  networks: Networks;
+  networks: ReadOnlyObj;
   updateView: UpdateView;
   updateOption: UpdateOption;
   selectNetwork: SelectNetwork;

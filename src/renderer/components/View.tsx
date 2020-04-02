@@ -27,7 +27,7 @@ import {
   SNode,
   SetSelectedContainer,
   Options,
-  Networks,
+  ReadOnlyObj,
   ViewT,
 } from '../App.d';
 
@@ -35,7 +35,7 @@ type Props = {
   services: Services;
   setSelectedContainer: SetSelectedContainer;
   options: Options;
-  networks: Networks;
+  networks: ReadOnlyObj;
   view: ViewT;
   selectedNetwork: string;
   getColor: any;
@@ -50,7 +50,7 @@ const View: React.FC<Props> = ({
   selectedNetwork,
   getColor,
 }) => {
-  const { treeDepth } = window;
+  const { treeDepth, simulation } = window.d3State;
 
   /**
    *********************
@@ -115,7 +115,7 @@ const View: React.FC<Props> = ({
     function dependsResizer() {
       const width = parseInt(container.style('width'));
       const height = parseInt(container.style('height'));
-      window.simulation
+      simulation
         .alpha(0.5)
         .force('x', dependsForceX(width))
         .force('y', dependsForceY(height))
@@ -123,7 +123,7 @@ const View: React.FC<Props> = ({
     }
 
     if (view === 'depends_on') {
-      window.simulation
+      simulation
         .alpha(0.8)
         .force('charge', d3.forceManyBody<SNode>().strength(-400))
         .force('collide', null)
@@ -211,7 +211,7 @@ const View: React.FC<Props> = ({
       }
 
       // //create force simulation
-      window.simulation
+      simulation
         .alpha(1)
         .force('x', forceX)
         .force('y', forceY)
