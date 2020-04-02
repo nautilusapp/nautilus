@@ -33,7 +33,7 @@ describe('Process Yaml File', () => {
     );
     const yamlJS = yaml.safeLoad(yamlText.toString());
     const correctYamlState = JSON.parse(
-      fs.readFileSync(path.resolve(__dirname, './yamlstate.json')).toString(),
+      fs.readFileSync(path.resolve(__dirname, './yamlState.json')).toString(),
     );
     const yamlState = convertYamlToState(yamlJS);
     expect(yamlState).toEqual(correctYamlState);
