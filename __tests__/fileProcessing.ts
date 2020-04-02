@@ -13,12 +13,14 @@ describe('Process Yaml File', () => {
         ),
       ).resolves.toMatchObject({
         out: '',
-        filePath:
-          '/Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml',
+        filePath: path.resolve(__dirname, '../samples/docker-composeBAD.yml'),
       });
     } catch (e) {
       expect(e.cmd).toBe(
-        'docker-compose -f /Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml config',
+        `docker-compose -f ${path.resolve(
+          __dirname,
+          '../samples/docker-composeBAD.yml',
+        )} config`,
       );
       expect(e.code).toBe(1);
       expect(e.killed).toBe(false);
@@ -31,7 +33,7 @@ describe('Process Yaml File', () => {
     );
     const yamlJS = yaml.safeLoad(yamlText.toString());
     const correctYamlState = JSON.parse(
-      fs.readFileSync(path.resolve(__dirname, './yamlstate.json')).toString(),
+      fs.readFileSync(path.resolve(__dirname, './yamlState.json')).toString(),
     );
     const yamlState = convertYamlToState(yamlJS);
     expect(yamlState).toEqual(correctYamlState);

@@ -1,10 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import OptionBar from '../src/renderer/components/OptionBar';
 import NetworksDropdown from '../src/renderer/components/NetworksDropdown';
-
 import { ViewT } from '../src/renderer/App.d';
+
+configure({ adapter: new Adapter() });
 
 const props = {
   view: 'depends_on' as ViewT,
@@ -14,8 +16,8 @@ const props = {
     selectAll: true,
   },
   networks: {
-    a: null,
-    b: null,
+    a: 'test',
+    b: 'test',
   },
   updateView: jest.fn(() => {}),
   updateOption: jest.fn(() => {}),

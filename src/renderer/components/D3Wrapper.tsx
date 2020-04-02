@@ -10,7 +10,7 @@
  */
 import React from 'react';
 // IMPORT COMPONENTS
-import FileSelector from './FileUpload';
+import FileSelector from './FileSelector';
 import VolumesWrapper from './VolumesWrapper';
 import ErrorDisplay from './ErrorDisplay';
 import View from './View';
@@ -26,7 +26,6 @@ import {
   Options,
   ReadOnlyObj,
   ViewT,
-  Networks,
 } from '../App.d';
 
 type Props = {
@@ -38,7 +37,7 @@ type Props = {
   volumes: Array<ReadOnlyObj>;
   bindMounts: Array<string>;
   view: ViewT;
-  networks: Networks;
+  networks: ReadOnlyObj;
   selectedNetwork: string;
   uploadErrors: string[];
 };
