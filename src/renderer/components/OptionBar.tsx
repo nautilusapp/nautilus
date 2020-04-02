@@ -51,7 +51,11 @@ const OptionBar: React.FC<Props> = ({
     return (
       <span
         key={`opt${i}`}
-        className={options[opt] ? 'option selected' : 'option'}
+        className={
+          options[opt as 'selectAll' | 'ports' | 'volumes']
+            ? 'option selected'
+            : 'option'
+        }
         id={opt}
         onClick={updateOption}
       >
