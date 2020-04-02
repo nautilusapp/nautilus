@@ -12,7 +12,7 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import App from './App';
-import { Simulation, SGraph } from '../renderer/App.d';
+import { D3State } from '../renderer/App.d';
 
 if (module.hot) {
   module.hot.accept();
@@ -20,9 +20,7 @@ if (module.hot) {
 
 declare global {
   interface Window {
-    simulation: Simulation;
-    treeDepth: number;
-    serviceGraph: SGraph;
+    d3State: D3State;
   }
 }
 

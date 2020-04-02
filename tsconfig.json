@@ -13,7 +13,6 @@
     "dist/**/*",
     "release/**/*",
     "webpack.main.ext.js",
-    "babel.config.js",
-    "__tests__/**/*"
+    "babel.config.js"
   ]
 }
