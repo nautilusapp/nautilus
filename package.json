@@ -29,7 +29,7 @@
     ],
     "linux": {
       "category": "WebDevelopment",
-      "icon": "static/nautilus_logo.icns",
+      "icon": "build/nautilus_logo.icns",
       "desktop": {
         "Comment": "Nautilus: A Docker Compose Charting Tool",
         "Name": "Nautilus",
@@ -46,13 +46,13 @@
     },
     "mac": {
       "category": "public.app-category.developer-tools",
-      "icon": "static/nautilus_logo.icns",
+      "icon": "build/nautilus_logo.icns",
       "target": [
         "dmg"
       ]
     },
     "dmg": {
-      "background": "static/background.tiff",
+      "background": "build/background.tiff",
       "contents": [
         {
           "x": 100,
@@ -68,7 +68,7 @@
     },
     "win": {
       "asar": false,
-      "icon": "static/nautilus_logo.ico",
+      "icon": "build/nautilus_logo.ico",
       "target": [
         "nsis"
       ]
