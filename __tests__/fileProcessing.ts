@@ -13,8 +13,7 @@ describe('Process Yaml File', () => {
         ),
       ).resolves.toMatchObject({
         out: '',
-        filePath:
-          '/Users/macbookpro/Desktop/Projects/nautilus/samples/docker-composeBAD.yml',
+        filePath: path.resolve(__dirname, '../samples/docker-composeBAD.yml'),
       });
     } catch (e) {
       expect(e.cmd).toBe(
