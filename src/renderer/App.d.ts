@@ -71,7 +71,9 @@ export type Volume = {
 type ViewT = 'networks' | 'depends_on';
 
 export type Options = {
-  [key: string]: boolean;
+  ports: boolean;
+  volumes: boolean;
+  selectAll: boolean;
 };
 
 /**
