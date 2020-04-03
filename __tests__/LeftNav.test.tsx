@@ -2,13 +2,11 @@ import React from 'react';
 import { mount, shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LeftNav from '../src/renderer/components/LeftNav';
+import Title from '../src/renderer/components/Title';
+import FileSelector from '../src/renderer/components/FileSelector';
+import InfoDropdown from '../src/renderer/components/InfoDropdown';
 
 configure({ adapter: new Adapter() });
-
-import InfoDropdown from '../src/renderer/components/InfoDropdown';
-import FileSelector from '../src/renderer/components/FileSelector';
-import Title from '../src/renderer/components/Title';
-import { FileUpload, Service } from '../src/renderer/App.d';
 
 const props = {
   fileUpload: jest.fn(() => {}),
@@ -33,7 +31,7 @@ describe('test the functionality of LeftNav component', () => {
   // Test Title
   it('Should render a Title component inside of `div.top-half`', () => {
     const wrapper = shallow(<LeftNav {...props} />);
-    expect(wrapper.find('div.top-half').find('Title')).toHaveLength(1);
+    expect(wrapper.find('div.top-half').find(Title)).toHaveLength(1);
   });
 
   // Test FileUploaded
@@ -49,12 +47,12 @@ describe('test the functionality of LeftNav component', () => {
 
   it('Should render a file selector if fileUploaded is true', () => {
     const wrapper = shallow(<LeftNav {...props} fileUploaded={true} />);
-    expect(wrapper.find('div.top-half').find('FileSelector')).toHaveLength(1);
+    expect(wrapper.find('div.top-half').find(FileSelector)).toHaveLength(1);
   });
 
   // Test InfoDropdown
   it('Should render an InfoDropdown component inside of `div.left-nav`', () => {
     const wrapper = shallow(<LeftNav {...props} />);
-    expect(wrapper.find('div.left-nav').find('InfoDropdown')).toHaveLength(1);
+    expect(wrapper.find('div.left-nav').find(InfoDropdown)).toHaveLength(1);
   });
 });
