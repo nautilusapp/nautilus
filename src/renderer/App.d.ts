@@ -43,7 +43,7 @@ export type Service = {
   build?: string;
   image?: string;
   command?: string;
-  environment?: ReadOnlyObj;
+  environment?: ReadOnlyObj | string[];
   env_file?: string[];
   ports?: Ports;
   volumes?: Volumes;
