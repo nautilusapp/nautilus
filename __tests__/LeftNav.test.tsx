@@ -5,14 +5,16 @@ import LeftNav from '../src/renderer/components/LeftNav';
 
 configure({ adapter: new Adapter() });
 
-// import InfoDropdown from '../src/renderer/components/InfoDropdown';
-// import FileSelector from '../src/renderer/components/FileUpload';
-// import Title from '../src/renderer/components/Title';
-import FileUpload from '../src/renderer/App.d';
+const props = {
+  fileUpload: jest.fn(() => {}),
+  fileUploaded: false,
+  selectedContainer: '',
+  service: '',
+};
 
 describe('Left Nav', () => {
   it('something', () => {
-    const wrapper = shallow(<LeftNav />);
+    const wrapper = shallow(<LeftNav {...props} />);
     expect(wrapper.find('div.left-nav')).toHaveLength(1);
   });
 });

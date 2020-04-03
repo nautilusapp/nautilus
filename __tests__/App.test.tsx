@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, configure, ShallowWrapper } from 'enzyme';
+import renderer from 'react-test-renderer';
 import Adapter from 'enzyme-adapter-react-16';
 import App from '../src/renderer/App';
 import fs from 'fs';
@@ -17,6 +18,11 @@ describe('Testing App Stateful Component', () => {
   let wrapper: ShallowWrapper<{}, State, App>;
   beforeEach(() => {
     wrapper = shallow(<App />);
+  });
+
+  it('renders correctly', () => {
+    const tree = renderer.create(<App />).toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   describe('render()', () => {
