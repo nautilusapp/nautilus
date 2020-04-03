@@ -16,8 +16,8 @@ const props = {
     selectAll: true,
   },
   networks: {
-    a: 'test',
-    b: 'test',
+    a: 'test1',
+    b: 'test2',
   },
   updateView: jest.fn(() => {}),
   updateOption: jest.fn(() => {}),
