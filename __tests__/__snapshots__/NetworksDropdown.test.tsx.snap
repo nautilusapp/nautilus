@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Networks Dropdown Component renders correctly 1`] = `
+<select
+  className="option"
+  id="networks"
+  name="networks"
+  onChange={[Function]}
+  value=""
+>
+  <option
+    disabled={true}
+    id="networkHeader"
+    value=""
+  >
+    networks
+  </option>
+  <option
+    className="networkOption"
+    id="snapTester"
+    value="snapTester"
+  >
+    snapTester
+  </option>
+  <option
+    className="networkOption"
+    id="dbTester"
+    value="dbTester"
+  >
+    dbTester
+  </option>
+  <option
+    className="networkOption"
+    id="groupNetworks"
+    value="groupNetworks"
+  >
+    group networks
+  </option>
+</select>
+`;
