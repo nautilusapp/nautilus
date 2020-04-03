@@ -14,6 +14,9 @@ import { render } from 'react-dom';
 import App from './App';
 import { D3State } from '../renderer/App.d';
 
+// IMPORT STYLES
+import './styles/app.scss';
+
 if (module.hot) {
   module.hot.accept();
 }

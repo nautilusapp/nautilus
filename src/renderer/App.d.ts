@@ -71,7 +71,9 @@ export type Volume = {
 type ViewT = 'networks' | 'depends_on';
 
 export type Options = {
-  [key: string]: boolean;
+  ports: boolean;
+  volumes: boolean;
+  selectAll: boolean;
 };
 
 /**
@@ -84,10 +86,10 @@ export type FileUpload = {
 };
 
 export type UpdateOption = {
-  (e: React.MouseEvent<Element, MouseEvent>): void;
+  (id: 'ports' | 'volumes' | 'selectAll'): void;
 };
 
-export type UpdateView = {
+export type Handler = {
   (
     e:
       | React.ChangeEvent<HTMLSelectElement>
@@ -95,8 +97,12 @@ export type UpdateView = {
   ): void;
 };
 
+export type UpdateView = {
+  (view: 'networks' | 'depends_on'): void;
+};
+
 export type SelectNetwork = {
-  (e: React.ChangeEvent<HTMLSelectElement>): void;
+  (network: string): void;
 };
 
 export type SetSelectedContainer = {

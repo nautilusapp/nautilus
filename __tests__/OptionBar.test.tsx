@@ -16,8 +16,8 @@ const props = {
     selectAll: true,
   },
   networks: {
-    a: 'test',
-    b: 'test',
+    a: 'test1',
+    b: 'test2',
   },
   updateView: jest.fn(() => {}),
   updateOption: jest.fn(() => {}),
@@ -49,15 +49,17 @@ describe('<OptionBar />', () => {
   });
 
   it('fires a click event for span#depends_on in div.views', () => {
-    const onButtonClick = jest.fn(() => {});
+    let fakeState = '';
+    const onButtonClick = jest.fn(id => (fakeState = id));
     const wrapper = shallow(
       <OptionBar {...props} updateView={onButtonClick} />,
     );
     wrapper
       .find('div.views')
       .find('span#depends_on')
-      .simulate('click');
+      .simulate('click', { currentTarget: { id: 'tester' } });
     expect(onButtonClick.mock.calls.length).toBe(1);
+    expect(fakeState).toBe('tester');
   });
 
   it('renders a span with an id of `depends_on`', () => {
@@ -93,38 +95,44 @@ describe('<OptionBar />', () => {
   });
 
   it('fires a click event for span#ports inside div.options', () => {
-    const onButtonClick = jest.fn(() => {});
+    let fakeState = '';
+    const onButtonClick = jest.fn(id => (fakeState = id));
     const wrapper = shallow(
       <OptionBar {...props} updateOption={onButtonClick} />,
     );
     wrapper
       .find('div.options')
       .find('span#ports')
-      .simulate('click');
+      .simulate('click', { currentTarget: { id: 'tester' } });
     expect(onButtonClick.mock.calls.length).toBe(1);
+    expect(fakeState).toBe('tester');
   });
 
   it('fires a click event for span#volumes inside div.options', () => {
-    const onButtonClick = jest.fn(() => {});
+    let fakeState = '';
+    const onButtonClick = jest.fn(id => (fakeState = id));
     const wrapper = shallow(
       <OptionBar {...props} updateOption={onButtonClick} />,
     );
     wrapper
       .find('div.options')
       .find('span#volumes')
-      .simulate('click');
+      .simulate('click', { currentTarget: { id: 'tester' } });
     expect(onButtonClick.mock.calls.length).toBe(1);
+    expect(fakeState).toBe('tester');
   });
 
   it('fires a click event for span#selectAll inside div.options', () => {
-    const onButtonClick = jest.fn(() => {});
+    let fakeState = '';
+    const onButtonClick = jest.fn(id => (fakeState = id));
     const wrapper = shallow(
       <OptionBar {...props} updateOption={onButtonClick} />,
     );
     wrapper
       .find('div.options')
       .find('span#selectAll')
-      .simulate('click');
+      .simulate('click', { currentTarget: { id: 'tester' } });
     expect(onButtonClick.mock.calls.length).toBe(1);
+    expect(fakeState).toBe('tester');
   });
 });
