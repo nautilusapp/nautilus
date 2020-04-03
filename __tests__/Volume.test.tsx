@@ -31,7 +31,7 @@ describe('<Volume/>', () => {
     expect(wrapper.find('.volumeSquare').props().fill).toEqual(props.color);
   });
 
-  it('make sure p tag prop set to volume', () => {
+  it('make sure p tag renders props.volume', () => {
     expect(wrapper.find('p').html()).toEqual(`<p>${props.volume}</p>`);
   });
 
