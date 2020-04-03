@@ -12,13 +12,20 @@ const props = {
 };
 
 describe('Test Networks Dropdown Component', () => {
+  // Test Select Dropdown
+  it('Should render select dropdown with id of `networks`', () => {
+    const wrapper = shallow(<NetworksDropDown {...props} />);
+    expect(wrapper.find('select#networks')).toHaveLength(1);
+  });
+
   // Test Network Header
   it('should have a disabled networks option', () => {
     const wrapper = shallow(<NetworksDropDown {...props} />);
     expect(wrapper.find('option#networkHeader')).toBeDisabled();
   });
 
-  // Test Select
+  // Test Selected Networks
+
   it('If select value is `` selectedNetwork should be ``', () => {
     const wrapper = shallow(<NetworksDropDown {...props} />);
     expect(wrapper.find('select').props().value).toBe('');
@@ -64,12 +71,12 @@ describe('Test Networks Dropdown Component', () => {
     expect(wrapper.find('option#groupNetworks')).toHaveText('default');
   });
 
-  // it('If there is 1 network title should be the name of that network', () => {
-  //   const wrapper = shallow(
-  //     <NetworksDropDown {...props} networks={{ a: 'test' }} />,
-  //   );
-  //   expect(wrapper.find('option#groupNetworks')).toHaveText('');
-  // });
+  it('If there is 1 network title should be the name of that network', () => {
+    const wrapper = shallow(
+      <NetworksDropDown {...props} networks={{ a: 'test' }} />,
+    );
+    expect(wrapper.find('option#groupNetworks')).toHaveLength(0);
+  });
 
   it('If there are more than 1 network title should be `group networks`', () => {
     const wrapper = shallow(

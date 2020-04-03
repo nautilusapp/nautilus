@@ -9,7 +9,7 @@ services:
       - db
       - events
     networks:
-      - default
+      - taiga
     volumes:
       - ./data/media:/taiga-media
       - ./conf/back:/taiga-conf
@@ -21,7 +21,7 @@ services:
     container_name: taiga-front
     restart: unless-stopped
     networks:
-      - default
+      - taiga
     volumes:
       - ./conf/front:/taiga-conf
     env_file:
@@ -32,7 +32,7 @@ services:
     container_name: taiga-db
     restart: unless-stopped
     networks:
-      - default
+      - taiga
     env_file:
       - variables.env
     volumes:
@@ -43,7 +43,7 @@ services:
     container_name: taiga-rabbit
     restart: unless-stopped
     networks:
-      - default
+      - taiga
     env_file:
       - variables.env
 
@@ -51,7 +51,7 @@ services:
     image: bitnami/redis:5.0
     container_name: taiga-redis
     networks:
-      - default
+      - taiga
     env_file:
       - variables.env
 
@@ -62,7 +62,7 @@ services:
     depends_on:
       - rabbit
     networks:
-      - default
+      - taiga
     env_file:
       - variables.env
 
@@ -75,7 +75,7 @@ services:
       - front
       - events
     networks:
-      - default
+      - taiga
     ports:
       - 80:80
       - 443:443
@@ -86,4 +86,4 @@ services:
       - variables.env
 
 networks:
-  default:
+  taiga:
