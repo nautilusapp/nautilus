@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import NetworksDropDown from '../src/renderer/components/NetworksDropdown';
+import renderer from 'react-test-renderer';
 
 configure({ adapter: new Adapter() });
 
@@ -13,6 +14,17 @@ const props = {
 
 describe('Test Networks Dropdown Component', () => {
   // Test Select Dropdown
+  it('renders correctly', () => {
+    const snapProps = Object.assign({}, props, {
+      networks: {
+        snapTester: {},
+        dbTester: {},
+      },
+    });
+    const tree = renderer.create(<NetworksDropDown {...snapProps} />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
   it('Should render select dropdown with id of `networks`', () => {
     const wrapper = shallow(<NetworksDropDown {...props} />);
     expect(wrapper.find('select#networks')).toHaveLength(1);
