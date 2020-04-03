@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReadOnlyObj, SelectNetwork } from '../App.d';
+import { ReadOnlyObj, SelectNetwork, Handler } from '../App.d';
 
 type Props = {
   networks: ReadOnlyObj;
@@ -12,6 +12,12 @@ const NetworksDropDown: React.FC<Props> = ({
   selectNetwork,
   selectedNetwork,
 }) => {
+  const handleNetworkUpdate: Handler = e => {
+    const network = (e as React.ChangeEvent<HTMLSelectElement>).currentTarget
+      .value;
+    selectNetwork(network);
+  };
+
   const groupNetworks = (): JSX.Element | void => {
     if (Object.keys(networks).length === 1) return;
     const title: string =
@@ -47,7 +53,7 @@ const NetworksDropDown: React.FC<Props> = ({
         id="networks"
         className={selectClass}
         name="networks"
-        onChange={selectNetwork}
+        onChange={handleNetworkUpdate}
         value={selectedNetwork}
       >
         <option
