@@ -1,10 +1,11 @@
 import React from 'react';
-import { mount, shallow, configure } from 'enzyme';
+import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LeftNav from '../src/renderer/components/LeftNav';
 import Title from '../src/renderer/components/Title';
 import FileSelector from '../src/renderer/components/FileSelector';
 import InfoDropdown from '../src/renderer/components/InfoDropdown';
+import renderer from 'react-test-renderer';
 
 configure({ adapter: new Adapter() });
 
@@ -16,6 +17,26 @@ const props = {
 };
 
 describe('test the functionality of LeftNav component', () => {
+  // Test Snapshot
+  it('renders correctly', () => {
+    const snapProps = Object.assign({}, props, {
+      service: {
+        image: 'postgres',
+        environment: [
+          'POSTGRES_MULTIPLE_DATABASES=dpc_attribution,dpc_queue,dpc_auth,dpc_consent',
+          'POSTGRES_USER=postgres',
+          'POSTGRES_PASSWORD=dpc-safe',
+        ],
+        ports: ['5432:5432'],
+        volumes: ['./docker/postgres:/docker-entrypoint-initdb.d'],
+      },
+      selectedContainer: 'db',
+      fileUploaded: true,
+    });
+    const component = renderer.create(<LeftNav {...snapProps} />).toJSON();
+    expect(component).toMatchSnapshot();
+  });
+
   // Test Outer div
   it('Should render a div with the class of `left-nav`', () => {
     const wrapper = shallow(<LeftNav {...props} />);
@@ -23,7 +44,7 @@ describe('test the functionality of LeftNav component', () => {
   });
 
   // Test top-half div
-  it('Should render a div inside of `div.left-nav` with a class of `ltop-half`', () => {
+  it('Should render a div inside of `div.left-nav` with a class of `top-half`', () => {
     const wrapper = shallow(<LeftNav {...props} />);
     expect(wrapper.find('div.left-nav').find('div.top-half')).toHaveLength(1);
   });
