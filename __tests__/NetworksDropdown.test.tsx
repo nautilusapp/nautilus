@@ -25,7 +25,6 @@ describe('Test Networks Dropdown Component', () => {
   });
 
   // Test Selected Networks
-
   it('If select value is `` selectedNetwork should be ``', () => {
     const wrapper = shallow(<NetworksDropDown {...props} />);
     expect(wrapper.find('select').props().value).toBe('');
