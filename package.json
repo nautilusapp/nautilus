@@ -11,7 +11,7 @@
     "package-linux": "yarn compile && electron-builder --linux",
     "package-win": "yarn compile && electron-builder --win --x64",
     "test": "jest",
-    "test-hh": "bash ./scripts/run-test.sh",
+    "test-f": "bash ./scripts/run-test.sh",
     "up-snap": "jest --updateSnapshot"
   },
   "jest": {
