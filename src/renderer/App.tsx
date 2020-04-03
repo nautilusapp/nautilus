@@ -15,13 +15,9 @@ import { ipcRenderer } from 'electron';
 
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
-import { firstTwo } from './helpers/selectAll';
 import setD3State from './helpers/setD3State';
 import parseUploadError from './helpers/parseUploadError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
-
-// IMPORT STYLES
-import './styles/app.scss';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
@@ -64,73 +60,51 @@ class App extends Component<{}, State> {
     super(props);
     this.state = initialState;
   }
+
   setSelectedContainer = (containerName: string) => {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
-  updateView: UpdateView = e => {
-    const view = e.currentTarget.id as 'networks' | 'depends_on';
-    if (view === 'depends_on') {
-      this.setState(state => {
-        return {
-          ...state,
-          view,
-          selectedNetwork: '',
-        };
-      });
-    } else {
-      this.setState(state => {
-        return {
-          ...state,
-          view,
-        };
-      });
-    }
+
+  updateView: UpdateView = view => {
+    this.setState(state => {
+      return {
+        ...state,
+        view,
+        selectedNetwork: '',
+      };
+    });
   };
 
-  updateOption: UpdateOption = e => {
-    const option = e.currentTarget.id;
-    const selectAllClicked = option === 'selectAll' ? true : false;
-    let newState: State = {
+  updateOption: UpdateOption = option => {
+    const newState: State = {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
     };
-    if (firstTwo(newState) === true) {
-      newState = {
-        ...newState,
-        options: { ...newState.options, selectAll: true },
-      };
+    // check if toggling select all on or off
+    if (option === 'selectAll') {
+      if (newState.options.selectAll) {
+        newState.options.ports = true;
+        newState.options.volumes = true;
+      } else {
+        newState.options.ports = false;
+        newState.options.volumes = false;
+      }
+      // check if select all should be on or off
+    } else {
+      if (newState.options.ports && newState.options.volumes) {
+        newState.options.selectAll = true;
+      } else {
+        newState.options.selectAll = false;
+      }
     }
-    if (firstTwo(this.state) && selectAllClicked) {
-      newState = {
-        ...this.state,
-        options: {
-          ports: false,
-          volumes: false,
-          selectAll: false,
-        },
-      };
-    } else if (!firstTwo(this.state) && selectAllClicked) {
-      newState = {
-        ...this.state,
-        options: {
-          ports: true,
-          volumes: true,
-          selectAll: true,
-        },
-      };
-    } else if (this.state.options.selectAll === true && !firstTwo(newState)) {
-      newState = {
-        ...newState,
-        options: { ...newState.options, selectAll: false },
-      };
-    }
+
     this.setState({
       ...newState,
     });
   };
 
-  selectNetwork: SelectNetwork = e => {
-    this.setState({ view: 'networks', selectedNetwork: e.currentTarget.value });
+  selectNetwork: SelectNetwork = network => {
+    this.setState({ view: 'networks', selectedNetwork: network });
   };
 
   convertAndStoreYamlJSON = (yamlText: string) => {
@@ -170,12 +144,14 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
-    ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
-      this.handleFileUploadError(arg);
-    });
-    ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
-      this.convertAndStoreYamlJSON(arg);
-    });
+    if (ipcRenderer) {
+      ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
+        this.handleFileUploadError(arg);
+      });
+      ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
+        this.convertAndStoreYamlJSON(arg);
+      });
+    }
     const stateJSON = localStorage.getItem('state');
     if (stateJSON) {
       const stateJS = JSON.parse(stateJSON);
@@ -186,8 +162,10 @@ class App extends Component<{}, State> {
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeAllListeners('file-uploaded-within-electron');
-    ipcRenderer.removeAllListeners('file-upload-error-within-electron');
+    if (ipcRenderer) {
+      ipcRenderer.removeAllListeners('file-uploaded-within-electron');
+      ipcRenderer.removeAllListeners('file-upload-error-within-electron');
+    }
   }
 
   render() {
