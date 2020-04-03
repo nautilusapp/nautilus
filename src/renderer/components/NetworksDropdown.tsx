@@ -1,4 +1,4 @@
-import React, { ReactHTML } from 'react';
+import React from 'react';
 import { ReadOnlyObj, SelectNetwork, Handler } from '../App.d';
 
 type Props = {
