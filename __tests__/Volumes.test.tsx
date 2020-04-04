@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Volumes from '../src/renderer/components/Volumes';
 
 type Props = {
@@ -33,20 +33,25 @@ describe('<Volumes/>', () => {
 
   //test to see if props are passed down
 
-  // it('should pass props to Volume component', () => {
-  //   const wrapperMount = mount(<Volumes {...props} />);
-  //   expect(wrapperMount.find('Volume').props('volume')).toEqual(props.volume);
-  // });
-
-  // it('expect component prop of color to equal a function', () => {
-  //   expect(wrapper.find('Volume').props(volume)).toBeTruthy();
+  // it('expect child component to have prop of color', () => {
+  //   expect(
+  //     wrapper
+  //       .find('Volume')
+  //       .at(0)
+  //       .props(),
+  //   ).toEqual({ color: 'hsl(80%,60%,60%)', volume: 'test1' });
   // });
 
   it('expect child component to have prop of color', () => {
-    expect(wrapper.find('Volume').find('color')).toBeTruthy();
+    expect(wrapper.find('Volume').get(0).props).toEqual({
+      color: 'hsl(80%,60%,60%)',
+      volume: 'test1',
+    });
   });
 
-  it('expect child component to have prop of volume', () => {
-    expect(wrapper.find('Volume').find('volume')).toBeTruthy();
+  //test to check if colorscheme function is invoked
+
+  it('expect invocation of a function in props.color', () => {
+    expect(wrapper.find('Volume')).prop('color')();
   });
 });
