@@ -1,131 +1,100 @@
-<h1 align="center">Choo</h1>
+<h1 align="center">
+  <img src="./static/nautilus-text-logo.png" width=400px>
+</h1>
 
-<p align="center">
-  :steam_locomotive::train::train::train::train::train:
-</p>
-<p align="center">
-  <strong>Fun functional programming</strong>
-</p>
 <p align="center">
   A <code>4kb</code> framework for creating sturdy frontend applications
 </p>
 
-<br />
-
 <p align="center">
-  <!-- Stability -->
-  <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
-    <img src="https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square"
-      alt="API stability" />
-  </a>
-  <!-- NPM version -->
-  <a href="https://npmjs.org/package/choo">
-    <img src="https://img.shields.io/npm/v/choo.svg?style=flat-square"
-      alt="NPM version" />
-  </a>
-  <!-- Build Status -->
-  <a href="https://travis-ci.org/choojs/choo">
-    <img src="https://img.shields.io/travis/choojs/choo/master.svg?style=flat-square"
-      alt="Build Status" />
-  </a>
+  <!-- License -->
+  <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
+
+  <!-- Release -->
+  <img src="https://img.shields.io/badge/release-0.0.1-orange">
+
+  <!-- Release Date -->
+  <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
+
+  <!-- Test -->
+  <img src="https://img.shields.io/travis/com/oslabs-beta/nautilus/master?color=green&label=test">
+
+  <!-- Typescript (Dominant Languge Used) -->
+  <img src="https://img.shields.io/github/languages/top/oslabs-beta/nautilus?color=brightgreen">
+
+  <!-- Repo Size -->
+  <img src="https://img.shields.io/github/repo-size/oslabs-beta/nautilus?color=blue">
+
+  <!-- Contributions -->
+  <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat&color=navy">
+
   <!-- Test Coverage -->
   <a href="https://codecov.io/github/choojs/choo">
-    <img src="https://img.shields.io/codecov/c/github/choojs/choo/master.svg?style=flat-square"
+    <img src="https://img.shields.io/codecov/c/github/choojs/choo/master.svg?style=flat-square&color=indigo"
       alt="Test Coverage" />
   </a>
-  <!-- Downloads -->
-  <a href="https://npmjs.org/package/choo">
-    <img src="https://img.shields.io/npm/dt/choo.svg?style=flat-square"
-      alt="Download" />
-  </a>
-  <!-- Standard -->
-  <a href="https://standardjs.com">
-    <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square"
-      alt="Standard" />
-  </a>
+
+  <!-- Stability -->
+  <img src="https://img.shields.io/badge/stability-beta-blueviolet">
+
+  <!-- Code Style -->
+  <img src="https://img.shields.io/badge/code%20style-airbnb-violet">
 </p>
 
 <p align="center">
-  <h3>
-    <a href="https://choo.io">
-      Website
-    </a>
-    <span> | </span>
-    <a href="https://github.com/choojs/choo-handbook">
-      Handbook
-    </a>
-    <span> | </span>
-    <a href="https://github.com/YerkoPalma/awesome-choo">
-      Ecosystem
-    </a>
-    <span> | </span>
-    <!-- <a href="https://github.com/trainyard/choo-cli"> -->
-    <!--   CLI -->
-    <!-- </a> -->
-    <!-- <span> | </span> -->
-    <a href="https://github.com/choojs/choo/blob/master/.github/CONTRIBUTING.md">
-      Contributing
-    </a>
-    <span> | </span>
-    <a href="https://www.reddit.com/r/choojs/">
-      Reddit
-    </a>
-    <span> | </span>
-    <a href="https://webchat.freenode.net/?channels=choo">
-      Chat
-    </a>
-  </h3>
-</p>
-
-<p align="center">
-  <sub>The little framework that could. Built with ❤︎ by
-  <a href="https://twitter.com/yoshuawuyts">Yoshua Wuyts</a> and
-  <a href="https://github.com/choojs/choo/graphs/contributors">
-    contributors
-  </a>
+  <sub> No nautili were harmed during the making of this application
+  <br>
+  - Aris, Danny, Josh, Michael, Tyler
 </p>
 
 <!-- TABLE OF CONTENTS -->
 
 ## Table of Contents
 
-- [About the Project](#about-the-project)
-  - [Built With](#built-with)
+- [Features](#about-the-project)
+  - [Networks View](#networks-view)
+  - [Depends On View](#depends-on-view)
+  - [Ports and Volumes Toggles](#ports-and-volumes-toggles)
+  - [Service Info Display](#service-info-display)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
+  - [Mac Download](#mac-download)
+  - [Windows Download](#windows-download)
+  - [Linux Download](#linux-download)
+- [Exporting](#exporting)
+- [Contributing/Feedback](#contributing)
+- [Technologies Used](#technologies-used)
+- [You May Also Like...](#you-may-also-like)
 - [License](#license)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+## Features
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+### Networks View
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
+<p align="center">
+  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+</p>
 
-Here's why:
+### Depends On View
 
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should element DRY principles to the rest of your life :smile:
+<p align="center">
+  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+</p>
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
+### Ports and Volumes Toggles
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+<p align="center">
+  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+</p>
 
-### Built With
+### Service Info Display
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
-- [Laravel](https://laravel.com)
+<p align="center">
+  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+</p>
 
 <!-- GETTING STARTED -->
 
@@ -165,19 +134,19 @@ npm install
 const API_KEY = 'ENTER YOUR API';
 ```
 
-<!-- USAGE EXAMPLES -->
+### Mac Download
 
-## Usage
+### Windows Download
+
+### Linux Download
+
+<!-- EXPORTING -->
+
+## Exporting
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
@@ -186,54 +155,63 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Install Dependencies
+   <br>
 
-<!-- LICENSE -->
+```
+yarn install
+```
+
+OR
+
+```
+npm i
+```
+
+3. Create your Feature Branch
+   <br>
+
+```
+git checkout -b feature/AmazingFeature
+```
+
+4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+5. Push to the Branch (`git push origin feature/AmazingFeature`)
+6. Open a Pull Request
+
+<!-- TECHNOLOGIES USED -->
+
+## Technologies Used
+
+This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [Electron](https://www.electronjs.org/)
+- [D3](https://d3js.org/)
+- [React with Hooks](https://reactjs.org/)
+- [Jest](https://jestjs.io/)
+- [Enzyme](https://github.com/enzymejs/enzyme)
+- [Travis CI](https://travis-ci.org/)
+- [SCSS](https://sass-lang.com/)
+- [Webpack](https://webpack.js.org/)
+- [Babel](https://babeljs.io/)
+
+<!-- YOU MAY ALSO LIKE -->
+
+## You May Also Like...
+
+- [bankai](https://github.com/choojs/bankai) - streaming asset compiler
+- [stack.gl](http://stack.gl/) - open software ecosystem for WebGL
+- [yo-yo](https://github.com/maxogden/yo-yo) - tiny library for modular UI
+- [tachyons](https://github.com/tachyons-css/tachyons) - functional CSS for
+  humans
+- [sheetify](https://github.com/stackcss/sheetify) - modular CSS bundler for
+  `browserify`
+
+  <!-- LICENSE -->
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<!-- CONTACT -->
-
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<!-- ACKNOWLEDGEMENTS -->
-
-## Acknowledgements
-
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Img Shields](https://shields.io)
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Pages](https://pages.github.com)
-- [Animate.css](https://daneden.github.io/animate.css)
-- [Loaders.css](https://connoratherton.com/loaders)
-- [Slick Carousel](https://kenwheeler.github.io/slick)
-- [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-- [Sticky Kit](http://leafo.net/sticky-kit)
-- [JVectorMap](http://jvectormap.com)
-- [Font Awesome](https://fontawesome.com)
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+Your Name - [@your_twitter](https://twitter.com/your_username)
