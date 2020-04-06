@@ -50,6 +50,8 @@ script:
     else
       yarn test
     fi
+  - python3 -VV
+  - pip -V
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
