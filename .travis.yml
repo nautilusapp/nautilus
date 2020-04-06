@@ -52,6 +52,9 @@ before_deploy:
       yarn release --mac
     fi
 
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
 deploy:
   process: script
   skip_cleanup: true
