@@ -50,14 +50,19 @@ script:
     else
       yarn test
     fi
+  - python3 -VV
+  - pip -V
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
 before_deploy:
   - "echo 'Deploying to nautilusdev.com s3 bucket'"
+  # install aws cli
   - python3 -m pip install --user awscli
-  - export PATH=/opt/python/3.7.1/bin:$PATH
+  # Append exe location to our PATH
+  - export PATH=$PATH:$HOME/.local/bin
+  # build electron application
   - yarn package-all
 
 deploy:
