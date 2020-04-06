@@ -29,6 +29,7 @@ cache:
 
 # on PRs and merges to master and prod run tests and build the app
 script:
+  - yarn
   - yarn test
   - python3 -VV
   - pip -V
