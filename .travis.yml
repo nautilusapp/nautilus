@@ -1,16 +1,7 @@
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2
-      language: node_js
-      node_js: node
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+language: node_js
 
-    - os: linux
-      services: docker
-      language: generic
+node_js:
+  - node
 
 env:
   global: PATH=/opt/python/3.7.1/bin:$PATH
@@ -24,43 +15,10 @@ cache:
   yarn: true
   directories:
     - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
 
 # on PRs and merges to master and prod run tests and build the app
 script:
-  - yarn
   - yarn test
-  - python3 -VV
-  - pip -V
-
-before_deploy:
-  - "echo 'Deploying to nautilusdev.com s3 bucket'"
-  # install aws cli
-  - python3 -m pip install --user awscli
-  # Append exe location to our PATH
-  - export PATH=$PATH:$HOME/.local/bin
-  # build electron application
-  - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      docker run --rm \
-        -v ${PWD}:/project \
-        -v ~/.cache/electron:/root/.cache/electron \
-        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-        electronuserland/builder:wine \
-        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-    else
-      yarn release --mac
-    fi
-
-before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
-deploy:
-  process: script
-  skip_cleanup: true
-  on: master
-  script: sh $TRAVIS_BUILD_DIR/scripts/deploy.sh
 
 # only run this script on pull requests and merges into
 # the 'master' branches
