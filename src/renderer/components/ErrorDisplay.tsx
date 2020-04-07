@@ -15,6 +15,7 @@ type Props = {
 };
 
 const ErrorDisplay: React.FC<Props> = ({ uploadErrors }) => {
+  // convert uploadErrors array into jsx
   const formattedError = uploadErrors.reduce(
     (acc: JSX.Element[], error: string, i: number) => {
       acc.push(<li key={`error${i}`}>{error}</li>);

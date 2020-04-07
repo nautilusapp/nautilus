@@ -60,6 +60,13 @@ const D3Wrapper: React.FC<Props> = ({
 
   return (
     <div className="d3-wrapper">
+      {/**
+       * if a file hasn't been uploaded
+       * ** if errors, display them
+       * ** always display upload button
+       * else display visualizer
+       * (yes, this is nested terinary operator)
+       */}
       {!fileUploaded ? (
         <div className="error-upload-wrapper">
           {uploadErrors.length > 0 ? (
