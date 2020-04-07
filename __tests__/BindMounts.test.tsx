@@ -1,33 +1,33 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Volumes from '../src/renderer/components/Volumes';
+import BindMounts from '../src/renderer/components/BindMounts';
 
 type Props = {
-  volumes: any;
+  bindMounts: any;
   getColor: any;
 };
 
-describe('<Volumes/>', () => {
+describe('<BindMounts/>', () => {
   const props: Props = {
-    volumes: { test1: '1', test2: '2' },
+    bindMounts: ['test1', 'test2'],
     getColor: jest.fn(() => {
       return 'hsl(80%,60%,60%)';
     }),
   };
 
-  const wrapper = shallow(<Volumes {...props} />);
+  const wrapper = shallow(<BindMounts {...props} />);
 
   //test to check if right number of components / elements are rendered
 
-  it('contains # of Volume components based on volumes length', () => {
-    const volumesCount = Object.keys(props.volumes).length;
+  it('contains # of Volume components based on bindMounts array length', () => {
+    const volumesCount = props.bindMounts.length;
     expect(wrapper.find('Volume').length).toEqual(volumesCount);
     expect(wrapper.find('Volume').length).not.toBe(1);
   });
 
-  it('returns a one instance of class: volumes', () => {
-    expect(wrapper.find('.volumes')).toHaveLength(1);
-    expect(wrapper.find('.volumes')).not.toHaveLength(0);
+  it('returns a one instance of class: bind-mounts', () => {
+    expect(wrapper.find('.bind-mounts')).toHaveLength(1);
+    expect(wrapper.find('.bind-mounts')).not.toHaveLength(0);
   });
 
   it('should render only one div', () => {
