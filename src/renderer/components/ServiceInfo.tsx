@@ -1,7 +1,7 @@
 /**
  * ************************************
  *
- * @module  InfoDropdown.tsx
+ * @module  ServiceInfo.tsx
  * @author Danny Scheiner & Josh Nordstrom
  * @date 3/11/20
  * @description Dropdown display to show categories of service info
@@ -27,7 +27,7 @@ type TwoDimension = {
   [prop: string]: any;
 };
 
-const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
+const ServiceInfo: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   // Create an object to house text intros for each docker-compose property
   const dockerComposeCommands: DockerComposeCommands = {
     build: 'Build: ',
@@ -292,4 +292,4 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   );
 };
 
-export default InfoDropdown;
+export default ServiceInfo;

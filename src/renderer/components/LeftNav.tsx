@@ -4,14 +4,14 @@
  * @module  LeftNav.tsx
  * @author
  * @date 3/11/20
- * @description
+ * @description container for the title, the service info and the file upload
  *
  * ************************************
  */
 import React from 'react';
 
 // IMPORT REACT COMPONENTS
-import InfoDropdown from './InfoDropdown';
+import InfoDropdown from './ServiceInfo';
 import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileUpload, Service } from '../App.d';
