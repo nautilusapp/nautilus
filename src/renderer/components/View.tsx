@@ -63,7 +63,7 @@ const View: React.FC<Props> = ({
     const height = parseInt(container.style('height'));
     const topMargin = 20;
     const sideMargin = 20;
-    const radius = 60; // Used to determine the size of each container for border enforcement
+    const radius = 120; // Used to determine the size of each container for border enforcement
 
     const d3Nodes = d3.select('.nodes').selectAll('.node');
     const linkLines = d3.select('.links').selectAll('line');
@@ -92,10 +92,10 @@ const View: React.FC<Props> = ({
         });
 
       linkLines
-        .attr('x1', (d: any) => d.source.x + 30)
-        .attr('y1', (d: any) => d.source.y + 30)
-        .attr('x2', (d: any) => d.target.x + 30)
-        .attr('y2', (d: any) => d.target.y + 30);
+        .attr('x1', (d: any) => d.source.x + 66)
+        .attr('y1', (d: any) => d.source.y + 10)
+        .attr('x2', (d: any) => d.target.x + 66)
+        .attr('y2', (d: any) => d.target.y + 10);
     }
 
     const dependsForceX = (w: number) =>
@@ -159,7 +159,7 @@ const View: React.FC<Props> = ({
               if (d.networks.length === 0) return width / 2;
               let networkString = '';
               d.networks.sort();
-              d.networks.forEach(network => {
+              d.networks.forEach((network) => {
                 networkString += network;
               });
               const place = Object.keys(networkHolder).indexOf(networkString);

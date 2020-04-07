@@ -30,7 +30,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
       'link',
       d3
         .forceLink<SNode, Link>(links)
-        .distance(130)
+        .distance(1)
         .id((node: SNode) => node.name)
         .strength(0.01),
     );
@@ -49,7 +49,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .attr('id', String)
       .attr('class', 'arrowHead')
       .attr('viewBox', '0 0 9.76 11.1')
-      .attr('refX', 23)
+      .attr('refX', 30)
       .attr('refY', 6)
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
