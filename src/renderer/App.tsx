@@ -42,7 +42,7 @@ const initialState: State = {
   },
   networks: {},
   selectedNetwork: '',
-  volumes: [],
+  volumes: {},
   volumesClicked: {},
   bindMounts: [],
   bindMountsClicked: {},
