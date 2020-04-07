@@ -10,7 +10,7 @@
     "package-mac": "yarn compile && electron-builder --mac",
     "package-linux": "yarn compile && electron-builder --linux",
     "package-win": "yarn compile && electron-builder --win --x64",
-    "release": "yarn compile && electron-builder",
+    "deploy": "yarn package-all && bash scripts/deploy.sh",
     "test": "jest",
     "test-f": "bash ./scripts/run-test.sh",
     "up-snap": "jest --updateSnapshot"
