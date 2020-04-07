@@ -98,9 +98,7 @@ class App extends Component<{}, State> {
       }
     }
 
-    this.setState({
-      ...newState,
-    });
+    this.setState(newState);
   };
 
   selectNetwork: SelectNetwork = (network) => {
