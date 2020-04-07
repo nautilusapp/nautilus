@@ -26,12 +26,13 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
+  // find out the max number of volumes on any node
   const maxVolumes = d3
     .select('.links')
     .selectAll('line')
     .data()
-    .reduce((acc: number, d: any) => {
-      return acc > d.target.volumes.length ? acc : d.target.volumes.length;
+    .reduce((acc: number, l: any) => {
+      return acc > l.target.volumes.length ? acc : l.target.volumes.length;
     }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
@@ -86,7 +87,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
               onceClicked = !onceClicked;
               onClick = onceClicked;
             });
-          // store d3 object in volumes array
+          // store d3 object in volumes array so that they can be removed
           volumes.push(volume);
           // add svg volume text
           const vText = d3

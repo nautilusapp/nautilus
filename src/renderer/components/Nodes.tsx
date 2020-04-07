@@ -10,14 +10,17 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-// IMPORT HELPER FUNCTIONSf
+
+// IMPORT HELPER FUNCTIONS
 import {
   getHorizontalPosition,
   getVerticalPosition,
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
+
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
+
 // IMPORT COMPONENTS
 import NodePorts from './NodePorts';
 import NodeVolumes from './NodeVolumes';
@@ -53,25 +56,32 @@ const Nodes: React.FC<Props> = ({
       d.fy = null;
     };
 
+    // set up drag feature for nodes
     let drag = d3
       .drag<SVGGElement, SNode>()
       .on('start', function dragstarted(d: SNode) {
+        // if simulation has stopped, restart it
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        // set the x and y positions to fixed
         d.fx = d3.event.x;
-        d3.event.y;
+        d.fy = d3.event.y;
       })
       .on('drag', function dragged(d: SNode) {
+        // raise the current selected node to the highest layer
         d3.select(this).raise();
+        // change the fx and fy to dragged position
         d.fx = d3.event.x;
         d.fy = d3.event.y;
       })
       .on('end', function dragended(d: SNode) {
+        // stop simulation when node is done being dragged
         if (!d3.event.active) simulation.alphaTarget(0);
+        // fix the node to the place where the dragging stopped
         d.fx = d.x;
         d.fy = d.y;
       });
 
-    // create container svgs
+    // create node container svgs
     const nodeContainers = d3
       .select('.nodes')
       .selectAll('g')
@@ -84,6 +94,7 @@ const Nodes: React.FC<Props> = ({
       })
       .on('dblclick', dblClick)
       .call(drag)
+      // initialize nodes in depends on view
       .attr('x', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
         return (d.x = getHorizontalPosition(d, width));
@@ -92,7 +103,7 @@ const Nodes: React.FC<Props> = ({
         return (d.y = getVerticalPosition(d, treeDepth, height));
       });
 
-    //add container images
+    //add container image to each node
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
@@ -101,8 +112,7 @@ const Nodes: React.FC<Props> = ({
       .attr('height', 75)
       .attr('width', 132);
 
-    // add names of services
-
+    // add names of service to each node
     nodeContainers
       .append('text')
       .text((d: SNode) => d.name)
@@ -111,6 +121,7 @@ const Nodes: React.FC<Props> = ({
       .attr('dx', 60);
 
     return () => {
+      // remove containers when services change
       nodeContainers.remove();
     };
   }, [services]);
