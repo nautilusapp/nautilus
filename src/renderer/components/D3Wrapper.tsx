@@ -16,7 +16,7 @@ import ErrorDisplay from './ErrorDisplay';
 import View from './View';
 
 // IMPORT HELPER FUNCTIONS
-import { colorSchemeIndex } from '../helpers/colorSchemeHash';
+import colorSchemeIndex from '../helpers/colorSchemeIndex';
 
 // IMPORT TYPES
 import {
