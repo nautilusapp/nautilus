@@ -16,7 +16,7 @@ import BindMounts from './BindMounts';
 import { ReadOnlyObj } from '../App.d';
 
 type Props = {
-  volumes: Array<ReadOnlyObj>;
+  volumes: ReadOnlyObj;
   bindMounts: Array<string>;
   getColor: any;
 };

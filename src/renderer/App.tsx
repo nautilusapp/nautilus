@@ -42,7 +42,7 @@ const initialState: State = {
   },
   networks: {},
   selectedNetwork: '',
-  volumes: [],
+  volumes: {},
   volumesClicked: {},
   bindMounts: [],
   bindMountsClicked: {},
@@ -65,8 +65,8 @@ class App extends Component<{}, State> {
     this.setState({ ...this.state, selectedContainer: containerName });
   };
 
-  updateView: UpdateView = view => {
-    this.setState(state => {
+  updateView: UpdateView = (view) => {
+    this.setState((state) => {
       return {
         ...state,
         view,
@@ -75,7 +75,7 @@ class App extends Component<{}, State> {
     });
   };
 
-  updateOption: UpdateOption = option => {
+  updateOption: UpdateOption = (option) => {
     const newState: State = {
       ...this.state,
       options: { ...this.state.options, [option]: !this.state.options[option] },
@@ -103,7 +103,7 @@ class App extends Component<{}, State> {
     });
   };
 
-  selectNetwork: SelectNetwork = network => {
+  selectNetwork: SelectNetwork = (network) => {
     this.setState({ view: 'networks', selectedNetwork: network });
   };
 
