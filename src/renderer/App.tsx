@@ -187,6 +187,7 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="app-class">
+        {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
         <div className="draggable"></div>
         <LeftNav
           fileUploaded={this.state.fileUploaded}
