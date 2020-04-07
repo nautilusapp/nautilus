@@ -57,7 +57,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   // PORTS: if ports incorrectly is given a string, just set the key in serviceOverview equal to its value as passed down from state
   // Finally, for all commands with 1D values and no options (image and command), just set the key in serviceOverview equal to its value as passed down from state
   if (service) {
-    Object.keys(service).forEach(command => {
+    Object.keys(service).forEach((command) => {
       if (dockerComposeCommands[command]) {
         serviceOverview[command] = '';
         //  *********************
@@ -71,7 +71,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
             });
           } else {
             const environment = service[command];
-            Object.keys(environment).forEach(key => {
+            Object.keys(environment).forEach((key) => {
               environmentVariables[key] = environment[key];
             });
           }
@@ -125,7 +125,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
   }
 
   const commandToJSX = (command: any) => {
-    const optionJSX = Object.keys(command).map(option => {
+    const optionJSX = Object.keys(command).map((option) => {
       if (typeof command[option] === 'string') {
         return (
           <div>
@@ -187,7 +187,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
           //  *********************
           if (command === 'environment' && !serviceOverview[command].length) {
             const environment: JSX.Element[] = [];
-            Object.keys(environmentVariables).forEach(key => {
+            Object.keys(environmentVariables).forEach((key) => {
               environment.push(
                 <li className="second-level" key={key}>
                   <span>{key}:</span> {environmentVariables[key]}
@@ -204,7 +204,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
             //  *********************
           } else if (command === 'env_file' && env_file.length) {
             let envFileArray: JSX.Element[] = [];
-            env_file.forEach(el => {
+            env_file.forEach((el) => {
               envFileArray.push(
                 <li className="second-level" key={el}>
                   {el}
@@ -239,7 +239,7 @@ const InfoDropdown: React.FC<ReactProps> = ({ service, selectedContainer }) => {
           } else if (command === 'ports' && !serviceOverview[command].length) {
             if (portsArray.length) {
               let portsArraySquared: JSX.Element[] = [];
-              portsArray.forEach(el => {
+              portsArray.forEach((el) => {
                 portsArraySquared.push(
                   <li className="second-level" key={el}>
                     {el}
