@@ -21,8 +21,8 @@ type Props = {
 const NodePorts: React.FC<Props> = ({ portsOn }) => {
   useEffect(() => {
     // PORTS LOCATION
-    const cx = 58;
-    const cy = 18;
+    const cx = 10;
+    const cy = 20;
     const radius = 5;
     const dx = cx + radius;
     const dy = cy + radius;
@@ -38,7 +38,7 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
         .filter((d: SNode) => d.ports.length > 0);
 
       // iterate through all nodes with ports
-      nodesWithPorts.each(function(d: SNode) {
+      nodesWithPorts.each(function (d: SNode) {
         const node = this;
         // iterate through all ports of node
         d.ports.forEach((pString, i) => {
@@ -70,8 +70,8 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     return () => {
       // before unmoutning, if ports option was on, remove the ports
       if (portsOn) {
-        ports.forEach(node => node.remove());
-        portText.forEach(node => node.remove());
+        ports.forEach((node) => node.remove());
+        portText.forEach((node) => node.remove());
       }
     };
     // only fire when options.ports changes

@@ -32,12 +32,14 @@
 
         .node {
           cursor: pointer;
-          text {
+          .nodeLabel {
             font-family: 'VisbyRoundCF-Heavy';
-            fill: $primary-color;
-            stroke: $fourth-color;
+            fill: $fourth-color;
+            stroke: $primary-color;
             stroke-width: 1px;
+            word-wrap: break-word;
             font-size: 16px;
+            transform: rotate(-5deg);
           }
         }
 

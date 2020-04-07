@@ -10,7 +10,7 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-// IMPORT HELPER FUNCTIONS
+// IMPORT HELPER FUNCTIONSf
 import {
   getHorizontalPosition,
   getVerticalPosition,
@@ -92,17 +92,23 @@ const Nodes: React.FC<Props> = ({
         return (d.y = getVerticalPosition(d, treeDepth, height));
       });
 
-    // add names of services
-    nodeContainers.append('text').text((d: SNode) => d.name);
-
     //add container images
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
+        return getStatic('container2.svg');
       })
-      .attr('height', 60)
-      .attr('width', 60);
+      .attr('height', 75)
+      .attr('width', 132);
+
+    // add names of services
+
+    nodeContainers
+      .append('text')
+      .text((d: SNode) => d.name)
+      .attr('class', 'nodeLabel')
+      .attr('dy', 50)
+      .attr('dx', 60);
 
     return () => {
       nodeContainers.remove();
