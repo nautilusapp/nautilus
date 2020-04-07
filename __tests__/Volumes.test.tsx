@@ -9,7 +9,7 @@ type Props = {
 
 describe('<Volumes/>', () => {
   const props: Props = {
-    volumes: ['test1', 'test2'],
+    volumes: { test1: '1', test2: '2' },
     getColor: jest.fn(() => {
       return 'hsl(80%,60%,60%)';
     }),
@@ -19,12 +19,15 @@ describe('<Volumes/>', () => {
 
   //test to check if right number of components / elements are rendered
 
-  it('contains # of Volume components based on volumes array length', () => {
-    expect(wrapper.find('Volume').length).toEqual(props.volumes.length);
+  it('contains # of Volume components based on volumes length', () => {
+    const volumesCount = Object.keys(props.volumes).length;
+    expect(wrapper.find('Volume').length).toEqual(volumesCount);
+    expect(wrapper.find('Volume').length).not.toBe(1);
   });
 
   it('returns a one instance of class, volumes', () => {
     expect(wrapper.find('.volumes')).toHaveLength(1);
+    expect(wrapper.find('.volumes')).not.toHaveLength(0);
   });
 
   it('should render only one div', () => {
@@ -33,25 +36,10 @@ describe('<Volumes/>', () => {
 
   //test to see if props are passed down
 
-  // it('expect child component to have prop of color', () => {
-  //   expect(
-  //     wrapper
-  //       .find('Volume')
-  //       .at(0)
-  //       .props(),
-  //   ).toEqual({ color: 'hsl(80%,60%,60%)', volume: 'test1' });
-  // });
-
   it('expect child component to have prop of color', () => {
     expect(wrapper.find('Volume').get(0).props).toEqual({
       color: 'hsl(80%,60%,60%)',
       volume: 'test1',
     });
-  });
-
-  //test to check if colorscheme function is invoked
-
-  it('expect invocation of a function in props.color', () => {
-    expect(wrapper.find('Volume')).prop('color')();
   });
 });

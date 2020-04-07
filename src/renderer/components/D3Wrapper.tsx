@@ -34,7 +34,7 @@ type Props = {
   fileUploaded: boolean;
   services: Services;
   options: Options;
-  volumes: Array<ReadOnlyObj>;
+  volumes: ReadOnlyObj;
   bindMounts: Array<string>;
   view: ViewT;
   networks: ReadOnlyObj;

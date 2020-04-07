@@ -5,7 +5,7 @@ type YamlState = {
   services: Services;
   dependsOn?: DependsOn;
   networks?: ReadOnlyObj;
-  volumes?: Array<ReadOnlyObj>;
+  volumes?: ReadOnlyObj;
   bindMounts?: Array<string>;
 };
 
