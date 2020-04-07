@@ -13,7 +13,7 @@ import Volume from './Volume';
 import { ReadOnlyObj } from '../App.d';
 
 type Props = {
-  volumes: Array<ReadOnlyObj>;
+  volumes: ReadOnlyObj;
   getColor: any;
 };
 
