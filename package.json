@@ -10,8 +10,10 @@
     "package-mac": "yarn compile && electron-builder --mac",
     "package-linux": "yarn compile && electron-builder --linux",
     "package-win": "yarn compile && electron-builder --win --x64",
+    "deploy": "yarn package-all && bash scripts/deploy.sh",
     "test": "jest",
-    "test-hh": "bash ./scripts/run-test.sh"
+    "test-f": "bash ./scripts/run-test.sh",
+    "up-snap": "jest --updateSnapshot"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -110,6 +112,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
@@ -124,6 +127,7 @@
     "@types/node": "^13.9.1",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
+    "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "babel": "^6.23.0",
