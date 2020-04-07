@@ -16,9 +16,6 @@ type Props = {
 };
 
 const Volume: React.FC<Props> = ({ volume, color }) => {
-  //create function to fill color based on name in props.volume fill ={fill}
-  //const fill = () => {loop colorsVolObj , if colorsVolObj[x] = props.volume return x }
-  //colorScheme[props.index % colorScheme.length]
   return (
     <div className="volumeLegend">
       <div className="volumeColorName">

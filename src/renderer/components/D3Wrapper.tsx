@@ -55,7 +55,8 @@ const D3Wrapper: React.FC<Props> = ({
   selectedNetwork,
   uploadErrors,
 }) => {
-  const getColor: any = colorSchemeIndex();
+  // invoke function that returns a function with the closure object for tracking colors
+  const getColor = colorSchemeIndex();
 
   return (
     <div className="d3-wrapper">
