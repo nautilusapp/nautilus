@@ -44,24 +44,30 @@ const OptionBar: React.FC<Props> = ({
 }) => {
   const dependsOnClass = view === 'depends_on' ? 'option selected' : 'option';
 
-  const handleViewUpdate: Handler = e => {
+  // calls update function with the specified view from the click event
+  const handleViewUpdate: Handler = (e) => {
     const view = e.currentTarget.id as 'networks' | 'depends_on';
     updateView(view);
   };
 
-  const handleOptionUpdate: Handler = e => {
+  // calls the update option function with the specificed option from the click event
+  const handleOptionUpdate: Handler = (e) => {
     const option = e.currentTarget.id as 'ports' | 'volumes' | 'selectAll';
     updateOption(option);
   };
 
+  // creates an array of jsx elements for each option
   const optionsDisplay = Object.keys(options).map((opt, i) => {
     let title = '';
+    // format select all title
     if (opt === 'selectAll') title = 'select all';
+    // otherwise set title to option name
     else title = opt;
 
     return (
       <span
         key={`opt${i}`}
+        // if the current option is selected, give it the 'selected' class
         className={
           options[opt as 'selectAll' | 'ports' | 'volumes']
             ? 'option selected'
