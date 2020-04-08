@@ -26,19 +26,20 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
+  // find out the max number of volumes on any node
   const maxVolumes = d3
     .select('.links')
     .selectAll('line')
     .data()
-    .reduce((acc: number, d: any) => {
-      return acc > d.target.volumes.length ? acc : d.target.volumes.length;
+    .reduce((acc: number, l: any) => {
+      return acc > l.target.volumes.length ? acc : l.target.volumes.length;
     }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
     const x = 0;
     const y = 0;
-    const width = 60;
-    const height = 60;
+    const width = 132;
+    const height = 75;
     // VOLUMES VARIABLES
     let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
     const volumes: d3.Selection<SVGSVGElement, SNode, any, any>[] = [];
@@ -51,7 +52,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
         .filter((d: SNode) => d.volumes.length > 0);
 
       // iterate through all nodes with volumes
-      nodesWithVolumes.each(function(d: SNode) {
+      nodesWithVolumes.each(function (d: SNode) {
         const node = this;
         // iterate through all volumes of node
         d.volumes.reverse().forEach((vString, i) => {
@@ -60,8 +61,8 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           // add svg volume
           const volume = d3
             .select<SVGElement, SNode>(node)
-            .insert('svg', 'text')
-            .attr('viewBox', '0 0 127.45 154.34')
+            .insert('svg', 'image')
+            .attr('viewBox', '0 0 225.32 128.23')
             .html(containerPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
@@ -86,7 +87,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
               onceClicked = !onceClicked;
               onClick = onceClicked;
             });
-          // store d3 object in volumes array
+          // store d3 object in volumes array so that they can be removed
           volumes.push(volume);
           // add svg volume text
           const vText = d3
@@ -103,7 +104,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           volumeText.push(vText);
         });
       });
-      d3.selectAll('.arrowHead').attr('refX', 23 + 4.5 * maxVolumes);
+      d3.selectAll('.arrowHead').attr('refX', 35 + 4.5 * maxVolumes);
     }
     //move arrowheads based on number of volumes
     else {
@@ -113,8 +114,8 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
     return () => {
       // before unmounting, if volumes option was on, remove the volumes
       if (volumesOn) {
-        volumes.forEach(node => node.remove());
-        volumeText.forEach(node => node.remove());
+        volumes.forEach((node) => node.remove());
+        volumeText.forEach((node) => node.remove());
       }
     };
     // only fire when options.volumes changes

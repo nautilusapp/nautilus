@@ -10,14 +10,17 @@
  */
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+
 // IMPORT HELPER FUNCTIONS
 import {
   getHorizontalPosition,
   getVerticalPosition,
 } from '../helpers/getSimulationDimensions';
 import { getStatic } from '../helpers/static';
+
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
+
 // IMPORT COMPONENTS
 import NodePorts from './NodePorts';
 import NodeVolumes from './NodeVolumes';
@@ -28,6 +31,44 @@ type Props = {
   options: Options;
   getColor: any;
 };
+
+function wrap(
+  text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>,
+  width: number,
+) {
+  text.each(function () {
+    const text = d3.select(this);
+    const words = text.text();
+    let line = 0;
+    const lineLength = 8;
+    const maxLine = 3;
+    const totalLinesNeeded = Math.ceil(words.length / lineLength);
+    if (totalLinesNeeded === 2) {
+      text.attr('y', 67);
+    }
+    const x = text.attr('x');
+    const y = text.attr('y');
+    if (words.length > 8) {
+      text.text('');
+      while (line < maxLine) {
+        const currentIndex = line * lineLength;
+        const lineText = text
+          .append('tspan')
+          .attr('x', x)
+          .attr('y', y)
+          .attr('dx', 0)
+          .attr('dy', currentIndex * 1.5 - 10)
+          .attr('class', 'nodeLabel');
+        if (line < 2 || words.length <= 24) {
+          lineText.text(words.slice(currentIndex, currentIndex + 8));
+        } else {
+          lineText.text(words.slice(currentIndex, currentIndex + 5) + '...');
+        }
+        line++;
+      }
+    }
+  });
+}
 
 const Nodes: React.FC<Props> = ({
   setSelectedContainer,
@@ -53,25 +94,32 @@ const Nodes: React.FC<Props> = ({
       d.fy = null;
     };
 
+    // set up drag feature for nodes
     let drag = d3
       .drag<SVGGElement, SNode>()
       .on('start', function dragstarted(d: SNode) {
+        // if simulation has stopped, restart it
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        // set the x and y positions to fixed
         d.fx = d3.event.x;
-        d3.event.y;
+        d.fy = d3.event.y;
       })
       .on('drag', function dragged(d: SNode) {
+        // raise the current selected node to the highest layer
         d3.select(this).raise();
+        // change the fx and fy to dragged position
         d.fx = d3.event.x;
         d.fy = d3.event.y;
       })
       .on('end', function dragended(d: SNode) {
+        // stop simulation when node is done being dragged
         if (!d3.event.active) simulation.alphaTarget(0);
+        // fix the node to the place where the dragging stopped
         d.fx = d.x;
         d.fy = d.y;
       });
 
-    // create container svgs
+    // create node container svgs
     const nodeContainers = d3
       .select('.nodes')
       .selectAll('g')
@@ -84,6 +132,7 @@ const Nodes: React.FC<Props> = ({
       })
       .on('dblclick', dblClick)
       .call(drag)
+      // initialize nodes in depends on view
       .attr('x', (d: SNode) => {
         //assign the initial x location to the relative displacement from the left
         return (d.x = getHorizontalPosition(d, width));
@@ -92,19 +141,27 @@ const Nodes: React.FC<Props> = ({
         return (d.y = getVerticalPosition(d, treeDepth, height));
       });
 
-    // add names of services
-    nodeContainers.append('text').text((d: SNode) => d.name);
-
-    //add container images
+    //add container image to each node
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
+        return getStatic('container3.svg');
       })
-      .attr('height', 60)
-      .attr('width', 60);
+      .attr('height', 75)
+      .attr('width', 132);
+
+    // add names of service to each node
+    nodeContainers
+      .append('text')
+      .text((d: SNode) => d.name)
+      .attr('class', 'nodeLabel')
+      .attr('x', 80)
+      .attr('y', 60)
+      .attr('text-anchor', 'middle')
+      .call(wrap, 1);
 
     return () => {
+      // remove containers when services change
       nodeContainers.remove();
     };
   }, [services]);
