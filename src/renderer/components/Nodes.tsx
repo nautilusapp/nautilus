@@ -146,23 +146,23 @@ const Nodes: React.FC<Props> = ({
         return getStatic('container.svg');
       })
       .attr('height', 75)
-      .attr('width', 132);
+      .attr('width', 132)
+      .attr('class', 'containerImage');
 
-    // add names of service to each node
-
-    nodeContainers
-      .append('text')
-      .text((d: SNode) => d.name)
-      .attr('class', 'nodeLabelStroke')
-      .attr('x', 80)
-      .attr('y', 60)
-      .attr('text-anchor', 'middle')
-      .call(wrap);
-
+    // add node service name
     nodeContainers
       .append('text')
       .text((d: SNode) => d.name)
       .attr('class', 'nodeLabel')
+      .attr('x', 80)
+      .attr('y', 60)
+      .attr('text-anchor', 'middle')
+      .call(wrap);
+    //add stroke
+    nodeContainers
+      .insert('text', '.nodeLabel')
+      .text((d: SNode) => d.name)
+      .attr('class', 'nodeLabelStroke')
       .attr('x', 80)
       .attr('y', 60)
       .attr('text-anchor', 'middle')

@@ -62,7 +62,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           const volume = d3
             .select<SVGElement, SNode>(node)
             .insert('svg', 'image')
-            .attr('viewBox', '0 0 225.32 128.23')
+            .attr('viewBox', '0 0 215 124')
             .html(containerPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
@@ -72,9 +72,9 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
                 : getColor(vString);
             })
             .attr('width', width + (d.volumes.length - i) * 20)
-            .attr('height', height + (d.volumes.length - i) * 20)
+            .attr('height', height + (d.volumes.length - i) * 40)
             .attr('x', x - (d.volumes.length - i) * 10)
-            .attr('y', y - (d.volumes.length - i) * 10)
+            .attr('y', y - (d.volumes.length - i) * 20)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
