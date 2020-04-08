@@ -16,7 +16,7 @@ import ErrorDisplay from './ErrorDisplay';
 import View from './View';
 
 // IMPORT HELPER FUNCTIONS
-import { colorSchemeIndex } from '../helpers/colorSchemeHash';
+import colorSchemeIndex from '../helpers/colorSchemeIndex';
 
 // IMPORT TYPES
 import {
@@ -34,7 +34,7 @@ type Props = {
   fileUploaded: boolean;
   services: Services;
   options: Options;
-  volumes: Array<ReadOnlyObj>;
+  volumes: ReadOnlyObj;
   bindMounts: Array<string>;
   view: ViewT;
   networks: ReadOnlyObj;
@@ -55,10 +55,18 @@ const D3Wrapper: React.FC<Props> = ({
   selectedNetwork,
   uploadErrors,
 }) => {
-  const getColor: any = colorSchemeIndex();
+  // invoke function that returns a function with the closure object for tracking colors
+  const getColor = colorSchemeIndex();
 
   return (
     <div className="d3-wrapper">
+      {/**
+       * if a file hasn't been uploaded
+       * ** if errors, display them
+       * ** always display upload button
+       * else display visualizer
+       * (yes, this is nested terinary operator)
+       */}
       {!fileUploaded ? (
         <div className="error-upload-wrapper">
           {uploadErrors.length > 0 ? (

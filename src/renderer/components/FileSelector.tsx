@@ -1,3 +1,13 @@
+/**
+ * ************************************
+ *
+ * @module  FileSelector.tsx
+ * @author Mike D
+ * @date 3/11/20
+ * @description Button to allow user to upload docker-compose file
+ *
+ * ************************************
+ */
 import React from 'react';
 import { FaUpload } from 'react-icons/fa';
 
@@ -23,8 +33,11 @@ const FileSelector: React.FC<Props> = ({ fileUpload }) => {
         accept=".yml,.yaml"
         style={{ display: 'none' }}
         onChange={(event: React.SyntheticEvent<HTMLInputElement>) => {
+          // make sure there was something selected
           if (event.currentTarget) {
+            // make sure user uploaded a file
             if (event.currentTarget.files) {
+              // fire fileUpload function on first file uploaded
               fileUpload(event.currentTarget.files[0]);
             }
           }

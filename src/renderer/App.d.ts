@@ -18,7 +18,7 @@ export type State = {
   uploadErrors: string[];
   version: string;
   view: ViewT;
-  volumes: Array<ReadOnlyObj>;
+  volumes: ReadOnlyObj;
   volumesClicked: Clicked;
 };
 

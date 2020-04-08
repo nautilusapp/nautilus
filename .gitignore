@@ -2,5 +2,6 @@ node_modules
 dist
 package-lock.json
 .DS_Store
+yarn.lock
 release
 _secrets
