@@ -21,7 +21,6 @@ import {
   Ports,
 } from '../App.d';
 import * as d3 from 'd3';
-import { parentPort } from 'worker_threads';
 
 interface SetD3State {
   (services: Services): D3State;
