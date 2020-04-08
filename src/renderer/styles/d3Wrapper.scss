@@ -48,12 +48,18 @@
             text-anchor: middle;
           }
           .port {
-            transform: rotate(3.8deg);
+            stroke: $secondary-color;
+            transform: rotate(5deg);
             fill: $fifth-color;
+            opacity: 0.9;
           }
           .ports-text {
-            transform: rotate(3.8deg);
-            color: $primary-color;
+            transform: rotate(4.6deg);
+
+            tspan {
+              font-family: 'Sen-Bold' !important;
+              fill: $primary-color;
+            }
           }
         }
 
@@ -63,6 +69,9 @@
 
         .arrowHead {
           fill: #000000;
+          .line-cover {
+            fill: $fourth-color;
+          }
         }
 
         .link {

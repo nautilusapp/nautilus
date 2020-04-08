@@ -27,10 +27,10 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     const width = 43;
     const height = 10;
     // ports location
-    const x = 4;
-    const y = 25;
+    const x = 7;
+    const y = 24;
     // text location
-    const dx = x + 21;
+    const dx = x + 21; // center of text element because of text-anchor
     const dy = y + 8;
     // PORTS VARIABLES
     let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
@@ -56,7 +56,7 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
             .append('rect')
             .attr('class', 'port')
             .attr('rx', rx)
-            .attr('x', x + i)
+            .attr('x', x + i * 1.1)
             .attr('y', y + i * (height + 1))
             .attr('width', width)
             .attr('height', height);
@@ -68,7 +68,7 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
             .append('text')
             .attr('class', 'ports-text')
             .attr('color', 'white')
-            .attr('dx', dx + i)
+            .attr('dx', dx + i * 1.1)
             .attr('dy', dy + i * (height + 1))
             .attr('font-size', textSize)
             // center the text in the rectangle
