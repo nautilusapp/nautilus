@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   db:
     image: postgres
     environment:
@@ -9,14 +8,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=dpc-safe
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - ./docker/postgres:/docker-entrypoint-initdb.d
 
   aggregation:
     image: ${ECR_HOST:-755619740999.dkr.ecr.us-east-1.amazonaws.com/dpc-aggregation}:latest
     ports:
-      - "9901:9900"
+      - '9901:9900'
     env_file:
       - ./ops/config/decrypted/local.env
     environment:
@@ -36,16 +35,16 @@ services:
       - ENV=local
       - JACOCO=${REPORT_COVERAGE}
     ports:
-      - "3500:8080"
-      - "9902:9900"
+      - '3500:8080'
+      - '9902:9900'
     volumes:
       - ./jacocoReport/dpc-attribution:/jacoco-report
 
   api:
     image: ${ECR_HOST:-755619740999.dkr.ecr.us-east-1.amazonaws.com/dpc-api}:latest
     ports:
-      - "3002:3002"
-      - "9903:9900"
+      - '3002:3002'
+      - '9903:9900'
     environment:
       - attributionURL=http://attribution:8080/v1/
       - ENV=local
@@ -66,8 +65,8 @@ services:
       - ENV=local
       - JACOCO=${REPORT_COVERAGE}
     ports:
-      - "3600:3600"
-      - "9004:9900"
+      - '3600:3600'
+      - '9004:9900'
     volumes:
       - ./jacocoReport/dpc-consent:/jacoco-report
 
