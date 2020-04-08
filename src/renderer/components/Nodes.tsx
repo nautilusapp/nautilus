@@ -143,10 +143,11 @@ const Nodes: React.FC<Props> = ({
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
+        return getStatic('newcontainer.svg');
       })
       .attr('height', 75)
-      .attr('width', 132);
+      .attr('width', 132)
+      .attr('class', 'containerImage');
 
     // add node service name
     nodeContainers
