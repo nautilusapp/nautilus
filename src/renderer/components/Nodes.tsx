@@ -143,7 +143,7 @@ const Nodes: React.FC<Props> = ({
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('newcontainer.svg');
+        return getStatic('container.svg');
       })
       .attr('height', 75)
       .attr('width', 132)
