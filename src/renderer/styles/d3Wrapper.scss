@@ -33,13 +33,33 @@
         .node {
           cursor: pointer;
           .nodeLabel {
-            font-family: 'VisbyRoundCF-Heavy';
+            font-family: 'Sen-Bold';
             fill: $fourth-color;
-            stroke: $primary-color;
-            stroke-width: 1px;
             font-size: 16px;
             transform: rotate(-13deg);
             text-anchor: middle;
+          }
+          .nodeLabelStroke {
+            font-family: 'Sen-Bold';
+            stroke: #006896;
+            stroke-width: 4;
+            font-size: 16px;
+            transform: rotate(-13deg);
+            text-anchor: middle;
+          }
+          .port {
+            stroke: $secondary-color;
+            transform: rotate(5deg);
+            fill: $fifth-color;
+            opacity: 0.9;
+          }
+          .ports-text {
+            transform: rotate(4.6deg);
+
+            tspan {
+              font-family: 'Sen-Bold' !important;
+              fill: $primary-color;
+            }
           }
         }
 
@@ -49,6 +69,9 @@
 
         .arrowHead {
           fill: #000000;
+          .line-cover {
+            fill: $fourth-color;
+          }
         }
 
         .link {

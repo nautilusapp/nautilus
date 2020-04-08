@@ -16,6 +16,10 @@ cache:
   directories:
     - node_modules
 
+# install dependenices
+before-script:
+  - yarn
+
 # on PRs and merges to master and prod run tests and build the app
 script:
   - yarn test

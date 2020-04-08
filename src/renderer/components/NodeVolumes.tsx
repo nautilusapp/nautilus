@@ -26,14 +26,6 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
-  // find out the max number of volumes on any node
-  const maxVolumes = d3
-    .select('.links')
-    .selectAll('line')
-    .data()
-    .reduce((acc: number, l: any) => {
-      return acc > l.target.volumes.length ? acc : l.target.volumes.length;
-    }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
     const x = 0;
@@ -62,7 +54,7 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           const volume = d3
             .select<SVGElement, SNode>(node)
             .insert('svg', 'image')
-            .attr('viewBox', '0 0 225.32 128.23')
+            .attr('viewBox', '0 0 215 124')
             .html(containerPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
@@ -72,9 +64,9 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
                 : getColor(vString);
             })
             .attr('width', width + (d.volumes.length - i) * 20)
-            .attr('height', height + (d.volumes.length - i) * 20)
+            .attr('height', height + (d.volumes.length - i) * 40)
             .attr('x', x - (d.volumes.length - i) * 10)
-            .attr('y', y - (d.volumes.length - i) * 10)
+            .attr('y', y - (d.volumes.length - i) * 20)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
@@ -104,11 +96,6 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           volumeText.push(vText);
         });
       });
-      d3.selectAll('.arrowHead').attr('refX', 35 + 4.5 * maxVolumes);
-    }
-    //move arrowheads based on number of volumes
-    else {
-      d3.selectAll('.arrowHead').attr('refX', 23);
     }
 
     return () => {

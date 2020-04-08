@@ -46,7 +46,8 @@ export const extractPorts: ExtractPorts = (portsData) => {
     portsData.forEach((port: string | Port) => {
       // short syntax
       if (typeof port === 'string') {
-        ports.push(port as string);
+        const end = port.indexOf('/') !== -1 ? port.indexOf('/') : port.length;
+        ports.push(port.slice(0, end));
         // long syntax
       } else if (typeof port === 'object') {
         ports.push(port.published + ':' + port.target);
