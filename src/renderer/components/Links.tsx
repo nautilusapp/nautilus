@@ -59,7 +59,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .append('rect')
       .attr('class', 'line-cover')
       .attr('fill', 'white')
-      .attr('width', 40)
+      .attr('width', 30)
       .attr('height', 4)
       .attr('y', 4)
       .attr('x', 1);

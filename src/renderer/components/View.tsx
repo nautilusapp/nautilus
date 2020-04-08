@@ -97,12 +97,15 @@ const View: React.FC<Props> = ({
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
+      // link position
+      const x = 66;
+      const y = 10;
       // move links as the nodes move
       linkLines
-        .attr('x1', (d: any) => d.source.x + 66)
-        .attr('y1', (d: any) => d.source.y + 10)
-        .attr('x2', (d: any) => d.target.x + 66)
-        .attr('y2', (d: any) => d.target.y + 10);
+        .attr('x1', (l: any) => l.source.x + x)
+        .attr('y1', (l: any) => l.source.y + y)
+        .attr('x2', (l: any) => l.target.x + x)
+        .attr('y2', (l: any) => l.target.y + y);
     }
 
     // SET DEPENDS ON VIEW
