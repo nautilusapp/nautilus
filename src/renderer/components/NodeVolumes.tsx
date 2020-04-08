@@ -26,14 +26,6 @@ type Props = {
 };
 
 const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
-  // find out the max number of volumes on any node
-  const maxVolumes = d3
-    .select('.links')
-    .selectAll('line')
-    .data()
-    .reduce((acc: number, l: any) => {
-      return acc > l.target.volumes.length ? acc : l.target.volumes.length;
-    }, 0);
   useEffect(() => {
     // VOLUMES LOCATION
     const x = 0;
@@ -104,11 +96,6 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           volumeText.push(vText);
         });
       });
-      d3.selectAll('.arrowHead').attr('refX', 35 + 4.5 * maxVolumes);
-    }
-    //move arrowheads based on number of volumes
-    else {
-      d3.selectAll('.arrowHead').attr('refX', 23);
     }
 
     return () => {

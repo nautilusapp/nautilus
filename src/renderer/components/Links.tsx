@@ -41,7 +41,7 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .append('svg:defs')
       .attr('class', 'arrowsGroup');
 
-    arrowsGroup
+    const arrowHead = arrowsGroup
       .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
       .enter()
@@ -51,11 +51,20 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .attr('viewBox', '0 0 9.76 11.1')
       .attr('refX', 30)
       .attr('refY', 6)
-      .attr('markerWidth', 6)
+      .attr('markerWidth', 100)
       .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('svg:image')
-      .attr('xlink:href', getStatic('arrow.svg'));
+      .attr('orient', 'auto');
+
+    arrowHead
+      .append('rect')
+      .attr('class', 'line-cover')
+      .attr('fill', 'white')
+      .attr('width', 40)
+      .attr('height', 4)
+      .attr('y', 4)
+      .attr('x', 1);
+
+    arrowHead.append('svg:image').attr('xlink:href', getStatic('arrow.svg'));
 
     const linkGroup = d3.select('.links');
 
