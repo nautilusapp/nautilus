@@ -35,8 +35,14 @@
           .nodeLabel {
             font-family: 'Sen-Bold';
             fill: $fourth-color;
-            stroke: $primary-color;
-            stroke-width: 1px;
+            font-size: 16px;
+            transform: rotate(-13deg);
+            text-anchor: middle;
+          }
+          .nodeLabelStroke {
+            font-family: 'Sen-Bold';
+            stroke: #006896;
+            stroke-width: 4;
             font-size: 16px;
             transform: rotate(-13deg);
             text-anchor: middle;
