@@ -11,7 +11,7 @@
 import React from 'react';
 
 // IMPORT REACT COMPONENTS
-import InfoDropdown from './ServiceInfo';
+import ServiceInfo from './ServiceInfo';
 import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileUpload, Service } from '../App.d';
@@ -35,7 +35,7 @@ const LeftNav: React.FC<Props> = ({
         <Title />
         {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       </div>
-      <InfoDropdown selectedContainer={selectedContainer} service={service} />
+      <ServiceInfo selectedContainer={selectedContainer} service={service} />
     </div>
   );
 };
