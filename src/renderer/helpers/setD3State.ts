@@ -36,7 +36,7 @@ interface SetD3State {
 interface ExtractPorts {
   (portsData: Ports): string[];
 }
-export const extractPorts: ExtractPorts = portsData => {
+export const extractPorts: ExtractPorts = (portsData) => {
   const ports: string[] = [];
   // short syntax string
   if (typeof portsData === 'string') {
@@ -61,7 +61,7 @@ export const extractPorts: ExtractPorts = portsData => {
 interface ExtractVolumes {
   (VolumesData: Volumes): string[];
 }
-export const extractVolumes: ExtractVolumes = volumesData => {
+export const extractVolumes: ExtractVolumes = (volumesData) => {
   const volumes: string[] = [];
   // short syntax string
   volumesData!.forEach((vol: string | Volume) => {
@@ -80,7 +80,7 @@ export const extractVolumes: ExtractVolumes = volumesData => {
 interface ExtractNetworks {
   (networksData: string[] | {}): string[];
 }
-export const extractNetworks: ExtractNetworks = networksData => {
+export const extractNetworks: ExtractNetworks = (networksData) => {
   const networks = Array.isArray(networksData)
     ? networksData
     : Object.keys(networksData);
@@ -91,12 +91,12 @@ export const extractNetworks: ExtractNetworks = networksData => {
 interface ExtractDependsOn {
   (services: Services): Link[];
 }
-export const extractDependsOn: ExtractDependsOn = services => {
+export const extractDependsOn: ExtractDependsOn = (services) => {
   const links: Link[] = [];
 
   Object.keys(services).forEach((sName: string) => {
     if (services[sName].hasOwnProperty('depends_on')) {
-      services[sName].depends_on!.forEach(el => {
+      services[sName].depends_on!.forEach((el) => {
         links.push({ source: el, target: sName });
       });
     }
@@ -117,7 +117,7 @@ interface DagCreator {
 export const dagCreator: DagCreator = (nodes, links) => {
   //roots object creation, needs to be a deep copy or else deletion of non-roots will remove from nodesObject
   const nodesObject: NodesObject = {};
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     nodesObject[node.name] = node;
   });
 
@@ -169,11 +169,17 @@ export const dagCreator: DagCreator = (nodes, links) => {
   return Object.keys(treeMap).length;
 };
 
-const setD3State: SetD3State = services => {
+/**
+ * ********************
+ * @param services
+ * @returns an object with serviceGraph, simulation and treeDepth properties
+ * ********************
+ */
+const setD3State: SetD3State = (services) => {
   const links: Link[] = [];
   Object.keys(services).forEach((sName: string) => {
     if (services[sName].hasOwnProperty('depends_on')) {
-      services[sName].depends_on!.forEach(el => {
+      services[sName].depends_on!.forEach((el) => {
         links.push({ source: el, target: sName });
       });
     }
