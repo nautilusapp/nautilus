@@ -36,12 +36,10 @@ function wrap(
   text.each(function () {
     const text = d3.select(this);
     const words = text.text();
-
     let line = 0;
     const lineLength = 8;
     const maxLine = 3;
     const totalLinesNeeded = Math.ceil(words.length / lineLength);
-    console.log(words, totalLinesNeeded);
     if (totalLinesNeeded === 2) {
       text.attr('y', 67);
     }
@@ -58,7 +56,7 @@ function wrap(
           .attr('dx', 0)
           .attr('dy', currentIndex * 1.5 - 10)
           .attr('class', 'nodeLabel');
-        if (line <= 2) {
+        if (line < 2 || words.length <= 24) {
           lineText.text(words.slice(currentIndex, currentIndex + 8));
         } else {
           lineText.text(words.slice(currentIndex, currentIndex + 5) + '...');
