@@ -48,14 +48,14 @@ const Links: React.FC<Props> = ({ services, view }) => {
       .append('svg:marker') // This section adds in the arrows
       .attr('id', String)
       .attr('class', 'arrowHead')
-      .attr('viewBox', '0 0 9.76 11.1')
+      .attr('viewBox', '0 0 8.67 9.88')
       .attr('refX', 30)
       .attr('refY', 6)
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
       .attr('orient', 'auto')
       .append('svg:image')
-      .attr('xlink:href', getStatic('arrow.svg'));
+      .attr('xlink:href', getStatic('arrow2.svg'));
 
     const linkGroup = d3.select('.links');
 

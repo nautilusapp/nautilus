@@ -32,12 +32,10 @@ type Props = {
   getColor: any;
 };
 
-function wrap(
-  text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>,
-  width: number,
-) {
+function wrap(text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>) {
   text.each(function () {
     const text = d3.select(this);
+    const className = text.attr('class');
     const words = text.text();
     let line = 0;
     const lineLength = 8;
@@ -57,8 +55,8 @@ function wrap(
           .attr('x', x)
           .attr('y', y)
           .attr('dx', 0)
-          .attr('dy', currentIndex * 1.5 - 10)
-          .attr('class', 'nodeLabel');
+          .attr('dy', currentIndex * 1.7 - 10)
+          .attr('class', className);
         if (line < 2 || words.length <= 24) {
           lineText.text(words.slice(currentIndex, currentIndex + 8));
         } else {
@@ -145,12 +143,22 @@ const Nodes: React.FC<Props> = ({
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container3.svg');
+        return getStatic('container.svg');
       })
       .attr('height', 75)
       .attr('width', 132);
 
     // add names of service to each node
+
+    nodeContainers
+      .append('text')
+      .text((d: SNode) => d.name)
+      .attr('class', 'nodeLabelStroke')
+      .attr('x', 80)
+      .attr('y', 60)
+      .attr('text-anchor', 'middle')
+      .call(wrap);
+
     nodeContainers
       .append('text')
       .text((d: SNode) => d.name)
@@ -158,7 +166,7 @@ const Nodes: React.FC<Props> = ({
       .attr('x', 80)
       .attr('y', 60)
       .attr('text-anchor', 'middle')
-      .call(wrap, 1);
+      .call(wrap);
 
     return () => {
       // remove containers when services change
