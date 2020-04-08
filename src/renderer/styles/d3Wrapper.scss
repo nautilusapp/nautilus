@@ -41,6 +41,14 @@
             transform: rotate(-13deg);
             text-anchor: middle;
           }
+          .port {
+            transform: rotate(3.8deg);
+            fill: $fifth-color;
+          }
+          .ports-text {
+            transform: rotate(3.8deg);
+            color: $primary-color;
+          }
         }
 
         .hide {
