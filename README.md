@@ -3,7 +3,8 @@
 </h1>
 
 <p align="center">
-  A <code>4kb</code> framework for creating sturdy frontend applications
+  A Docker Compose Charting Tool <br>
+  <a href="https://nautilusdev.com">nautilusdev.com</a>
 </p>
 
 <p align="center">
