@@ -67,6 +67,7 @@ h2 {
     flex-direction: column;
   }
 
+  // creates draggable bar at the top of application to replace removed native bar
   .draggable {
     -webkit-app-region: drag;
     height: 1.5em;

@@ -4,14 +4,14 @@
  * @module  LeftNav.tsx
  * @author
  * @date 3/11/20
- * @description
+ * @description container for the title, the service info and the file upload
  *
  * ************************************
  */
 import React from 'react';
 
 // IMPORT REACT COMPONENTS
-import InfoDropdown from './InfoDropdown';
+import ServiceInfo from './ServiceInfo';
 import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileUpload, Service } from '../App.d';
@@ -35,7 +35,7 @@ const LeftNav: React.FC<Props> = ({
         <Title />
         {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
       </div>
-      <InfoDropdown selectedContainer={selectedContainer} service={service} />
+      <ServiceInfo selectedContainer={selectedContainer} service={service} />
     </div>
   );
 };

@@ -18,7 +18,7 @@ import { ReadOnlyObj } from '../App.d';
 type Props = {
   volumes: ReadOnlyObj;
   bindMounts: Array<string>;
-  getColor: any;
+  getColor: (str: string | undefined) => string;
 };
 
 const VolumesWrapper: React.FC<Props> = ({ volumes, bindMounts, getColor }) => {

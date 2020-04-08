@@ -98,9 +98,7 @@ class App extends Component<{}, State> {
       }
     }
 
-    this.setState({
-      ...newState,
-    });
+    this.setState(newState);
   };
 
   selectNetwork: SelectNetwork = (network) => {
@@ -116,24 +114,40 @@ class App extends Component<{}, State> {
     this.setState(Object.assign(initialState, yamlState));
   };
 
+  /**
+   * @param file: a File classed object
+   * @returns void
+   * @description validates the docker-compose file
+   * ** if no errors, passes file string along to convert and store yaml method
+   * ** if errors, passes error string to handle file upload errors method
+   */
   fileUpload: FileUpload = (file: File) => {
     const fileReader = new FileReader();
+    // check for valid file path
     if (file.path) {
       runDockerComposeValidation(file.path).then((validationResults: any) => {
         if (validationResults.error) {
           this.handleFileUploadError(validationResults.error);
         } else {
+          // event listner to run after the file has been read as text
           fileReader.onload = () => {
+            // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
               this.convertAndStoreYamlJSON(fileReader.result.toString());
             }
           };
+          // read the file
           fileReader.readAsText(file);
         }
       });
     }
   };
 
+  /**
+   * @param errorText -> string
+   * @returns void
+   * @description sets state with array of strings of different errors
+   */
   handleFileUploadError = (errorText: Error) => {
     const uploadErrors = parseUploadError(errorText);
     this.setState({
@@ -171,6 +185,7 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="app-class">
+        {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
         <div className="draggable"></div>
         <LeftNav
           fileUploaded={this.state.fileUploaded}

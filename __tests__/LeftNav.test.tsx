@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import LeftNav from '../src/renderer/components/LeftNav';
 import Title from '../src/renderer/components/Title';
 import FileSelector from '../src/renderer/components/FileSelector';
-import InfoDropdown from '../src/renderer/components/InfoDropdown';
+import ServiceInfo from '../src/renderer/components/ServiceInfo';
 import renderer from 'react-test-renderer';
 
 configure({ adapter: new Adapter() });
@@ -71,9 +71,9 @@ describe('test the functionality of LeftNav component', () => {
     expect(wrapper.find('div.top-half').find(FileSelector)).toHaveLength(1);
   });
 
-  // Test InfoDropdown
-  it('Should render an InfoDropdown component inside of `div.left-nav`', () => {
+  // Test ServiceInfo
+  it('Should render an ServiceInfo component inside of `div.left-nav`', () => {
     const wrapper = shallow(<LeftNav {...props} />);
-    expect(wrapper.find('div.left-nav').find(InfoDropdown)).toHaveLength(1);
+    expect(wrapper.find('div.left-nav').find(ServiceInfo)).toHaveLength(1);
   });
 });
