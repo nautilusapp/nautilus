@@ -29,6 +29,46 @@ type Props = {
   getColor: any;
 };
 
+function wrap(
+  text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>,
+  width: number,
+) {
+  text.each(function () {
+    const text = d3.select(this);
+    const words = text.text();
+
+    let line = 0;
+    const lineLength = 8;
+    const maxLine = 3;
+    const totalLinesNeeded = Math.ceil(words.length / lineLength);
+    console.log(words, totalLinesNeeded);
+    if (totalLinesNeeded === 2) {
+      text.attr('y', 67);
+    }
+    const x = text.attr('x');
+    const y = text.attr('y');
+    if (words.length > 8) {
+      text.text('');
+      while (line < maxLine) {
+        const currentIndex = line * lineLength;
+        const lineText = text
+          .append('tspan')
+          .attr('x', x)
+          .attr('y', y)
+          .attr('dx', 0)
+          .attr('dy', currentIndex * 1.5 - 10)
+          .attr('class', 'nodeLabel');
+        if (line <= 2) {
+          lineText.text(words.slice(currentIndex, currentIndex + 8));
+        } else {
+          lineText.text(words.slice(currentIndex, currentIndex + 5) + '...');
+        }
+        line++;
+      }
+    }
+  });
+}
+
 const Nodes: React.FC<Props> = ({
   setSelectedContainer,
   services,
@@ -96,7 +136,7 @@ const Nodes: React.FC<Props> = ({
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container2.svg');
+        return getStatic('container3.svg');
       })
       .attr('height', 75)
       .attr('width', 132);
@@ -107,8 +147,10 @@ const Nodes: React.FC<Props> = ({
       .append('text')
       .text((d: SNode) => d.name)
       .attr('class', 'nodeLabel')
-      .attr('dy', 50)
-      .attr('dx', 60);
+      .attr('x', 80)
+      .attr('y', 60)
+      .attr('text-anchor', 'middle')
+      .call(wrap, 1);
 
     return () => {
       nodeContainers.remove();

@@ -4,4 +4,3 @@ package-lock.json
 .DS_Store
 release
 _secrets
-yarn.lock
