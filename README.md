@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
 
   <!-- Release -->
-  <img src="https://img.shields.io/badge/release-0.0.1-orange">
+  <img src="https://img.shields.io/badge/release-1.2.0-orange">
 
   <!-- Release Date -->
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
@@ -30,13 +30,13 @@
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat&color=navy">
 
   <!-- Test Coverage -->
-  <a href="https://codecov.io/github/choojs/choo">
+  <!-- <a href="https://codecov.io/github/choojs/choo">
     <img src="https://img.shields.io/codecov/c/github/choojs/choo/master.svg?style=flat-square&color=indigo"
       alt="Test Coverage" />
-  </a>
+  </a> -->
 
-  <!-- Stability -->
-  <img src="https://img.shields.io/badge/stability-beta-blueviolet">
+  <!-- Stability
+  <img src="https://img.shields.io/badge/stability-beta-blueviolet"> -->
 
   <!-- Code Style -->
   <img src="https://img.shields.io/badge/code%20style-airbnb-violet">
@@ -60,9 +60,7 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Mac Download](#mac-download)
-  - [Windows Download](#windows-download)
-  - [Linux Download](#linux-download)
+  - [Visualizing Your Docker Compose File](#visualizing-your-docker-compose-file)
 - [Contributing](#contributing)
   - [Cloning The Repo](#cloning-the-Repo)
   - [Development](#development)
@@ -98,45 +96,30 @@
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Nautilus comes in a prebundled application that is ready to run on your preferred operating system.
 
-### Prerequisites
+### **Prerequisites**
 
-This is an example of how to list things you need to use the software and how to install them.
+Nautilus requires the <code>docker</code> and <code>docker-compose</code> command-line interface tools installed. For Mac and Windows users, this comes included with Docker Desktop. For Linux Users, this comes included with Docker Engine.<br/><br/>
+For your convenience, we've included links to Docker's documentation to set this up on your preferred operating system below.
 
-- npm
+- [Mac](https://docs.docker.com/docker-for-mac/install/)
+- [Windows](https://docs.docker.com/docker-for-windows/install/)
+- [Linux](https://docs.docker.com/docker-for-mac/install/)
 
-```sh
-npm install npm@latest -g
-```
+### **Installation**
 
-### Installation
+Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application from one of the links below.
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
+- [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
+- [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
 
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
+We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
 
-3. Install NPM packages
+### **Visualizing Your Docker Compose File**
 
-```sh
-npm install
-```
-
-4. Enter your API in `config.js`
-
-```JS
-const API_KEY = 'ENTER YOUR API';
-```
-
-### Mac Download
-
-### Windows Download
-
-### Linux Download
+Run the application, upload your Docker Compose file, and visualize your Docker Compose setup with the various views and options.
 
 <!-- CONTRIBUTING -->
 
