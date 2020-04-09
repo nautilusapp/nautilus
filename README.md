@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./static/nautilus-text-logo.png" width=400px>
+  <img src="./static/Nautilus-text-logo2.png" width=400px>
 </h1>
 
 <p align="center">
