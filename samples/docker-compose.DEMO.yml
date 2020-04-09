@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   back:
@@ -9,7 +9,9 @@ services:
       - db
       - events
     networks:
-      - default
+      - back-tier
+    ports:
+      - 1240:2222
     volumes:
       - ./data/media:/taiga-media
       - ./conf/back:/taiga-conf
@@ -19,11 +21,13 @@ services:
   front:
     image: dockertaiga/front:5.0.7
     container_name: taiga-front
-    restartd: unless-stopped
+    restart: unless-stopped
     networks:
-      - default
+      - front-tier
     volumes:
       - ./conf/front:/taiga-conf
+    ports:
+      - 1020:1022
     env_file:
       - variables.env
 
@@ -32,9 +36,12 @@ services:
     container_name: taiga-db
     restart: unless-stopped
     networks:
-      - default
+      - back-tier
     env_file:
       - variables.env
+    ports:
+      - 9090:900
+      - 1020:620
     volumes:
       - ./data/db:/var/lib/postgresql/data
 
@@ -43,7 +50,7 @@ services:
     container_name: taiga-rabbit
     restart: unless-stopped
     networks:
-      - default
+      - extended-tier
     env_file:
       - variables.env
 
@@ -51,7 +58,10 @@ services:
     image: bitnami/redis:5.0
     container_name: taiga-redis
     networks:
-      - default
+      - back-tier
+    ports:
+      - 120:120
+      - 1040:445
     env_file:
       - variables.env
 
@@ -62,7 +72,10 @@ services:
     depends_on:
       - rabbit
     networks:
-      - default
+      - front-tier
+    ports:
+      - 90:90
+      - 444:444
     env_file:
       - variables.env
 
@@ -75,7 +88,7 @@ services:
       - front
       - events
     networks:
-      - default
+      - back-tier
     ports:
       - 80:80
       - 443:443
@@ -86,4 +99,6 @@ services:
       - variables.env
 
 networks:
-  default:
+  front-tier:
+  back-tier:
+  extended-tier:
