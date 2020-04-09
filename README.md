@@ -74,7 +74,7 @@
 
 ## Features
 
-### Upload your Compose file
+### Upload your Docker Compose file
 
 <p align="center">
   <img src="https://nautilusdev.com/assets/upload.png" width=70%>
