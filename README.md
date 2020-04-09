@@ -89,7 +89,7 @@
 ### View services by networks or a container dependent view
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/options.png" width=70%>
+  <img src="https://nautilusdev.com/assets/views.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
