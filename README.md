@@ -60,6 +60,7 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Visualizing Your Docker Compose File](#visualizing-your-docker-compose-file)
 - [Contributing](#contributing)
   - [Cloning The Repo](#cloning-the-Repo)
   - [Development](#development)
@@ -116,7 +117,7 @@ Once you're sure you have the <code>docker</code> and <code>docker-compose</code
 
 We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
 
-### **Visualizing Your Application**
+### **Visualizing Your Docker Compose File**
 
 Run the application, upload your Docker Compose file, and visualize your Docker Compose setup with the various views and options.
 
