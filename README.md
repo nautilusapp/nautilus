@@ -59,9 +59,13 @@
   - [Service Info Display](#service-info-display)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
   - [Downloads](#downloads)
-- [Exporting](#exporting)
-- [Contributing/Feedback](#contributing)
+- [Contributing](#contributing)
+  - [Cloning The Repo](#cloning-the-Repo)
+  - [Development](#development)
+  - [Packaging](#packaging)
+- [Testing](#testing)
 - [Technologies Used](#technologies-used)
 - [You May Also Like...](#you-may-also-like)
 - [License](#license)
@@ -70,49 +74,51 @@
 
 ## Features
 
-### Networks View
+### Upload your Compose file
 
 <p align="center">
-  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+  <img src="https://nautilusdev.com/assets/upload-g.gif" width=70%>
 </p>
 
-### Depends On View
+### Display your service's info, ports and volumes
 
 <p align="center">
-  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+  <img src="./static/options.png" width=70%>
 </p>
 
-### Ports and Volumes Toggles
+### View services by networks or a container dependent view
 
 <p align="center">
-  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
-</p>
-
-### Service Info Display
-
-<p align="center">
-  <img src="./static/nautilus-new-ui-mockup.png" width=70%>
+  <img src="./static/views.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-Nautilus comes in a prebundled application that is ready to run on your preferred operating system. Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application [below](#downloads), run the application, and upload your docker-compose.yml file.
+Nautilus comes in a prebundled application that is ready to run on your preferred operating system.
 
 ### **Prerequisites**
 
-Nautilus requires the <code>docker</code> and <code>docker-compose</code> command-line interface tools installed. For Mac and Windows users, this comes included with Docker Desktop. For Linux Users, this comes included with Docker Engine. We've included installation instructions below for your convenience to set this up on your preferred operating system.
+Nautilus requires the <code>docker</code> and <code>docker-compose</code> command-line interface tools installed. For Mac and Windows users, this comes included with Docker Desktop. For Linux Users, this comes included with Docker Engine.<br/><br/>
+For your convenience, we've included links to Docker's documentation to set this up on your preferred operating system below.
 
-- [Windows](https://docs.docker.com/docker-for-windows/install/)
 - [Mac](https://docs.docker.com/docker-for-mac/install/)
+- [Windows](https://docs.docker.com/docker-for-windows/install/)
 - [Linux](https://docs.docker.com/docker-for-mac/install/)
 
-### **Downloads**
+### **Installation**
+
+Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application, run the application, and upload your Docker Compose file.
 
 - [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
 - [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
 - [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
+
+We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
+
+### **Visualizing your application**
+
 <!-- CONTRIBUTING -->
 
 ## Contributing
