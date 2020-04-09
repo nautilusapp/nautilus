@@ -243,4 +243,4 @@ This command is ideal when working on a particular component to streamline devel
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-The Nautilus Devs - [linkedin](https://www.linkedin.com/company/nautilusapp)
+The Nautilus Devs - [LinkedIn](https://www.linkedin.com/company/nautilusapp)
