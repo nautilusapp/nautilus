@@ -77,19 +77,19 @@
 ### Upload your Compose file
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/upload-g.gif" width=70%>
+  <img src="https://nautilusdev.com/assets/upload.png" width=70%>
 </p>
 
 ### Display your service's info, ports and volumes
 
 <p align="center">
-  <img src="./static/options.png" width=70%>
+  <img src="https://nautilusdev.com/assets/options.png" width=70%>
 </p>
 
 ### View services by networks or a container dependent view
 
 <p align="center">
-  <img src="./static/views.png" width=70%>
+  <img src="https://nautilusdev.com/assets/options.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
