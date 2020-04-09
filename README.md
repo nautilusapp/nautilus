@@ -60,7 +60,6 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Downloads](#downloads)
 - [Contributing](#contributing)
   - [Cloning The Repo](#cloning-the-Repo)
   - [Development](#development)
@@ -109,7 +108,7 @@ For your convenience, we've included links to Docker's documentation to set this
 
 ### **Installation**
 
-Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application, run the application, and upload your Docker Compose file.
+Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application from one of the links below.
 
 - [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
 - [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
@@ -117,7 +116,9 @@ Once you're sure you have the <code>docker</code> and <code>docker-compose</code
 
 We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
 
-### **Visualizing your application**
+### **Visualizing Your Application**
+
+Run the application, upload your Docker Compose file, and visualize your Docker Compose setup with the various views and options.
 
 <!-- CONTRIBUTING -->
 
