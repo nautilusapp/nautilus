@@ -74,29 +74,35 @@
 
 ## Features
 
-### Upload your Compose file
+### Upload your Docker Compose file
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/upload-g.gif" width=70%>
+  <img src="https://nautilusdev.com/assets/upload.png" width=70%>
 </p>
 
 ### Display your service's info, ports and volumes
 
 <p align="center">
-  <img src="./static/options.png" width=70%>
+  <img src="https://nautilusdev.com/assets/options.png" width=70%>
 </p>
 
-### View services by networks or a container dependent view
+### View your services by a container dependent view
 
 <p align="center">
-  <img src="./static/views.png" width=70%>
+  <img src="https://nautilusdev.com/assets/dependsView.png" width=70%>
+</p>
+
+### View your services grouped by networks
+
+<p align="center">
+  <img src="https://nautilusdev.com/assets/networksView.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-Nautilus comes in a prebundled application that is ready to run on your preferred operating system.
+Nautilus comes in a prepackaged application that is ready to run on your preferred operating system.
 
 ### **Prerequisites**
 
@@ -162,21 +168,37 @@ This will open a new instance of the Nautilus desktop application and will reloa
 
 Nautilus utilizes electron-builder to package the application. If you want to see the changes you've made to Nautilus in a production version of the application, use these scripts:
 
-_Package for Linux:_ `yarn package-linux`
+_Package for MacOS:_
 
-_Package for macOS:_ `yarn package-mac`
+```
+yarn package-mac
+```
 
-_Package for windows:_ `yarn package-win`
+_Package for Windows:_
+
+```
+yarn package-win
+```
+
+_Package for Linux:_
+
+```
+yarn package-linux
+```
 
 OR
 
-_Package for all three:_ `yarn package-all`
+_Package for all three operating systems:_
+
+```
+yarn package-all
+```
 
 <!-- TESTING USED -->
 
 ## Testing
 
-The Nauilus repo is integrated with Travis Ci, so tests will run automatically on all pull requests. But, we highly recommend that you test as you develop. Nautilus is a test driven development team. We have two was to run tests.
+The Nautilus repo is integrated with Travis Ci, so tests will run automatically on all pull requests. But, we highly recommend that you test as you develop. Nautilus is a test driven development team. We have two was to run tests.
 
 #### #1 Run Tests for Whole Application
 
@@ -198,8 +220,6 @@ This command is ideal when working on a particular component to streamline devel
 
 ## Technologies Used
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 - [TypeScript](https://www.typescriptlang.org/)
 - [Electron](https://www.electronjs.org/)
 - [D3](https://d3js.org/)
@@ -211,22 +231,10 @@ This section should list any major frameworks that you built your project using.
 - [Webpack](https://webpack.js.org/)
 - [Babel](https://babeljs.io/)
 
-<!-- YOU MAY ALSO LIKE -->
-
-## You May Also Like...
-
-- [bankai](https://github.com/choojs/bankai) - streaming asset compiler
-- [stack.gl](http://stack.gl/) - open software ecosystem for WebGL
-- [yo-yo](https://github.com/maxogden/yo-yo) - tiny library for modular UI
-- [tachyons](https://github.com/tachyons-css/tachyons) - functional CSS for
-  humans
-- [sheetify](https://github.com/stackcss/sheetify) - modular CSS bundler for
-  `browserify`
-
   <!-- LICENSE -->
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-The Nauilus Devs - [linkedin](https://www.linkedin.com/company/nautilusapp)
+The Nautilus Devs - [LinkedIn](https://www.linkedin.com/company/nautilusapp)
