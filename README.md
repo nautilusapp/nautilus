@@ -63,8 +63,11 @@
   - [Mac Download](#mac-download)
   - [Windows Download](#windows-download)
   - [Linux Download](#linux-download)
-- [Exporting](#exporting)
-- [Contributing/Feedback](#contributing)
+- [Contributing](#contributing)
+  - [Cloning The Repo](#cloning-the-Repo)
+  - [Development](#development)
+  - [Packaging](#packaging)
+- [Testing](#testing)
 - [Technologies Used](#technologies-used)
 - [You May Also Like...](#you-may-also-like)
 - [License](#license)
@@ -82,13 +85,13 @@
 ### Display your service's info, ports and volumes
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/options-g.gif" width=70%>
+  <img src="./static/options.png" width=70%>
 </p>
 
 ### View services by networks or a container dependent view
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/views-g.gif" width=70%>
+  <img src="./static/views.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
