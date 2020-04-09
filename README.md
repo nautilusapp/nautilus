@@ -86,10 +86,16 @@
   <img src="https://nautilusdev.com/assets/options.png" width=70%>
 </p>
 
-### View services by networks or a container dependent view
+### View your services by a container dependent view
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/views.png" width=70%>
+  <img src="https://nautilusdev.com/assets/dependsView.png" width=70%>
+</p>
+
+### View your services grouped by networks
+
+<p align="center">
+  <img src="https://nautilusdev.com/assets/networksView.png" width=70%>
 </p>
 
 <!-- GETTING STARTED -->
