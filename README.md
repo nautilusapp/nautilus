@@ -35,8 +35,8 @@
       alt="Test Coverage" />
   </a> -->
 
-  <!-- Stability -->
-  <img src="https://img.shields.io/badge/stability-beta-blueviolet">
+  <!-- Stability
+  <img src="https://img.shields.io/badge/stability-beta-blueviolet"> -->
 
   <!-- Code Style -->
   <img src="https://img.shields.io/badge/code%20style-airbnb-violet">
@@ -107,7 +107,7 @@ Nautilus requires the <code>docker</code> and <code>docker-compose</code> comman
 - [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
 - [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
 - [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
-<!-- CONTRIBUTING -->
+  <!-- CONTRIBUTING -->
 
 ## Contributing
 
