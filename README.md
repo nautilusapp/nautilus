@@ -3,7 +3,8 @@
 </h1>
 
 <p align="center">
-  A <code>4kb</code> framework for creating sturdy frontend applications
+  A Docker Compose Charting Tool <br>
+  <a href="https://nautilusdev.com">nautilusdev.com</a>
 </p>
 
 <p align="center">
@@ -140,44 +141,78 @@ const API_KEY = 'ENTER YOUR API';
 
 ### Linux Download
 
-<!-- EXPORTING -->
-
-## Exporting
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
+### **Cloning the Repo**
+
+1. Fork the Project and clone the repo to your local machine
 2. Install Dependencies
-   <br>
+
+   Using Yarn (highly recommended):
+
+   ```
+   yarn
+   ```
+
+   Using npm:
+
+   ```
+   npm install
+   ```
+
+3. Make changes
+4. Write tests for changes
+5. Open a Pull Request
+
+### **Development**
+
+When developing, you'll probably want to run the dev version of our application. Nautilus development is fully integrated with webpack HMR, typescript and sass loaders and Electron. To start the development enviorment.
 
 ```
-yarn install
+yarn dev
 ```
+
+This will open a new instance of the Nautilus desktop application and will reload automatically as you make changes. Code away!!
+
+### **Packaging**
+
+Nautilus utilizes electron-builder to package the application. If you want to see the changes you've made to Nautilus in a production version of the application, use these scripts:
+
+_Package for Linux:_ `yarn package-linux`
+
+_Package for macOS:_ `yarn package-mac`
+
+_Package for windows:_ `yarn package-win`
 
 OR
 
+_Package for all three:_ `yarn package-all`
+
+<!-- TESTING USED -->
+
+## Testing
+
+The Nauilus repo is integrated with Travis Ci, so tests will run automatically on all pull requests. But, we highly recommend that you test as you develop. Nautilus is a test driven development team. We have two was to run tests.
+
+#### #1 Run Tests for Whole Application
+
 ```
-npm i
+yarn test
 ```
 
-3. Create your Feature Branch
-   <br>
+Best use for `yarn test` is right before making a PR to make sure that none of your changes have broken the application.
+
+#### #2 Run One Test File
 
 ```
-git checkout -b feature/AmazingFeature
+yarn test-f <test-filename>
 ```
 
-4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the Branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
+This command is ideal when working on a particular component to streamline development. No need to run tests for the whole application when only touching one file.
 
 <!-- TECHNOLOGIES USED -->
 
@@ -214,4 +249,4 @@ This section should list any major frameworks that you built your project using.
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-Your Name - [@your_twitter](https://twitter.com/your_username)
+The Nauilus Devs - [linkedin](https://www.linkedin.com/company/nautilusapp)
