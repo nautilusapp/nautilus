@@ -35,8 +35,8 @@
       alt="Test Coverage" />
   </a> -->
 
-  <!-- Stability -->
-  <img src="https://img.shields.io/badge/stability-beta-blueviolet">
+  <!-- Stability
+  <img src="https://img.shields.io/badge/stability-beta-blueviolet"> -->
 
   <!-- Code Style -->
   <img src="https://img.shields.io/badge/code%20style-airbnb-violet">
