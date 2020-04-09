@@ -225,18 +225,6 @@ This command is ideal when working on a particular component to streamline devel
 - [Webpack](https://webpack.js.org/)
 - [Babel](https://babeljs.io/)
 
-<!-- YOU MAY ALSO LIKE -->
-
-## You May Also Like...
-
-- [bankai](https://github.com/choojs/bankai) - streaming asset compiler
-- [stack.gl](http://stack.gl/) - open software ecosystem for WebGL
-- [yo-yo](https://github.com/maxogden/yo-yo) - tiny library for modular UI
-- [tachyons](https://github.com/tachyons-css/tachyons) - functional CSS for
-  humans
-- [sheetify](https://github.com/stackcss/sheetify) - modular CSS bundler for
-  `browserify`
-
   <!-- LICENSE -->
 
 ## License
