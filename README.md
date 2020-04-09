@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
 
   <!-- Release -->
-  <img src="https://img.shields.io/badge/release-0.0.1-orange">
+  <img src="https://img.shields.io/badge/release-1.0-orange">
 
   <!-- Release Date -->
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
@@ -29,10 +29,10 @@
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat&color=navy">
 
   <!-- Test Coverage -->
-  <a href="https://codecov.io/github/choojs/choo">
+  <!-- <a href="https://codecov.io/github/choojs/choo">
     <img src="https://img.shields.io/codecov/c/github/choojs/choo/master.svg?style=flat-square&color=indigo"
       alt="Test Coverage" />
-  </a>
+  </a> -->
 
   <!-- Stability -->
   <img src="https://img.shields.io/badge/stability-beta-blueviolet">
@@ -105,7 +105,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Nautilus currently requires you to have the <code>docker</code> CLI tool installed. For Mac and Windows users, this comes preinstalled with Docker Desktop [https://example.com](https://example.cod). For Linu
 
 - npm
 
