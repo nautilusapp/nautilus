@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
 
   <!-- Release -->
-  <img src="https://img.shields.io/badge/release-1.0-orange">
+  <img src="https://img.shields.io/badge/release-1.2.0-orange">
 
   <!-- Release Date -->
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
@@ -59,10 +59,7 @@
   - [Service Info Display](#service-info-display)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Mac Download](#mac-download)
-  - [Windows Download](#windows-download)
-  - [Linux Download](#linux-download)
+  - [Downloads](#downloads)
 - [Exporting](#exporting)
 - [Contributing/Feedback](#contributing)
 - [Technologies Used](#technologies-used)
@@ -101,46 +98,21 @@
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Nautilus comes in a prebundled application that is ready to run on your preferred operating system. Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application [below](#downloads), run the application, and upload your docker-compose.yml file.
 
-### Prerequisites
+### **Prerequisites**
 
-Nautilus currently requires you to have the <code>docker</code> CLI tool installed. For Mac and Windows users, this comes preinstalled with Docker Desktop [https://example.com](https://example.cod). For Linu
+Nautilus requires the <code>docker</code> and <code>docker-compose</code> command-line interface tools installed. For Mac and Windows users, this comes included with Docker Desktop. For Linux Users, this comes included with Docker Engine. We've included installation instructions below for your convenience to set this up on your preferred operating system.
 
-- npm
+- [Windows](https://docs.docker.com/docker-for-windows/install/)
+- [Mac](https://docs.docker.com/docker-for-mac/install/)
+- [Linux](https://docs.docker.com/docker-for-mac/install/)
 
-```sh
-npm install npm@latest -g
-```
+### **Downloads**
 
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
-
-3. Install NPM packages
-
-```sh
-npm install
-```
-
-4. Enter your API in `config.js`
-
-```JS
-const API_KEY = 'ENTER YOUR API';
-```
-
-### Mac Download
-
-### Windows Download
-
-### Linux Download
-
+- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
+- [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
+- [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
 <!-- CONTRIBUTING -->
 
 ## Contributing
