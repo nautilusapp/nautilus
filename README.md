@@ -67,7 +67,6 @@
   - [Packaging](#packaging)
 - [Testing](#testing)
 - [Technologies Used](#technologies-used)
-- [You May Also Like...](#you-may-also-like)
 - [License](#license)
 
 <!-- ABOUT THE PROJECT -->
@@ -109,16 +108,20 @@ Nautilus comes in a prepackaged application that is ready to run on your preferr
 Nautilus requires the <code>docker</code> and <code>docker-compose</code> command-line interface tools installed. For Mac and Windows users, this comes included with Docker Desktop. For Linux Users, this comes included with Docker Engine.<br/><br/>
 For your convenience, we've included links to Docker's documentation to set this up on your preferred operating system below.
 
+<b>Docker Setup Instructions</b>
+
 - [Mac](https://docs.docker.com/docker-for-mac/install/)
 - [Windows](https://docs.docker.com/docker-for-windows/install/)
 - [Linux](https://docs.docker.com/docker-for-mac/install/)
 
 ### **Installation**
 
-Once you're sure you have the <code>docker</code> and <code>docker-compose</code> CLI tools installed, download the application from one of the links below.
+Once you're sure you have the Docker CLI tools installed, download the Nautilus application from one of the links below.
 
-- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
+<b>Nautilus Download Links</b>
+
 - [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
+- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
 - [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
 
 We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
