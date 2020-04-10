@@ -201,7 +201,7 @@ yarn package-all
 
 ## Testing
 
-The Nautilus repo is integrated with Travis CI, so tests will run automatically on all pull requests. But, we highly recommend that you test as you develop. Nautilus is a test driven development team. We have two was to run tests.
+The Nautilus repo is integrated with Travis CI, so tests will run automatically on all pull requests. But, we highly recommend that you test as you develop--Nautilus is a test driven development team. We have two ways to run tests:
 
 #### #1 Run Tests for Whole Application
 
