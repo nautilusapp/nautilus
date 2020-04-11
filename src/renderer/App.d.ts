@@ -60,13 +60,30 @@ export type Port = {
   target: number;
 };
 
-export type Volumes = string[] | Volume[];
+export type Volumes = VolumeType[];
 
-export type Volume = {
-  type: string;
+/** Volumes may have different syntax, depending on the version
+ *
+ * https://docs.docker.com/compose/compose-file/#long-syntax-3
+ */
+type LongVolumeSyntax = Partial<{
+  type: 'volume' | 'bind' | 'tmpfs' | 'npipe';
   source: string;
   target: string;
-};
+  read_only: boolean;
+  bind: {
+    propogation: string;
+  };
+  volume: {
+    nocopy: boolean;
+  };
+  tmpft: {
+    size: number;
+  };
+  consistency: 'consistent' | 'cached' | 'delegated';
+}>;
+
+type VolumeType = string | LongVolumeSyntax;
 
 type ViewT = 'networks' | 'depends_on';
 

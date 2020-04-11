@@ -14,11 +14,11 @@ import {
   TreeMap,
   Link,
   SNode,
-  Volume,
   Port,
   D3State,
   Volumes,
   Ports,
+  VolumeType,
 } from '../App.d';
 import * as d3 from 'd3';
 
@@ -65,7 +65,7 @@ interface ExtractVolumes {
 export const extractVolumes: ExtractVolumes = (volumesData) => {
   const volumes: string[] = [];
   // short syntax string
-  volumesData!.forEach((vol: string | Volume) => {
+  volumesData!.forEach((vol: VolumeType) => {
     // short syntax
     if (typeof vol === 'string') {
       volumes.push(vol);
