@@ -1,4 +1,4 @@
-import { ReadOnlyObj, DependsOn, Services } from '../App.d';
+import { ReadOnlyObj, DependsOn, Services, VolumeType } from '../App.d';
 
 type YamlState = {
   fileUploaded: boolean;
@@ -23,10 +23,19 @@ const convertYamlToState = (file: any) => {
     // IF SERVICE HAS VOLUMES PROPERTY
     if (services[name].volumes) {
       // iterate from all the volumes
-      services[name].volumes.forEach((volume: string): void => {
-        // if its a bind mount, capture it
-        const v = volume.split(':')[0];
-        if (!volumes.hasOwnProperty(v)) {
+      services[name].volumes.forEach((volume: VolumeType): void => {
+        let v = '';
+        if (typeof volume === 'string') {
+          // if its a bind mount, capture it
+          v = volume.split(':')[0];
+        } else if (
+          'source' in volume &&
+          volume.source &&
+          volume.type === 'bind'
+        ) {
+          v = volume.source;
+        }
+        if (!!v && !volumes.hasOwnProperty(v)) {
           bindMounts.push(v);
         }
       });
