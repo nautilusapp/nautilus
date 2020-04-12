@@ -4,7 +4,7 @@
 
 <p align="center">
   A Docker Compose Charting Tool <br><br>
-  Nautilus is an interactive D3 visualizing tool built on Electron that dynamically renders essential Docker Compose properties, created to reduce cognitive load and simplify the development environment for engineers<br/>
+  An interactive D3 visualizing tool that dynamically renders essential Docker Compose properties onto an Electron GUI, built to reduce cognitive load and simplify the development environment for engineers.<br/>
   <a href="https://nautilusdev.com">nautilusdev.com</a>
 </p>
 
