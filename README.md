@@ -77,7 +77,7 @@
 ### Open your Docker Compose file
 
 <p align="center">
-  <img src="https://nautilusdev.com/assets/open.png" width=70%>
+  <img src="https://nautilusdev.com/assets/upload.png" width=70%>
 </p>
 
 ### Display your service's info, ports and volumes
