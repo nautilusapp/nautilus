@@ -121,9 +121,9 @@ Once you're sure you have the Docker CLI tools installed, download the Nautilus 
 
 <b>Nautilus Download Links</b>
 
-- [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
-- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
-- [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
+- [Mac](https://nautilusdev.com/release/Nautilus-1.2.2.dmg)
+- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.2.exe)
+- [Linux](https://nautilusdev.com/release/Nautilus-1.2.2.AppImage)
 
 We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
 
