@@ -18,12 +18,14 @@ import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
+import resolveEnvVariables from '../common/resolveEnvVariables';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
 
+//IMPORT TYPES
 import {
   State,
   FileOpen,
@@ -133,7 +135,12 @@ class App extends Component<{}, State> {
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
-              this.convertAndStoreYamlJSON(fileReader.result.toString());
+              let yamlText = fileReader.result.toString();
+              //if docker-compose uses env file, replace the variables with value from env file
+              if (validationResults.envResolutionRequired) {
+                yamlText = resolveEnvVariables(yamlText, file.path);
+              }
+              this.convertAndStoreYamlJSON(yamlText);
             }
           };
           // read the file

@@ -173,4 +173,5 @@ export type ValidationResults = {
   error?: Error;
   out: string;
   filePath: string;
+  envResolutionRequired: boolean;
 };
