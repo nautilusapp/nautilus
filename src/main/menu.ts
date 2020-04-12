@@ -87,7 +87,13 @@ const createMenu = (window: BrowserWindow) => {
         {
           label: 'Nautilus Homepage',
           click() {
-            shell.openExternal('https://electron.atom.io');
+            shell.openExternal('http://nautilusdev.com');
+          },
+        },
+        {
+          label: 'Visit Nautilus on GitHub',
+          click() {
+            shell.openExternal('https://github.com/oslabs-beta/nautilus');
           },
         },
       ],
