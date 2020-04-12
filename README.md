@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
 
   <!-- Release -->
-  <img src="https://img.shields.io/badge/release-1-orange">
+  <img src="https://img.shields.io/badge/release-1.3.1-orange">
 
   <!-- Release Date -->
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">

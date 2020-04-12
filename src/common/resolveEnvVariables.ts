@@ -9,7 +9,7 @@ const resolveEnvVariables = (yamlText: string, filePath: string) => {
   const envFileArray = filePath.split('/');
   const envFilePath =
     envFileArray.slice(0, envFileArray.length - 1).join('/') + '/.env';
-  //read envfile
+  //read envfile if there is one there
   let envString: string;
   try {
     envString = fs.readFileSync(envFilePath).toString();
