@@ -136,7 +136,7 @@ describe('Testing App Stateful Component', () => {
       const serviceNames = Object.keys(wrapper.state().services);
       expect(serviceNames.length).toBe(5);
       const check = serviceNames.filter(
-        n =>
+        (n) =>
           n === 'vote' ||
           n === 'result' ||
           n === 'worker' ||
@@ -152,25 +152,27 @@ describe('Testing App Stateful Component', () => {
     it('should update bindmounts in state', () => {
       const bindMounts = wrapper.state().bindMounts;
       expect(bindMounts.length).toBe(2);
-      const check = bindMounts.filter(n => n === './vote' || n === './result');
+      const check = bindMounts.filter(
+        (n) => n === './vote' || n === './result',
+      );
       expect(check.length).toBe(2);
     });
     it('should update networks in state', () => {
       const networks = Object.keys(wrapper.state().networks);
       expect(networks.length).toBe(2);
       const check = networks.filter(
-        n => n === 'front-tier' || n === 'back-tier',
+        (n) => n === 'front-tier' || n === 'back-tier',
       );
       expect(check.length).toBe(2);
     });
-    it('should set fileUploaded to true', () => {
-      expect(wrapper.state().fileUploaded).toBe(true);
+    it('should set fileOpened to true', () => {
+      expect(wrapper.state().fileOpened).toBe(true);
     });
   });
 
   describe('componentDidMount()', () => {
     let state = {
-      fileUploaded: true,
+      fileOpened: true,
       services: {
         db: {
           image: 'postgres',
@@ -271,7 +273,7 @@ describe('Testing App Stateful Component', () => {
       const appState = wrapper.state();
       expect(appState.services).toEqual(state.services);
       expect(appState.volumes).toEqual(state.volumes);
-      expect(appState.fileUploaded).toBe(true);
+      expect(appState.fileOpened).toBe(true);
       expect(appState.bindMounts).toEqual(state.bindMounts);
     });
 

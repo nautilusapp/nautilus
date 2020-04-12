@@ -4,26 +4,26 @@
  * @module  FileSelector.tsx
  * @author Mike D
  * @date 3/11/20
- * @description Button to allow user to upload docker-compose file
+ * @description Button to allow user to open docker-compose file
  *
  * ************************************
  */
 import React from 'react';
 import { FaUpload } from 'react-icons/fa';
 
-import { FileUpload } from '../App.d';
+import { FileOpen } from '../App.d';
 
 type Props = {
-  fileUpload: FileUpload;
+  fileOpen: FileOpen;
 };
 
-const FileSelector: React.FC<Props> = ({ fileUpload }) => {
+const FileSelector: React.FC<Props> = ({ fileOpen }) => {
   return (
-    <div className="file-upload">
+    <div className="file-open">
       <label htmlFor="files">
-        <div className="select-file-button upload-flex">
-          <FaUpload className="upload-button" size={24} />
-          <h5>Upload</h5>
+        <div className="select-file-button open-flex">
+          <FaUpload className="open-button" size={24} />
+          <h5>Open</h5>
         </div>
       </label>
       <input
@@ -35,10 +35,10 @@ const FileSelector: React.FC<Props> = ({ fileUpload }) => {
         onChange={(event: React.SyntheticEvent<HTMLInputElement>) => {
           // make sure there was something selected
           if (event.currentTarget) {
-            // make sure user uploaded a file
+            // make sure user opened a file
             if (event.currentTarget.files) {
-              // fire fileUpload function on first file uploaded
-              fileUpload(event.currentTarget.files[0]);
+              // fire fileOpen function on first file opened
+              fileOpen(event.currentTarget.files[0]);
             }
           }
         }}

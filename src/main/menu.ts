@@ -8,9 +8,9 @@ const createMenu = (window: BrowserWindow) => {
       label: 'File',
       submenu: [
         {
-          label: 'Upload Docker-Compose File',
+          label: 'Open Docker-Compose File',
           accelerator: 'CommandOrControl+O',
-          //on click for upload menu item
+          //on click for open menu item
           click() {
             dialog
               .showOpenDialog({
@@ -21,17 +21,17 @@ const createMenu = (window: BrowserWindow) => {
                 ],
               })
               .then((result: Electron.OpenDialogReturnValue) => {
-                // if user exits out of file upload prompt
+                // if user exits out of file open prompt
                 if (!result.filePaths[0]) return;
                 return runDockerComposeValidation(result.filePaths[0]);
               })
               .then((validationResults: any) => {
-                //if validation actually ran and user did not exit out of file upload prompt
+                //if validation actually ran and user did not exit out of file open prompt
                 if (validationResults) {
                   //if there was an error with the file
                   if (validationResults.error) {
                     window.webContents.send(
-                      'file-upload-error-within-electron',
+                      'file-open-error-within-electron',
                       validationResults.error,
                     );
                     //process file and send to front end
@@ -40,7 +40,7 @@ const createMenu = (window: BrowserWindow) => {
                       .readFileSync(validationResults.filePath)
                       .toString();
                     window.webContents.send(
-                      'file-uploaded-within-electron',
+                      'file-opened-within-electron',
                       yamlText,
                     );
                   }
