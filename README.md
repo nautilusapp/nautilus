@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
 
   <!-- Release -->
-  <img src="https://img.shields.io/badge/release-1.2.1-orange">
+  <img src="https://img.shields.io/badge/release-1.3.0-orange">
 
   <!-- Release Date -->
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
@@ -121,9 +121,9 @@ Once you're sure you have the Docker CLI tools installed, download the Nautilus 
 
 <b>Nautilus Download Links</b>
 
-- [Mac](https://nautilusdev.com/release/Nautilus-1.2.0.dmg)
-- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.2.0.exe)
-- [Linux](https://nautilusdev.com/release/Nautilus-1.2.0.AppImage)
+- [Mac](https://nautilusdev.com/release/Nautilus-1.3.0.dmg)
+- [Windows](https://nautilusdev.com/release/Nautilus%20Setup%201.3.0.exe)
+- [Linux](https://nautilusdev.com/release/Nautilus-1.3.0.AppImage)
 
 We are currently in the process of getting appropriate certifications/signatures so you may need to bypass some security warnings to run our application, but rest assured Nautilus does not make any network calls (and the project is 100% open source).
 
