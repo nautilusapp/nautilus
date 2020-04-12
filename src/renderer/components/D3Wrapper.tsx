@@ -20,7 +20,7 @@ import colorSchemeIndex from '../helpers/colorSchemeIndex';
 
 // IMPORT TYPES
 import {
-  FileUpload,
+  FileOpen,
   Services,
   SetSelectedContainer,
   Options,
@@ -29,9 +29,9 @@ import {
 } from '../App.d';
 
 type Props = {
-  fileUpload: FileUpload;
+  fileOpen: FileOpen;
   setSelectedContainer: SetSelectedContainer;
-  fileUploaded: boolean;
+  fileOpened: boolean;
   services: Services;
   options: Options;
   volumes: ReadOnlyObj;
@@ -39,12 +39,12 @@ type Props = {
   view: ViewT;
   networks: ReadOnlyObj;
   selectedNetwork: string;
-  uploadErrors: string[];
+  openErrors: string[];
 };
 
 const D3Wrapper: React.FC<Props> = ({
-  fileUploaded,
-  fileUpload,
+  fileOpened,
+  fileOpen,
   services,
   setSelectedContainer,
   options,
@@ -53,7 +53,7 @@ const D3Wrapper: React.FC<Props> = ({
   view,
   networks,
   selectedNetwork,
-  uploadErrors,
+  openErrors,
 }) => {
   // invoke function that returns a function with the closure object for tracking colors
   const getColor = colorSchemeIndex();
@@ -61,20 +61,20 @@ const D3Wrapper: React.FC<Props> = ({
   return (
     <div className="d3-wrapper">
       {/**
-       * if a file hasn't been uploaded
+       * if a file hasn't been opened
        * ** if errors, display them
-       * ** always display upload button
+       * ** always display open button
        * else display visualizer
        * (yes, this is nested terinary operator)
        */}
-      {!fileUploaded ? (
-        <div className="error-upload-wrapper">
-          {uploadErrors.length > 0 ? (
-            <ErrorDisplay uploadErrors={uploadErrors} />
+      {!fileOpened ? (
+        <div className="error-open-wrapper">
+          {openErrors.length > 0 ? (
+            <ErrorDisplay openErrors={openErrors} />
           ) : (
             <></>
           )}
-          <FileSelector fileUpload={fileUpload} />
+          <FileSelector fileOpen={fileOpen} />
         </div>
       ) : (
         <>

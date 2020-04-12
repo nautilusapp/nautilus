@@ -10,8 +10,8 @@ import renderer from 'react-test-renderer';
 configure({ adapter: new Adapter() });
 
 const props = {
-  fileUpload: jest.fn(() => {}),
-  fileUploaded: false,
+  fileOpen: jest.fn(() => {}),
+  fileOpened: false,
   selectedContainer: '',
   service: {},
 };
@@ -31,7 +31,7 @@ describe('test the functionality of LeftNav component', () => {
         volumes: ['./docker/postgres:/docker-entrypoint-initdb.d'],
       },
       selectedContainer: 'db',
-      fileUploaded: true,
+      fileOpened: true,
     });
     const component = renderer.create(<LeftNav {...snapProps} />).toJSON();
     expect(component).toMatchSnapshot();
@@ -55,19 +55,19 @@ describe('test the functionality of LeftNav component', () => {
     expect(wrapper.find('div.top-half').find(Title)).toHaveLength(1);
   });
 
-  // Test FileUploaded
-  it('`div.top-half` should only have one child if fileUploaded is false', () => {
+  // Test FileOpened
+  it('`div.top-half` should only have one child if fileOpened is false', () => {
     const wrapper = shallow(<LeftNav {...props} />);
     expect(wrapper.find('div.top-half').children()).toHaveLength(1);
   });
 
-  it('`div.top-half` should have two children if fileUploaded is true', () => {
-    const wrapper = shallow(<LeftNav {...props} fileUploaded={true} />);
+  it('`div.top-half` should have two children if fileOpened is true', () => {
+    const wrapper = shallow(<LeftNav {...props} fileOpened={true} />);
     expect(wrapper.find('div.top-half').children()).toHaveLength(2);
   });
 
-  it('Should render a file selector if fileUploaded is true', () => {
-    const wrapper = shallow(<LeftNav {...props} fileUploaded={true} />);
+  it('Should render a file selector if fileOpened is true', () => {
+    const wrapper = shallow(<LeftNav {...props} fileOpened={true} />);
     expect(wrapper.find('div.top-half').find(FileSelector)).toHaveLength(1);
   });
 

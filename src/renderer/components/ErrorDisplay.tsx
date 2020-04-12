@@ -11,15 +11,15 @@
 import React from 'react';
 
 type Props = {
-  uploadErrors: string[];
+  openErrors: string[];
 };
 
-const ErrorDisplay: React.FC<Props> = ({ uploadErrors }) => {
-  // convert uploadErrors array into jsx
-  const formattedError = uploadErrors.reduce(
+const ErrorDisplay: React.FC<Props> = ({ openErrors }) => {
+  // convert openErrors array into jsx
+  const formattedError = openErrors.reduce(
     (acc: JSX.Element[], error: string, i: number) => {
       acc.push(<li key={`error${i}`}>{error}</li>);
-      if (i !== uploadErrors.length - 1) {
+      if (i !== openErrors.length - 1) {
         acc.push(<br />);
       }
       return acc;
@@ -31,7 +31,7 @@ const ErrorDisplay: React.FC<Props> = ({ uploadErrors }) => {
       <h3>Docker-Compose File Issues</h3>
       {formattedError}
       <br />
-      Please fix your file and reupload it.
+      Please fix your file and reopen it.
     </div>
   );
 };

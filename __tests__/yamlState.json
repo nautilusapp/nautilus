@@ -1,5 +1,5 @@
 {
-  "fileUploaded": true,
+  "fileOpened": true,
   "services": {
     "db": {
       "image": "postgres",

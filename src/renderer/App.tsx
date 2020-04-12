@@ -16,7 +16,7 @@ import { ipcRenderer } from 'electron';
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
-import parseUploadError from './helpers/parseUploadError';
+import parseOpenError from './helpers/parseOpenError';
 import runDockerComposeValidation from '../common/dockerComposeValidation';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -26,16 +26,16 @@ import D3Wrapper from './components/D3Wrapper';
 
 import {
   State,
-  FileUpload,
+  FileOpen,
   UpdateOption,
   UpdateView,
   SelectNetwork,
 } from './App.d';
 
 const initialState: State = {
-  uploadErrors: [],
+  openErrors: [],
   selectedContainer: '',
-  fileUploaded: false,
+  fileOpened: false,
   services: {},
   dependsOn: {
     name: 'placeholder',
@@ -119,15 +119,15 @@ class App extends Component<{}, State> {
    * @returns void
    * @description validates the docker-compose file
    * ** if no errors, passes file string along to convert and store yaml method
-   * ** if errors, passes error string to handle file upload errors method
+   * ** if errors, passes error string to handle file open errors method
    */
-  fileUpload: FileUpload = (file: File) => {
+  fileOpen: FileOpen = (file: File) => {
     const fileReader = new FileReader();
     // check for valid file path
     if (file.path) {
       runDockerComposeValidation(file.path).then((validationResults: any) => {
         if (validationResults.error) {
-          this.handleFileUploadError(validationResults.error);
+          this.handleFileOpenError(validationResults.error);
         } else {
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
@@ -148,21 +148,21 @@ class App extends Component<{}, State> {
    * @returns void
    * @description sets state with array of strings of different errors
    */
-  handleFileUploadError = (errorText: Error) => {
-    const uploadErrors = parseUploadError(errorText);
+  handleFileOpenError = (errorText: Error) => {
+    const openErrors = parseOpenError(errorText);
     this.setState({
       ...initialState,
-      uploadErrors,
-      fileUploaded: false,
+      openErrors,
+      fileOpened: false,
     });
   };
 
   componentDidMount() {
     if (ipcRenderer) {
-      ipcRenderer.on('file-upload-error-within-electron', (event, arg) => {
-        this.handleFileUploadError(arg);
+      ipcRenderer.on('file-open-error-within-electron', (event, arg) => {
+        this.handleFileOpenError(arg);
       });
-      ipcRenderer.on('file-uploaded-within-electron', (event, arg) => {
+      ipcRenderer.on('file-opened-within-electron', (event, arg) => {
         this.convertAndStoreYamlJSON(arg);
       });
     }
@@ -177,8 +177,8 @@ class App extends Component<{}, State> {
 
   componentWillUnmount() {
     if (ipcRenderer) {
-      ipcRenderer.removeAllListeners('file-uploaded-within-electron');
-      ipcRenderer.removeAllListeners('file-upload-error-within-electron');
+      ipcRenderer.removeAllListeners('file-opened-within-electron');
+      ipcRenderer.removeAllListeners('file-open-error-within-electron');
     }
   }
 
@@ -188,8 +188,8 @@ class App extends Component<{}, State> {
         {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
         <div className="draggable"></div>
         <LeftNav
-          fileUploaded={this.state.fileUploaded}
-          fileUpload={this.fileUpload}
+          fileOpened={this.state.fileOpened}
+          fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
         />
@@ -204,9 +204,9 @@ class App extends Component<{}, State> {
             selectedNetwork={this.state.selectedNetwork}
           />
           <D3Wrapper
-            uploadErrors={this.state.uploadErrors}
-            fileUploaded={this.state.fileUploaded}
-            fileUpload={this.fileUpload}
+            openErrors={this.state.openErrors}
+            fileOpened={this.state.fileOpened}
+            fileOpen={this.fileOpen}
             services={this.state.services}
             setSelectedContainer={this.setSelectedContainer}
             options={this.state.options}

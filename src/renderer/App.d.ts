@@ -9,13 +9,13 @@ export type State = {
   bindMounts: Array<string>;
   bindMountsClicked: Clicked;
   dependsOn: DependsOn;
-  fileUploaded: boolean;
+  fileOpened: boolean;
   networks: ReadOnlyObj;
   options: Options;
   selectedContainer: string;
   selectedNetwork: string;
   services: Services;
-  uploadErrors: string[];
+  openErrors: string[];
   version: string;
   view: ViewT;
   volumes: ReadOnlyObj;
@@ -98,7 +98,7 @@ export type Options = {
  * APP METHOD FUNCTION TYPES
  * **********************
  */
-export type FileUpload = {
+export type FileOpen = {
   (file: File): void;
 };
 

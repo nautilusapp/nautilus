@@ -1,12 +1,12 @@
 /**
  * ************************
- * @name parseUploadError
+ * @name parseOpenError
  * @input errorText: Error object
  * @output array of strings of error descriptions
  * ************************
  */
 
-const parseUploadError = (errorText: Error) => {
+const parseOpenError = (errorText: Error) => {
   //split string into an array from line breaks
   const splitErrorMessage = errorText.message.split('\n');
   //find the index where there is no information so we only get parts of the error message we want
@@ -30,4 +30,4 @@ const parseUploadError = (errorText: Error) => {
   return displayedErrorMessage;
 };
 
-export default parseUploadError;
+export default parseOpenError;

@@ -6,7 +6,7 @@
   justify-content: center;
   margin-right: 1em;
 
-  .error-upload-wrapper {
+  .error-open-wrapper {
     width: 70%;
     display: flex;
     flex-direction: column;
@@ -148,13 +148,17 @@
     }
   }
 
-  .file-upload {
+  .file-open {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     color: #003459;
-
+    h5 {
+      font-size: 1em;
+      align-self: center;
+      margin: 0;
+    }
     .select-file-button:hover {
       cursor: pointer;
       opacity: 0.9;

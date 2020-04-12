@@ -4,7 +4,7 @@
  * @module  LeftNav.tsx
  * @author
  * @date 3/11/20
- * @description container for the title, the service info and the file upload
+ * @description container for the title, the service info and the file open
  *
  * ************************************
  */
@@ -14,18 +14,18 @@ import React from 'react';
 import ServiceInfo from './ServiceInfo';
 import FileSelector from './FileSelector';
 import Title from './Title';
-import { FileUpload, Service } from '../App.d';
+import { FileOpen, Service } from '../App.d';
 
 type Props = {
   service: Service;
   selectedContainer: string;
-  fileUpload: FileUpload;
-  fileUploaded: boolean;
+  fileOpen: FileOpen;
+  fileOpened: boolean;
 };
 
 const LeftNav: React.FC<Props> = ({
-  fileUpload,
-  fileUploaded,
+  fileOpen,
+  fileOpened,
   selectedContainer,
   service,
 }) => {
@@ -33,7 +33,7 @@ const LeftNav: React.FC<Props> = ({
     <div className="left-nav">
       <div className="top-half">
         <Title />
-        {fileUploaded ? <FileSelector fileUpload={fileUpload} /> : null}
+        {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
     </div>

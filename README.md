@@ -74,7 +74,7 @@
 
 ## Features
 
-### Upload your Docker Compose file
+### Open your Docker Compose file
 
 <p align="center">
   <img src="https://nautilusdev.com/assets/upload.png" width=70%>
@@ -129,7 +129,7 @@ We are currently in the process of getting appropriate certifications/signatures
 
 ### **Visualizing Your Docker Compose File**
 
-Run the application, upload your Docker Compose file, and visualize your Docker Compose setup with the various views and options.
+Run the application, open your Docker Compose file, and visualize your Docker Compose setup with the various views and options.
 
 <!-- CONTRIBUTING -->
 

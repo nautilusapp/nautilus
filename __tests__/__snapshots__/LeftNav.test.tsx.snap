@@ -18,16 +18,16 @@ exports[`test the functionality of LeftNav component renders correctly 1`] = `
       </h1>
     </div>
     <div
-      className="file-upload"
+      className="file-open"
     >
       <label
         htmlFor="files"
       >
         <div
-          className="select-file-button upload-flex"
+          className="select-file-button open-flex"
         >
           <svg
-            className="upload-button"
+            className="open-button"
             fill="currentColor"
             height={24}
             size={24}
@@ -47,7 +47,7 @@ exports[`test the functionality of LeftNav component renders correctly 1`] = `
             />
           </svg>
           <h5>
-            Upload
+            Open
           </h5>
         </div>
       </label>
