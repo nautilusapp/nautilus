@@ -1,6 +1,7 @@
 import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
-import runDockerComposeValidation from '../common/dockerComposeValidation';
+import dockerComposeValidation from '../common/dockerComposeValidation';
+import resolveEnvVariables from '../common/resolveEnvVariables';
 
 const createMenu = (window: BrowserWindow) => {
   const menuTemplate: Electron.MenuItemConstructorOptions[] = [
@@ -23,7 +24,7 @@ const createMenu = (window: BrowserWindow) => {
               .then((result: Electron.OpenDialogReturnValue) => {
                 // if user exits out of file open prompt
                 if (!result.filePaths[0]) return;
-                return runDockerComposeValidation(result.filePaths[0]);
+                return dockerComposeValidation(result.filePaths[0]);
               })
               .then((validationResults: any) => {
                 //if validation actually ran and user did not exit out of file open prompt
@@ -39,6 +40,12 @@ const createMenu = (window: BrowserWindow) => {
                     let yamlText = fs
                       .readFileSync(validationResults.filePath)
                       .toString();
+                    if (validationResults.envResolutionRequired) {
+                      yamlText = resolveEnvVariables(
+                        yamlText,
+                        validationResults.filePath,
+                      );
+                    }
                     window.webContents.send(
                       'file-opened-within-electron',
                       yamlText,
@@ -95,6 +102,10 @@ const createMenu = (window: BrowserWindow) => {
           click() {
             shell.openExternal('https://github.com/oslabs-beta/nautilus');
           },
+        },
+        {
+          label: `Nautilus v${process.env.npm_package_version}`,
+          enabled: false,
         },
       ],
     },

@@ -1,6 +1,6 @@
 {
   "name": "nautilus",
-  "version": "1.2.2",
+  "version": "1.3.1",
   "description": "A Docker Compose Charting Tool",
   "scripts": {
     "start": "cross-env NODE_ENV=production NOT_PACKAGE=true electron ./dist/main/main.js",

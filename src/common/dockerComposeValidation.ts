@@ -9,7 +9,7 @@
 import child_process from 'child_process';
 import { ValidationResults } from '../renderer/App.d';
 
-const runDockerComposeValidation = (filePath: string) =>
+const dockerComposeValidation = (filePath: string) =>
   // promise for the electron application
   new Promise((resolve, reject) => {
     try {
@@ -22,15 +22,21 @@ const runDockerComposeValidation = (filePath: string) =>
           const validationResult: ValidationResults = {
             out: stdout.toString(),
             filePath,
+            envResolutionRequired: false,
           };
           // if there is an error, add the error object to validationResult obj
           if (error) {
+            //if docker-compose uses env file to run, store this variable to handle later
+            if (error.message.includes('variable is not set')) {
+              validationResult.envResolutionRequired = true;
+            }
             // filter errors we don't care about
             if (
               !error.message.includes("Couldn't find env file") &&
               !error.message.includes(
                 'either does not exist, is not accessible',
-              )
+              ) &&
+              !error.message.includes('variable is not set')
             ) {
               validationResult.error = error;
             }
@@ -42,4 +48,4 @@ const runDockerComposeValidation = (filePath: string) =>
     } catch {}
   });
 
-export default runDockerComposeValidation;
+export default dockerComposeValidation;
