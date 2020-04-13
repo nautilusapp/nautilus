@@ -104,7 +104,7 @@ const createMenu = (window: BrowserWindow) => {
           },
         },
         {
-          label: `Nautilus v${process.env.npm_package_version}`,
+          label: `Nautilus v1.3.1}`,
           enabled: false,
         },
       ],
