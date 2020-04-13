@@ -104,7 +104,7 @@ const createMenu = (window: BrowserWindow) => {
           },
         },
         {
-          label: `Nautilus v1.3.1}`,
+          label: 'Nautilus v1.3.1',
           enabled: false,
         },
       ],
