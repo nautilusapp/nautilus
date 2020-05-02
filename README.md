@@ -160,7 +160,7 @@ Contributions are what make the open source community such an amazing place to b
 
 ### **Development**
 
-When developing, you'll probably want to run the dev version of our application. Nautilus development is fully integrated with webpack HMR, typescript and sass loaders and Electron. To start the development enviorment.
+When developing, you'll probably want to run the dev version of our application. Nautilus development is fully integrated with webpack HMR, typescript and sass loaders and Electron. To start the development environment.
 
 ```
 yarn dev
