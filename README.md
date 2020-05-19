@@ -53,11 +53,7 @@
 
 ## Table of Contents
 
-- [Features](#about-the-project)
-  - [Networks View](#networks-view)
-  - [Depends On View](#depends-on-view)
-  - [Ports and Volumes Toggles](#ports-and-volumes-toggles)
-  - [Service Info Display](#service-info-display)
+- [Features](#features)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
