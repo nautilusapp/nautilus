@@ -10,7 +10,7 @@
 
 <p align="center">
   <!-- License -->
-  <img src="https://img.shields.io/github/license/oslabs-beta/nautilus?color=brown&label=license">
+  <img src="https://img.shields.io/github/license/open-source-labs/nautilus?color=brown&label=license">
 
   <!-- Release -->
   <img src="https://img.shields.io/badge/release-1.3.1-orange">
@@ -19,13 +19,13 @@
   <img src="https://img.shields.io/badge/release%20date-4%2F9%2F20-yellow">
 
   <!-- Test -->
-  <img src="https://img.shields.io/travis/com/oslabs-beta/nautilus/master?color=green&label=test">
+  <img src="https://img.shields.io/travis/com/open-source-labs/nautilus/master?color=green&label=test">
 
   <!-- Typescript (Dominant Languge Used) -->
-  <img src="https://img.shields.io/github/languages/top/oslabs-beta/nautilus?color=brightgreen">
+  <img src="https://img.shields.io/github/languages/top/open-source-labs/nautilus?color=brightgreen">
 
   <!-- Repo Size -->
-  <img src="https://img.shields.io/github/repo-size/oslabs-beta/nautilus?color=blue">
+  <img src="https://img.shields.io/github/repo-size/open-source-labs/nautilus?color=blue">
 
   <!-- Contributions -->
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat&color=navy">
