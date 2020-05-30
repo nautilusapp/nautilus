@@ -86,7 +86,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oslabs-beta/nautilis.git"
+    "url": "git+https://github.com/daves28/nautilis.git"
   },
   "keywords": [
     "docker",
