@@ -11,12 +11,13 @@
  */
 
 import React from 'react';
+import Tab from './Tab'
 
 const TabBar = ({ }) => {
 
   return (
     <div className="tab-bar">
-      Hello again
+      <Tab />
     </div>
   );
 };

@@ -6,8 +6,8 @@ interface Props {
 
 const Tab = (props: Props) => {
   return (
-    <div>
-
+    <div className='tab' id='active-tab'>
+      Tab
     </div>
   )
 }
