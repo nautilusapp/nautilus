@@ -96,9 +96,9 @@
   "author": "team nautilis",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oslabs-beta/nautilis/issues"
+    "url": "https://github.com/daves28/nautilis/issues"
   },
-  "homepage": "https://github.com/oslabs-beta/nautilis#readme",
+  "homepage": "https://github.com/daves28/nautilis#readme",
   "dependencies": {
     "d3": "^5.15.0",
     "electron-devtools-installer": "^2.2.4",
