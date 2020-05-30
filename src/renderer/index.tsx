@@ -18,7 +18,10 @@ import { D3State } from '../renderer/App.d';
 import './styles/app.scss';
 
 if (module.hot) {
-  module.hot.accept();
+  module.hot.accept('./App', () => {
+    const NextRootContainer = require('./App').default;
+    render(<NextRootContainer />, document.getElementById('app'));
+  });
 }
 
 declare global {
