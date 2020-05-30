@@ -24,6 +24,7 @@ import resolveEnvVariables from '../common/resolveEnvVariables';
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
+import TabBar from './components/TabBar';
 
 //IMPORT TYPES
 import {
@@ -210,6 +211,7 @@ class App extends Component<{}, State> {
             selectNetwork={this.selectNetwork}
             selectedNetwork={this.state.selectedNetwork}
           />
+          <TabBar />
           <D3Wrapper
             openErrors={this.state.openErrors}
             fileOpened={this.state.fileOpened}
