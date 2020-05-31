@@ -6,7 +6,7 @@ interface Props {
 
 const Tab = (props: Props) => {
   return (
-    <div className='tab' id='active-tab'>
+    <div className='tab'>
       Tab
     </div>
   )

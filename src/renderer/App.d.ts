@@ -15,7 +15,8 @@ export type State = {
   selectedContainer: string;
   selectedNetwork: string;
   services: Services;
-  openErrors: string[];
+  openErrors: Array<string>;
+  openFiles: Array<string>;
   version: string;
   view: ViewT;
   volumes: ReadOnlyObj;

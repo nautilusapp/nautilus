@@ -13,7 +13,10 @@
 import React from 'react';
 import Tab from './Tab'
 
-const TabBar = ({ }) => {
+type Props = {
+  openFiles: Array<string>;
+}
+const TabBar: React.FC<Props> = ({ openFiles }) => {
 
   return (
     <div className="tab-bar">
