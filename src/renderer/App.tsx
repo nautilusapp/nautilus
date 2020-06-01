@@ -33,6 +33,7 @@ import {
   UpdateOption,
   UpdateView,
   SelectNetwork,
+  SwitchTab,
 } from './App.d';
 
 const initialState: State = {
@@ -113,6 +114,7 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
     const openFiles = this.state.openFiles.slice()
+    // Don't add a file that is already opened to the openFiles array
     if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
     // set global variables for d3 simulation
@@ -163,6 +165,14 @@ class App extends Component<{}, State> {
       });
     }
   };
+
+  switchToTab: SwitchTab = (filePath: string) => {
+    const currentState = Object.assign({}, this.state)
+    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
+    const newState = Object.assign({}, currentState, tabState)
+    window.d3State = setD3State(newState.services);
+    this.setState(newState)
+  }
 
   /**
    * @param errorText -> string
@@ -240,7 +250,10 @@ class App extends Component<{}, State> {
             selectNetwork={this.selectNetwork}
             selectedNetwork={this.state.selectedNetwork}
           />
-          <TabBar openFiles={this.state.openFiles} />
+          <TabBar
+            openFiles={this.state.openFiles}
+            switchToTab={this.switchToTab}
+          />
           <D3Wrapper
             openErrors={this.state.openErrors}
             fileOpened={this.state.fileOpened}

@@ -10,7 +10,7 @@ type YamlState = {
   bindMounts?: Array<string>;
 };
 
-const convertYamlToState = (file: any, filePath?: string) => {
+const convertYamlToState = (file: any, filePath: string) => {
   const services = file.services;
   const volumes = file.volumes ? file.volumes : {};
   const networks = file.networks ? file.networks : {};
