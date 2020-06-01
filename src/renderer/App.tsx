@@ -169,10 +169,9 @@ class App extends Component<{}, State> {
   switchToTab: SwitchTab = (filePath: string) => {
     const currentState = Object.assign({}, this.state)
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
-    this.setState({
-      ...currentState,
-      ...tabState
-    })
+    const newState = Object.assign({}, currentState, tabState)
+    window.d3State = setD3State(newState.services);
+    this.setState(newState)
   }
 
   /**

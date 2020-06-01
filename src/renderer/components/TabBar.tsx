@@ -16,10 +16,10 @@ import { SwitchTab } from '../App.d';
 
 type Props = {
   openFiles: Array<string>;
-  switchToTab?: SwitchTab;
+  switchToTab: SwitchTab;
 }
 const TabBar: React.FC<Props> = ({ openFiles, switchToTab }) => {
-  console.log(openFiles)
+  // console.log(openFiles)
   const tabs = openFiles.map(filePath => <Tab key={`${filePath}`} filePath={`${filePath}`} switchToTab={switchToTab} />)
   return (
     <div className="tab-bar">
