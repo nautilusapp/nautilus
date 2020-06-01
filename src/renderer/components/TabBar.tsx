@@ -18,6 +18,7 @@ type Props = {
 }
 const TabBar: React.FC<Props> = ({ openFiles }) => {
   console.log(openFiles)
+  //create tab for each file path with attributes filepath and key
   const tabs = openFiles.map(filePath => <Tab key={`${filePath}`} filePath={`${filePath}`} />)
   return (
     <div className="tab-bar">
