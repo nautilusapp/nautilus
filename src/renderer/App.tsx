@@ -17,7 +17,9 @@ import { ipcRenderer } from 'electron';
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
-import runDockerComposeValidation from '../common/dockerComposeValidation';
+import { 
+         runDockerComposeValidation
+       } from '../common/runBashTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -163,6 +165,10 @@ class App extends Component<{}, State> {
       fileOpened: false,
     });
   };
+
+  componentDidUpdate() {
+    console.log(this.state);
+  }
 
   componentDidMount() {
     if (ipcRenderer) {

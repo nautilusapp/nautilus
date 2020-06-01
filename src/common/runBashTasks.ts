@@ -1,34 +1,33 @@
-/**
- * ************************
- * @name runDockerComposeValidation
- * @input filePath: string, which is the file path to the docker-compose file on host computer
- * @output object: storing output of docker-compose shell command
- * ************************
- */
-
 import child_process from 'child_process';
-import { ValidationResults } from '../renderer/App.d';
+import { bashResults } from '../renderer/App.d'
 
-const dockerComposeValidation = (filePath: string) =>
+const runDockerComposeDeployment = (filePath: string) => 
+  runBash(`docker-compose -f ${filePath} up`);
+
+
+const runDockerComposeValidation = (filePath: string) => 
+  runBash(`docker-compose -f ${filePath} config`);
+
+const runBash = (cmd: string) =>
   // promise for the electron application
   new Promise((resolve, reject) => {
     try {
       // run docker's validation command in a bash shell
+      console.log('cmd', cmd);
       child_process.exec(
-        `docker-compose -f ${filePath} config`,
+        cmd,
         // callback function to access output of docker-compose command
         (error, stdout, stderr) => {
           // add output to object
-          const validationResult: ValidationResults = {
+          const bashResult: bashResults = {
             out: stdout.toString(),
-            filePath,
             envResolutionRequired: false,
           };
           // if there is an error, add the error object to validationResult obj
           if (error) {
             //if docker-compose uses env file to run, store this variable to handle later
             if (error.message.includes('variable is not set')) {
-              validationResult.envResolutionRequired = true;
+              bashResult.envResolutionRequired = true;
             }
             // filter errors we don't care about
             if (
@@ -38,14 +37,15 @@ const dockerComposeValidation = (filePath: string) =>
               ) &&
               !error.message.includes('variable is not set')
             ) {
-              validationResult.error = error;
+              bashResult.error = error;
             }
           }
           // resolve promise when shell command finishes
-          resolve(validationResult);
+          resolve(bashResult);
         },
       );
     } catch {}
   });
 
-export default dockerComposeValidation;
+  export default runBash;
+  export { runDockerComposeDeployment, runDockerComposeValidation };

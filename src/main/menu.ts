@@ -1,6 +1,6 @@
 import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
-import dockerComposeValidation from '../common/dockerComposeValidation';
+import { runDockerComposeValidation } from '../common/runBashTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 
 const createMenu = (window: BrowserWindow) => {
@@ -24,7 +24,7 @@ const createMenu = (window: BrowserWindow) => {
               .then((result: Electron.OpenDialogReturnValue) => {
                 // if user exits out of file open prompt
                 if (!result.filePaths[0]) return;
-                return dockerComposeValidation(result.filePaths[0]);
+                return runDockerComposeValidation(result.filePaths[0]);
               })
               .then((validationResults: any) => {
                 //if validation actually ran and user did not exit out of file open prompt
