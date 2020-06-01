@@ -13,6 +13,8 @@ import React from 'react';
 // IMPORT REACT COMPONENTS
 import ServiceInfo from './ServiceInfo';
 import FileSelector from './FileSelector';
+import SwarmButton from './SwarmButton';
+// import SwarmButtonCluster from '../../common/dockerSwarmDeployment';
 import Title from './Title';
 import { FileOpen, Service } from '../App.d';
 
@@ -36,6 +38,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
+      <SwarmButton />
     </div>
   );
 };
