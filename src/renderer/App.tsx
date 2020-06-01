@@ -118,11 +118,11 @@ class App extends Component<{}, State> {
     // set global variables for d3 simulation
     window.d3State = setD3State(yamlState.services);
 
-    // Create a version of the yamlState without the path. Path must be updated in state inside the openFiles array rather than an individual property.
+    // Create a version of the yamlState without the path. This is because the file path must be added to state inside the openFiles array rather than as an individual property. However, yamlState must include the filePath property for referencing later in the application when reading localstorage. It's possible there is a better way to do this.
     const { fileOpened, services, volumes, networks } = yamlState;
     const yamlStateNoPath = { fileOpened, services, volumes, networks };
 
-    // store opened file state in localStorage under the current state item"state" and an individual item associated with the filePath.
+    // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
     this.setState(Object.assign(initialState, yamlStateNoPath, { openFiles }));
@@ -194,19 +194,20 @@ class App extends Component<{}, State> {
       // set d3 state
       window.d3State = setD3State(stateJS.services);
 
-      //Create openFile state array from files in localStorage
+      //Create openFile state array from items in localStorage
       const openFiles = [];
       const keys = Object.keys(localStorage)
       for (let key of keys) {
-        const item = localStorage.getItem(key)
-        try {
-          const parsed = JSON.parse(item || '{}');
-          openFiles.push(parsed.filePath)
-        } catch {
-          console.log('item not included: ', item)
+        if (key !== 'state') {
+          const item = localStorage.getItem(key)
+          try {
+            const parsed = JSON.parse(item || '{}');
+            openFiles.push(parsed.filePath)
+          } catch {
+            console.log('Item from localStorage not included in openFiles: ', item)
+          }
         }
       }
-      console.log('Here')
       this.setState(Object.assign(initialState, stateJS, { openFiles }));
     }
   }
