@@ -26,6 +26,7 @@ import resolveEnvVariables from '../common/resolveEnvVariables';
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
 import D3Wrapper from './components/D3Wrapper';
+import TabBar from './components/TabBar';
 
 //IMPORT TYPES
 import {
@@ -34,9 +35,11 @@ import {
   UpdateOption,
   UpdateView,
   SelectNetwork,
+  SwitchTab,
 } from './App.d';
 
 const initialState: State = {
+  openFiles: [],
   openErrors: [],
   selectedContainer: '',
   fileOpened: false,
@@ -109,13 +112,24 @@ class App extends Component<{}, State> {
     this.setState({ view: 'networks', selectedNetwork: network });
   };
 
-  convertAndStoreYamlJSON = (yamlText: string) => {
+  convertAndStoreYamlJSON = (yamlText: string, filePath: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
-    const yamlState = convertYamlToState(yamlJSON);
+    const yamlState = convertYamlToState(yamlJSON, filePath);
+    const openFiles = this.state.openFiles.slice()
+    // Don't add a file that is already opened to the openFiles array
+    if (!openFiles.includes(filePath)) openFiles.push(filePath);
+
     // set global variables for d3 simulation
     window.d3State = setD3State(yamlState.services);
+
+    // Create a version of the yamlState without the path. This is because the file path must be added to state inside the openFiles array rather than as an individual property. However, yamlState must include the filePath property for referencing later in the application when reading localstorage. It's possible there is a better way to do this.
+    const { fileOpened, services, volumes, networks } = yamlState;
+    const yamlStateNoPath = { fileOpened, services, volumes, networks };
+
+    // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
-    this.setState(Object.assign(initialState, yamlState));
+    localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
+    this.setState(Object.assign(initialState, yamlStateNoPath, { openFiles }));
   };
 
   /**
@@ -133,16 +147,18 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
+          console.log('Validation results: ', validationResults)
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
+              console.log('fileReader.result: ', fileReader.result)
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
               if (validationResults.envResolutionRequired) {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
-              this.convertAndStoreYamlJSON(yamlText);
+              this.convertAndStoreYamlJSON(yamlText, file.path);
             }
           };
           // read the file
@@ -151,6 +167,30 @@ class App extends Component<{}, State> {
       });
     }
   };
+
+  /**
+   * @param filePath -> string
+   * @returns void
+   * @description sets state to the state stored in localStorage of the file 
+   * associated with the given filePath. 
+   */
+  switchToTab: SwitchTab = (filePath: string) => {
+    const currentState = Object.assign({}, this.state)
+    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
+    const newState = Object.assign({}, currentState, tabState)
+    localStorage.setItem('state', JSON.stringify(tabState));
+    window.d3State = setD3State(newState.services);
+    this.setState(newState)
+  }
+
+  closeTab: SwitchTab = (filePath: string) => {
+    const currentState = Object.assign({}, this.state)
+    const newOpenFiles = currentState.openFiles.map(file => {
+      return true
+    })
+    const newState = Object.assign({}, currentState, { newOpenFiles })
+    this.setState(newState)
+  }
 
   /**
    * @param errorText -> string
@@ -176,7 +216,8 @@ class App extends Component<{}, State> {
         this.handleFileOpenError(arg);
       });
       ipcRenderer.on('file-opened-within-electron', (event, arg) => {
-        this.convertAndStoreYamlJSON(arg);
+        console.log('arg: ', arg)
+        this.convertAndStoreYamlJSON(arg, '');
       });
     }
     const stateJSON = localStorage.getItem('state');
@@ -184,7 +225,22 @@ class App extends Component<{}, State> {
       const stateJS = JSON.parse(stateJSON);
       // set d3 state
       window.d3State = setD3State(stateJS.services);
-      this.setState(Object.assign(initialState, stateJS));
+
+      //Create openFile state array from items in localStorage
+      const openFiles = [];
+      const keys = Object.keys(localStorage)
+      for (let key of keys) {
+        if (key !== 'state') {
+          const item = localStorage.getItem(key)
+          try {
+            const parsed = JSON.parse(item || '{}');
+            openFiles.push(parsed.filePath)
+          } catch {
+            console.log('Item from localStorage not included in openFiles: ', item)
+          }
+        }
+      }
+      this.setState(Object.assign(initialState, stateJS, { openFiles }));
     }
   }
 
@@ -215,6 +271,11 @@ class App extends Component<{}, State> {
             updateOption={this.updateOption}
             selectNetwork={this.selectNetwork}
             selectedNetwork={this.state.selectedNetwork}
+          />
+          <TabBar
+            openFiles={this.state.openFiles}
+            switchToTab={this.switchToTab}
+            closeTab={this.closeTab}
           />
           <D3Wrapper
             openErrors={this.state.openErrors}
