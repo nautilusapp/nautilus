@@ -5,11 +5,11 @@ interface Props {
 }
 
 const Tab: React.FC<Props> = ({ filePath }) => {
-  const fileSplit = filePath.split('\\');
-  const fileName = fileSplit[fileSplit.length - 1];
+  // const fileSplit = filePath.split('\\');
+  // const fileName = fileSplit[fileSplit.length - 1];
   return (
     <div className='tab' id={filePath}>
-      {fileName}hello
+      {filePath}
     </div>
   )
 }
