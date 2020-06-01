@@ -1,14 +1,14 @@
 import child_process from 'child_process';
-import { bashResults } from '../renderer/App.d'
+import { shellResults } from '../renderer/App.d'
 
 const runDockerComposeDeployment = (filePath: string) => 
-  runBash(`docker-compose -f ${filePath} up`);
+  runShell(`docker-compose -f ${filePath} up`);
 
 
 const runDockerComposeValidation = (filePath: string) => 
-  runBash(`docker-compose -f ${filePath} config`);
+  runShell(`docker-compose -f ${filePath} config`);
 
-const runBash = (cmd: string) =>
+const runShell = (cmd: string) =>
   // promise for the electron application
   new Promise((resolve, reject) => {
     try {
@@ -19,7 +19,7 @@ const runBash = (cmd: string) =>
         // callback function to access output of docker-compose command
         (error, stdout, stderr) => {
           // add output to object
-          const bashResult: bashResults = {
+          const shellResult: shellResults = {
             out: stdout.toString(),
             envResolutionRequired: false,
           };
@@ -27,7 +27,7 @@ const runBash = (cmd: string) =>
           if (error) {
             //if docker-compose uses env file to run, store this variable to handle later
             if (error.message.includes('variable is not set')) {
-              bashResult.envResolutionRequired = true;
+              shellResult.envResolutionRequired = true;
             }
             // filter errors we don't care about
             if (
@@ -37,15 +37,15 @@ const runBash = (cmd: string) =>
               ) &&
               !error.message.includes('variable is not set')
             ) {
-              bashResult.error = error;
+              shellResult.error = error;
             }
           }
           // resolve promise when shell command finishes
-          resolve(bashResult);
+          resolve(shellResult);
         },
       );
     } catch {}
   });
 
-  export default runBash;
+  export default runShell;
   export { runDockerComposeDeployment, runDockerComposeValidation };

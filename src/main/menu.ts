@@ -1,6 +1,6 @@
 import { dialog, Menu, BrowserWindow, shell } from 'electron';
 import fs from 'fs';
-import { runDockerComposeValidation } from '../common/runBashTasks';
+import { runDockerComposeValidation } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 
 const createMenu = (window: BrowserWindow) => {

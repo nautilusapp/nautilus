@@ -19,7 +19,7 @@ import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
 import { 
          runDockerComposeValidation
-       } from '../common/runBashTasks';
+       } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS

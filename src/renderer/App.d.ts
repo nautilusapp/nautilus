@@ -169,7 +169,7 @@ export type TreeMap = {
 
 export type Simulation = d3.Simulation<SNode, undefined>;
 
-export type bashResults = {
+export type shellResults = {
   error?: Error;
   out: string;
   envResolutionRequired: boolean;
