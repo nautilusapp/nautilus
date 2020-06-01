@@ -1,13 +1,15 @@
 import React from 'react'
 
 interface Props {
-
+  filePath: string
 }
 
-const Tab = (props: Props) => {
+const Tab: React.FC<Props> = ({ filePath }) => {
+  const fileSplit = filePath.split('\\');
+  const fileName = fileSplit[fileSplit.length - 1];
   return (
-    <div className='tab'>
-      Tab
+    <div className='tab' id={filePath}>
+      {fileName}hello
     </div>
   )
 }

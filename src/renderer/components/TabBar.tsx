@@ -17,10 +17,11 @@ type Props = {
   openFiles: Array<string>;
 }
 const TabBar: React.FC<Props> = ({ openFiles }) => {
-
+  console.log(openFiles)
+  const tabs = openFiles.map(filePath => <Tab key={`${filePath}`} filePath={`${filePath}`} />)
   return (
     <div className="tab-bar">
-      <Tab />
+      {tabs}
     </div>
   );
 };

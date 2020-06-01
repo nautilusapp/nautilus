@@ -3,19 +3,20 @@ import { ReadOnlyObj, DependsOn, Services, VolumeType } from '../App.d';
 type YamlState = {
   fileOpened: boolean;
   services: Services;
+  filePath?: string;
   dependsOn?: DependsOn;
   networks?: ReadOnlyObj;
   volumes?: ReadOnlyObj;
   bindMounts?: Array<string>;
 };
 
-const convertYamlToState = (file: any) => {
+const convertYamlToState = (file: any, filePath?: string) => {
   const services = file.services;
   const volumes = file.volumes ? file.volumes : {};
   const networks = file.networks ? file.networks : {};
   const state: YamlState = Object.assign(
     {},
-    { fileOpened: true, services, volumes, networks },
+    { fileOpened: true, services, volumes, networks, filePath },
   );
   const bindMounts: string[] = [];
   // iterate through each service
