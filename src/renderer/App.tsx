@@ -166,11 +166,27 @@ class App extends Component<{}, State> {
     }
   };
 
+  /**
+   * @param filePath -> string
+   * @returns void
+   * @description sets state to the state stored in localStorage of the file 
+   * associated with the given filePath. 
+   */
   switchToTab: SwitchTab = (filePath: string) => {
     const currentState = Object.assign({}, this.state)
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
     const newState = Object.assign({}, currentState, tabState)
+    localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
+    this.setState(newState)
+  }
+
+  closeTab: SwitchTab = (filePath: string) => {
+    const currentState = Object.assign({}, this.state)
+    const newOpenFiles = currentState.openFiles.map(file => {
+      return true
+    })
+    const newState = Object.assign({}, currentState, { newOpenFiles })
     this.setState(newState)
   }
 
@@ -253,6 +269,7 @@ class App extends Component<{}, State> {
           <TabBar
             openFiles={this.state.openFiles}
             switchToTab={this.switchToTab}
+            closeTab={this.closeTab}
           />
           <D3Wrapper
             openErrors={this.state.openErrors}
