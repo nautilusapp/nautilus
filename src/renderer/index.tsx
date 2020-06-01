@@ -20,6 +20,12 @@ import './styles/app.scss';
 if (module.hot) {
   module.hot.accept();
 }
+// if (module.hot) {
+//   module.hot.accept('./App', () => {
+//     const NextRootContainer = require('./App').default;
+//     render(<NextRootContainer />, document.getElementById('app'));
+//   });
+// }
 
 declare global {
   interface Window {
