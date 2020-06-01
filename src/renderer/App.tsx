@@ -113,19 +113,19 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
     const openFiles = this.state.openFiles.slice()
-    openFiles.push(filePath);
+    if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
     // set global variables for d3 simulation
     window.d3State = setD3State(yamlState.services);
 
     // Create a version of the yamlState without the path. Path must be updated in state inside the openFiles array rather than an individual property.
     const { fileOpened, services, volumes, networks } = yamlState;
-    const yamlNoPath = { fileOpened, services, volumes, networks };
+    const yamlStateNoPath = { fileOpened, services, volumes, networks };
 
     // store opened file state in localStorage under the current state item"state" and an individual item associated with the filePath.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.setState(Object.assign(initialState, yamlNoPath, { openFiles }));
+    this.setState(Object.assign(initialState, yamlStateNoPath, { openFiles }));
   };
 
   /**
@@ -195,12 +195,19 @@ class App extends Component<{}, State> {
       window.d3State = setD3State(stateJS.services);
 
       //Create openFile state array from files in localStorage
-      // const openFiles = [];
-      // for (let i = 0; i < localStorage.length; i++){
-      //   const item = localStorage.getItem(localStorage.key(i))
-      // }
-
-      this.setState(Object.assign(initialState, stateJS));
+      const openFiles = [];
+      const keys = Object.keys(localStorage)
+      for (let key of keys) {
+        const item = localStorage.getItem(key)
+        try {
+          const parsed = JSON.parse(item || '{}');
+          openFiles.push(parsed.filePath)
+        } catch {
+          console.log('item not included: ', item)
+        }
+      }
+      console.log('Here')
+      this.setState(Object.assign(initialState, stateJS, { openFiles }));
     }
   }
 
