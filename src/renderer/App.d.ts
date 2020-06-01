@@ -127,6 +127,10 @@ export type SetSelectedContainer = {
   (containerName: string): void;
 };
 
+export type SwitchTab = {
+  (filePath: string): void;
+};
+
 /**
  * **********************
  * D3 SIMULATION TYPES

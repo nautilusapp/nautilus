@@ -33,6 +33,7 @@ import {
   UpdateOption,
   UpdateView,
   SelectNetwork,
+  SwitchTab,
 } from './App.d';
 
 const initialState: State = {
@@ -165,6 +166,15 @@ class App extends Component<{}, State> {
     }
   };
 
+  switchToTab: SwitchTab = (filePath: string) => {
+    const currentState = Object.assign({}, this.state)
+    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
+    this.setState({
+      ...currentState,
+      ...tabState
+    })
+  }
+
   /**
    * @param errorText -> string
    * @returns void
@@ -241,7 +251,10 @@ class App extends Component<{}, State> {
             selectNetwork={this.selectNetwork}
             selectedNetwork={this.state.selectedNetwork}
           />
-          <TabBar openFiles={this.state.openFiles} />
+          <TabBar
+            openFiles={this.state.openFiles}
+            switchToTab={this.switchToTab}
+          />
           <D3Wrapper
             openErrors={this.state.openErrors}
             fileOpened={this.state.fileOpened}

@@ -1,10 +1,12 @@
 import React from 'react'
+import { SwitchTab } from '../App.d'
 
-interface Props {
-  filePath: string
+type Props = {
+  filePath: string;
+  switchToTab?: SwitchTab;
 }
 
-const Tab: React.FC<Props> = ({ filePath }) => {
+const Tab: React.FC<Props> = ({ filePath, switchToTab }) => {
   // const fileSplit = filePath.split('\\');
   // const fileName = fileSplit[fileSplit.length - 1];
   return (
