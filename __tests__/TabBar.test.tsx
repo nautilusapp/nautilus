@@ -28,14 +28,12 @@ describe('TabBar', () => {
   //check if tabBar renders a tab for each filepath
   it('should render a tab for each file path in openFiles', () => {
     expect(wrapper.find('div.tab-bar').find('Tab').length).toEqual(
-      props.openFiles.length
+      props.openFiles.length,
     );
   });
   //each tab should render a button
   it('should render a button on each tab', () => {
-    expect(wrapper.find('div.tab-bar').find('Tab').find('button')).toHaveLength(
-      1,
-    );
+    expect(wrapper.find('div.tab-bar').find('Tab').find('button')).toHaveLength(1);
   });
   //when button is clicked props.openFiles.length should equal 1
   it('openFiles should have length of 1 after tab button is clicked', () => {

@@ -18,7 +18,7 @@ const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab }) => {
       </div>
       <button className='close-btn' onClick={() => closeTab(filePath)} >{' '}X</button>
     </div>
-  )
-}
+  );
+};
 
-export default Tab
+export default Tab;

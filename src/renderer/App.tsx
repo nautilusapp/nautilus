@@ -41,6 +41,7 @@ const initialState: State = {
   openErrors: [],
   selectedContainer: '',
   fileOpened: false,
+  filePath: '',
   services: {},
   dependsOn: {
     name: 'placeholder',
@@ -113,21 +114,17 @@ class App extends Component<{}, State> {
   convertAndStoreYamlJSON = (yamlText: string, filePath: string) => {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
-    const openFiles = this.state.openFiles.slice()
+    const openFiles = this.state.openFiles.slice();
     // Don't add a file that is already opened to the openFiles array
     if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
     // set global variables for d3 simulation
     window.d3State = setD3State(yamlState.services);
 
-    // Create a version of the yamlState without the path. This is because the file path must be added to state inside the openFiles array rather than as an individual property. However, yamlState must include the filePath property for referencing later in the application when reading localstorage. It's possible there is a better way to do this.
-    const { fileOpened, services, volumes, networks } = yamlState;
-    const yamlStateNoPath = { fileOpened, services, volumes, networks };
-
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.setState(Object.assign(initialState, yamlStateNoPath, { openFiles }));
+    this.setState(Object.assign(initialState, yamlState, { openFiles }));
   };
 
   /**
@@ -145,12 +142,12 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults)
+          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
-              console.log('fileReader.result: ', fileReader.result)
+              console.log('fileReader.result: ', fileReader.result);
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
               if (validationResults.envResolutionRequired) {
@@ -169,26 +166,46 @@ class App extends Component<{}, State> {
   /**
    * @param filePath -> string
    * @returns void
-   * @description sets state to the state stored in localStorage of the file 
-   * associated with the given filePath. 
+   * @description sets state to the state stored in localStorage of the file
+   * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string) => {
-    const currentState = Object.assign({}, this.state)
-    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
-    const newState = Object.assign({}, currentState, tabState)
+    const currentState = Object.assign({}, this.state);
+    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
+    const newState = Object.assign({}, currentState, tabState);
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
-    this.setState(newState)
-  }
+    this.setState(newState);
+  };
 
+  /**
+   * @param filePath -> string
+   * @returns void
+   * @description removes the tab corresponding to the given file path
+   */
   closeTab: SwitchTab = (filePath: string) => {
-    const currentState = Object.assign({}, this.state)
-    const newOpenFiles = currentState.openFiles.map(file => {
-      return true
-    })
-    const newState = Object.assign({}, currentState, { newOpenFiles })
-    this.setState(newState)
-  }
+    const currentState = Object.assign({}, this.state);
+    const { openFiles } = currentState;
+    // const index = openFiles.indexOf(filePath);
+    const newOpenFiles = openFiles.filter((file) => file != filePath);
+    localStorage.removeItem(filePath);
+    console.log('newOpenFiles: ', newOpenFiles);
+    if (newOpenFiles.length) {
+      const nextTabState = JSON.parse(
+        localStorage.getItem(newOpenFiles[0]) || '{}',
+      );
+      localStorage.setItem('state', JSON.stringify(nextTabState));
+      const newState = Object.assign(currentState, nextTabState, {
+        openFiles: newOpenFiles,
+      });
+      window.d3State = setD3State(newState.services);
+      this.setState(newState);
+    } else {
+      localStorage.removeItem('state');
+      window.d3State = setD3State({});
+      this.setState(initialState);
+    }
+  };
 
   /**
    * @param errorText -> string
@@ -210,7 +227,7 @@ class App extends Component<{}, State> {
         this.handleFileOpenError(arg);
       });
       ipcRenderer.on('file-opened-within-electron', (event, arg) => {
-        console.log('arg: ', arg)
+        console.log('arg: ', arg);
         this.convertAndStoreYamlJSON(arg, '');
       });
     }
@@ -222,15 +239,18 @@ class App extends Component<{}, State> {
 
       //Create openFile state array from items in localStorage
       const openFiles = [];
-      const keys = Object.keys(localStorage)
+      const keys = Object.keys(localStorage);
       for (let key of keys) {
         if (key !== 'state') {
-          const item = localStorage.getItem(key)
+          const item = localStorage.getItem(key);
           try {
             const parsed = JSON.parse(item || '{}');
-            openFiles.push(parsed.filePath)
+            openFiles.push(parsed.filePath);
           } catch {
-            console.log('Item from localStorage not included in openFiles: ', item)
+            console.log(
+              'Item from localStorage not included in openFiles: ',
+              item,
+            );
           }
         }
       }
@@ -240,13 +260,14 @@ class App extends Component<{}, State> {
   componentDidUpdate() {
     try {
       //find element with active class and remove active class
-      let makeInactive = document.getElementsByClassName("active-tab");
-      makeInactive[0].classList.remove("active-tab");
+      let makeInactive = document.getElementsByClassName('active-tab');
+      makeInactive[0].classList.remove('active-tab');
       //find html element with the id of current file path and assign it the active-tab class
-      let activeFile = this.state.filePath;
-      document.getElementById(activeFile).classList.add("active-tab");
-    }
-    catch (error) {
+      const activeFilePath = this.state.filePath;
+      const activeFile = document.getElementById(activeFilePath);
+      activeFile!.classList.add('active-tab');
+            
+    } catch (error) {
       console.log(error);
     }
   }
