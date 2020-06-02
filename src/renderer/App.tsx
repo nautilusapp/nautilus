@@ -194,8 +194,8 @@ class App extends Component<{}, State> {
     const newOpenFiles = openFiles.filter(file => file != filePath);
     localStorage.removeItem(filePath);
     localStorage.removeItem('state');
-    window.d3State = setD3State({})
-    this.setState({...initialState, openFiles: newOpenFiles})
+    // window.d3State = setD3State({})
+    this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
 
     // console.log('newOpenFiles: ', newOpenFiles)
     // console.log('length', newOpenFiles.length)
