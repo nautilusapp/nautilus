@@ -264,8 +264,10 @@ class App extends Component<{}, State> {
       makeInactive[0].classList.remove('active-tab');
       //find html element with the id of current file path and assign it the active-tab class
       const activeFilePath = this.state.filePath;
-      const activeFile = document.getElementById(activeFilePath);
-      activeFile!.classList.add('active-tab');
+      if (activeFilePath !== '') {
+        const activeFile = document.getElementById(activeFilePath);
+        activeFile!.classList.add('active-tab');
+      }
             
     } catch (error) {
       console.log(error);
