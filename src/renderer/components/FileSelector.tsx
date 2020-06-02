@@ -18,6 +18,7 @@ type Props = {
 };
 
 const FileSelector: React.FC<Props> = ({ fileOpen }) => {
+  console.log('Rendering FileSelector')
   return (
     <div className="file-open">
       <label htmlFor="files">
@@ -34,10 +35,12 @@ const FileSelector: React.FC<Props> = ({ fileOpen }) => {
         style={{ display: 'none' }}
         onChange={(event: React.SyntheticEvent<HTMLInputElement>) => {
           // make sure there was something selected
+          // console.log('FileSelector Event and event.currentTarget', event, event.currentTarget)
           if (event.currentTarget) {
             // make sure user opened a file
             if (event.currentTarget.files) {
               // fire fileOpen function on first file opened
+              // console.log('Event.currentTarget.file', event.currentTarget.files[0] )
               fileOpen(event.currentTarget.files[0]);
             }
           }
