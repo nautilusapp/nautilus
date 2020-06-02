@@ -237,6 +237,19 @@ class App extends Component<{}, State> {
       this.setState(Object.assign(initialState, stateJS, { openFiles }));
     }
   }
+  componentDidUpdate() {
+    try {
+      //find element with active class and remove active class
+      let makeInactive = document.getElementsByClassName("active-tab");
+      makeInactive[0].classList.remove("active-tab");
+      //find html element with the id of current file path and assign it the active-tab class
+      let activeFile = this.state.filePath;
+      document.getElementById(activeFile).classList.add("active-tab");
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   componentWillUnmount() {
     if (ipcRenderer) {

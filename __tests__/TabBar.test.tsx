@@ -24,10 +24,11 @@ describe('TabBar', () => {
     wrapper.find('div.tab-bar').find('Tab').simulate('click');
     expect(mockFunction.mock.calls.length).toEqual(calls + 1);
   });
+  //check if tab has class active when clicked
   //check if tabBar renders a tab for each filepath
   it('should render a tab for each file path in openFiles', () => {
     expect(wrapper.find('div.tab-bar').find('Tab').length).toEqual(
-      props.openFiles.length,
+      props.openFiles.length
     );
   });
   //each tab should render a button
