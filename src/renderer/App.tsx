@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * ************************************
  *
@@ -17,7 +18,7 @@ import { ipcRenderer } from 'electron';
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
-import runDockerComposeValidation from '../common/dockerComposeValidation';
+import { runDockerComposeValidation } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -145,12 +146,12 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults)
+          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
-              console.log('fileReader.result: ', fileReader.result)
+              console.log('fileReader.result: ', fileReader.result);
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
               if (validationResults.envResolutionRequired) {
@@ -170,7 +171,7 @@ class App extends Component<{}, State> {
    * @param filePath -> string
    * @returns void
    * @description sets state to the state stored in localStorage of the file 
-   * associated with the given filePath. 
+   * associated with the given filePath
    */
   switchToTab: SwitchTab = (filePath: string) => {
     const currentState = Object.assign({}, this.state)
@@ -178,7 +179,7 @@ class App extends Component<{}, State> {
     const newState = Object.assign({}, currentState, tabState)
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
-    this.setState(newState)
+    this.setState(newState);
   }
 
   closeTab: SwitchTab = (filePath: string) => {
