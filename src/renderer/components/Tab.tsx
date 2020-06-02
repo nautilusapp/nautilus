@@ -12,7 +12,7 @@ const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab }) => {
   const fileName = fileSplit[fileSplit.length - 1];
   const splitName = fileName.split('-')
   return (
-    <div className='tab' id={filePath} >
+    <div className='tab active-tab' id={filePath} >
       <div className='tab-text' onClick={() => switchToTab(filePath)} >
         {splitName[0]}&#8209;{splitName[1]}
       </div>
