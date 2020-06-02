@@ -8,20 +8,29 @@ import { shellResults } from '../renderer/App.d'
 const runDockerComposeValidation = (filePath: string) =>
   runShell(`docker-compose -f ${filePath} config`);
 
-const runDockerSwarmInit = (filePath: string): Promise<any> =>
+const runDockerSwarmInit = (filePath: string) =>
   runShell(`docker swarm init`);
 
-const runDockerSwarmDeployStack = (filePath: string, stackName: string): Promise<any> =>
+const runDockerSwarmDeployStack = (filePath: string, stackName: string) =>
 // this function will probably require a second argument to 
 // allow the user to enter a name for their stack
 runShell(`docker stack deploy -c ${filePath} ${stackName}`);
 
-const runDockerSwarmDeployment = (filePath: string, stackName: string) => 
-  runDockerSwarmInit(filePath)
-    .then((res: any) => res)
-    .then((data: any) => console.log(data))
-    .then(() => runDockerSwarmDeployStack(filePath, stackName))
-    .catch((err: any) => console.log(err));
+const runDockerSwarmDeployment = async (filePath: string, stackName: string) => {
+  let stackDeployResult, initResult;
+  await runDockerSwarmInit(filePath).then((data) => initResult = data)
+          .then(() => runDockerSwarmDeployStack(filePath, stackName))
+          .then((info) => {
+            stackDeployResult = info;
+          });
+
+  return JSON.stringify({init: initResult, stackDeploy: stackDeployResult});
+}
+  // runDockerSwarmInit(filePath)
+  //   .then((res: any) => res)
+  //   .then((data: any) => console.log(data))
+  //   .then(() => runDockerSwarmDeployStack(filePath, stackName))
+  //   .catch((err: any) => console.log(err));
   
 const runShell = (cmd: string) => {
   // promise for the electron application

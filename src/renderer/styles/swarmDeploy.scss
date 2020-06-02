@@ -1,0 +1,44 @@
+#swarm-deploy-div {
+  display: flex;
+  justify-content: space-around;
+  background-color: teal;
+  color: white;
+  height: 6em; 
+  text-align: center; 
+  margin-bottom: 3em;
+}
+
+#swarm-deploy-btn {
+  background-color: teal;
+  color: white;
+  font-size: 1.3em;
+  width: 100%;
+}
+
+#hidden-swarm-div {
+  visibility: hidden; 
+  position: absolute; 
+  width: 30em; 
+  height: 15em; 
+  margin-left: 25em;
+  margin-top: -20em;
+  background-color: #DfE9FD;
+}
+
+#stack-name-label {
+  color: teal;
+  font-size: 1.4em;
+}
+
+.message-from-swarm-div {
+  visibility: hidden;
+
+  .error-p {
+    visibility: hidden;
+    color: red;
+  }
+  .success-p {
+    visibility: hidden;
+    color: green;
+  }
+}
