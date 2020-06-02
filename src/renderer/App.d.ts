@@ -10,6 +10,7 @@ export type State = {
   bindMountsClicked: Clicked;
   dependsOn: DependsOn;
   fileOpened: boolean;
+  filePath: string;
   networks: ReadOnlyObj;
   options: Options;
   selectedContainer: string;
