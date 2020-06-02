@@ -23,6 +23,7 @@ type Props = {
   selectedContainer: string;
   fileOpen: FileOpen;
   fileOpened: boolean;
+  deployCompose: () => void;
 };
 
 /*
@@ -36,6 +37,7 @@ const LeftNav: React.FC<Props> = ({
   fileOpened,
   selectedContainer,
   service,
+  deployCompose
 }) => {
   return (
     <div className="left-nav">
@@ -44,7 +46,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <Deployment/>
+      <Deployment onDeploy={deployCompose}/>
     </div>
   );
 };

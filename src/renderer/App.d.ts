@@ -21,6 +21,7 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
+  filePath: string
 };
 
 type ReadOnlyObj = {

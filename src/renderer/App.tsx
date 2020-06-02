@@ -18,10 +18,10 @@ import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
 import { 
-         runDockerComposeValidation
+         runDockerComposeValidation,
+         runDockerComposeDeployment
        } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
-
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
@@ -38,6 +38,7 @@ import {
   SwitchTab,
 } from './App.d';
 
+/* TODO: make sure filepath is somewhere */
 const initialState: State = {
   openFiles: [],
   openErrors: [],
@@ -60,6 +61,7 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
+  filePath: ''
 };
 
 class App extends Component<{}, State> {
@@ -143,6 +145,7 @@ class App extends Component<{}, State> {
     const fileReader = new FileReader();
     // check for valid file path
     if (file.path) {
+      /* TODO: refactor error handling */
       runDockerComposeValidation(file.path).then((validationResults: any) => {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
@@ -175,11 +178,13 @@ class App extends Component<{}, State> {
    * associated with the given filePath. 
    */
   switchToTab: SwitchTab = (filePath: string) => {
+    /* TODO: make it clear in the code that file path is being saved? */
     const currentState = Object.assign({}, this.state)
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
     const newState = Object.assign({}, currentState, tabState)
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
+    console.log(newState);
     this.setState(newState)
   }
 
@@ -190,6 +195,10 @@ class App extends Component<{}, State> {
     })
     const newState = Object.assign({}, currentState, { newOpenFiles })
     this.setState(newState)
+  }
+
+  deployCompose = () => {
+    runDockerComposeDeployment(this.state.filePath).then((validationResults: any) => console.log(validationResults)).catch(err => console.log);
   }
 
   /**
@@ -205,10 +214,6 @@ class App extends Component<{}, State> {
       fileOpened: false,
     });
   };
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
 
   componentDidMount() {
     if (ipcRenderer) {
@@ -252,15 +257,17 @@ class App extends Component<{}, State> {
   }
 
   render() {
+    console.log(this.state.filePath);
     return (
       <div className="app-class">
         {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
-        <div className="draggable"></div>
+        <div className="draggable" />
         <LeftNav
           fileOpened={this.state.fileOpened}
           fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
+          deployCompose={this.deployCompose}
         />
         <div className="main flex">
           <OptionBar
