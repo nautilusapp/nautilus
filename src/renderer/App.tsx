@@ -41,6 +41,7 @@ const initialState: State = {
   openErrors: [],
   selectedContainer: '',
   fileOpened: false,
+  filePath: '',
   services: {},
   dependsOn: {
     name: 'placeholder',
@@ -120,14 +121,10 @@ class App extends Component<{}, State> {
     // set global variables for d3 simulation
     window.d3State = setD3State(yamlState.services);
 
-    // Create a version of the yamlState without the path. This is because the file path must be added to state inside the openFiles array rather than as an individual property. However, yamlState must include the filePath property for referencing later in the application when reading localstorage. It's possible there is a better way to do this.
-    const { fileOpened, services, volumes, networks } = yamlState;
-    const yamlStateNoPath = { fileOpened, services, volumes, networks };
-
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.setState(Object.assign(initialState, yamlStateNoPath, { openFiles }));
+    this.setState(Object.assign(initialState, yamlState, { openFiles }));
   };
 
   /**
@@ -181,13 +178,30 @@ class App extends Component<{}, State> {
     this.setState(newState)
   }
 
+  /**
+   * @param filePath -> string
+   * @returns void
+   * @description removes the tab corresponding to the given file path 
+   */
   closeTab: SwitchTab = (filePath: string) => {
-    const currentState = Object.assign({}, this.state)
-    const newOpenFiles = currentState.openFiles.map(file => {
-      return true
-    })
-    const newState = Object.assign({}, currentState, { newOpenFiles })
-    this.setState(newState)
+    const currentState = Object.assign({}, this.state);
+    const { openFiles } = currentState;
+    // const index = openFiles.indexOf(filePath);
+    const newOpenFiles = openFiles.filter(file => file != filePath
+    );
+    localStorage.removeItem(filePath);
+    console.log('newOpenFiles: ', newOpenFiles)
+    if (newOpenFiles.length) {
+      const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[0]) || '{}')
+      localStorage.setItem('state', JSON.stringify(nextTabState));
+      const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
+      window.d3State = setD3State(newState.services)
+      this.setState(newState)
+    } else {
+      localStorage.removeItem('state')
+      window.d3State = setD3State({})
+      this.setState(initialState)
+    }
   }
 
   /**
