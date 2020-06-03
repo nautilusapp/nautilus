@@ -9,7 +9,9 @@ type Props = {
 }
 
 const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab, activePath }) => {
-  const fileSplit = filePath.split('\\');
+  let fileSplit
+  if (process.platform === 'win32') fileSplit = filePath.split('\\');
+  else fileSplit = filePath.split('/');
   const fileName = fileSplit[fileSplit.length - 1];
   const splitName = fileName.split('-');
   const tabClass = filePath === activePath ? 'tab active-tab' : 'tab';
