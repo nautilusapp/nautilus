@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUpload, FaDownload } from 'react-icons/fa';
 import { remote } from 'electron';
 import { 
@@ -8,7 +8,7 @@ import {
 } from '../../common/runShellTasks';
 
 enum DeploymentStatus {
-    NoCompose = -1,
+    NoFile = -1,
     Dead,
     DeadError,
     Checking,
@@ -23,52 +23,65 @@ type Props = {
 };
 
 const Deployment: React.FC<Props> = ({ filePath }) => {
-  const [ deployState, setDeployState ] = useState('');
-  let errorMessage = '';
+  const [ deployState, setDeployState ] = useState(DeploymentStatus.NoFile);
+  const [ errorMessage, setErrorMessage ] = useState('');
+
+  useEffect(() => {
+    if(filePath !== '') deployCheck();
+    else if(deployState !== DeploymentStatus.NoFile) setDeployState(DeploymentStatus.NoFile);
+  }, [filePath]);
 
   const deployCheck = () => {
     setDeployState(DeploymentStatus.Checking)
     runDockerComposeListContainer(filePath)
     .then((results: any) => {
-      if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+      if(results.error) {
+        setErrorMessage(results.error.message);
+        setDeployState(DeploymentStatus.DeadError);
+      } 
       else if(results.out.split('\n').length > 3){
-        if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
-        else this.setState({deployComposeState: DeploymentStatus.Running})
+        if(results.out.includes('Exit')) setDeployState(DeploymentStatus.Dead);
+        else setDeployState(DeploymentStatus.Running);
       }
-      else this.setState({deployComposeState: DeploymentStatus.Dead});
+      else setDeployState(DeploymentStatus.Dead);
     });
-  }
+  };
 
-  deployCompose = () => {
-    this.setState({deployComposeState: DeploymentStatus.Deploying})
-    runDockerComposeDeployment(this.state.filePath)
+  const deployCompose = () => {
+    setDeployState(DeploymentStatus.Deploying)
+    runDockerComposeDeployment(filePath)
       .then((results: any) => { 
-        if(results.error) {
-            this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+        if(results.error) {;
+          setErrorMessage(errorMessage);
+          setDeployState(DeploymentStatus.DeadError);
         }
-        else this.setState({deployComposeState: DeploymentStatus.Running})
-      })
-      .catch(err => console.log('err', err));
+      else setDeployState(DeploymentStatus.Running);
+    })
+    .catch(err => console.log('err', err));
   }
 
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: DeploymentStatus.Dead }));
-    this.setState({ deployComposeState: DeploymentStatus.Undeploying });
+  const deployKill = () => {
+    runDockerComposeKill(filePath).then(() => setDeployState(DeploymentStatus.Dead));
+    setDeployState(DeploymentStatus.Undeploying);
   }
 
   const onErrorClick = () => {
     const dialog = remote.dialog;
-    dialog.showErrorBox('Error Message:', JSON.stringify(deployErrorMessage));
+    dialog.showErrorBox('Error Message:', errorMessage);
   }
 
   let title, onClick, iconButton = <FaUpload className="deployment-button" size={24} />;
+  if(deployState === DeploymentStatus.NoFile){
+    title = 'No Container To Deploy :(';
+    onClick = () => {};
+  }
   if(deployState === DeploymentStatus.Checking){
     title = 'Checking..'
     onClick = () => {}
   }
   else if(deployState === DeploymentStatus.Dead || deployState === DeploymentStatus.DeadError){
     title = "Deploy Container"
-    onClick = onDeploy;
+    onClick = deployCompose;
   }
   else if(deployState === DeploymentStatus.Deploying){
     title = 'Deploying..';
@@ -82,9 +95,8 @@ const Deployment: React.FC<Props> = ({ filePath }) => {
   else if (deployState === DeploymentStatus.Running || deployState === DeploymentStatus.Warning) {
     iconButton = <FaDownload className="deployment-button" size={24} />
     title = 'Kill Container';
-    onClick = onKill;
-  }
-  console.log('line 53 filePath:', filePath);
+    onClick = deployKill;
+  } 
 
   return (
     <div className='deployment-container'>
@@ -114,4 +126,3 @@ const Deployment: React.FC<Props> = ({ filePath }) => {
 };
 
 export default Deployment;
-export { DeploymentStatus };

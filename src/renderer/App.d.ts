@@ -23,8 +23,6 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
-  deployComposeState: DeploymentStatus;
-  deployErrorMessage: string;
 };
 
 type ReadOnlyObj = {

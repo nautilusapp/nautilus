@@ -35,8 +35,6 @@ import {
   SwitchTab,
 } from './App.d';
 
-import { DeploymentStatus } from './components/ComposeDeployment';
-
 const initialState: State = {
   openFiles: [],
   openErrors: [],
@@ -59,9 +57,7 @@ const initialState: State = {
     volumes: false,
     selectAll: false,
   },
-  version: '',
-  deployComposeState: DeploymentStatus.Dead,
-  deployErrorMessage: ''
+  version: ''
 };
 
 class App extends Component<{}, State> {
@@ -129,7 +125,6 @@ class App extends Component<{}, State> {
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.deployCheck(filePath);
     this.setState(Object.assign(currentState, yamlState, { openFiles }));
   };
 
@@ -162,7 +157,6 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
-              this.deployCheck(file.path);
             }
           };
           // read the file
@@ -185,8 +179,6 @@ class App extends Component<{}, State> {
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
     this.setState(newState);
-    this.setState({ deployComposeState: DeploymentStatus.Checking });
-    this.deployCheck(filePath);
   }
 
   /**
@@ -274,7 +266,6 @@ class App extends Component<{}, State> {
       }
       // Copy of initialState to enture we are not mutating it
       const currentState = { ...initialState }
-      this.deployCheck(stateJS.filePath);
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }
