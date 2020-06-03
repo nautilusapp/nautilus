@@ -153,7 +153,6 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
@@ -210,25 +209,17 @@ class App extends Component<{}, State> {
     localStorage.removeItem('state');
     // window.d3State = setD3State({})
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+  }
 
-    // console.log('newOpenFiles: ', newOpenFiles)
-    // console.log('length', newOpenFiles.length)
-    // if (newOpenFiles.length) {
-    //   console.log('Has length')
-    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[index - 1]) || '{}')
-    //   localStorage.setItem('state', JSON.stringify(nextTabState));
-    //   const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
-    //   window.d3State = setD3State(newState.services)
-    //   this.setState(newState)
-    // } else {
-    //   console.log('Doesn\'t have length')
-    //   localStorage.removeItem('state')
-    //   // console.log('State removed')
-    //   window.d3State = setD3State({})
-    //   // console.log('d3state set')
-    //   // console.log('This is the initial state: ', initialState)
-    //   this.setState(initialState)
-    // }
+  deployCompose = () => {
+    runDockerComposeDeployment(this.state.filePath)
+      .then((validationResults: any) => this.setState({deployComposeState: 3}))
+      .catch(err => console.log(err));
+    this.setState({ deployComposeState: 1 });
+  }
+
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
 
   deployCompose = () => {
@@ -350,6 +341,7 @@ class App extends Component<{}, State> {
             selectedNetwork={this.state.selectedNetwork}
           />
           <TabBar
+            activePath={this.state.filePath}
             openFiles={this.state.openFiles}
             switchToTab={this.switchToTab}
             closeTab={this.closeTab}

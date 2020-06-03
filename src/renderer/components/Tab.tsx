@@ -2,17 +2,19 @@ import React from 'react'
 import { SwitchTab } from '../App.d'
 
 type Props = {
+  activePath: string;
   filePath: string;
   switchToTab: SwitchTab;
   closeTab: SwitchTab;
 }
 
-const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab }) => {
+const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab, activePath }) => {
   const fileSplit = filePath.split('\\');
   const fileName = fileSplit[fileSplit.length - 1];
-  const splitName = fileName.split('-')
+  const splitName = fileName.split('-');
+  const tabClass = filePath === activePath ? 'tab active-tab' : 'tab';
   return (
-    <div className='tab active-tab' id={filePath} >
+    <div className={tabClass} id={filePath} >
       <div className='tab-text' onClick={() => switchToTab(filePath)} >
         {splitName[0]}&#8209;{splitName[1]}
       </div>
