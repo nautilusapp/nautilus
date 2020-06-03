@@ -23,10 +23,6 @@ type Props = {
   selectedContainer: string;
   fileOpen: FileOpen;
   fileOpened: boolean;
-  deployCompose: () => void;
-  deployKill: () => void;
-  deployState: number;
-  deployErrorMessage: string;
   filePath: string;
 };
 
@@ -35,10 +31,6 @@ const LeftNav: React.FC<Props> = ({
   fileOpened,
   selectedContainer,
   service,
-  deployCompose,
-  deployKill,
-  deployState,
-  deployErrorMessage,
   filePath
 }) => {
   return (
@@ -48,7 +40,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <ComposeDeployment filePath={filePath} onDeploy={deployCompose} onKill={deployKill} deployState={deployState} deployErrorMessage={deployErrorMessage}/>
+      <ComposeDeployment filePath={filePath}/>
     </div>
   );
 };

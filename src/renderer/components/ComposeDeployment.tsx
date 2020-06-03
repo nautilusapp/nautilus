@@ -1,6 +1,11 @@
 import React from 'react';
 import { FaUpload, FaDownload } from 'react-icons/fa';
 import { remote } from 'electron';
+import { 
+  runDockerComposeDeployment,
+  runDockerComposeKill,
+  runDockerComposeListContainer
+} from '../../common/runShellTasks';
 
 enum DeploymentStatus {
     NoCompose = -1,
@@ -15,13 +20,42 @@ enum DeploymentStatus {
 
 type Props = {
     filePath: string;
-    onDeploy: () => void;
-    onKill: () => void;
-    deployState: number;
-    deployErrorMessage: string;
 };
 
-const Deployment: React.FC<Props> = ({ onDeploy, onKill, deployState, deployErrorMessage }) => {
+const Deployment: React.FC<Props> = ({ filePath }) => {
+  const [ deployState, setDeployState ] = useState('');
+  let errorMessage = '';
+
+  const deployCheck = () => {
+    setDeployState(DeploymentStatus.Checking)
+    runDockerComposeListContainer(filePath)
+    .then((results: any) => {
+      if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+      else if(results.out.split('\n').length > 3){
+        if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
+        else this.setState({deployComposeState: DeploymentStatus.Running})
+      }
+      else this.setState({deployComposeState: DeploymentStatus.Dead});
+    });
+  }
+
+  deployCompose = () => {
+    this.setState({deployComposeState: DeploymentStatus.Deploying})
+    runDockerComposeDeployment(this.state.filePath)
+      .then((results: any) => { 
+        if(results.error) {
+            this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+        }
+        else this.setState({deployComposeState: DeploymentStatus.Running})
+      })
+      .catch(err => console.log('err', err));
+  }
+
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: DeploymentStatus.Dead }));
+    this.setState({ deployComposeState: DeploymentStatus.Undeploying });
+  }
+
   const onErrorClick = () => {
     const dialog = remote.dialog;
     dialog.showErrorBox('Error Message:', JSON.stringify(deployErrorMessage));
@@ -50,6 +84,7 @@ const Deployment: React.FC<Props> = ({ onDeploy, onKill, deployState, deployErro
     title = 'Kill Container';
     onClick = onKill;
   }
+  console.log('line 53 filePath:', filePath);
 
   return (
     <div className='deployment-container'>

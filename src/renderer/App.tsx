@@ -17,12 +17,7 @@ import { ipcRenderer } from 'electron';
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
-import { 
-         runDockerComposeValidation,
-         runDockerComposeDeployment,
-         runDockerComposeKill,
-         runDockerComposeListContainer
-       } from '../common/runShellTasks';
+import { runDockerComposeValidation } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
@@ -229,36 +224,6 @@ class App extends Component<{}, State> {
     // }
   }
 
-  deployCheck = (filePath: string) => {
-    this.setState({deployComposeState: DeploymentStatus.Checking})
-    runDockerComposeListContainer(filePath)
-    .then((results: any) => {
-      if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
-      else if(results.out.split('\n').length > 3){
-        if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
-        else this.setState({deployComposeState: DeploymentStatus.Running})
-      }
-      else this.setState({deployComposeState: DeploymentStatus.Dead});
-    });
-  }
-
-  deployCompose = () => {
-    this.setState({deployComposeState: DeploymentStatus.Deploying})
-    runDockerComposeDeployment(this.state.filePath)
-      .then((results: any) => { 
-        if(results.error) {
-            this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
-        }
-        else this.setState({deployComposeState: DeploymentStatus.Running})
-      })
-      .catch(err => console.log('err', err));
-  }
-
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: DeploymentStatus.Dead }));
-    this.setState({ deployComposeState: DeploymentStatus.Undeploying });
-  }
-
   /**
    * @param errorText -> string
    * @returns void
@@ -351,10 +316,6 @@ class App extends Component<{}, State> {
           fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
-          deployCompose={this.deployCompose}
-          deployKill={this.deployKill}
-          deployState={this.state.deployComposeState}
-          deployErrorMessage={this.state.deployErrorMessage}
           filePath={this.state.filePath}
         />
         <div className="main flex">
