@@ -12,6 +12,7 @@
 import React, { Component } from 'react';
 import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
+import * as d3 from 'd3';
 
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
@@ -178,6 +179,7 @@ class App extends Component<{}, State> {
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     const newState = Object.assign({}, currentState, tabState);
     localStorage.setItem('state', JSON.stringify(tabState));
+    console.log('Services', newState.services)
     window.d3State = setD3State(newState.services);
     this.setState(newState);
   }
@@ -190,18 +192,23 @@ class App extends Component<{}, State> {
   closeTab: SwitchTab = (filePath: string) => {
     const currentState = { ...this.state };
     const { openFiles } = currentState;
-    // const index = openFiles.indexOf(filePath);
     const newOpenFiles = openFiles.filter(file => file != filePath);
     localStorage.removeItem(filePath);
     localStorage.removeItem('state');
-    // window.d3State = setD3State({})
+    d3.selectAll('.node').remove()
+    d3.selectAll('.link').remove()
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
 
+    // const currentState = { ...this.state };
+    // const { openFiles } = currentState;
+    // // const index = openFiles.indexOf(filePath);
+    // const newOpenFiles = openFiles.filter(file => file != filePath);
+    // localStorage.removeItem(filePath);
     // console.log('newOpenFiles: ', newOpenFiles)
     // console.log('length', newOpenFiles.length)
     // if (newOpenFiles.length) {
     //   console.log('Has length')
-    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[index - 1]) || '{}')
+    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[0]) || '{}')
     //   localStorage.setItem('state', JSON.stringify(nextTabState));
     //   const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
     //   window.d3State = setD3State(newState.services)
@@ -216,7 +223,6 @@ class App extends Component<{}, State> {
     //   this.setState(initialState)
     // }
   }
-
   /**
    * @param errorText -> string
    * @returns void
@@ -232,12 +238,14 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
+    console.log('D3State: ', window.d3State)
     console.log('ipcRenderer: ', ipcRenderer)
     if (ipcRenderer) {
       ipcRenderer.on('file-open-error-within-electron', (event, arg) => {
         this.handleFileOpenError(arg);
       });
       ipcRenderer.on('file-opened-within-electron', (event, arg) => {
+        console.log('Event: ', event)
         console.log('arg: ', arg)
         this.convertAndStoreYamlJSON(arg, '');
       });
