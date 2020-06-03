@@ -1,23 +1,19 @@
 #swarm-deploy-div {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: initial;
   color: white;
-  height: 6em; 
+  height: 6em;
+  width: 100%;
   text-align: center; 
-  margin-bottom: 10em;
+  margin-bottom: 40%;
 }
 
 #swarm-btn-div {
-  display: flex;
-  flex-direction: row;
   align-items: center;
+  padding-left: 0.5em;
+  margin: 0;
 }
-
-// #swarm-btn-div:hover {
-//   cursor: hand;
-//   cursor: pointer;
-//   color: $fifth-color;
-// }
 
 #swarm-deploy-btn {
   background-color: transparent;
@@ -25,21 +21,21 @@
   font-size: 1.1em;
   width: 100%;
   border: none;
+  outline: none;
 
   span {
     margin-right: 5px;
   }
-}
 
-#swarm-deploy-btn:hover {
-  cursor: hand;
-  cursor: pointer;
-  color: $fifth-color;
-}
-
-#swarm-deploy-btn:active {
-  outline: none;
-  border: none;
+  &:hover {
+    cursor: hand;
+    cursor: pointer;
+    color: $fifth-color;
+  }
+  &:active {
+    outline: none;
+    border: none;
+  }
 }
 
 #hidden-swarm-div {
@@ -70,6 +66,10 @@
     color: white;
     font-size: 1.5em;
     border-radius: 10px;
+  }
+  .popup-content-wrapper {
+    width: 80%;
+    height: 80%;
   }
   
   #initialize-swarm {

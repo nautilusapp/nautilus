@@ -222,17 +222,6 @@ class App extends Component<{}, State> {
     runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
 
-  deployCompose = () => {
-    runDockerComposeDeployment(this.state.filePath)
-      .then((validationResults: any) => this.setState({deployComposeState: 3}))
-      .catch(err => console.log(err));
-    this.setState({ deployComposeState: 1 });
-  }
-
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
-  }
-
   /**
    * @param errorText -> string
    * @returns void

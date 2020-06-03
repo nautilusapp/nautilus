@@ -9,7 +9,7 @@
  * ************************************
  */
 
-import React from 'react';
+import React, { useState } from 'react'; // , { useState, useEffect }
 import { FaUpload } from 'react-icons/fa';
 import { runDockerSwarmDeployment } from '../../common/runShellTasks';
 
@@ -20,7 +20,12 @@ type Props = {
 const DeploySwarm: React.FC<Props> = ({
   currentFile
 }) => {
-
+  const [success, setSuccess] = useState(undefined);
+  const [swarmExists, setSwarmExists] = useState(false);
+  const [stdOutMessage, setStdOutMessage] = useState('');
+  const [infoFromSwarm, setInfoFromSwarm] = useState({});
+  const [swarmDeployState, setSwarmDeployState] = useState(0);
+  
   const hiddenDiv: any = document.getElementById('hidden-swarm-div');
   // const messageFromSwarmDiv: any = document.querySelector('.message-from-swarm-div');
   const successMessageDiv: any = document.querySelector('.success-div');
@@ -28,6 +33,23 @@ const DeploySwarm: React.FC<Props> = ({
   const errorMessageDiv: any = document.querySelector('.error-div');
   // const errorMessage: any = document.querySelector('.error-p');
   const initSwarmDiv: any = document.querySelector('#initialize-swarm');
+  
+  const popupStartDiv = (<div id="initialize-swarm">
+                            <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
+                            <input id="stack-name" name="stack-name" placeholder="Enter name...."></input>
+                            <button 
+                              id="create-swarm" 
+                              onClick={() => getNameAndDeploy(event)}>
+                              Create Swarm
+                            </button>
+                          </div>)
+  
+  const successDiv = (<div className="success-div">
+                        <p className="success-p"></p>
+                      </div>);
+  const errorDiv = (<div className="error-div">
+                      <p className="error-p">Sorry, there was an issue initializing your swarm</p>
+                    </div>)
 
   // change visibility of HTML element from hidden to visible or vice versa
   const toggleVisible = (element: any) => {
@@ -46,12 +68,16 @@ const DeploySwarm: React.FC<Props> = ({
     toggleHidden(initSwarmDiv);
 
     const returnedFromPromise = await runDockerSwarmDeployment(currentFile, stackName);
-    const infoFromSwarm = JSON.parse(returnedFromPromise);
+    setInfoFromSwarm(JSON.parse(returnedFromPromise));
+
     console.log(infoFromSwarm);
 
     if (!infoFromSwarm.init.error) {
       const stdOutMessage = infoFromSwarm.init.out.split('\n')[0];
-      let nodeManagerAddress = stdOutMessage.split(' ')[4];
+      // setStdOutMessage(infoFromSwarm.init.out.split('\n')[0]);
+
+      let nodeManagerAddress = stdOutMessage.split(' ')[4].replace(/[()]/g, '');
+      console.log(nodeManagerAddress);
 
       if (successMessageDiv) {
         const posMsg = `Success! Your swarm has been deployed!\nThe current node ${nodeManagerAddress} is now a manager`;
@@ -65,6 +91,12 @@ const DeploySwarm: React.FC<Props> = ({
     }
   };
 
+
+  const useEffect = () => {
+
+  };
+
+
   return (
     <div id="swarm-deploy-div"> 
       <div id="swarm-btn-div">
@@ -73,10 +105,16 @@ const DeploySwarm: React.FC<Props> = ({
           onClick={() => {
             if (hiddenDiv) {
               toggleVisible(hiddenDiv);
+              toggleVisible(initSwarmDiv);
             }}}>
               <span><FaUpload className="open-button" size={24} /></span>
                Deploy to Swarm
         </button>
+        <div className='status-container'>
+          <span className={`deployment-status status-healthy ${swarmDeployState === 3 || swarmDeployState === 2 ? 'status-active' : ''}`}></span>
+          <span className={`deployment-status status-moderate ${swarmDeployState === 1 || swarmDeployState === 2 ? 'status-active' : ''}`}></span>
+          <span className={`deployment-status status-dead ${swarmDeployState === 0 ? 'status-active' : ''}`}></span>
+      </div>
       </div>
 
       <div id="hidden-swarm-div">
@@ -87,29 +125,19 @@ const DeploySwarm: React.FC<Props> = ({
                 if (hiddenDiv) {
                   toggleHidden(errorMessageDiv);
                   toggleHidden(successMessageDiv);
+                  toggleHidden(initSwarmDiv);
                   toggleHidden(hiddenDiv);
               }}}>X</button> 
           </div>
 
-          <div id="initialize-swarm">
-            <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
-            <input id="stack-name" name="stack-name" placeholder="Enter name...."></input>
-            <button 
-              id="create-swarm" 
-              onClick={() => getNameAndDeploy(event)}>
-              Create Swarm
-            </button>
+          <div className="popup-content-wrapper">    
+            
+            {/* <div className="message-from-swarm-div"></div> */}
+            {popupStartDiv}
+            
+
           </div>
 
-          <div className="message-from-swarm-div">
-            <div className="error-div">
-              <p className="error-p">Sorry, there was an issue initializing your swarm</p>
-
-            </div>
-            <div className="success-div">
-              <p className="success-p"></p>
-            </div>
-          </div> 
         </div>
       </div>
     </div>
