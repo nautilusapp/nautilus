@@ -16,7 +16,7 @@ import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileOpen, Service } from '../App.d';
 
-import Deployment from './Deployment';
+import ComposeDeployment from './ComposeDeployment';
 
 type Props = {
   service: Service;
@@ -26,6 +26,7 @@ type Props = {
   deployCompose: () => void;
   deployKill: () => void;
   deployState: number;
+  deployErrorMessage: string;
 };
 
 const LeftNav: React.FC<Props> = ({
@@ -35,7 +36,8 @@ const LeftNav: React.FC<Props> = ({
   service,
   deployCompose,
   deployKill,
-  deployState
+  deployState,
+  deployErrorMessage
 }) => {
   return (
     <div className="left-nav">
@@ -44,7 +46,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <Deployment onDeploy={deployCompose} onKill={deployKill} deployState={deployState}/>
+      <ComposeDeployment onDeploy={deployCompose} onKill={deployKill} deployState={deployState} deployErrorMessage={deployErrorMessage}/>
     </div>
   );
 };

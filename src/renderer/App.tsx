@@ -21,7 +21,8 @@ import {
          runDockerComposeValidation,
          runDockerComposeDeployment,
          runDockerComposeKill,
-         runDockerComposeListContainer
+         runDockerComposeListContainer,
+         runDockerComposeGetError
        } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -39,6 +40,8 @@ import {
   SelectNetwork,
   SwitchTab,
 } from './App.d';
+
+import { DeploymentStatus } from './components/ComposeDeployment';
 
 const initialState: State = {
   openFiles: [],
@@ -63,7 +66,8 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
-  deployComposeState: 0,
+  deployComposeState: DeploymentStatus.Checking,
+  deployErrorMessage: ''
 };
 
 class App extends Component<{}, State> {
@@ -185,15 +189,8 @@ class App extends Component<{}, State> {
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
     this.setState(newState);
-    this.setState({ deployComposeState: -1 });
-    runDockerComposeListContainer(filePath)
-    .then((results: any) => {
-      console.log(results);
-      if(results.out.split('\n').length >= 3){
-        if(results.out.includes('Exit 0')) this.setState({deployComposeState: 0})
-        else this.setState({deployComposeState: 4})
-      }
-    });
+    this.setState({ deployComposeState: DeploymentStatus.Checking });
+    this.deployCheck(filePath);
   }
 
   /**
@@ -231,19 +228,39 @@ class App extends Component<{}, State> {
     // }
   }
 
+  deployCheck = (filePath: string) => {
+    runDockerComposeListContainer(filePath)
+    .then((results: any) => {
+      console.log(results);
+      if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+      else if(results.out.split('\n').length > 3){
+        console.log(results.out.split('\n'));
+        if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
+        else this.setState({deployComposeState: DeploymentStatus.Running})
+      }
+      else this.setState({deployComposeState: DeploymentStatus.Dead});
+    });
+  }
+
   deployCompose = () => {
-    this.setState({deployComposeState: 1})
+    this.setState({deployComposeState: DeploymentStatus.Deploying})
     runDockerComposeDeployment(this.state.filePath)
       .then((results: any) => { 
-        if(results.error) this.setState({deployComposeState: 0})
-        else this.setState({deployComposeState: 4})
+        if(results.error) {
+          runDockerComposeGetError(this.state.filePath)
+            .then((results: any) => {
+              console.log('error results', results);
+              this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
+            })
+        }
+        else this.setState({deployComposeState: DeploymentStatus.Running})
       })
       .catch(err => console.log('err', err));
   }
 
   deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
-    this.setState({ deployComposeState: 2 });
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: DeploymentStatus.Dead }));
+    this.setState({ deployComposeState: DeploymentStatus.Undeploying });
   }
 
   /**
@@ -296,14 +313,7 @@ class App extends Component<{}, State> {
       }
       // Copy of initialState to enture we are not mutating it
       const currentState = { ...initialState }
-      runDockerComposeListContainer(stateJS.filePath)
-      .then((results: any) => {
-        console.log(results);
-        if(results.out.split('\n').length >= 3){
-          if(results.out.includes('Exit 0')) this.setState({deployComposeState: 0})
-          else this.setState({deployComposeState: 4})
-        }
-      });
+      this.deployCheck(stateJS.filePath);
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }
@@ -349,6 +359,7 @@ class App extends Component<{}, State> {
           deployCompose={this.deployCompose}
           deployKill={this.deployKill}
           deployState={this.state.deployComposeState}
+          deployErrorMessage={this.state.deployErrorMessage}
         />
         <div className="main flex">
           <OptionBar
