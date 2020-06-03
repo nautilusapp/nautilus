@@ -1,9 +1,6 @@
 import child_process from 'child_process';
 import { shellResults } from '../renderer/App.d'
 
-const runDockerComposeGetError = (filePath: string) =>
-  runShell(`docker-compose -f ${filePath} up`, false);
-  
 const runDockerComposeKill = (filePath: string) => 
   runShell(`docker-compose -f ${filePath} kill`, false);
 
@@ -58,4 +55,4 @@ const runShell = (cmd: string, filter: boolean) =>
   });
 
 export default runShell;
-export { runDockerComposeGetError, runDockerComposeDeployment, runDockerComposeValidation, runDockerComposeKill, runDockerComposeListContainer };
+export { runDockerComposeDeployment, runDockerComposeValidation, runDockerComposeKill, runDockerComposeListContainer };

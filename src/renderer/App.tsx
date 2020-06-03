@@ -21,8 +21,7 @@ import {
          runDockerComposeValidation,
          runDockerComposeDeployment,
          runDockerComposeKill,
-         runDockerComposeListContainer,
-         runDockerComposeGetError
+         runDockerComposeListContainer
        } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -66,7 +65,7 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
-  deployComposeState: DeploymentStatus.Checking,
+  deployComposeState: DeploymentStatus.Dead,
   deployErrorMessage: ''
 };
 
@@ -135,6 +134,7 @@ class App extends Component<{}, State> {
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
+    this.deployCheck(filePath);
     this.setState(Object.assign(currentState, yamlState, { openFiles }));
   };
 
@@ -167,6 +167,7 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
+              this.deployCheck(file.path);
             }
           };
           // read the file
@@ -229,6 +230,7 @@ class App extends Component<{}, State> {
   }
 
   deployCheck = (filePath: string) => {
+    this.setState({deployComposeState: DeploymentStatus.Checking})
     runDockerComposeListContainer(filePath)
     .then((results: any) => {
       console.log(results);
@@ -247,11 +249,7 @@ class App extends Component<{}, State> {
     runDockerComposeDeployment(this.state.filePath)
       .then((results: any) => { 
         if(results.error) {
-          runDockerComposeGetError(this.state.filePath)
-            .then((results: any) => {
-              console.log('error results', results);
-              this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
-            })
+            this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
         }
         else this.setState({deployComposeState: DeploymentStatus.Running})
       })
