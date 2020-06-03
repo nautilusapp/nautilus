@@ -186,3 +186,66 @@
     color: $fifth-color;
   }
 }
+
+.deployment-status {
+  display: inline-block;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  border: 2px solid;
+}
+
+.status-healthy {
+  border-color: rgb(211,211,211);
+  background-color: rgba(211,211,211, 0.5);
+  &.status-active {
+    background-color: rgb(9, 247, 9);
+  }
+}
+
+.status-moderate {
+  border-color: rgb(211,211,211);
+  background-color: rgba(211,211,211, 0.5);
+  &.status-active {
+    background-color: rgb(246, 246, 8);
+  }
+}
+.status-dead {
+  border-color: rgb(211,211,211);
+  background-color: rgba(211,211,211, 0.5);
+  &.status-active {
+    background-color: rgb(253, 7, 7);
+  }
+}
+
+.button-container:hover {
+  cursor: hand;
+  cursor: pointer;
+  color: $fifth-color;
+}
+
+.deployment-title {
+    font-size: 1em;
+    align-self: center;
+    padding-left: 0.5em;
+    margin: 0;
+}
+
+.status-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding-left: 40%;
+  padding-right: 5%;
+}
+
+.deployment-container {
+  text-align: center;
+  margin-bottom: 10%;
+  color: $fourth-color;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
