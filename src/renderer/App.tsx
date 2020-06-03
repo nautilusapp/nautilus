@@ -153,7 +153,6 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
@@ -210,25 +209,6 @@ class App extends Component<{}, State> {
     localStorage.removeItem('state');
     // window.d3State = setD3State({})
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
-
-    // console.log('newOpenFiles: ', newOpenFiles)
-    // console.log('length', newOpenFiles.length)
-    // if (newOpenFiles.length) {
-    //   console.log('Has length')
-    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[index - 1]) || '{}')
-    //   localStorage.setItem('state', JSON.stringify(nextTabState));
-    //   const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
-    //   window.d3State = setD3State(newState.services)
-    //   this.setState(newState)
-    // } else {
-    //   console.log('Doesn\'t have length')
-    //   localStorage.removeItem('state')
-    //   // console.log('State removed')
-    //   window.d3State = setD3State({})
-    //   // console.log('d3state set')
-    //   // console.log('This is the initial state: ', initialState)
-    //   this.setState(initialState)
-    // }
   }
 
   deployCompose = () => {
@@ -295,27 +275,6 @@ class App extends Component<{}, State> {
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }
-  componentDidUpdate() {
-    try {
-      //find element with active class and remove active class
-      let makeInactive = document.getElementsByClassName('active-tab');
-      makeInactive[0].classList.remove('active-tab');
-    } catch (error) {
-        console.log(error)
-    }
-
-    try {      
-      //find html element with the id of current file path and assign it the active-tab class
-      const activeFilePath = this.state.filePath;
-      console.log('active file pat', activeFilePath)
-      if (activeFilePath !== '') {
-        const activeFile = document.getElementById(activeFilePath);
-        activeFile!.classList.add('active-tab');
-      }
-    } catch (error) {
-        console.log(error);
-    }   
-  }
 
   componentWillUnmount() {
     if (ipcRenderer) {
@@ -349,6 +308,7 @@ class App extends Component<{}, State> {
             selectedNetwork={this.state.selectedNetwork}
           />
           <TabBar
+            activePath={this.state.filePath}
             openFiles={this.state.openFiles}
             switchToTab={this.switchToTab}
             closeTab={this.closeTab}
