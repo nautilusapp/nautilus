@@ -40,7 +40,6 @@ import {
   SwitchTab,
 } from './App.d';
 
-/* TODO: make sure filepath is somewhere */
 const initialState: State = {
   openFiles: [],
   openErrors: [],
@@ -164,12 +163,6 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
-              runDockerComposeListContainer(file.path)
-              .then((results: any) => {
-                if(results.out.split('\n').length >= 3){
-                  this.setState({deployComposeState: 3})
-                }
-              });
             }
           };
           // read the file
@@ -192,6 +185,15 @@ class App extends Component<{}, State> {
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
     this.setState(newState);
+    this.setState({ deployComposeState: -1 });
+    runDockerComposeListContainer(filePath)
+    .then((results: any) => {
+      console.log(results);
+      if(results.out.split('\n').length >= 3){
+        if(results.out.includes('Exit 0')) this.setState({deployComposeState: 0})
+        else this.setState({deployComposeState: 4})
+      }
+    });
   }
 
   /**
@@ -230,14 +232,18 @@ class App extends Component<{}, State> {
   }
 
   deployCompose = () => {
+    this.setState({deployComposeState: 1})
     runDockerComposeDeployment(this.state.filePath)
-      .then((validationResults: any) => this.setState({deployComposeState: 3}))
-      .catch(err => console.log(err));
-    this.setState({ deployComposeState: 1 });
+      .then((results: any) => { 
+        if(results.error) this.setState({deployComposeState: 0})
+        else this.setState({deployComposeState: 4})
+      })
+      .catch(err => console.log('err', err));
   }
 
   deployKill = () => {
     runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
+    this.setState({ deployComposeState: 2 });
   }
 
   /**
@@ -290,6 +296,14 @@ class App extends Component<{}, State> {
       }
       // Copy of initialState to enture we are not mutating it
       const currentState = { ...initialState }
+      runDockerComposeListContainer(stateJS.filePath)
+      .then((results: any) => {
+        console.log(results);
+        if(results.out.split('\n').length >= 3){
+          if(results.out.includes('Exit 0')) this.setState({deployComposeState: 0})
+          else this.setState({deployComposeState: 4})
+        }
+      });
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }

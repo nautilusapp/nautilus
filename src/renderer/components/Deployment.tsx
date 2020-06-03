@@ -18,17 +18,28 @@ type Props = {
 };
 
 const Deployment: React.FC<Props> = ({ onDeploy, onKill, deployState }) => {
-  let title = 'Deploy Compose';
-  let onClick = onDeploy;
-  if(deployState === 1){
+  let title, onClick;
+  if(deployState === -1){
+    title = 'Loading..'
+    onClick = () => {}
+  }
+  else if(deployState === 0){
+    title = "Deploy"
+    onClick = onDeploy;
+  }
+  else if(deployState === 1){
     title = 'Deploying..';
     onClick = () => {};
   }
-  else if (deployState >= 2) {
+  else if(deployState === 2){
+    title = 'Undeploying..'
+    onClick = () => {}
+  }
+  else if (deployState >= 3) {
     title = 'Kill Compose';
     onClick = onKill;
   }
-  
+  console.log('deployState', deployState); 
   return (
     <div className='deployment-container'>
       <div onClick={onClick} className='button-container'>
@@ -36,8 +47,8 @@ const Deployment: React.FC<Props> = ({ onDeploy, onKill, deployState }) => {
         <span className='deployment-title'>{title}</span>
       </div>
       <div className='status-container'>
-        <span className={`deployment-status status-healthy ${deployState === 3 || deployState === 2 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-moderate ${deployState === 1 || deployState === 2 ? 'status-active' : ''}`}></span>
+        <span className={`deployment-status status-healthy ${deployState >= 3 ? 'status-active' : ''}`}></span>
+        <span className={`deployment-status status-moderate ${deployState > 0 && deployState < 3 ? 'status-active' : ''}`}></span>
         <span className={`deployment-status status-dead ${deployState === 0 ? 'status-active' : ''}`}></span>
       </div>
     </div>
