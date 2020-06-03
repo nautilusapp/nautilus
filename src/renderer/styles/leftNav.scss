@@ -188,11 +188,15 @@
 }
 
 .deployment-status {
-  display: inline-block;
+  display: inline-flex;
   border-radius: 50%;
   height: 25px;
   width: 25px;
   border: 2px solid;
+  font-size: 1.7em;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
 }
 
 .status-healthy {
@@ -224,8 +228,14 @@
   color: $fifth-color;
 }
 
+.clickable-status:hover {
+  cursor: hand;
+  cursor: pointer;
+  color: $fifth-color;
+}
+
 .deployment-title {
-    font-size: 1em;
+    font-size: 1.1em;
     align-self: center;
     padding-left: 0.5em;
     margin: 0;

@@ -1,4 +1,5 @@
 import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
+import { DeploymentStatus } from './components/ComposeDeployment';
 
 /**
  * **********************
@@ -22,7 +23,6 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
-  deployComposeState: number;
 };
 
 type ReadOnlyObj = {

@@ -13,17 +13,13 @@
 import React, { Component } from 'react';
 import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
+import * as d3 from 'd3';
 
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
-import { 
-         runDockerComposeValidation,
-         runDockerComposeDeployment,
-         runDockerComposeKill,
-         runDockerComposeListContainer
-       } from '../common/runShellTasks';
+import { runDockerComposeValidation } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
@@ -41,7 +37,6 @@ import {
   SwitchTab,
 } from './App.d';
 
-/* TODO: make sure filepath is somewhere */
 const initialState: State = {
   openFiles: [],
   openErrors: [],
@@ -64,8 +59,7 @@ const initialState: State = {
     volumes: false,
     selectAll: false,
   },
-  version: '',
-  deployComposeState: 0,
+  version: ''
 };
 
 class App extends Component<{}, State> {
@@ -165,12 +159,6 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
-              runDockerComposeListContainer(file.path)
-              .then((results: any) => {
-                if(results.out.split('\n').length >= 3){
-                  this.setState({deployComposeState: 3})
-                }
-              });
             }
           };
           // read the file
@@ -191,6 +179,7 @@ class App extends Component<{}, State> {
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     const newState = Object.assign({}, currentState, tabState);
     localStorage.setItem('state', JSON.stringify(tabState));
+    console.log('Services', newState.services)
     window.d3State = setD3State(newState.services);
     this.setState(newState);
   }
@@ -203,23 +192,12 @@ class App extends Component<{}, State> {
   closeTab: SwitchTab = (filePath: string) => {
     const currentState = { ...this.state };
     const { openFiles } = currentState;
-    // const index = openFiles.indexOf(filePath);
     const newOpenFiles = openFiles.filter(file => file != filePath);
     localStorage.removeItem(filePath);
     localStorage.removeItem('state');
-    // window.d3State = setD3State({})
+    d3.selectAll('.node').remove()
+    d3.selectAll('.link').remove()
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
-  }
-
-  deployCompose = () => {
-    runDockerComposeDeployment(this.state.filePath)
-      .then((validationResults: any) => this.setState({deployComposeState: 3}))
-      .catch(err => console.log(err));
-    this.setState({ deployComposeState: 1 });
-  }
-
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
 
   /**
@@ -237,6 +215,7 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
+    console.log('D3State: ', window.d3State)
     console.log('ipcRenderer: ', ipcRenderer)
     if (ipcRenderer) {
       ipcRenderer.on('file-open-error-within-electron', (event, arg) => {
@@ -293,9 +272,6 @@ class App extends Component<{}, State> {
           fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
-          deployCompose={this.deployCompose}
-          deployKill={this.deployKill}
-          deployState={this.state.deployComposeState}
           currentFile={this.state.filePath}
         />
         <div className="main flex">

@@ -18,16 +18,13 @@ import DeploySwarm from './SwarmDeployment';
 import Title from './Title';
 import { FileOpen, Service } from '../App.d';
 
-import Deployment from './Deployment';
+import ComposeDeployment from './ComposeDeployment';
 
 type Props = {
   service: Service;
   selectedContainer: string;
   fileOpen: FileOpen;
   fileOpened: boolean;
-  deployCompose: () => void;
-  deployKill: () => void;
-  deployState: number;
   currentFile: string;
 };
 
@@ -36,10 +33,7 @@ const LeftNav: React.FC<Props> = ({
   fileOpened,
   selectedContainer,
   service,
-  deployCompose,
-  deployKill,
-  deployState,
-  currentFile,
+  currentFile
 }) => {
   return (
     <div className="left-nav">
@@ -48,7 +42,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <Deployment onDeploy={deployCompose} onKill={deployKill} deployState={deployState}/>
+      <ComposeDeployment currentFilePath={currentFile}/>
       <DeploySwarm currentFile={currentFile} />
     </div>
   );
