@@ -3,7 +3,8 @@ import { FaUpload, FaDownload } from 'react-icons/fa';
 import { remote } from 'electron';
 
 enum DeploymentStatus {
-    Dead = 0,
+    NoCompose = -1,
+    Dead,
     DeadError,
     Checking,
     Deploying,
@@ -13,6 +14,7 @@ enum DeploymentStatus {
 };
 
 type Props = {
+    filePath: string;
     onDeploy: () => void;
     onKill: () => void;
     deployState: number;
@@ -20,38 +22,6 @@ type Props = {
 };
 
 const Deployment: React.FC<Props> = ({ onDeploy, onKill, deployState, deployErrorMessage }) => {
-  deployCheck = (filePath: string) => {
-    this.setState({deployComposeState: DeploymentStatus.Checking})
-    runDockerComposeListContainer(filePath)
-    .then((results: any) => {
-      console.log(results);
-      if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
-      else if(results.out.split('\n').length > 3){
-        console.log(results.out.split('\n'));
-        if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
-        else this.setState({deployComposeState: DeploymentStatus.Running})
-      }
-      else this.setState({deployComposeState: DeploymentStatus.Dead});
-    });
-  }
-
-  deployCompose = () => {
-    this.setState({deployComposeState: DeploymentStatus.Deploying})
-    runDockerComposeDeployment(this.state.filePath)
-      .then((results: any) => { 
-        if(results.error) {
-            this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
-        }
-        else this.setState({deployComposeState: DeploymentStatus.Running})
-      })
-      .catch(err => console.log('err', err));
-  }
-
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: DeploymentStatus.Dead }));
-    this.setState({ deployComposeState: DeploymentStatus.Undeploying });
-  }
-    
   const onErrorClick = () => {
     const dialog = remote.dialog;
     dialog.showErrorBox('Error Message:', JSON.stringify(deployErrorMessage));

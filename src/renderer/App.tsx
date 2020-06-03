@@ -233,10 +233,8 @@ class App extends Component<{}, State> {
     this.setState({deployComposeState: DeploymentStatus.Checking})
     runDockerComposeListContainer(filePath)
     .then((results: any) => {
-      console.log(results);
       if(results.error) this.setState({deployComposeState: DeploymentStatus.DeadError, deployErrorMessage: results.error.message})
       else if(results.out.split('\n').length > 3){
-        console.log(results.out.split('\n'));
         if(results.out.includes('Exit')) this.setState({deployComposeState: DeploymentStatus.Dead})
         else this.setState({deployComposeState: DeploymentStatus.Running})
       }
@@ -327,7 +325,6 @@ class App extends Component<{}, State> {
     try {      
       //find html element with the id of current file path and assign it the active-tab class
       const activeFilePath = this.state.filePath;
-      console.log('active file pat', activeFilePath)
       if (activeFilePath !== '') {
         const activeFile = document.getElementById(activeFilePath);
         activeFile!.classList.add('active-tab');
@@ -358,6 +355,7 @@ class App extends Component<{}, State> {
           deployKill={this.deployKill}
           deployState={this.state.deployComposeState}
           deployErrorMessage={this.state.deployErrorMessage}
+          filePath={this.state.filePath}
         />
         <div className="main flex">
           <OptionBar
