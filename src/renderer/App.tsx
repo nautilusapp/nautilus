@@ -118,7 +118,7 @@ class App extends Component<{}, State> {
     const currentState = { ...initialState };
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
-    const openFiles = this.state.openFiles.slice()
+    const openFiles = this.state.openFiles.slice();
     // Don't add a file that is already opened to the openFiles array
     if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
@@ -147,7 +147,7 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults)
+          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
@@ -171,8 +171,8 @@ class App extends Component<{}, State> {
   /**
    * @param filePath -> string
    * @returns void
-   * @description sets state to the state stored in localStorage of the file 
-   * associated with the given filePath. 
+   * @description sets state to the state stored in localStorage of the file
+   * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string) => {
     const currentState = {...this.state};
@@ -187,7 +187,7 @@ class App extends Component<{}, State> {
   /**
    * @param filePath -> string
    * @returns void
-   * @description removes the tab corresponding to the given file path 
+   * @description removes the tab corresponding to the given file path
    */
   closeTab: SwitchTab = (filePath: string) => {
     const currentState = { ...this.state };
@@ -245,8 +245,7 @@ class App extends Component<{}, State> {
         this.handleFileOpenError(arg);
       });
       ipcRenderer.on('file-opened-within-electron', (event, arg) => {
-        console.log('Event: ', event)
-        console.log('arg: ', arg)
+        console.log('arg: ', arg);
         this.convertAndStoreYamlJSON(arg, '');
       });
     }
@@ -258,15 +257,18 @@ class App extends Component<{}, State> {
 
       //Create openFile state array from items in localStorage
       const openFiles = [];
-      const keys = Object.keys(localStorage)
+      const keys = Object.keys(localStorage);
       for (let key of keys) {
         if (key !== 'state') {
-          const item = localStorage.getItem(key)
+          const item = localStorage.getItem(key);
           try {
             const parsed = JSON.parse(item || '{}');
-            openFiles.push(parsed.filePath)
+            openFiles.push(parsed.filePath);
           } catch {
-            console.log('Item from localStorage not included in openFiles: ', item)
+            console.log(
+              'Item from localStorage not included in openFiles: ',
+              item,
+            );
           }
         }
       }
@@ -274,6 +276,27 @@ class App extends Component<{}, State> {
       const currentState = { ...initialState }
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
+  }
+  componentDidUpdate() {
+    try {
+      //find element with active class and remove active class
+      let makeInactive = document.getElementsByClassName('active-tab');
+      makeInactive[0].classList.remove('active-tab');
+    } catch (error) {
+        console.log(error)
+    }
+
+    try {      
+      //find html element with the id of current file path and assign it the active-tab class
+      const activeFilePath = this.state.filePath;
+      console.log('active file path', activeFilePath)
+      if (activeFilePath !== '') {
+        const activeFile = document.getElementById(activeFilePath);
+        activeFile!.classList.add('active-tab');
+      }
+    } catch (error) {
+        console.log(error);
+    }   
   }
 
   componentWillUnmount() {

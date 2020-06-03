@@ -10,7 +10,9 @@ import path from 'path';
 import LeftNav from '../src/renderer/components/LeftNav';
 import OptionBar from '../src/renderer/components/OptionBar';
 import D3Wrapper from '../src/renderer/components/D3Wrapper';
+import TabBar from '../src/renderer/components/TabBar';
 import { State } from '../src/renderer/App.d';
+import TabBar from '../src/renderer/components/TabBar';
 
 configure({ adapter: new Adapter() });
 
@@ -30,6 +32,7 @@ describe('Testing App Stateful Component', () => {
       expect(wrapper.find(LeftNav)).toHaveLength(1);
       expect(wrapper.find(OptionBar)).toHaveLength(1);
       expect(wrapper.find(D3Wrapper)).toHaveLength(1);
+      expect(wrapper.find(TabBar)).toHaveLength(1);
     });
   });
 
