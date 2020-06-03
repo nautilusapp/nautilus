@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * ************************************
  *
@@ -153,11 +154,11 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
+              console.log('fileReader.result: ', fileReader.result);
               // console.log('fileReader.result: ', fileReader.result)
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
@@ -210,7 +211,16 @@ class App extends Component<{}, State> {
     d3.selectAll('.node').remove()
     d3.selectAll('.link').remove()
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+  }
 
+  deployCompose = () => {
+    runDockerComposeDeployment(this.state.filePath)
+      .then((validationResults: any) => this.setState({deployComposeState: 3}))
+      .catch(err => console.log(err));
+    this.setState({ deployComposeState: 1 });
+  }
+
+<<<<<<< HEAD
     // const currentState = { ...this.state };
     // const { openFiles } = currentState;
     // // const index = openFiles.indexOf(filePath);
@@ -234,6 +244,10 @@ class App extends Component<{}, State> {
     //   // console.log('This is the initial state: ', initialState)
     //   this.setState(initialState)
     // }
+=======
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
+>>>>>>> master
   }
 
   deployCompose = () => {
@@ -301,27 +315,6 @@ class App extends Component<{}, State> {
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }
-  componentDidUpdate() {
-    try {
-      //find element with active class and remove active class
-      let makeInactive = document.getElementsByClassName('active-tab');
-      makeInactive[0].classList.remove('active-tab');
-    } catch (error) {
-        console.log(error)
-    }
-
-    try {      
-      //find html element with the id of current file path and assign it the active-tab class
-      const activeFilePath = this.state.filePath;
-      console.log('active file pat', activeFilePath)
-      if (activeFilePath !== '') {
-        const activeFile = document.getElementById(activeFilePath);
-        activeFile!.classList.add('active-tab');
-      }
-    } catch (error) {
-        console.log(error);
-    }   
-  }
 
   componentWillUnmount() {
     if (ipcRenderer) {
@@ -343,6 +336,7 @@ class App extends Component<{}, State> {
           deployCompose={this.deployCompose}
           deployKill={this.deployKill}
           deployState={this.state.deployComposeState}
+          currentFile={this.state.filePath}
         />
         <div className="main flex">
           <OptionBar
@@ -355,6 +349,7 @@ class App extends Component<{}, State> {
             selectedNetwork={this.state.selectedNetwork}
           />
           <TabBar
+            activePath={this.state.filePath}
             openFiles={this.state.openFiles}
             switchToTab={this.switchToTab}
             closeTab={this.closeTab}
