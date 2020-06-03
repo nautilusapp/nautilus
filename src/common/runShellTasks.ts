@@ -15,12 +15,12 @@ const runDockerComposeValidation = (filePath: string) =>
   runShell(`docker-compose -f ${filePath} config`, true);
 
 const runDockerSwarmInit = (filePath: string) =>
-  runShell(`docker swarm init`, true);
+  runShell(`docker swarm init`, false);
 
 const runDockerSwarmDeployStack = (filePath: string, stackName: string) =>
 // this function will probably require a second argument to 
 // allow the user to enter a name for their stack
-  runShell(`docker stack deploy -c ${filePath} ${stackName}`, true);
+  runShell(`docker stack deploy -c ${filePath} ${stackName}`, false);
 
 const runDockerSwarmDeployment = async (filePath: string, stackName: string) => {
   let stackDeployResult, initResult;

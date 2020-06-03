@@ -28,6 +28,7 @@ type Props = {
   deployCompose: () => void;
   deployKill: () => void;
   deployState: number;
+  currentFile: string;
 };
 
 const LeftNav: React.FC<Props> = ({
@@ -37,7 +38,8 @@ const LeftNav: React.FC<Props> = ({
   service,
   deployCompose,
   deployKill,
-  deployState
+  deployState,
+  currentFile,
 }) => {
   return (
     <div className="left-nav">
@@ -47,7 +49,7 @@ const LeftNav: React.FC<Props> = ({
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
       <Deployment onDeploy={deployCompose} onKill={deployKill} deployState={deployState}/>
-      <DeploySwarm />
+      <DeploySwarm currentFile={currentFile} />
     </div>
   );
 };

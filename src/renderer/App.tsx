@@ -257,9 +257,6 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
-    // current file path??
-    console.log(this.state.filePath);
-
     console.log('ipcRenderer: ', ipcRenderer)
     if (ipcRenderer) {
       ipcRenderer.on('file-open-error-within-electron', (event, arg) => {
@@ -340,6 +337,7 @@ class App extends Component<{}, State> {
           deployCompose={this.deployCompose}
           deployKill={this.deployKill}
           deployState={this.state.deployComposeState}
+          currentFile={this.state.filePath}
         />
         <div className="main flex">
           <OptionBar
