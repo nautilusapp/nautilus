@@ -19,7 +19,9 @@ import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
 import { 
          runDockerComposeValidation,
-         runDockerComposeDeployment
+         runDockerComposeDeployment,
+         runDockerComposeKill,
+         runDockerComposeListContainer
        } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
 // IMPORT REACT CONTAINERS OR COMPONENTS
@@ -61,7 +63,8 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
-  filePath: ''
+  filePath: '',
+  deployComposeState: 0,
 };
 
 class App extends Component<{}, State> {
@@ -106,7 +109,6 @@ class App extends Component<{}, State> {
         newState.options.selectAll = false;
       }
     }
-
     this.setState(newState);
   };
 
@@ -162,6 +164,12 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
+              runDockerComposeListContainer(file.path)
+              .then((results: any) => {
+                if(results.out.split('\n').length >= 3){
+                  this.setState({deployComposeState: 3})
+                }
+              });
             }
           };
           // read the file
@@ -198,7 +206,14 @@ class App extends Component<{}, State> {
   }
 
   deployCompose = () => {
-    runDockerComposeDeployment(this.state.filePath).then((validationResults: any) => console.log(validationResults)).catch(err => console.log);
+    runDockerComposeDeployment(this.state.filePath)
+      .then((validationResults: any) => this.setState({deployComposeState: 3}))
+      .catch(err => console.log(err));
+    this.setState({ deployComposeState: 1 });
+  }
+
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
 
   /**
@@ -239,6 +254,7 @@ class App extends Component<{}, State> {
           const item = localStorage.getItem(key)
           try {
             const parsed = JSON.parse(item || '{}');
+            console.log('filePath line 257', parsed.filePath);
             openFiles.push(parsed.filePath)
           } catch {
             console.log('Item from localStorage not included in openFiles: ', item)
@@ -257,8 +273,7 @@ class App extends Component<{}, State> {
   }
 
   render() {
-    console.log(this.state.filePath);
-    return (
+   return (
       <div className="app-class">
         {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
         <div className="draggable" />
@@ -268,6 +283,8 @@ class App extends Component<{}, State> {
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
           deployCompose={this.deployCompose}
+          deployKill={this.deployKill}
+          deployState={this.state.deployComposeState}
         />
         <div className="main flex">
           <OptionBar

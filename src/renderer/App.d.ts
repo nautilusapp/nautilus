@@ -21,7 +21,8 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
-  filePath: string
+  filePath: string;
+  deployComposeState: number;
 };
 
 type ReadOnlyObj = {

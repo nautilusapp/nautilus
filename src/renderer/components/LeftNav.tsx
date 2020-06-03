@@ -15,7 +15,7 @@ import ServiceInfo from './ServiceInfo';
 import FileSelector from './FileSelector';
 import Title from './Title';
 import { FileOpen, Service } from '../App.d';
-//import { runDockerComposeDeployment } from '../../common/runBashTasks';
+
 import Deployment from './Deployment';
 
 type Props = {
@@ -24,20 +24,18 @@ type Props = {
   fileOpen: FileOpen;
   fileOpened: boolean;
   deployCompose: () => void;
+  deployKill: () => void;
+  deployState: number;
 };
-
-/*
-const onClick = () => {
-  const fp = '/Users/yevgeniyskroznikov/Desktop/docker/docker-compose.yml';
-  runDockerComposeDeployment(fp).then((validationResults: any) => console.log(validationResults));
-};*/
 
 const LeftNav: React.FC<Props> = ({
   fileOpen,
   fileOpened,
   selectedContainer,
   service,
-  deployCompose
+  deployCompose,
+  deployKill,
+  deployState
 }) => {
   return (
     <div className="left-nav">
@@ -46,7 +44,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <Deployment onDeploy={deployCompose}/>
+      <Deployment onDeploy={deployCompose} onKill={deployKill} deployState={deployState}/>
     </div>
   );
 };
