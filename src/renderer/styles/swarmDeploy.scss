@@ -20,14 +20,21 @@
   position: absolute; 
   width: 30em; 
   height: 15em; 
-  margin-left: 25em;
-  margin-top: -20em;
+  margin-left: 30em;
+  margin-top: -30em;
   background-color: #DfE9FD;
 }
 
 #stack-name-label {
   color: teal;
   font-size: 1.4em;
+}
+
+#create-swarm {
+  background-color: teal;
+  color: white;
+  font-size: 1.2em;
+  width: 40%;
 }
 
 .message-from-swarm-div {

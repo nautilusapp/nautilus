@@ -234,6 +234,9 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
+    // current file path??
+    console.log(this.state.filePath);
+
     console.log('ipcRenderer: ', ipcRenderer)
     if (ipcRenderer) {
       ipcRenderer.on('file-open-error-within-electron', (event, arg) => {

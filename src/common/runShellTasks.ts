@@ -1,4 +1,3 @@
-/* eslint-disable */
 import child_process from 'child_process';
 import { shellResults } from '../renderer/App.d'
 
@@ -26,11 +25,11 @@ const runDockerSwarmDeployment = async (filePath: string, stackName: string) => 
 
   return JSON.stringify({init: initResult, stackDeploy: stackDeployResult});
 }
-  // runDockerSwarmInit(filePath)
-  //   .then((res: any) => res)
-  //   .then((data: any) => console.log(data))
-  //   .then(() => runDockerSwarmDeployStack(filePath, stackName))
-  //   .catch((err: any) => console.log(err));
+// runDockerSwarmInit(filePath)
+//   .then((res: any) => res)
+//   .then((data: any) => console.log(data))
+//   .then(() => runDockerSwarmDeployStack(filePath, stackName))
+//   .catch((err: any) => console.log(err));
   
 const runShell = (cmd: string) => {
   // promise for the electron application
