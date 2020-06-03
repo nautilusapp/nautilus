@@ -10,6 +10,7 @@ export type State = {
   bindMountsClicked: Clicked;
   dependsOn: DependsOn;
   fileOpened: boolean;
+  filePath: string;
   networks: ReadOnlyObj;
   options: Options;
   selectedContainer: string;
@@ -21,7 +22,6 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
-  filePath: string;
   deployComposeState: number;
 };
 

@@ -12,6 +12,7 @@ import OptionBar from '../src/renderer/components/OptionBar';
 import D3Wrapper from '../src/renderer/components/D3Wrapper';
 import TabBar from '../src/renderer/components/TabBar';
 import { State } from '../src/renderer/App.d';
+import TabBar from '../src/renderer/components/TabBar';
 
 configure({ adapter: new Adapter() });
 
