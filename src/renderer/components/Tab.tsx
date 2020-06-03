@@ -8,7 +8,9 @@ type Props = {
 }
 
 const Tab: React.FC<Props> = ({ filePath, switchToTab, closeTab }) => {
-  const fileSplit = filePath.split('\\');
+  let fileSplit
+  if (process.platform === 'win32') fileSplit = filePath.split('\\');
+  else fileSplit = filePath.split('/');
   const fileName = fileSplit[fileSplit.length - 1];
   const splitName = fileName.split('-')
   return (
