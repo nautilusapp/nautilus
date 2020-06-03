@@ -220,43 +220,6 @@ class App extends Component<{}, State> {
     this.setState({ deployComposeState: 1 });
   }
 
-<<<<<<< HEAD
-    // const currentState = { ...this.state };
-    // const { openFiles } = currentState;
-    // // const index = openFiles.indexOf(filePath);
-    // const newOpenFiles = openFiles.filter(file => file != filePath);
-    // localStorage.removeItem(filePath);
-    // console.log('newOpenFiles: ', newOpenFiles)
-    // console.log('length', newOpenFiles.length)
-    // if (newOpenFiles.length) {
-    //   console.log('Has length')
-    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[0]) || '{}')
-    //   localStorage.setItem('state', JSON.stringify(nextTabState));
-    //   const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
-    //   window.d3State = setD3State(newState.services)
-    //   this.setState(newState)
-    // } else {
-    //   console.log('Doesn\'t have length')
-    //   localStorage.removeItem('state')
-    //   // console.log('State removed')
-    //   window.d3State = setD3State({})
-    //   // console.log('d3state set')
-    //   // console.log('This is the initial state: ', initialState)
-    //   this.setState(initialState)
-    // }
-=======
-  deployKill = () => {
-    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
->>>>>>> master
-  }
-
-  deployCompose = () => {
-    runDockerComposeDeployment(this.state.filePath)
-      .then((validationResults: any) => this.setState({deployComposeState: 3}))
-      .catch(err => console.log(err));
-    this.setState({ deployComposeState: 1 });
-  }
-
   deployKill = () => {
     runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
