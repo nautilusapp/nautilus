@@ -22,6 +22,7 @@ export type State = {
   view: ViewT;
   volumes: ReadOnlyObj;
   volumesClicked: Clicked;
+  deployComposeState: number;
 };
 
 type ReadOnlyObj = {
@@ -175,9 +176,8 @@ export type TreeMap = {
 
 export type Simulation = d3.Simulation<SNode, undefined>;
 
-export type ValidationResults = {
+export type shellResults = {
   error?: Error;
   out: string;
-  filePath: string;
   envResolutionRequired: boolean;
 };
