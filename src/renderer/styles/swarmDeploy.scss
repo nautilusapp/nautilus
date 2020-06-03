@@ -1,0 +1,139 @@
+#swarm-deploy-div {
+  display: flex;
+  justify-content: space-around;
+  color: white;
+  height: 6em; 
+  text-align: center; 
+  margin-bottom: 10em;
+}
+
+#swarm-btn-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+// #swarm-btn-div:hover {
+//   cursor: hand;
+//   cursor: pointer;
+//   color: $fifth-color;
+// }
+
+#swarm-deploy-btn {
+  background-color: transparent;
+  color: white;
+  font-size: 1.1em;
+  width: 100%;
+  border: none;
+
+  span {
+    margin-right: 5px;
+  }
+}
+
+#swarm-deploy-btn:hover {
+  cursor: hand;
+  cursor: pointer;
+  color: $fifth-color;
+}
+
+#swarm-deploy-btn:active {
+  outline: none;
+  border: none;
+}
+
+#hidden-swarm-div {
+  visibility: hidden; 
+  position: absolute; 
+  width: 30em; 
+  height: 15em; 
+  margin-left: 40%;
+  margin-top: -20%;
+  background-color: #DfE9FD;
+  border: solid 1px #013874;
+  border-radius: 20px;
+
+  #button-and-other-divs {
+    // background-color: gainsboro;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    // align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  #exit-swarm-deploy-box {
+    margin-right: 0.4em;
+    margin-top: 0.2em;
+    background-color: red;
+    color: white;
+    font-size: 1.5em;
+    border-radius: 10px;
+  }
+  
+  #initialize-swarm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // background-color: lightsteelblue;
+    float: left;
+    
+    #stack-name-label {
+      color: teal;
+      font-size: 1.5em;
+      margin-top: 0.2em;
+      padding: 7px;
+    }
+  
+    #stack-name {
+      border-radius: 10px;
+      height: 1.5rem;
+      font-size: 1em;
+      padding: 5px;
+      margin-bottom: 6px;
+    }
+  
+    #stack-name:focus, textarea:focus, select:focus {
+      outline: none;
+    }
+  
+    #create-swarm {
+      background-color: teal;
+      color: white;
+      font-size: 1.2em;
+      width: 40%;
+      border-radius: 10px;
+    }
+  }
+  
+  .message-from-swarm-div {
+    // visibility: hidden;
+    margin-bottom: 40%;
+  
+    .error-div {
+      visibility: hidden;
+      width: 80%;
+      // background-color: lightsalmon;
+
+      .error-p {
+        color: red;
+      }
+    }
+
+    .success-div {
+      visibility: hidden;
+      width: 80%;
+      // background-color: lightgreen;
+
+      .success-p {
+        color: green;
+      }
+    }
+  }
+}
+
+
+
+

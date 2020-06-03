@@ -18,7 +18,6 @@ type Props = {
 };
 
 const FileSelector: React.FC<Props> = ({ fileOpen }) => {
-  console.log('Rendering FileSelector')
   return (
     <div className="file-open">
       <label htmlFor="files">

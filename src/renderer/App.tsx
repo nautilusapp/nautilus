@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * ************************************
  *
@@ -12,6 +13,7 @@
 import React, { Component } from 'react';
 import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
+import * as d3 from 'd3';
 
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
@@ -145,11 +147,11 @@ class App extends Component<{}, State> {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
         } else {
-          console.log('Validation results: ', validationResults);
           // event listner to run after the file has been read as text
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
+              console.log('fileReader.result: ', fileReader.result);
               // console.log('fileReader.result: ', fileReader.result)
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
@@ -177,6 +179,7 @@ class App extends Component<{}, State> {
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     const newState = Object.assign({}, currentState, tabState);
     localStorage.setItem('state', JSON.stringify(tabState));
+    console.log('Services', newState.services)
     window.d3State = setD3State(newState.services);
     this.setState(newState);
   }
@@ -189,31 +192,12 @@ class App extends Component<{}, State> {
   closeTab: SwitchTab = (filePath: string) => {
     const currentState = { ...this.state };
     const { openFiles } = currentState;
-    // const index = openFiles.indexOf(filePath);
     const newOpenFiles = openFiles.filter(file => file != filePath);
     localStorage.removeItem(filePath);
     localStorage.removeItem('state');
-    // window.d3State = setD3State({})
+    d3.selectAll('.node').remove()
+    d3.selectAll('.link').remove()
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
-
-    // console.log('newOpenFiles: ', newOpenFiles)
-    // console.log('length', newOpenFiles.length)
-    // if (newOpenFiles.length) {
-    //   console.log('Has length')
-    //   const nextTabState = JSON.parse(localStorage.getItem(newOpenFiles[index - 1]) || '{}')
-    //   localStorage.setItem('state', JSON.stringify(nextTabState));
-    //   const newState = Object.assign(currentState, nextTabState, { openFiles: newOpenFiles })
-    //   window.d3State = setD3State(newState.services)
-    //   this.setState(newState)
-    // } else {
-    //   console.log('Doesn\'t have length')
-    //   localStorage.removeItem('state')
-    //   // console.log('State removed')
-    //   window.d3State = setD3State({})
-    //   // console.log('d3state set')
-    //   // console.log('This is the initial state: ', initialState)
-    //   this.setState(initialState)
-    // }
   }
 
   /**
@@ -231,6 +215,7 @@ class App extends Component<{}, State> {
   };
 
   componentDidMount() {
+    console.log('D3State: ', window.d3State)
     console.log('ipcRenderer: ', ipcRenderer)
     if (ipcRenderer) {
       ipcRenderer.on('file-open-error-within-electron', (event, arg) => {
@@ -269,26 +254,6 @@ class App extends Component<{}, State> {
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
   }
-  componentDidUpdate() {
-    try {
-      //find element with active class and remove active class
-      let makeInactive = document.getElementsByClassName('active-tab');
-      makeInactive[0].classList.remove('active-tab');
-    } catch (error) {
-        console.log(error)
-    }
-
-    try {      
-      //find html element with the id of current file path and assign it the active-tab class
-      const activeFilePath = this.state.filePath;
-      if (activeFilePath !== '') {
-        const activeFile = document.getElementById(activeFilePath);
-        activeFile!.classList.add('active-tab');
-      }
-    } catch (error) {
-        console.log(error);
-    }   
-  }
 
   componentWillUnmount() {
     if (ipcRenderer) {
@@ -307,7 +272,7 @@ class App extends Component<{}, State> {
           fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
-          filePath={this.state.filePath}
+          currentFile={this.state.filePath}
         />
         <div className="main flex">
           <OptionBar
@@ -320,6 +285,7 @@ class App extends Component<{}, State> {
             selectedNetwork={this.state.selectedNetwork}
           />
           <TabBar
+            activePath={this.state.filePath}
             openFiles={this.state.openFiles}
             switchToTab={this.switchToTab}
             closeTab={this.closeTab}

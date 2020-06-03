@@ -19,21 +19,21 @@ enum DeploymentStatus {
 };
 
 type Props = {
-    filePath: string;
+    currentFilePath: string;
 };
 
-const Deployment: React.FC<Props> = ({ filePath }) => {
+const Deployment: React.FC<Props> = ({ currentFilePath }) => {
   const [ deployState, setDeployState ] = useState(DeploymentStatus.NoFile);
   const [ errorMessage, setErrorMessage ] = useState('');
 
   useEffect(() => {
-    if(filePath !== '') deployCheck();
+    if(currentFilePath !== '') deployCheck();
     else if(deployState !== DeploymentStatus.NoFile) setDeployState(DeploymentStatus.NoFile);
-  }, [filePath]);
+  }, [currentFilePath]);
 
   const deployCheck = () => {
     setDeployState(DeploymentStatus.Checking)
-    runDockerComposeListContainer(filePath)
+    runDockerComposeListContainer(currentFilePath)
     .then((results: any) => {
       if(results.error) {
         setErrorMessage(results.error.message);
@@ -49,10 +49,10 @@ const Deployment: React.FC<Props> = ({ filePath }) => {
 
   const deployCompose = () => {
     setDeployState(DeploymentStatus.Deploying)
-    runDockerComposeDeployment(filePath)
+    runDockerComposeDeployment(currentFilePath)
       .then((results: any) => { 
         if(results.error) {;
-          setErrorMessage(errorMessage);
+          setErrorMessage(results.error.message);
           setDeployState(DeploymentStatus.DeadError);
         }
       else setDeployState(DeploymentStatus.Running);
@@ -61,7 +61,7 @@ const Deployment: React.FC<Props> = ({ filePath }) => {
   }
 
   const deployKill = () => {
-    runDockerComposeKill(filePath).then(() => setDeployState(DeploymentStatus.Dead));
+    runDockerComposeKill(currentFilePath).then(() => setDeployState(DeploymentStatus.Dead));
     setDeployState(DeploymentStatus.Undeploying);
   }
 
