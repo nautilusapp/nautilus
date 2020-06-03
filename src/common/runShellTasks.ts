@@ -1,3 +1,4 @@
+/* eslint-disable */
 import child_process from 'child_process';
 import { shellResults } from '../renderer/App.d'
 
@@ -12,6 +13,25 @@ const runDockerComposeDeployment = (filePath: string) =>
 
 const runDockerComposeValidation = (filePath: string) => 
   runShell(`docker-compose -f ${filePath} config`, true);
+
+const runDockerSwarmInit = (filePath: string) =>
+  runShell(`docker swarm init`, false);
+
+const runDockerSwarmDeployStack = (filePath: string, stackName: string) =>
+// this function will probably require a second argument to 
+// allow the user to enter a name for their stack
+  runShell(`docker stack deploy -c ${filePath} ${stackName}`, false);
+
+const runDockerSwarmDeployment = async (filePath: string, stackName: string) => {
+  let stackDeployResult, initResult;
+  await runDockerSwarmInit(filePath).then((data) => initResult = data)
+          .then(() => runDockerSwarmDeployStack(filePath, stackName))
+          .then((info) => {
+            stackDeployResult = info;
+          });
+
+  return JSON.stringify({init: initResult, stackDeploy: stackDeployResult});
+}
 
 const runShell = (cmd: string, filter: boolean) =>
   // promise for the electron application
@@ -54,5 +74,12 @@ const runShell = (cmd: string, filter: boolean) =>
     } catch {}
   });
 
+
 export default runShell;
-export { runDockerComposeDeployment, runDockerComposeValidation, runDockerComposeKill, runDockerComposeListContainer };
+export { runDockerComposeDeployment, 
+        runDockerComposeValidation, 
+        runDockerComposeKill, 
+        runDockerComposeListContainer, 
+        runDockerSwarmDeployment, 
+        runDockerSwarmInit, 
+        runDockerSwarmDeployStack };

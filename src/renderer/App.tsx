@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * ************************************
  *
@@ -156,6 +157,7 @@ class App extends Component<{}, State> {
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
+              console.log('fileReader.result: ', fileReader.result);
               // console.log('fileReader.result: ', fileReader.result)
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
@@ -207,6 +209,17 @@ class App extends Component<{}, State> {
     localStorage.removeItem('state');
     // window.d3State = setD3State({})
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+  }
+
+  deployCompose = () => {
+    runDockerComposeDeployment(this.state.filePath)
+      .then((validationResults: any) => this.setState({deployComposeState: 3}))
+      .catch(err => console.log(err));
+    this.setState({ deployComposeState: 1 });
+  }
+
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
   }
 
   deployCompose = () => {
@@ -294,6 +307,7 @@ class App extends Component<{}, State> {
           deployCompose={this.deployCompose}
           deployKill={this.deployKill}
           deployState={this.state.deployComposeState}
+          currentFile={this.state.filePath}
         />
         <div className="main flex">
           <OptionBar

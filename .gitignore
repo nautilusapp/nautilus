@@ -5,3 +5,5 @@ package-lock.json
 yarn.lock
 release
 _secrets
+.eslintrc.js 
+.prettierrc.js
