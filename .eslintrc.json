@@ -9,6 +9,7 @@
   },
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
+    "object-curly-newline": ["error", { "multiline": true, "minProperties": 3 }],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [
       "warn",

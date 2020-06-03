@@ -18,9 +18,13 @@ import { ipcRenderer } from 'electron';
 import convertYamlToState from './helpers/yamlParser';
 import setD3State from './helpers/setD3State';
 import parseOpenError from './helpers/parseOpenError';
-import { runDockerComposeValidation } from '../common/runShellTasks';
+import { 
+         runDockerComposeValidation,
+         runDockerComposeDeployment,
+         runDockerComposeKill,
+         runDockerComposeListContainer
+       } from '../common/runShellTasks';
 import resolveEnvVariables from '../common/resolveEnvVariables';
-
 // IMPORT REACT CONTAINERS OR COMPONENTS
 import LeftNav from './components/LeftNav';
 import OptionBar from './components/OptionBar';
@@ -37,6 +41,7 @@ import {
   SwitchTab,
 } from './App.d';
 
+/* TODO: make sure filepath is somewhere */
 const initialState: State = {
   openFiles: [],
   openErrors: [],
@@ -60,6 +65,7 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
+  deployComposeState: 0,
 };
 
 class App extends Component<{}, State> {
@@ -105,7 +111,6 @@ class App extends Component<{}, State> {
         newState.options.selectAll = false;
       }
     }
-
     this.setState(newState);
   };
 
@@ -118,7 +123,7 @@ class App extends Component<{}, State> {
     const currentState = { ...initialState };
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
-    const openFiles = this.state.openFiles.slice()
+    const openFiles = this.state.openFiles.slice();
     // Don't add a file that is already opened to the openFiles array
     if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
@@ -143,6 +148,7 @@ class App extends Component<{}, State> {
     const fileReader = new FileReader();
     // check for valid file path
     if (file.path) {
+      /* TODO: refactor error handling */
       runDockerComposeValidation(file.path).then((validationResults: any) => {
         if (validationResults.error) {
           this.handleFileOpenError(validationResults.error);
@@ -160,6 +166,12 @@ class App extends Component<{}, State> {
                 yamlText = resolveEnvVariables(yamlText, file.path);
               }
               this.convertAndStoreYamlJSON(yamlText, file.path);
+              runDockerComposeListContainer(file.path)
+              .then((results: any) => {
+                if(results.out.split('\n').length >= 3){
+                  this.setState({deployComposeState: 3})
+                }
+              });
             }
           };
           // read the file
@@ -172,8 +184,8 @@ class App extends Component<{}, State> {
   /**
    * @param filePath -> string
    * @returns void
-   * @description sets state to the state stored in localStorage of the file 
-   * associated with the given filePath
+   * @description sets state to the state stored in localStorage of the file
+   * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string) => {
     const currentState = {...this.state};
@@ -187,7 +199,7 @@ class App extends Component<{}, State> {
   /**
    * @param filePath -> string
    * @returns void
-   * @description removes the tab corresponding to the given file path 
+   * @description removes the tab corresponding to the given file path
    */
   closeTab: SwitchTab = (filePath: string) => {
     const currentState = { ...this.state };
@@ -219,6 +231,17 @@ class App extends Component<{}, State> {
     // }
   }
 
+  deployCompose = () => {
+    runDockerComposeDeployment(this.state.filePath)
+      .then((validationResults: any) => this.setState({deployComposeState: 3}))
+      .catch(err => console.log(err));
+    this.setState({ deployComposeState: 1 });
+  }
+
+  deployKill = () => {
+    runDockerComposeKill(this.state.filePath).then(() => this.setState({ deployComposeState: 0 }));
+  }
+
   /**
    * @param errorText -> string
    * @returns void
@@ -243,7 +266,7 @@ class App extends Component<{}, State> {
         this.handleFileOpenError(arg);
       });
       ipcRenderer.on('file-opened-within-electron', (event, arg) => {
-        console.log('arg: ', arg)
+        console.log('arg: ', arg);
         this.convertAndStoreYamlJSON(arg, '');
       });
     }
@@ -255,15 +278,18 @@ class App extends Component<{}, State> {
 
       //Create openFile state array from items in localStorage
       const openFiles = [];
-      const keys = Object.keys(localStorage)
+      const keys = Object.keys(localStorage);
       for (let key of keys) {
         if (key !== 'state') {
-          const item = localStorage.getItem(key)
+          const item = localStorage.getItem(key);
           try {
             const parsed = JSON.parse(item || '{}');
-            openFiles.push(parsed.filePath)
+            openFiles.push(parsed.filePath);
           } catch {
-            console.log('Item from localStorage not included in openFiles: ', item)
+            console.log(
+              'Item from localStorage not included in openFiles: ',
+              item,
+            );
           }
         }
       }
@@ -271,6 +297,27 @@ class App extends Component<{}, State> {
       const currentState = { ...initialState }
       this.setState(Object.assign(currentState, stateJS, { openFiles }));
     }
+  }
+  componentDidUpdate() {
+    try {
+      //find element with active class and remove active class
+      let makeInactive = document.getElementsByClassName('active-tab');
+      makeInactive[0].classList.remove('active-tab');
+    } catch (error) {
+        console.log(error)
+    }
+
+    try {      
+      //find html element with the id of current file path and assign it the active-tab class
+      const activeFilePath = this.state.filePath;
+      console.log('active file pat', activeFilePath)
+      if (activeFilePath !== '') {
+        const activeFile = document.getElementById(activeFilePath);
+        activeFile!.classList.add('active-tab');
+      }
+    } catch (error) {
+        console.log(error);
+    }   
   }
 
   componentWillUnmount() {
@@ -281,15 +328,18 @@ class App extends Component<{}, State> {
   }
 
   render() {
-    return (
+   return (
       <div className="app-class">
         {/* dummy div to create draggable bar at the top of application to replace removed native bar */}
-        <div className="draggable"></div>
+        <div className="draggable" />
         <LeftNav
           fileOpened={this.state.fileOpened}
           fileOpen={this.fileOpen}
           selectedContainer={this.state.selectedContainer}
           service={this.state.services[this.state.selectedContainer]}
+          deployCompose={this.deployCompose}
+          deployKill={this.deployKill}
+          deployState={this.state.deployComposeState}
         />
         <div className="main flex">
           <OptionBar

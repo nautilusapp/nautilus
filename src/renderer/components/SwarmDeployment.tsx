@@ -27,7 +27,7 @@ const DeploySwarm: React.FC<Props> = () => {
     const swarmName: string = event.target.parentNode.querySelector('#stack-name').value;
     event.target.parentNode.querySelector('#stack-name').value = null;
 
-    const returnedFromPromise = await runDockerSwarmDeployment(path, swarmName);
+    const returnedFromPromise = await runDockerSwarmDeployment(this.props.currentFile, swarmName);
     const infoFromSwarm = JSON.parse(returnedFromPromise);
     console.log(infoFromSwarm);
     if (!infoFromSwarm.init.error) {
