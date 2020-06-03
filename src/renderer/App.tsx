@@ -64,7 +64,6 @@ const initialState: State = {
     selectAll: false,
   },
   version: '',
-  filePath: '',
   deployComposeState: 0,
 };
 
@@ -187,23 +186,12 @@ class App extends Component<{}, State> {
    * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string) => {
-<<<<<<< HEAD
-    /* TODO: make it clear in the code that file path is being saved? */
-    const currentState = Object.assign({}, this.state)
-    const tabState = JSON.parse(localStorage.getItem(filePath) || '{}')
-    const newState = Object.assign({}, currentState, tabState)
-    localStorage.setItem('state', JSON.stringify(tabState));
-    window.d3State = setD3State(newState.services);
-    console.log(newState);
-    this.setState(newState)
-=======
     const currentState = {...this.state};
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     const newState = Object.assign({}, currentState, tabState);
     localStorage.setItem('state', JSON.stringify(tabState));
     window.d3State = setD3State(newState.services);
     this.setState(newState);
->>>>>>> fb5ee376f6a39a78a4869278cea56ea1166c7d7e
   }
 
   /**
@@ -291,12 +279,7 @@ class App extends Component<{}, State> {
           const item = localStorage.getItem(key);
           try {
             const parsed = JSON.parse(item || '{}');
-<<<<<<< HEAD
-            console.log('filePath line 257', parsed.filePath);
-            openFiles.push(parsed.filePath)
-=======
             openFiles.push(parsed.filePath);
->>>>>>> fb5ee376f6a39a78a4869278cea56ea1166c7d7e
           } catch {
             console.log(
               'Item from localStorage not included in openFiles: ',
@@ -322,7 +305,7 @@ class App extends Component<{}, State> {
     try {      
       //find html element with the id of current file path and assign it the active-tab class
       const activeFilePath = this.state.filePath;
-      console.log('active file path', activeFilePath)
+      console.log('active file pat', activeFilePath)
       if (activeFilePath !== '') {
         const activeFile = document.getElementById(activeFilePath);
         activeFile!.classList.add('active-tab');
