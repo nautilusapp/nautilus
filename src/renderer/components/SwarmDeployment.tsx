@@ -36,7 +36,7 @@ const DeploySwarm: React.FC<Props> = ({
   // const successMessage: any = document.querySelector('.success-p');
   const errorMessageDiv: any = document.querySelector('.error-div');
   // const errorMessage: any = document.querySelector('.error-p');
-  const initSwarmDiv: any = document.querySelector('#initialize-swarm');
+  // const initSwarmDiv: any = document.querySelector('#initialize-swarm');
   // const popupWrapper: any = document.querySelector('.popup-content-wrapper');
   
   // save html code in variables for easier access later
@@ -118,7 +118,7 @@ const DeploySwarm: React.FC<Props> = ({
     swarmOnClick = () => {
       if (hiddenDiv) {
         toggleVisible(hiddenDiv);
-        toggleVisible(initSwarmDiv);
+        // toggleVisible(initSwarmDiv);
       }
     };
   } else if (swarmExists && success) {
