@@ -1,4 +1,4 @@
-#swarm-deploy-div {
+.swarm-deploy-div {
   display: flex;
   flex-direction: column;
   justify-content: initial;
@@ -7,21 +7,28 @@
   width: 100%;
   text-align: center; 
   margin-bottom: 40%;
+  align-items: center;
 }
 
-#swarm-btn-div {
+.deploy-container {
   align-items: center;
   padding-left: 0.5em;
   margin: 0;
+  width: 100%;
 }
 
-#swarm-deploy-btn {
-  background-color: transparent;
-  color: white;
+.deploy-btn {
+  background-color: $fourth-color;
+  color: black;
+  padding-top: 0.8em;
+  padding-bottom: 1em;
+  padding-left: 0;
   font-size: 1.1em;
-  width: 100%;
+  width: 80%;
   border: none;
-  outline: none;
+  border-radius: 6px;
+  margin-bottom: 0.6em;
+  transition: background-color 0.2s;
 
   span {
     margin-right: 5px;
@@ -30,7 +37,8 @@
   &:hover {
     cursor: hand;
     cursor: pointer;
-    color: $fifth-color;
+    color: black;
+    background-color: darken($fourth-color, 10%);
   }
   &:active {
     outline: none;

@@ -135,8 +135,8 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
 />
 
   return (
-    <div className='deployment-container'>
-      <div onClick={onClick} className='button-container'>
+    <div className='swarm-deploy-div'>
+      <div onClick={onClick} className='deploy-btn'>
         {icon}
         <label className='deployment-title'>{title}{deployState === DeploymentStatus.NoFile ? inputButton : ''}</label>
       </div>
