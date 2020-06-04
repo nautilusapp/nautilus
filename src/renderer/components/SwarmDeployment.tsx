@@ -28,7 +28,6 @@ const DeploySwarm: React.FC<Props> = ({
   const [swarmDeployState, setSwarmDeployState] = useState(0);
   
   const hiddenDiv: any = document.getElementById('hidden-swarm-div');
-  // const messageFromSwarmDiv: any = document.querySelector('.message-from-swarm-div');
   const successMessageDiv: any = document.querySelector('.success-div');
   // const successMessage: any = document.querySelector('.success-p');
   const errorMessageDiv: any = document.querySelector('.error-div');
@@ -69,9 +68,9 @@ const DeploySwarm: React.FC<Props> = ({
     swarmBtnTitle = 'Leave Swarm';
     swarmOnClick = () => {
       toggleHidden(hiddenDiv);
-      runLeaveSwarm();
       setSwarmExists(false);
       setSuccess(false);
+      runLeaveSwarm();
       setSwarmDeployState(0);
     }
   }
