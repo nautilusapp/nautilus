@@ -1,5 +1,4 @@
 import { SimulationNodeDatum, SimulationLinkDatum } from 'd3';
-import { DeploymentStatus } from './components/ComposeDeployment';
 
 /**
  * **********************
