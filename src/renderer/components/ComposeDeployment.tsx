@@ -114,8 +114,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     onClick = deployKill;
   } 
 
-  let inputButton = <input id='files'
-  type='file'
+  let inputButton = <input type='file'
   name='yaml'
   accept=".yml,.yaml"
   style={{ display: 'none' }}
