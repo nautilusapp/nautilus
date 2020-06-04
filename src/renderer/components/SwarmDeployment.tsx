@@ -32,9 +32,9 @@ const DeploySwarm: React.FC<Props> = ({
 
   
   const hiddenDiv: any = document.getElementById('hidden-swarm-div');
-  // const successMessageDiv: any = document.querySelector('.success-div');
+  const successMessageDiv: any = document.querySelector('.success-div');
   // const successMessage: any = document.querySelector('.success-p');
-  // const errorMessageDiv: any = document.querySelector('.error-div');
+  const errorMessageDiv: any = document.querySelector('.error-div');
   // const errorMessage: any = document.querySelector('.error-p');
   const initSwarmDiv: any = document.querySelector('#initialize-swarm');
   // const popupWrapper: any = document.querySelector('.popup-content-wrapper');
@@ -124,6 +124,8 @@ const DeploySwarm: React.FC<Props> = ({
   } else if (swarmExists && success) {
     swarmBtnTitle = 'Leave Swarm';
     swarmOnClick = () => {
+      toggleHidden(hiddenDiv);
+
       leaveSwarm();
     }
   } 
@@ -186,10 +188,10 @@ const DeploySwarm: React.FC<Props> = ({
           <div id="exit-swarm-deploy-div">
             <button id="exit-swarm-deploy-box"
               onClick={() => {
-                if (hiddenDiv) {
-                  // toggleHidden(errorMessageDiv);
-                  // toggleHidden(successMessageDiv);
-                  // toggleHidden(initSwarmDiv);
+                if (hiddenDiv) {  
+                  toggleHidden(errorMessageDiv);
+                  toggleHidden(successMessageDiv);
+                  toggleHidden(initSwarmDiv);
                   toggleHidden(hiddenDiv);
               }}}>X</button> 
           </div>
