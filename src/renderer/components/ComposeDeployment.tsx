@@ -75,20 +75,6 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     dialog.showErrorBox('Error Message:', errorMessage);
   }
 
-  /*const onOpenFileClick = () => {
-    const dialog = remote.dialog;
-    dialog.showOpenDialog({ 
-        properties: ['openFile'], 
-        filters: [{name: 'Docker Compose', extensions: ['yml', 'yaml']}]
-    }).then( value => {
-      /*const splitPath = value.filePaths[0].split('/');
-      const fileName = splitPath[splitPath.length - 1];
-      console.log(fileName);
-      const fileObj = {path: value.filePaths[0], name: fileName};
-      fileOpen(fileObj);*/
-    //});
-  //}
-
   let title, onClick, icon = <FaUpload className="deployment-button" size={24} />;
 
   if(deployState === DeploymentStatus.NoFile){
