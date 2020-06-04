@@ -42,7 +42,7 @@ const LeftNav: React.FC<Props> = ({
         {fileOpened ? <FileSelector fileOpen={fileOpen} /> : null}
       </div>
       <ServiceInfo selectedContainer={selectedContainer} service={service} />
-      <ComposeDeployment currentFilePath={currentFile}/>
+      <ComposeDeployment currentFilePath={currentFile} fileOpen={fileOpen}/>
       <DeploySwarm currentFile={currentFile} />
     </div>
   );

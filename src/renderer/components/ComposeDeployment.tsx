@@ -7,6 +7,10 @@ import {
   runDockerComposeListContainer
 } from '../../common/runShellTasks';
 
+import {
+  FileOpen
+} from '../App.d';
+
 enum DeploymentStatus {
     NoFile = -1,
     Dead,
@@ -20,9 +24,10 @@ enum DeploymentStatus {
 
 type Props = {
     currentFilePath: string;
+    fileOpen: FileOpen
 };
 
-const Deployment: React.FC<Props> = ({ currentFilePath }) => {
+const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
   const [ deployState, setDeployState ] = useState(DeploymentStatus.NoFile);
   const [ errorMessage, setErrorMessage ] = useState('');
 
@@ -70,14 +75,15 @@ const Deployment: React.FC<Props> = ({ currentFilePath }) => {
     dialog.showErrorBox('Error Message:', errorMessage);
   }
 
-  let title, onClick, iconButton = <FaUpload className="deployment-button" size={24} />;
+  let title, onClick, icon = <FaUpload className="deployment-button" size={24} />;
+
   if(deployState === DeploymentStatus.NoFile){
-    title = 'No Container To Deploy :(';
+    title = 'Deploy Container';
     onClick = () => {};
   }
   if(deployState === DeploymentStatus.Checking){
-    title = 'Checking..'
-    onClick = () => {}
+    title = 'Checking..';
+    onClick = () => {};
   }
   else if(deployState === DeploymentStatus.Dead || deployState === DeploymentStatus.DeadError){
     title = "Deploy Container"
@@ -88,21 +94,40 @@ const Deployment: React.FC<Props> = ({ currentFilePath }) => {
     onClick = () => {};
   }
   else if(deployState === DeploymentStatus.Undeploying){
-    iconButton = <FaDownload className="deployment-button" size={24} />
+    icon = <FaDownload className="deployment-button" size={24} />
     title = 'Undeploying..'
     onClick = () => {}
   }
   else if (deployState === DeploymentStatus.Running || deployState === DeploymentStatus.Warning) {
-    iconButton = <FaDownload className="deployment-button" size={24} />
+    icon = <FaDownload className="deployment-button" size={24} />
     title = 'Kill Container';
     onClick = deployKill;
   } 
 
+  let inputButton = <input id='files'
+  type='file'
+  name='yaml'
+  accept=".yml,.yaml"
+  style={{ display: 'none' }}
+  onChange={(event: React.SyntheticEvent<HTMLInputElement>) => {
+    // make sure there was something selected
+    // console.log('FileSelector Event and event.currentTarget', event, event.currentTarget)
+    if (event.currentTarget) {
+      // make sure user opened a file
+      if (event.currentTarget.files) {
+        // fire fileOpen function on first file opened
+        // console.log('Event.currentTarget.file', event.currentTarget.files[0] )
+        fileOpen(event.currentTarget.files[0]);
+      }
+    }
+  }}
+/>
+
   return (
     <div className='deployment-container'>
       <div onClick={onClick} className='button-container'>
-        {iconButton}
-        <span className='deployment-title'>{title}</span>
+        {icon}
+        <label className='deployment-title'>{title}{deployState === DeploymentStatus.NoFile ? inputButton : ''}</label>
       </div>
       <div className='status-container'>
         <span className={`deployment-status status-healthy 
