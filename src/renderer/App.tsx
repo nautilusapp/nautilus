@@ -175,11 +175,16 @@ class App extends Component<{}, State> {
    * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string) => {
+    // Copy of current state
     const currentState = {...this.state};
+    // Extract the desired tab state from localStorage
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
-    const newState = Object.assign({}, currentState, tabState);
+    // Create new state object with the returned tab state
+    const newState = {...currentState, ...tabState};
+    // Set the 'state' item in localStorage to the tab state. This means that tab is the current tab, which would be used if the app got reloaded.
     localStorage.setItem('state', JSON.stringify(tabState));
-    console.log('Services', newState.services)
+    // console.log('Services', newState.services)
+    // Set the d3 state using the services extracted from the tabState and then setState
     window.d3State = setD3State(newState.services);
     this.setState(newState);
   }
@@ -190,11 +195,13 @@ class App extends Component<{}, State> {
    * @description removes the tab corresponding to the given file path
    */
   closeTab: SwitchTab = (filePath: string) => {
-    const currentState = { ...this.state };
-    const { openFiles } = currentState;
+    // Grab current open files and remove the file path of the tab to be closed, assign the updated array to newOpenFiles
+    const openFiles = this.state.openFiles;
     const newOpenFiles = openFiles.filter(file => file != filePath);
+    // Remove the state object associated with the file path in localStorage
     localStorage.removeItem(filePath);
     localStorage.removeItem('state');
+    // Remove all d3 nodes and links, then setState to the initialState with the current open files included.
     d3.selectAll('.node').remove()
     d3.selectAll('.link').remove()
     this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
