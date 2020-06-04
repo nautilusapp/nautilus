@@ -170,7 +170,7 @@ const DeploySwarm: React.FC<Props> = ({
         <button
           className="deploy-btn"
           onClick={swarmOnClick}>
-              <span><FaUpload className="open-button" size={24} /></span>
+              <span><FaUpload className="deployment-button" size={24} /></span>
                {swarmBtnTitle}
         </button>
         <div className='status-container'>

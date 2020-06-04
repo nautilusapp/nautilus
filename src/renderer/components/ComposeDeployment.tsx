@@ -81,7 +81,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     dialog.showErrorBox('Error Message:', errorMessage);
   }
 
-  let title, onClick, icon = <FaUpload className="open-button" size={24} />;
+  let title, onClick, icon = <FaUpload className="deployment-button" size={24} />;
 
   if(deployState === DeploymentStatus.NoFile){
     title = 'Deploy Container';
