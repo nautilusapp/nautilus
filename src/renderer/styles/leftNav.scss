@@ -240,6 +240,11 @@
     padding-left: 0.5em;
     margin: 0;
 }
+.deployment-title:hover {
+  cursor: hand;
+  cursor: pointer;
+  color: $fifth-color; 
+}
 
 .status-container {
   display: flex;
