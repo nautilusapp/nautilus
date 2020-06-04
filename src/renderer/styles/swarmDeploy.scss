@@ -70,52 +70,47 @@
   .popup-content-wrapper {
     width: 80%;
     height: 80%;
-  }
-  
-  #initialize-swarm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    // background-color: lightsteelblue;
-    float: left;
+
+    #initialize-swarm {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      // background-color: lightsteelblue;
+      float: left;
+      
+      #stack-name-label {
+        color: teal;
+        font-size: 1.5em;
+        margin-top: 0.2em;
+        padding: 7px;
+      }
     
-    #stack-name-label {
-      color: teal;
-      font-size: 1.5em;
-      margin-top: 0.2em;
-      padding: 7px;
+      #stack-name {
+        border-radius: 10px;
+        height: 1.5rem;
+        font-size: 1em;
+        padding: 5px;
+        margin-bottom: 6px;
+      }
+    
+      #stack-name:focus, textarea:focus, select:focus {
+        outline: none;
+      }
+    
+      #create-swarm {
+        background-color: teal;
+        color: white;
+        font-size: 1.2em;
+        width: 40%;
+        border-radius: 10px;
+      }
     }
-  
-    #stack-name {
-      border-radius: 10px;
-      height: 1.5rem;
-      font-size: 1em;
-      padding: 5px;
-      margin-bottom: 6px;
-    }
-  
-    #stack-name:focus, textarea:focus, select:focus {
-      outline: none;
-    }
-  
-    #create-swarm {
-      background-color: teal;
-      color: white;
-      font-size: 1.2em;
-      width: 40%;
-      border-radius: 10px;
-    }
-  }
-  
-  .message-from-swarm-div {
-    // visibility: hidden;
-    margin-bottom: 40%;
-  
+
     .error-div {
-      visibility: hidden;
+      // visibility: hidden;
       width: 80%;
-      // background-color: lightsalmon;
+      background-color: lightsalmon;
 
       .error-p {
         color: red;
@@ -123,15 +118,17 @@
     }
 
     .success-div {
-      visibility: hidden;
+      // visibility: hidden;
       width: 80%;
-      // background-color: lightgreen;
-
+      background-color: lightgreen;
+  
       .success-p {
         color: green;
       }
     }
   }
+  
+
 }
 
 
