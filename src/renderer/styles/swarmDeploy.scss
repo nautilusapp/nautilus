@@ -55,7 +55,7 @@
   position: absolute; 
   width: 30em; 
   height: 15em; 
-  margin-left: 40%;
+  margin-left: 35%;
   margin-top: -20%;
   background-color: #DfE9FD;
   border: solid 1px #013874;
@@ -80,16 +80,16 @@
     border-radius: 10px;
   }
   .popup-content-wrapper {
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
+    margin-left: 12%;
 
     #initialize-swarm {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      // background-color: lightsteelblue;
-      float: left;
+      // float: left;
       
       #stack-name-label {
         color: teal;
@@ -118,28 +118,42 @@
         border-radius: 10px;
       }
     }
+    .swarm-spans {
+      margin-bottom: 1em
+    }
 
     .error-div {
-      // visibility: hidden;
-      width: 80%;
-      background-color: lightsalmon;
+      width: 90%;
+      padding-top: 5em;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
       .error-p {
         color: red;
       }
+      .swarm-btn {
+        background-color: teal;
+        color: white;
+        font-size: 1.2em;
+        width: 40%;
+        border-radius: 10px;
+      }
     }
 
     .success-div {
-      // visibility: hidden;
-      width: 80%;
-      background-color: lightgreen;
+      width: 90%;
+      padding-top: 3.5em;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
   
       .success-p {
         color: green;
+        font-size: 1.1em;
       }
     }
   }
-  
 
 }
 
