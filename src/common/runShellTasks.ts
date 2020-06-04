@@ -18,9 +18,10 @@ const runDockerSwarmInit = (filePath: string) =>
   runShell(`docker swarm init`, false);
 
 const runDockerSwarmDeployStack = (filePath: string, stackName: string) =>
-// this function will probably require a second argument to 
-// allow the user to enter a name for their stack
   runShell(`docker stack deploy -c ${filePath} ${stackName}`, false);
+
+const runLeaveSwarm = () => 
+  runShell(`docker swarm leave -f`, false);
 
 const runDockerSwarmDeployment = async (filePath: string, stackName: string) => {
   let stackDeployResult, initResult;
@@ -82,4 +83,5 @@ export { runDockerComposeDeployment,
         runDockerComposeListContainer, 
         runDockerSwarmDeployment, 
         runDockerSwarmInit, 
+        runLeaveSwarm,
         runDockerSwarmDeployStack };
