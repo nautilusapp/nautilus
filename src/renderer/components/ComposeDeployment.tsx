@@ -81,7 +81,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     dialog.showErrorBox('Error Message:', errorMessage);
   }
 
-  let title, onClick, icon = <FaUpload className="deployment-button" size={24} />;
+  let title, onClick, icon = <FaUpload className="open-button" size={24} />;
 
   if(deployState === DeploymentStatus.NoFile){
     title = 'Deploy Container';
@@ -104,12 +104,12 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     onClick = () => {};
   }
   else if(deployState === DeploymentStatus.Undeploying){
-    icon = <FaDownload className="deployment-button" size={24} />
+    icon = <FaDownload className="open-button" size={24} />
     title = 'Undeploying..'
     onClick = () => {}
   }
   else if (deployState === DeploymentStatus.Running || deployState === DeploymentStatus.Warning) {
-    icon = <FaDownload className="deployment-button" size={24} />
+    icon = <FaDownload className="open-button" size={24} />
     title = 'Kill Container';
     onClick = deployKill;
   } 
@@ -134,7 +134,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
 />
 
   return (
-    <div className='swarm-deploy-div'>
+    <div className='deploy-container' id='compose-deploy-div'>
       <div onClick={onClick} className='deploy-btn'>
         {icon}
         <label className='deployment-title'>{title}{deployState === DeploymentStatus.NoFile ? inputButton : ''}</label>

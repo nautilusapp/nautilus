@@ -234,25 +234,12 @@
   color: $fifth-color;
 }
 
-.deployment-title {
-    font-size: 1.1em;
-    align-self: center;
-    padding-left: 0.5em;
-    margin: 0;
-}
-
 .status-container {
   display: flex;
   justify-content: space-evenly;
   padding-left: 40%;
   padding-right: 5%;
   width: 8em;
-}
-
-.deployment-container {
-  text-align: center;
-  margin-bottom: 10%;
-  color: $fourth-color;
 }
 
 .button-container {

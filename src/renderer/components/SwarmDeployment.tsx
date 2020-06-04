@@ -146,7 +146,7 @@ const DeploySwarm: React.FC<Props> = ({
 
 
   return (
-    <div className="swarm-deploy-div"> 
+    <div className="deploy-container" > 
         <button
           className="deploy-btn"
           onClick={swarmOnClick}>
