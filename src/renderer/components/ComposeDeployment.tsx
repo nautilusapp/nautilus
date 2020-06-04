@@ -12,14 +12,15 @@ import {
 } from '../App.d';
 
 enum DeploymentStatus {
-    NoFile = -1,
+    OpeningFile = 0,
+    NoFile,
     Dead,
     DeadError,
     Checking,
     Deploying,
     Undeploying,
     Warning,
-    Running
+    Running,
 };
 
 type Props = {
@@ -37,19 +38,24 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
   }, [currentFilePath]);
 
   const deployCheck = () => {
-    setDeployState(DeploymentStatus.Checking)
-    runDockerComposeListContainer(currentFilePath)
-    .then((results: any) => {
-      if(results.error) {
-        setErrorMessage(results.error.message);
-        setDeployState(DeploymentStatus.DeadError);
-      } 
-      else if(results.out.split('\n').length > 3){
-        if(results.out.includes('Exit')) setDeployState(DeploymentStatus.Dead);
-        else setDeployState(DeploymentStatus.Running);
-      }
-      else setDeployState(DeploymentStatus.Dead);
-    });
+    if(deployState === DeploymentStatus.OpeningFile && currentFilePath !== ''){
+      deployCompose();
+    }
+    else {
+      setDeployState(DeploymentStatus.Checking)
+      runDockerComposeListContainer(currentFilePath)
+      .then((results: any) => {
+        if(results.error) {
+          setErrorMessage(results.error.message);
+          setDeployState(DeploymentStatus.DeadError);
+        } 
+        else if(results.out.split('\n').length > 3){
+          if(results.out.includes('Exit')) setDeployState(DeploymentStatus.Dead);
+          else setDeployState(DeploymentStatus.Running);
+        }
+        else setDeployState(DeploymentStatus.Dead);
+      });
+    }
   };
 
   const deployCompose = () => {
@@ -81,7 +87,11 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     title = 'Deploy Container';
     onClick = () => {};
   }
-  if(deployState === DeploymentStatus.Checking){
+  else if(deployState === DeploymentStatus.OpeningFile){
+    title = 'Opening File..';
+    onClick = () => {};
+  }
+  else if(deployState === DeploymentStatus.Checking){
     title = 'Checking..';
     onClick = () => {};
   }
@@ -117,6 +127,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
       if (event.currentTarget.files) {
         // fire fileOpen function on first file opened
         // console.log('Event.currentTarget.file', event.currentTarget.files[0] )
+        setDeployState(DeploymentStatus.OpeningFile);
         fileOpen(event.currentTarget.files[0]);
       }
     }
