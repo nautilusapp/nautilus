@@ -20,12 +20,14 @@ type Props = {
 const DeploySwarm: React.FC<Props> = ({
   currentFile
 }) => {
+  // Create React hooks to hold onto state
   const [success, setSuccess] = useState(false);
   const [swarmExists, setSwarmExists] = useState(false);
   const [stdOutMessage, setStdOutMessage] = useState('');
   const [nodeAddress, setNodeAddress] = useState('');
   const [infoFromSwarm, setInfoFromSwarm] = useState({});
   const [swarmDeployState, setSwarmDeployState] = useState(0);
+  const [popUpContent, setPopupContent] = useState((<div>Hey</div>));
   
   const hiddenDiv: any = document.getElementById('hidden-swarm-div');
   const successMessageDiv: any = document.querySelector('.success-div');
@@ -33,7 +35,7 @@ const DeploySwarm: React.FC<Props> = ({
   const errorMessageDiv: any = document.querySelector('.error-div');
   // const errorMessage: any = document.querySelector('.error-p');
   const initSwarmDiv: any = document.querySelector('#initialize-swarm');
-  const popupWrapper: any = document.querySelector('.popup-content-wrapper');
+  // const popupWrapper: any = document.querySelector('.popup-content-wrapper');
   
   // save html code in variables for easier access later
   const popupStartDiv = (<div id="initialize-swarm">
@@ -46,15 +48,15 @@ const DeploySwarm: React.FC<Props> = ({
                             </button>
                           </div>);
   
-  const successDiv = `<div className="success-div">
+  const successDiv = (<div className="success-div">
                         <p className="success-p">Success! Your swarm has been deployed!<br></br>
-                                                The current node ${nodeAddress} is now a manager</p>
-                      </div>`;
-  const errorDiv = `<div className="error-div">
+                                                The current node {nodeAddress} is now a manager</p>
+                      </div>);
+  const errorDiv = (<div className="error-div">
                       <p className="error-p">Sorry, there was an issue initializing your swarm</p>
-                    </div>`;
+                    </div>);
 
-  let swarmBtnTitle, swarmOnClick: any;
+  let swarmBtnTitle: any, swarmOnClick: any;
 
   if (!swarmExists && !success) {
     swarmBtnTitle = 'Deploy to Swarm';
@@ -73,7 +75,7 @@ const DeploySwarm: React.FC<Props> = ({
       runLeaveSwarm();
       setSwarmDeployState(0);
     }
-  }
+  } 
 
 
   // change visibility of HTML element from hidden to visible or vice versa
@@ -91,7 +93,7 @@ const DeploySwarm: React.FC<Props> = ({
     event.target.parentNode.querySelector('#stack-name').value = null;
 
     setSwarmDeployState(1);
-    toggleHidden(initSwarmDiv);
+    // toggleHidden(initSwarmDiv);
 
     const returnedFromPromise = await runDockerSwarmDeployment(currentFile, stackName);
     const infoReturned = JSON.parse(returnedFromPromise);
@@ -132,17 +134,18 @@ const DeploySwarm: React.FC<Props> = ({
     // }
 
   useEffect(() => {
+    console.log('popUpContent =', popUpContent);
+    console.log('success ', success);
+    console.log('swarmExists: ', swarmExists); 
 
     if (swarmExists && success) {
-      popupWrapper.innerHTML = successDiv;
-      console.log(successDiv);
-      // const posMsg = `Success! Your swarm has been deployed!\nThe current node ${nodeAddress} is now a manager`;
-      // successMessage.innerText = posMsg;
+      setPopupContent(successDiv);
     } else if (swarmExists && !success) {
-      popupWrapper.innerHTML = errorDiv;
-      setSwarmExists(false);
+      setPopupContent(errorDiv);
+    } else if (!swarmExists) {
+      setPopupContent(popupStartDiv);
     }
-  });
+  }, []);
 
 
   return (
@@ -175,11 +178,7 @@ const DeploySwarm: React.FC<Props> = ({
           </div>
 
           <div className="popup-content-wrapper">    
-            
-            {/* <div className="message-from-swarm-div"></div> */}
-            {popupStartDiv}
-            
-
+            {popUpContent}
           </div>
 
         </div>
