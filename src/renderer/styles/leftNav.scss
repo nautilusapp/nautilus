@@ -234,29 +234,12 @@
   color: $fifth-color;
 }
 
-.deployment-title {
-    font-size: 1.1em;
-    align-self: center;
-    padding-left: 0.5em;
-    margin: 0;
-}
-.deployment-title:hover {
-  cursor: hand;
-  cursor: pointer;
-  color: $fifth-color; 
-}
-
 .status-container {
   display: flex;
   justify-content: space-evenly;
   padding-left: 40%;
   padding-right: 5%;
-}
-
-.deployment-container {
-  text-align: center;
-  margin-bottom: 10%;
-  color: $fourth-color;
+  width: 8em;
 }
 
 .button-container {

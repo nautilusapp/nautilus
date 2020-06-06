@@ -168,12 +168,11 @@ const DeploySwarm: React.FC<Props> = ({
   }, [success, swarmExists]);
 
   return (
-    <div id="swarm-deploy-div"> 
-      <div id="swarm-btn-div">
+    <div className="deploy-container" > 
         <button
-          id="swarm-deploy-btn"
+          className="deploy-btn"
           onClick={swarmOnClick}>
-              <span><FaUpload className="open-button" size={24} /></span>
+              <span><FaUpload className="deployment-button" size={24} /></span>
                {swarmBtnTitle}
         </button>
         <div className='status-container'>
@@ -181,7 +180,7 @@ const DeploySwarm: React.FC<Props> = ({
           <span className={`deployment-status status-moderate ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
           <span className={`deployment-status status-dead ${swarmDeployState === 0 ? 'status-active' : ''}`}></span>
       </div>
-      </div>
+
 
       <div id="hidden-swarm-div">
         <div id="button-and-other-divs">
