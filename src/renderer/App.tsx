@@ -200,11 +200,14 @@ class App extends Component<{}, State> {
     const newOpenFiles = openFiles.filter(file => file != filePath);
     // Remove the state object associated with the file path in localStorage
     localStorage.removeItem(filePath);
-    localStorage.removeItem('state');
-    // Remove all d3 nodes and links, then setState to the initialState with the current open files included.
-    d3.selectAll('.node').remove()
-    d3.selectAll('.link').remove()
-    this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+    // If the tab to be closed is the active tab, reset d3 and delete "state" object from local storage and set state to the initial state with the updated open files array included.
+    if (filePath === this.state.filePath){
+      localStorage.removeItem('state');
+      d3.selectAll('.node').remove()
+      d3.selectAll('.link').remove()
+      this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+    }
+    else this.setState({...this.state, openFiles: newOpenFiles})
   }
 
   /**
