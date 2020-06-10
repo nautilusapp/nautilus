@@ -33,7 +33,7 @@ const DeploySwarm: React.FC<Props> = ({
 
   // keep a variable for access to hidden div in order to toggle hidden/visible
   // may be better way to do this?
-  const hiddenDiv: any = document.getElementById('hidden-swarm-div');
+  const swarmDeployPopup: any = document.getElementById('swarm-deploy-popup');
   // save html code in variables for easier access later
   // the default for the pop-up div, before any interaction with swarm / after leaving swarm
   const popupStartDiv = (<div id="initialize-swarm">
@@ -90,7 +90,7 @@ const DeploySwarm: React.FC<Props> = ({
     event.target.parentNode.querySelector('#stack-name').value = null;
 
     // hide pop-up while running commands
-    toggleHidden(hiddenDiv);
+    toggleHidden(swarmDeployPopup);
     setSwarmDeployState(1);
 
     // await results from running dwarm deployment shell tasks 
@@ -109,19 +109,19 @@ const DeploySwarm: React.FC<Props> = ({
       setSuccess(true);
       setSwarmExists(true);
       setSwarmDeployState(2);
-      toggleVisible(hiddenDiv);
+      toggleVisible(swarmDeployPopup);
     } else {
       setSwarmExists(true);
       setSuccess(false);
       setSwarmDeployState(0);
-      toggleVisible(hiddenDiv);
+      toggleVisible(swarmDeployPopup);
     }
   };
 
   // function to allow the user to leave the swarm
   // called in onClicks
   const leaveSwarm = () => {
-    toggleHidden(hiddenDiv);
+    toggleHidden(swarmDeployPopup);
     setSwarmExists(false);
     setSuccess(false);
     setNoFile(false);
@@ -136,14 +136,14 @@ const DeploySwarm: React.FC<Props> = ({
   if (!swarmExists || swarmExists && !success) {
     swarmBtnTitle = 'Deploy to Swarm';
     swarmOnClick = () => {
-      if (hiddenDiv) {
-        toggleVisible(hiddenDiv);
+      if (swarmDeployPopup) {
+        toggleVisible(swarmDeployPopup);
       }
     };
   } else if (swarmExists && success) {
     swarmBtnTitle = 'Leave Swarm';
     swarmOnClick = () => {
-      toggleHidden(hiddenDiv);
+      toggleHidden(swarmDeployPopup);
 
       leaveSwarm();
     }
@@ -193,13 +193,13 @@ const DeploySwarm: React.FC<Props> = ({
 
 
       <Draggable>
-            <div id="hidden-swarm-div">
+            <div id="swarm-deploy-popup">
               <div id="button-and-other-divs">
                 <div id="exit-swarm-deploy-div">
                   <button id="exit-swarm-deploy-box"
                     onClick={() => {
-                      if (hiddenDiv) {
-                        toggleHidden(hiddenDiv);
+                      if (swarmDeployPopup) {
+                        toggleHidden(swarmDeployPopup);
                     }}}>X</button> 
                 </div>
 
