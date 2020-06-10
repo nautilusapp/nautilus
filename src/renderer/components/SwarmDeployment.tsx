@@ -69,7 +69,7 @@ const DeploySwarm: React.FC<Props> = ({
   const popupStartDiv = (
     <div id="initialize-swarm">
       <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
-      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => { console.log(event.target.value); setStackName(event.target.value) }}></input>
+      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => { setStackName(event.target.value) }}></input>
       <button 
         id="create-swarm" 
         onClick={() => { 
