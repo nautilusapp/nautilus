@@ -29,7 +29,7 @@ const DeploySwarm: React.FC<Props> = ({
   const [nodeAddress, setNodeAddress] = useState('');
   const [infoFromSwarm, setInfoFromSwarm] = useState({});
   const [swarmDeployState, setSwarmDeployState] = useState(0);
-  const [popUpContent, setPopupContent] = useState(<div>Hey</div>);
+  const [popUpContent, setPopupContent] = useState(<div></div>);
   const [stackName, setStackName] = useState('');
 
   // Once component has mounted, check for changes in state and update component
@@ -69,14 +69,12 @@ const DeploySwarm: React.FC<Props> = ({
   const popupStartDiv = (
     <div id="initialize-swarm">
       <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
-      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => updateInput(event)}></input>
+      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => { console.log(event.target.value); setStackName(event.target.value) }}></input>
       <button 
         id="create-swarm" 
         onClick={() => { 
-          // console.log('inside onclick', currentFile);
-          console.log('current stack name from state: ', stackName);
-
           if (currentFile) {
+            console.log('stackName inside onClick: ', stackName);
             getNameAndDeploy(event)
           } else {
             setSuccess(false);
@@ -120,18 +118,13 @@ const DeploySwarm: React.FC<Props> = ({
     if (element) element.style.visibility = 'hidden';
   }
 
-  // Get input from user and add to state
-  const updateInput = (event: any) => {
-    console.log('event.target.value: ', event.target.value);
-    setStackName(event.target.value);
-  } 
-
   // retrieve input from user and pass it to runDockerSwarmDeployment as an argument
   // the function will return stdout from running each function, so that we have access to that information
   const getNameAndDeploy = async (event: any) => {
     // get value from user's input
     // const stackName: string = event.target.parentNode.querySelector('#stack-name').value;
     // event.target.parentNode.querySelector('#stack-name').value = null;
+    console.log('current stack name from state: ', stackName);
 
     // hide pop-up while running commands
     toggleHidden(swarmDeployPopup);
