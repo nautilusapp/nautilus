@@ -2,9 +2,9 @@
  * ************************************
  *
  * @module  SwarmDeployment.tsx
- * @author Kim Wysocka
- * @date 3/11/20
- * @description container for the title, the service info and the file open
+ * @author Kim Wysocki
+ * @date 5/30/20
+ * @description component to deploy a Swarm, showing deployment state, and allowing user to name their stack 
  *
  * ************************************
  */
@@ -31,8 +31,36 @@ const DeploySwarm: React.FC<Props> = ({
   const [swarmDeployState, setSwarmDeployState] = useState(0);
   const [popUpContent, setPopupContent] = useState(<div>Hey</div>);
 
+  // Once component has mounted, check for changes in state and update component
+  // depending on change
+  // if there's no swarm and there is a file (defaults to true), show popup with input 
+  useEffect(() => {
+    if (!swarmExists && !noFile) {
+      setPopupContent(popupStartDiv);
+    }
+  }, [swarmExists, noFile]);
+
+  // if swarm exists and deployment was successful, render success div
+  // else if swarm exists but deployment was unsuccessful, render error message
+  useEffect(() => {
+    if (swarmExists && success) {
+      setPopupContent(successDiv);
+    } else if (swarmExists && !success) {
+      setPopupContent(errorDiv);
+    } 
+  }, [success, swarmExists]);
+
+  // if there is no active file, ask user to open a file to deploy
+  // TO DO - have different message from default error message
+  // currently using default, but would be best to have a 'please open a file' message
+  useEffect(() => {
+    if (noFile) {
+      setPopupContent(errorDiv);
+    }
+  }, [noFile]);
+
   // keep a variable for access to hidden div in order to toggle hidden/visible
-  // may be better way to do this?
+  // may be better way to do this? // -> change to React best practice method of doing this
   const swarmDeployPopup: any = document.getElementById('swarm-deploy-popup');
   
   // save html code in variables for easier access later
@@ -155,34 +183,6 @@ const DeploySwarm: React.FC<Props> = ({
       leaveSwarm();
     }
   } 
-
-  // Once component has mounted, check for changes in state and update component
-  // depending on change
-  // if there's no swarm and there is a file (defaults to true), show popup with input 
-  useEffect(() => {
-    if (!swarmExists && !noFile) {
-      setPopupContent(popupStartDiv);
-    }
-  }, [swarmExists, noFile]);
-
-  // if swarm exists and deployment was successful, render success div
-  // else if swarm exists but deployment was unsuccessful, render error message
-  useEffect(() => {
-    if (swarmExists && success) {
-      setPopupContent(successDiv);
-    } else if (swarmExists && !success) {
-      setPopupContent(errorDiv);
-    } 
-  }, [success, swarmExists]);
-
-  // if there is no active file, ask user to open a file to deploy
-  // TO DO - have different message from default error message
-  // currently using default, but would be best to have a 'please open a file' message
-  useEffect(() => {
-    if (noFile) {
-      setPopupContent(errorDiv);
-    }
-  }, [noFile]);
 
   return (
     <div className="deploy-container" > 
