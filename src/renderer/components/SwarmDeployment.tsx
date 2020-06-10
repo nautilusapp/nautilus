@@ -1,8 +1,8 @@
 /**
  * ************************************
  *
- * @module  DeploySwarm.tsx
- * @author
+ * @module  SwarmDeployment.tsx
+ * @author Kim Wysocka
  * @date 3/11/20
  * @description container for the title, the service info and the file open
  *
@@ -37,42 +37,48 @@ const DeploySwarm: React.FC<Props> = ({
 
   // save html code in variables for easier access later
   // the default for the pop-up div, before any interaction with swarm / after leaving swarm
-  const popupStartDiv = (<div id="initialize-swarm">
-                            <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
-                            <input id="stack-name" name="stack-name" placeholder="Enter name...."></input>
-                            <button 
-                              id="create-swarm" 
-                              onClick={() => { 
-                                console.log('inside onclick', currentFile);
-                                if (currentFile) {
-                                  getNameAndDeploy(event)
-                                } else {
-                                  setSuccess(false);
-                                  setNoFile(true);
-                                  setSwarmDeployState(0);
-                                }
-                              }}>
-                              Create Swarm
-                            </button>
-                          </div>);
+  const popupStartDiv = (
+    <div id="initialize-swarm">
+      <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
+      <input id="stack-name" name="stack-name" placeholder="Enter name...."></input>
+      <button 
+        id="create-swarm" 
+        onClick={() => { 
+          // console.log('inside onclick', currentFile);
+          if (currentFile) {
+            getNameAndDeploy(event)
+          } else {
+            setSuccess(false);
+            setNoFile(true);
+            setSwarmDeployState(0);
+          }
+        }}>
+        Create Swarm
+      </button>
+    </div>);
   
   // render this div if successful joining swarm
-  const successDiv = (<div className="success-div">
-                        <p className="success-p"><span className="swarm-spans">Success! Your swarm has been deployed!</span>
-                                                                <br></br>The current node {nodeAddress}<br></br>is now a manager</p>
-                      </div>);
+  const successDiv = (
+    <div className="success-div">
+      <p className="success-p">
+        <span className="swarm-spans">Success! Your swarm has been deployed!</span>
+        <br></br>The current node {nodeAddress}<br></br>is now a manager
+      </p>
+    </div>);
 
   // if unsuccessful / if no active file, render error dive                          
-  const errorDiv = (<div className="error-div">
-                      <p className="error-p">Sorry, there was an issue initializing your swarm</p>
-
-                      <button
-                        className="swarm-btn" 
-                        onClick={() => {
-                          leaveSwarm();
-                      }}>Try Again</button>
-                    </div>);
-
+  const errorDiv = (
+    <div className="error-div">
+      <p className="error-p">
+        Sorry, there was an issue initializing your swarm
+      </p>
+      <button
+        className="swarm-btn" 
+        onClick={() => {
+          leaveSwarm();
+        }}>Try Again
+      </button>
+    </div>);
 
   // change visibility of HTML element from hidden to visible or vice versa
   // used for the popup box
