@@ -2,9 +2,9 @@
  * ************************************
  *
  * @module  SwarmDeployment.tsx
- * @author Kim Wysocka
- * @date 3/11/20
- * @description container for the title, the service info and the file open
+ * @author Kim Wysocki
+ * @date 5/30/20
+ * @description component to deploy a Swarm, showing deployment state, and allowing user to name their stack 
  *
  * ************************************
  */
@@ -31,10 +31,38 @@ const DeploySwarm: React.FC<Props> = ({
   const [swarmDeployState, setSwarmDeployState] = useState(0);
   const [popUpContent, setPopupContent] = useState(<div>Hey</div>);
 
-  // keep a variable for access to hidden div in order to toggle hidden/visible
-  // may be better way to do this?
-  const hiddenDiv: any = document.getElementById('hidden-swarm-div');
+  // Once component has mounted, check for changes in state and update component
+  // depending on change
+  // if there's no swarm and there is a file (defaults to true), show popup with input 
+  useEffect(() => {
+    if (!swarmExists && !noFile) {
+      setPopupContent(popupStartDiv);
+    }
+  }, [swarmExists, noFile]);
 
+  // if swarm exists and deployment was successful, render success div
+  // else if swarm exists but deployment was unsuccessful, render error message
+  useEffect(() => {
+    if (swarmExists && success) {
+      setPopupContent(successDiv);
+    } else if (swarmExists && !success) {
+      setPopupContent(errorDiv);
+    } 
+  }, [success, swarmExists]);
+
+  // if there is no active file, ask user to open a file to deploy
+  // TO DO - have different message from default error message
+  // currently using default, but would be best to have a 'please open a file' message
+  useEffect(() => {
+    if (noFile) {
+      setPopupContent(errorDiv);
+    }
+  }, [noFile]);
+
+  // keep a variable for access to hidden div in order to toggle hidden/visible
+  // may be better way to do this? // -> change to React best practice method of doing this
+  const swarmDeployPopup: any = document.getElementById('swarm-deploy-popup');
+  
   // save html code in variables for easier access later
   // the default for the pop-up div, before any interaction with swarm / after leaving swarm
   const popupStartDiv = (
@@ -97,7 +125,7 @@ const DeploySwarm: React.FC<Props> = ({
     event.target.parentNode.querySelector('#stack-name').value = null;
 
     // hide pop-up while running commands
-    toggleHidden(hiddenDiv);
+    toggleHidden(swarmDeployPopup);
     setSwarmDeployState(1);
 
     // await results from running dwarm deployment shell tasks 
@@ -116,19 +144,19 @@ const DeploySwarm: React.FC<Props> = ({
       setSuccess(true);
       setSwarmExists(true);
       setSwarmDeployState(2);
-      toggleVisible(hiddenDiv);
+      toggleVisible(swarmDeployPopup);
     } else {
       setSwarmExists(true);
       setSuccess(false);
       setSwarmDeployState(0);
-      toggleVisible(hiddenDiv);
+      toggleVisible(swarmDeployPopup);
     }
   };
 
   // function to allow the user to leave the swarm
   // called in onClicks
   const leaveSwarm = () => {
-    toggleHidden(hiddenDiv);
+    toggleHidden(swarmDeployPopup);
     setSwarmExists(false);
     setSuccess(false);
     setNoFile(false);
@@ -143,44 +171,18 @@ const DeploySwarm: React.FC<Props> = ({
   if (!swarmExists || swarmExists && !success) {
     swarmBtnTitle = 'Deploy to Swarm';
     swarmOnClick = () => {
-      if (hiddenDiv) {
-        toggleVisible(hiddenDiv);
+      if (swarmDeployPopup) {
+        toggleVisible(swarmDeployPopup);
       }
     };
   } else if (swarmExists && success) {
     swarmBtnTitle = 'Leave Swarm';
     swarmOnClick = () => {
+      toggleHidden(swarmDeployPopup);
+
       leaveSwarm();
     }
   } 
-
-  // Once component has mounted, check for changes in state and update component
-  // depending on change
-  // if there's no swarm and there is a file (defaults to true), show popup with input 
-  useEffect(() => {
-    if (!swarmExists && !noFile) {
-      setPopupContent(popupStartDiv);
-    }
-  }, [swarmExists, noFile]);
-
-  // if swarm exists and deployment was successful, render success div
-  // else if swarm exists but deployment was unsuccessful, render error message
-  useEffect(() => {
-    if (swarmExists && success) {
-      setPopupContent(successDiv);
-    } else if (swarmExists && !success) {
-      setPopupContent(errorDiv);
-    } 
-  }, [success, swarmExists]);
-
-  // if there is no active file, ask user to open a file to deploy
-  // TO DO - have different message from default error message
-  // currently using default, but would be best to have a 'please open a file' message
-  useEffect(() => {
-    if (noFile) {
-      setPopupContent(errorDiv);
-    }
-  }, [noFile]);
 
   return (
     <div className="deploy-container" > 
@@ -198,13 +200,13 @@ const DeploySwarm: React.FC<Props> = ({
 
 
       <Draggable>
-            <div id="hidden-swarm-div">
+            <div id="swarm-deploy-popup">
               <div id="button-and-other-divs">
                 <div id="exit-swarm-deploy-div">
                   <button id="exit-swarm-deploy-box"
                     onClick={() => {
-                      if (hiddenDiv) {
-                        toggleHidden(hiddenDiv);
+                      if (swarmDeployPopup) {
+                        toggleHidden(swarmDeployPopup);
                     }}}>X</button> 
                 </div>
 
