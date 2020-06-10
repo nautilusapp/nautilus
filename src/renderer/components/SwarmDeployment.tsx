@@ -34,6 +34,7 @@ const DeploySwarm: React.FC<Props> = ({
   // keep a variable for access to hidden div in order to toggle hidden/visible
   // may be better way to do this?
   const swarmDeployPopup: any = document.getElementById('swarm-deploy-popup');
+  
   // save html code in variables for easier access later
   // the default for the pop-up div, before any interaction with swarm / after leaving swarm
   const popupStartDiv = (
