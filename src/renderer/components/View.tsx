@@ -78,7 +78,6 @@ const View: React.FC<Props> = ({
       // calculate height and width for border reinforcement
       const w = parseInt(container.style('width'));
       const h = parseInt(container.style('height'));
-
       // reinforce borders and move nodes in accord with the simulation
       d3Nodes
         .attr('cx', (d: any) => {
@@ -179,6 +178,7 @@ const View: React.FC<Props> = ({
          */
         const getSpacing = (): number => {
           // iterate through each node
+          console.log('spacing', d3Nodes);
           d3Nodes.each((d: any) => {
             // if the node is part of a network
             if (d.networks) {
@@ -275,7 +275,7 @@ const View: React.FC<Props> = ({
         .force('charge', d3.forceManyBody<SNode>().strength(-150))
         .force('collide', d3.forceCollide(radius / 1.3))
         .on('tick', ticked)
-        .restart();
+        .restart()
     }
 
     return () => {
