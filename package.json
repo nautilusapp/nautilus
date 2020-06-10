@@ -108,6 +108,7 @@
     "js-yaml": "^3.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-draggable": "^4.4.2",
     "react-icons": "^3.9.0"
   },
   "devDependencies": {

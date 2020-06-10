@@ -66,7 +66,7 @@ class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     // Copy of initial state object
-    this.state = initialState;
+    this.state = {...initialState};
   }
 
   setSelectedContainer = (containerName: string) => {
@@ -113,8 +113,7 @@ class App extends Component<{}, State> {
   };
 
   convertAndStoreYamlJSON = (yamlText: string, filePath: string) => {
-    // Make copy of current state
-    const currentState = { ...initialState };
+    // Make copy of current state;
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
     const openFiles = this.state.openFiles.slice();
@@ -127,7 +126,7 @@ class App extends Component<{}, State> {
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.setState(Object.assign(currentState, yamlState, { openFiles }));
+    this.setState({...initialState, ...yamlState,  openFiles });
   };
 
   /**
@@ -151,8 +150,6 @@ class App extends Component<{}, State> {
           fileReader.onload = () => {
             // if successful read, invoke method to convert and store to state
             if (fileReader.result) {
-              console.log('fileReader.result: ', fileReader.result);
-              // console.log('fileReader.result: ', fileReader.result)
               let yamlText = fileReader.result.toString();
               //if docker-compose uses env file, replace the variables with value from env file
               if (validationResults.envResolutionRequired) {
@@ -200,11 +197,17 @@ class App extends Component<{}, State> {
     const newOpenFiles = openFiles.filter(file => file != filePath);
     // Remove the state object associated with the file path in localStorage
     localStorage.removeItem(filePath);
-    localStorage.removeItem('state');
-    // Remove all d3 nodes and links, then setState to the initialState with the current open files included.
-    d3.selectAll('.node').remove()
-    d3.selectAll('.link').remove()
-    this.setState({...initialState, openFiles: newOpenFiles, fileOpened: false})
+    // If the tab to be closed is the active tab, reset d3 and delete "state" object from local storage and set state to the initial state with the updated open files array included.
+    if (filePath === this.state.filePath){
+      localStorage.removeItem('state');
+      const { simulation } = window.d3State;
+      simulation 
+        .stop();
+      d3.selectAll('.node').remove();
+      d3.selectAll('.link').remove();
+      this.setState({...initialState, openFiles: newOpenFiles});
+    }
+    else this.setState({...this.state, openFiles: newOpenFiles});
   }
 
   /**

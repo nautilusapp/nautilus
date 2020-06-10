@@ -1,3 +1,14 @@
+/**
+ * ************************************
+ *
+ * @module  ComposeDeployment.tsx
+ * @author Yevgeniy Skroznikov
+ * @date 3/11/20
+ * @description container for the title, the service info and the file open
+ *
+ * ************************************
+ */
+
 import React, { useState, useEffect } from 'react';
 import { FaUpload, FaDownload } from 'react-icons/fa';
 import { remote } from 'electron';
