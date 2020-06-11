@@ -1,4 +1,4 @@
-import runDockerComposeValidation from '../src/common/dockerComposeValidation';
+import runDockerComposeValidation from '../src/common/runShellTasks';
 import convertYamlToState from '../src/renderer/helpers/yamlParser';
 import fs from 'fs';
 import yaml from 'js-yaml';
