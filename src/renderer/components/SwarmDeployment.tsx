@@ -9,7 +9,7 @@
  * ************************************
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import Draggable from 'react-draggable';
 import { runDockerSwarmDeployment, runLeaveSwarm } from '../../common/runShellTasks';
@@ -31,6 +31,7 @@ const DeploySwarm: React.FC<Props> = ({
   const [swarmDeployState, setSwarmDeployState] = useState(0);
   const [popUpContent, setPopupContent] = useState(<div></div>);
   const [stackName, setStackName] = useState('');
+  const stackNameRef = useRef(stackName);
 
   // Once component has mounted, check for changes in state and update component
   // depending on change
@@ -69,7 +70,7 @@ const DeploySwarm: React.FC<Props> = ({
   const popupStartDiv = (
     <div id="initialize-swarm">
       <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
-      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => { setStackName(event.target.value) }}></input>
+      <input id="stack-name" name="stack-name" placeholder="Enter name...." onChange={(event) => { stackNameRef.current = event.target.value }}></input>
       <button 
         id="create-swarm" 
         onClick={() => { 
@@ -121,17 +122,14 @@ const DeploySwarm: React.FC<Props> = ({
   // retrieve input from user and pass it to runDockerSwarmDeployment as an argument
   // the function will return stdout from running each function, so that we have access to that information
   const getNameAndDeploy = async (event: any) => {
-    // get value from user's input
-    // const stackName: string = event.target.parentNode.querySelector('#stack-name').value;
-    // event.target.parentNode.querySelector('#stack-name').value = null;
-    console.log('current stack name from state: ', stackName);
+    // console.log('current stack name from state: ', stackNameRef.current);
 
     // hide pop-up while running commands
     toggleHidden(swarmDeployPopup);
     setSwarmDeployState(1);
 
     // await results from running dwarm deployment shell tasks 
-    const returnedFromPromise = await runDockerSwarmDeployment(currentFile, stackName);
+    const returnedFromPromise = await runDockerSwarmDeployment(currentFile, stackNameRef.current);
     const infoReturned = JSON.parse(returnedFromPromise);
     console.log(infoReturned);
     setInfoFromSwarm(infoReturned);
