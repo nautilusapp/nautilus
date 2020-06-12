@@ -56,10 +56,13 @@ const DeploySwarm: React.FC<Props> = ({
   // TO DO - have different message from default error message
   // currently using default, but would be best to have a 'please open a file' message
   useEffect(() => {
+    if (currentFile) setSwarmDeployState(1);
+    else if (!currentFile) setSwarmDeployState(0);
+
     if (noFile) {
       setPopupContent(errorDiv);
     }
-  }, [noFile]);
+  }, [noFile, currentFile]);
 
   // keep a variable for access to hidden div in order to toggle hidden/visible
   // may be better way to do this? // -> change to React best practice method of doing this
@@ -127,7 +130,7 @@ const DeploySwarm: React.FC<Props> = ({
 
     // hide pop-up while running commands
     toggleHidden(swarmDeployPopup);
-    setSwarmDeployState(1);
+    setSwarmDeployState(2);
 
     // await results from running dwarm deployment shell tasks 
     const returnedFromPromise = await runDockerSwarmDeployment(currentFile, stackNameRef.current);
@@ -144,12 +147,12 @@ const DeploySwarm: React.FC<Props> = ({
       setNodeAddress(infoReturned.init.out.split('\n')[0].split(' ')[4].replace(/[()]/g, ''));
       setSuccess(true);
       setSwarmExists(true);
-      setSwarmDeployState(2);
+      setSwarmDeployState(3);
       toggleVisible(swarmDeployPopup);
     } else {
       setSwarmExists(true);
       setSuccess(false);
-      setSwarmDeployState(0);
+      setSwarmDeployState(1);
       toggleVisible(swarmDeployPopup);
     }
   };
@@ -162,7 +165,7 @@ const DeploySwarm: React.FC<Props> = ({
     setSuccess(false);
     setNoFile(false);
     runLeaveSwarm();
-    setSwarmDeployState(0);
+    setSwarmDeployState(1);
     setStackName('');
   }
 
@@ -194,9 +197,9 @@ const DeploySwarm: React.FC<Props> = ({
               {swarmBtnTitle}
       </button>
       <div className='status-container'>
-        <span className={`deployment-status status-healthy ${swarmDeployState === 3 || swarmDeployState === 2 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-moderate ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-dead ${swarmDeployState === 0 ? 'status-active' : ''}`}></span>
+        <span className={`deployment-status status-healthy ${swarmDeployState === 3 ? 'status-active' : ''}`}></span>
+        <span className={`deployment-status status-moderate ${swarmDeployState === 2 ? 'status-active' : ''}`}></span>
+        <span className={`deployment-status status-dead ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
       </div>
 
       <Draggable>
