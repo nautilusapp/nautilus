@@ -56,12 +56,14 @@ const DeploySwarm: React.FC<Props> = ({
   // TO DO - have different message from default error message
   // currently using default, but would be best to have a 'please open a file' message
   useEffect(() => {
-    if (currentFile) setSwarmDeployState(1);
-    else if (!currentFile) setSwarmDeployState(0);
-
-    if (noFile) {
-      setPopupContent(errorDiv);
+    if (currentFile) {
+      setSwarmDeployState(1);
+      setPopupContent(popupStartDiv);
     }
+    else if (!currentFile) {
+      setSwarmDeployState(0);
+      setPopupContent(errorDiv);
+    } 
   }, [noFile, currentFile]);
 
   // keep a variable for access to hidden div in order to toggle hidden/visible
