@@ -217,9 +217,11 @@ class App extends Component<{}, State> {
    */
   handleFileOpenError = (errorText: Error) => {
     const openErrors = parseOpenError(errorText);
+    const { openFiles } = this.state;
     this.setState({
       ...initialState,
       openErrors,
+      openFiles,
       fileOpened: false,
     });
   };
