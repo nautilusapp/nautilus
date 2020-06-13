@@ -13,7 +13,6 @@
 import React, { Component } from 'react';
 import yaml from 'js-yaml';
 import { ipcRenderer } from 'electron';
-import * as d3 from 'd3';
 
 //IMPORT HELPER FUNCTIONS
 import convertYamlToState from './helpers/yamlParser';
@@ -207,8 +206,6 @@ class App extends Component<{}, State> {
       const { simulation } = window.d3State;
       simulation 
         .stop();
-      d3.selectAll('.node').remove();
-      d3.selectAll('.link').remove();
       if (openFiles.length > 1 ) this.switchToTab(newOpenFiles[0], newOpenFiles)
       else this.setState({...initialState, openFiles: newOpenFiles});
       
