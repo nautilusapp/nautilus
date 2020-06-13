@@ -1,4 +1,4 @@
-import runDockerComposeValidation from '../src/common/dockerComposeValidation';
+import runDockerComposeValidation from '../src/common/runShellTasks';
 import convertYamlToState from '../src/renderer/helpers/yamlParser';
 import fs from 'fs';
 import yaml from 'js-yaml';
@@ -9,7 +9,7 @@ describe('Process Yaml File', () => {
     try {
       expect(
         runDockerComposeValidation(
-          path.resolve(__dirname, '../samples/docker-composeBAD.yml'),
+          path.resolve(__dirname, '../samples/docker-composeBAD.yml'), false
         ),
       ).resolves.toMatchObject({
         out: '',
@@ -35,7 +35,7 @@ describe('Process Yaml File', () => {
     const correctYamlState = JSON.parse(
       fs.readFileSync(path.resolve(__dirname, './yamlState.json')).toString(),
     );
-    const yamlState = convertYamlToState(yamlJS);
+    const yamlState = convertYamlToState({}, yamlJS);
     expect(yamlState).toEqual(correctYamlState);
   });
 });
