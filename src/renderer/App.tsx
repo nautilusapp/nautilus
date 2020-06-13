@@ -209,8 +209,9 @@ class App extends Component<{}, State> {
         .stop();
       d3.selectAll('.node').remove();
       d3.selectAll('.link').remove();
-      // this.setState({...initialState, openFiles: newOpenFiles});
-      this.switchToTab(openFiles[0], newOpenFiles)
+      if (openFiles.length > 1 ) this.switchToTab(newOpenFiles[0], newOpenFiles)
+      else this.setState({...initialState, openFiles: newOpenFiles});
+      
     }
     else this.setState({...this.state, openFiles: newOpenFiles});
   }
