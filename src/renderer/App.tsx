@@ -171,13 +171,15 @@ class App extends Component<{}, State> {
    * @description sets state to the state stored in localStorage of the file
    * associated with the given filePath.
    */
-  switchToTab: SwitchTab = (filePath: string) => {
+  switchToTab: SwitchTab = (filePath: string, openFiles?: Array<string>) => {
     // Copy of current state
     const currentState = {...this.state};
     // Extract the desired tab state from localStorage
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     // Create new state object with the returned tab state
-    const newState = {...currentState, ...tabState};
+    let newState;
+    if (openFiles) newState = {...currentState, ...tabState, openFiles}
+    else newState = {...currentState, ...tabState};
     // Set the 'state' item in localStorage to the tab state. This means that tab is the current tab, which would be used if the app got reloaded.
     localStorage.setItem('state', JSON.stringify(tabState));
     // console.log('Services', newState.services)
@@ -199,13 +201,16 @@ class App extends Component<{}, State> {
     localStorage.removeItem(filePath);
     // If the tab to be closed is the active tab, reset d3 and delete "state" object from local storage and set state to the initial state with the updated open files array included.
     if (filePath === this.state.filePath){
+      // Remove the 'state' localStorage item, which represents the services of the currently opened file.
+      // Stop the simulation and remove all d3 nodes.
       localStorage.removeItem('state');
       const { simulation } = window.d3State;
       simulation 
         .stop();
       d3.selectAll('.node').remove();
       d3.selectAll('.link').remove();
-      this.setState({...initialState, openFiles: newOpenFiles});
+      // this.setState({...initialState, openFiles: newOpenFiles});
+      this.switchToTab(openFiles[0], newOpenFiles)
     }
     else this.setState({...this.state, openFiles: newOpenFiles});
   }
@@ -216,6 +221,11 @@ class App extends Component<{}, State> {
    * @description sets state with array of strings of different errors
    */
   handleFileOpenError = (errorText: Error) => {
+    // Stop the simulation to prevent hundreds of d3 transform errors from occuring. This is rare but its a simple fix to prevent it.
+    const { simulation } = window.d3State;
+      simulation 
+        .stop();
+    // Grab the current openFiles array so that we don't lose them when setting state.
     const openErrors = parseOpenError(errorText);
     const { openFiles } = this.state;
     this.setState({
