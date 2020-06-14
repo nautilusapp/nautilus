@@ -3,14 +3,14 @@
   justify-content: center;
   // border-bottom: $border;
   padding: 1.5em;
-
+  background-color: #00325C;
   .views {
     flex: 1 1 0;
     justify-content: flex-end;
     select {
       color: $secondary-color;
       background-color: $fourth-color;
-      font-size: 14px;
+      font-size: 16px;
       border: none;
     }
     select:hover {
@@ -29,6 +29,7 @@
     }
 
     h2 {
+      color: $fourth-color;
       margin: 0em 0.5em 0em 0.3em;
     }
   }
@@ -46,6 +47,7 @@
   }
 
   .option {
+    font-size: 16px;
     color: $secondary-color;
     padding: 0em 0.3em !important;
     border-radius: 0.5em;
