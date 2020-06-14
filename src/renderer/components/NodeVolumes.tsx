@@ -15,7 +15,7 @@ import * as d3 from 'd3';
 //import { colorSchemeIndex } from '../helpers/colorSchemeHash';
 
 //IMPORT SVG
-import containerPath from '../../../static/containerPath';
+import boxPath from '../../../static/boxPath';
 
 // IMPORT TYPES
 import { SNode } from '../App.d';
@@ -30,8 +30,8 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
     // VOLUMES LOCATION
     const x = 0;
     const y = 0;
-    const width = 132;
-    const height = 75;
+    const width = 133;
+    const height = 133;
     // VOLUMES VARIABLES
     let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
     const volumes: d3.Selection<SVGSVGElement, SNode, any, any>[] = [];
@@ -54,8 +54,8 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
           const volume = d3
             .select<SVGElement, SNode>(node)
             .insert('svg', 'image')
-            .attr('viewBox', '0 0 215 124')
-            .html(containerPath)
+            .attr('viewBox', '0 0 133 133')
+            .html(boxPath)
             .attr('class', 'volumeSVG')
             .attr('fill', () => {
               let slicedVString = vString.slice(0, vString.indexOf(':'));
@@ -64,9 +64,9 @@ const NodeVolumes: React.FC<Props> = ({ volumesOn, getColor }) => {
                 : getColor(vString);
             })
             .attr('width', width + (d.volumes.length - i) * 20)
-            .attr('height', height + (d.volumes.length - i) * 40)
+            .attr('height', height + (d.volumes.length - i) * 20)
             .attr('x', x - (d.volumes.length - i) * 10)
-            .attr('y', y - (d.volumes.length - i) * 20)
+            .attr('y', y- (d.volumes.length - i) * 10)
             .on('mouseover', () => {
               return vText.style('visibility', 'visible');
             })
