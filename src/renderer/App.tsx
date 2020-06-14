@@ -210,7 +210,7 @@ class App extends Component<{}, State> {
       else this.setState({...initialState, openFiles: newOpenFiles, options});
       
     }
-    else this.setState({...this.state, openFiles: newOpenFiles, options});
+    else this.setState({...this.state, openFiles: newOpenFiles });
   }
 
   /**
