@@ -116,6 +116,7 @@ class App extends Component<{}, State> {
     const yamlJSON = yaml.safeLoad(yamlText);
     const yamlState = convertYamlToState(yamlJSON, filePath);
     const openFiles = this.state.openFiles.slice();
+    const { options } = this.state
     // Don't add a file that is already opened to the openFiles array
     if (!openFiles.includes(filePath)) openFiles.push(filePath);
 
@@ -125,7 +126,7 @@ class App extends Component<{}, State> {
     // store opened file state in localStorage under the current state item call "state" as well as an individual item using the filePath as the key.
     localStorage.setItem('state', JSON.stringify(yamlState));
     localStorage.setItem(`${filePath}`, JSON.stringify(yamlState));
-    this.setState({...initialState, ...yamlState,  openFiles });
+    this.setState({...initialState, ...yamlState,  openFiles, options });
   };
 
   /**
@@ -171,14 +172,14 @@ class App extends Component<{}, State> {
    * associated with the given filePath.
    */
   switchToTab: SwitchTab = (filePath: string, openFiles?: Array<string>) => {
-    // Copy of current state
-    const currentState = {...this.state};
+    // Copy of current options
+    const { options }= this.state;
     // Extract the desired tab state from localStorage
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     // Create new state object with the returned tab state
     let newState;
-    if (openFiles) newState = {...currentState, ...tabState, openFiles}
-    else newState = {...currentState, ...tabState};
+    if (openFiles) newState = {...this.state, ...tabState, openFiles, options}
+    else newState = {...this.state, ...tabState, options};
     // Set the 'state' item in localStorage to the tab state. This means that tab is the current tab, which would be used if the app got reloaded.
     localStorage.setItem('state', JSON.stringify(tabState));
     // console.log('Services', newState.services)
@@ -194,7 +195,7 @@ class App extends Component<{}, State> {
    */
   closeTab: SwitchTab = (filePath: string) => {
     // Grab current open files and remove the file path of the tab to be closed, assign the updated array to newOpenFiles
-    const openFiles = this.state.openFiles;
+    const { openFiles, options } = this.state;
     const newOpenFiles = openFiles.filter(file => file != filePath);
     // Remove the state object associated with the file path in localStorage
     localStorage.removeItem(filePath);
@@ -206,10 +207,10 @@ class App extends Component<{}, State> {
       const { simulation } = window.d3State;
       simulation.stop();
       if (openFiles.length > 1 ) this.switchToTab(newOpenFiles[0], newOpenFiles)
-      else this.setState({...initialState, openFiles: newOpenFiles});
+      else this.setState({...initialState, openFiles: newOpenFiles, options});
       
     }
-    else this.setState({...this.state, openFiles: newOpenFiles});
+    else this.setState({...this.state, openFiles: newOpenFiles, options});
   }
 
   /**
