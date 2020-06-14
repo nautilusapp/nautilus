@@ -23,7 +23,6 @@ import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
 import boxPath from '../../../static/boxPath';
 
 // IMPORT COMPONENTS
-import NodeVolumes from './NodeVolumes';
 
 type Props = {
   services: Services;
@@ -345,11 +344,7 @@ const Nodes: React.FC<Props> = ({
     };
   }, [options.volumes])
 
-  return (
-    <g className="nodes">
-      <NodeVolumes volumesOn={options.volumes} getColor={getColor} />
-    </g>
-  );
+  return <g className="nodes"></g>
 };
 
 export default Nodes;
