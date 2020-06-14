@@ -59,12 +59,6 @@ const DeploySwarm: React.FC<Props> = ({
     }
   }, [success, swarmExists]);
 
-  useEffect(() => {
-    if(swarmDeployState === 1){
-      console.log('setting swarm deploy state', stackName);
-      getNameAndDeploy();
-    }
-  }, [swarmDeployState])
   // if there is no active file, ask user to open a file to deploy
   // TO DO - have different message from default error message
   // currently using default, but would be best to have a 'please open a file' message
@@ -215,12 +209,12 @@ const DeploySwarm: React.FC<Props> = ({
         onClick={swarmOnClick}>
             <span><FaUpload className="deployment-button" size={24} /></span>
               {swarmBtnTitle}
+        <div className='status-container'>
+          <span className={`deployment-status status-healthy ${swarmDeployState === 3 ? 'status-active' : ''}`}></span>
+          <span className={`deployment-status status-moderate ${swarmDeployState === 2 ? 'status-active' : ''}`}></span>
+          <span className={`deployment-status status-dead ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
+        </div>
       </button>
-      <div className='status-container'>
-        <span className={`deployment-status status-healthy ${swarmDeployState === 3 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-moderate ${swarmDeployState === 2 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-dead ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
-      </div>
 
       <Draggable>
         <div id="swarm-deploy-popup">
