@@ -120,8 +120,8 @@
           min-height: min-content;
           flex-direction: column;
           padding: 1em;
-          background-color: $fourth-color;
-          font-size: 0.8em;
+          background-color: rgb(224, 233, 241);
+          font-size: 1em;
           overflow-wrap: break-word;
           border-radius: 0.25em;
 
@@ -130,7 +130,7 @@
           }
 
           .command {
-            color: $primary-color;
+            color: $secondary-color;
             font-weight: 800;
           }
 
@@ -192,7 +192,7 @@
   border-radius: 50%;
   height: 25px;
   width: 25px;
-  border: 2px solid;
+  border: 1px solid;
   font-size: 1.7em;
   font-weight: bolder;
   align-items: center;
@@ -200,23 +200,23 @@
 }
 
 .status-healthy {
-  border-color: rgb(211,211,211);
-  background-color: rgba(211,211,211, 0.5);
+  border-color:  rgb(140,170,194);
+  background-color: rgb(140,170,194);
   &.status-active {
     background-color: rgb(9, 247, 9);
   }
 }
 
 .status-moderate {
-  border-color: rgb(211,211,211);
-  background-color: rgba(211,211,211, 0.5);
+  border-color:  rgb(140,170,194);
+  background-color: rgb(140,170,194);
   &.status-active {
     background-color: rgb(246, 246, 8);
   }
 }
 .status-dead {
-  border-color: rgb(211,211,211);
-  background-color: rgba(211,211,211, 0.5);
+  border-color:  rgb(140,170,194);
+  background-color: rgb(140,170,194);
   &.status-active {
     background-color: rgb(253, 7, 7);
   }
@@ -231,19 +231,23 @@
 .clickable-status:hover {
   cursor: hand;
   cursor: pointer;
-  color: $fifth-color;
+}
+
+.deployment-title:hover {
+  cursor: hand;
+  cursor: pointer; 
 }
 
 .status-container {
   display: flex;
   justify-content: space-evenly;
-  padding-left: 40%;
+  padding-left: 35%;
   padding-right: 5%;
   width: 8em;
+  color: white;
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 5px;
 }

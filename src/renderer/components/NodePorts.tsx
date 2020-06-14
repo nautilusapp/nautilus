@@ -18,24 +18,26 @@ type Props = {
   portsOn: boolean;
 };
 
+
 const NodePorts: React.FC<Props> = ({ portsOn }) => {
   useEffect(() => {
     // PORTS SVG VARIABLE
     // border radius
     const rx = 3;
     // size of rectangle
-    const width = 43;
-    const height = 10;
+    const width = 78;
+    const height = 15;
     // ports location
-    const x = 7;
-    const y = 24;
+    const x = 133 - 60;
+    const y = 133 - 30;
     // text location
     const dx = x + 21; // center of text element because of text-anchor
-    const dy = y + 8;
+    const dy = y + height;
     // PORTS VARIABLES
     let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
     const ports: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
     const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
+    console.log('node ports', portsOn);
     if (portsOn) {
       // select all nodes with ports
       nodesWithPorts = d3
@@ -49,15 +51,15 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
         // iterate through all ports of node
         d.ports.forEach((pString, i) => {
           // set font size based on length of ports text
-          const textSize = pString.length <= 9 ? '8px' : '7px';
+          const textSize = '12px';
           // add svg port
           const port = d3
             .select<SVGElement, SNode>(node)
             .append('rect')
             .attr('class', 'port')
             .attr('rx', rx)
-            .attr('x', x + i * 1.1)
-            .attr('y', y + i * (height + 1))
+            .attr('x', x)
+            .attr('y', y + i * height)
             .attr('width', width)
             .attr('height', height);
           // store d3 object in ports array
@@ -68,8 +70,9 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
             .append('text')
             .attr('class', 'ports-text')
             .attr('color', 'white')
-            .attr('dx', dx + i * 1.1)
-            .attr('dy', dy + i * (height + 1))
+            .attr('dx', dx + 18)
+            .attr('dy', dy + i * height - 2)
+            .attr('text-anchor', 'middle')
             .attr('font-size', textSize)
             // center the text in the rectangle
             .append('tspan')
@@ -92,7 +95,9 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     // only fire when options.ports changes
   }, [portsOn]);
 
+  console.log('node ports blah');
   return <></>;
 };
 
 export default NodePorts;
+

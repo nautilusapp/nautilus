@@ -1,42 +1,38 @@
 .tab-bar {
   display: flex;
-  border-bottom: 1px solid $secondary-color;
-  padding-left: 5px;
+  background-color: rgb(0,50,92);;
   height: 2em;
   align-items: bottom;
   overflow-y: hidden;
   overflow-x: scroll;
   .tab {
     width: 12em;
-    height: 1.5em;
+    height: 2em;
     color: darken($secondary-color, 10%);
-    border-top: 1px solid lighten($secondary-color, 10%);
-    border-left: 1px solid lighten($secondary-color, 10%);
-    border-right: 1px solid lighten($secondary-color, 10%);
-    border-radius: 3px;
-    margin-top: 4px;
-    margin-left: 6px;
-    box-shadow: 2px 2px 2px darken($secondary-color, 20%);
-    padding: 4px;
+    background-color: rgb(0,50,92);
+    color: white;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 10px;
     .tab-text {
-      max-width: 80%;
+      max-width: 100%;
       overflow: hidden;
-      font-size: smaller;
+      font-size: 0.95em;
     }
     .close-btn {
-      background-color: red;
-      color: white;
+      color: rgb(184,184,189);
+      font-size: 0.77em;
       border: none;
-      border-radius: 3px;
-      margin-left: 4px;
-      margin-bottom: 4px;
+      background-color: rgba(0, 0, 0, 0.0);
+    }
+    .close-btn:hover {
+      color: white;
     }
   }
   .active-tab {
-    background-color: lighten($secondary-color, 10%);
+    background-color: rgb(11,94,181);
     color: white;
   }
 }
