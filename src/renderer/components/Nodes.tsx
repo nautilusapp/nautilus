@@ -20,6 +20,7 @@ import { getStatic } from '../helpers/static';
 
 // IMPORT TYPES
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
+import boxPath from '../../../static/boxPath';
 
 // IMPORT COMPONENTS
 import NodeVolumes from './NodeVolumes';
@@ -77,11 +78,94 @@ const Nodes: React.FC<Props> = ({
   const { simulation, serviceGraph, treeDepth } = window.d3State;
   const [boxPorts, setBoxPorts] = useState<d3.Selection<SVGRectElement, SNode, any, any>[] | []>([]);
   const [boxPortTexts, setBoxPortTexts] = useState<d3.Selection<SVGTextElement, SNode, any, any>[] | []>([]);
-  
+  const [boxVolumes, setBoxVolumes] = useState<d3.Selection<SVGSVGElement, SNode, any, any>[] | []>([]);
+  const [boxVolumesTexts, setBoxVolumesTexts] = useState<d3.Selection<SVGTextElement, SNode, any, any>[] | []>([]);
+
   /** HELPER FUNCTIONS */
+  const removeVolumes = () => {
+    boxVolumes.forEach((node) => node.remove());
+    boxVolumesTexts.forEach((node) => node.remove());
+    setBoxVolumes([]);
+    setBoxVolumesTexts([]);
+  }
+
+  const addVolumes = () => {
+    const x = 0;
+    const y = 0;
+    const width = 133;
+    const height = 133;
+    // VOLUMES VARIABLES
+    let nodesWithVolumes: d3.Selection<SVGGElement, SNode, any, any>;
+    const volumes: d3.Selection<SVGSVGElement, SNode, any, any>[] = [];
+    const volumeText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
+      // select all nodes with volumes
+    nodesWithVolumes = d3
+      .select('.nodes')
+      .selectAll<SVGGElement, SNode>('.node')
+      .filter((d: SNode) => d.volumes.length > 0);
+
+    // iterate through all nodes with volumes
+    nodesWithVolumes.each(function (d: SNode) {
+      const node = this;
+      // iterate through all volumes of node
+      d.volumes.reverse().forEach((vString, i) => {
+        let onClick = false;
+        let onceClicked = false;
+        // add svg volume
+        const volume = d3
+          .select<SVGElement, SNode>(node)
+          .insert('svg', 'image')
+          .attr('viewBox', '0 0 133 133')
+          .html(boxPath)
+          .attr('class', 'volumeSVG')
+          .attr('fill', () => {
+            let slicedVString = vString.slice(0, vString.indexOf(':'));
+            return vString.includes(':')
+              ? getColor(slicedVString)
+              : getColor(vString);
+          })
+          .attr('width', width + (d.volumes.length - i) * 20)
+          .attr('height', height + (d.volumes.length - i) * 20)
+          .attr('x', x - (d.volumes.length - i) * 10)
+          .attr('y', y- (d.volumes.length - i) * 10)
+          .on('mouseover', () => {
+            return vText.style('visibility', 'visible');
+          })
+          .on('mouseout', () => {
+            !onClick
+              ? vText.style('visibility', 'hidden')
+              : vText.style('visibility', 'visible');
+          })
+          .on('click', () => {
+            onceClicked = !onceClicked;
+            onClick = onceClicked;
+          });
+        // store d3 object in volumes array so that they can be removed
+        volumes.push(volume);
+        // add svg volume text
+        const vText = d3
+          .select<SVGElement, SNode>(node)
+          .append('text')
+          .text(vString)
+          .attr('class', 'volume-text')
+          .attr('fill', 'black')
+          .attr('text-anchor', 'end')
+          .attr('dx', x - 5)
+          .attr('dy', y + (i + 1) * 11)
+          .style('visibility', 'hidden');
+        // store d3 object in volumes text array
+        volumeText.push(vText);
+      });
+      setBoxVolumes(volumes);
+      setBoxVolumesTexts(volumeText);
+    });
+  }
+
   const removePorts = () => {
     boxPorts.forEach((node) => node.remove());
     boxPortTexts.forEach((node) => node.remove());
+    setBoxPorts([]);
+    setBoxPortTexts([]);
   }
 
   const addPorts = () => {
@@ -233,6 +317,7 @@ const Nodes: React.FC<Props> = ({
       .call(wrap);
 
     if(options.ports) addPorts();
+    if(options.volumes) addVolumes();
 
     return () => {
       // remove containers when services change
@@ -249,6 +334,16 @@ const Nodes: React.FC<Props> = ({
       if (options.ports) removePorts();
     };
   }, [options.ports])
+
+  useEffect(() => {
+    if(options.volumes) addVolumes();
+    else if(boxVolumes !== undefined) removeVolumes();
+
+    return () => {
+      // before unmounting, if ports option was on, remove the ports
+      if (options.volumes) removeVolumes();
+    };
+  }, [options.volumes])
 
   return (
     <g className="nodes">
