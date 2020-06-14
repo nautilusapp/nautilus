@@ -120,8 +120,8 @@
           min-height: min-content;
           flex-direction: column;
           padding: 1em;
-          background-color: $fourth-color;
-          font-size: 0.8em;
+          background-color: rgb(224, 233, 241);
+          font-size: 1em;
           overflow-wrap: break-word;
           border-radius: 0.25em;
 
@@ -130,7 +130,7 @@
           }
 
           .command {
-            color: $primary-color;
+            color: $secondary-color;
             font-weight: 800;
           }
 
