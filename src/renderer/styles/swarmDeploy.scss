@@ -3,33 +3,37 @@
   flex-direction: column;
   justify-content: initial;
   color: white;
-  height: 6em;
   width: 100%;
   text-align: center; 
-  margin-bottom: 30%;
+  margin-bottom: 8%;
   align-items: center;
 
   .deploy-btn {
     background-color: rgb(223, 223, 223);
     color: black;
-    padding-top: 0.5em;
-    padding-bottom: 1em;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    padding-left: 0px;
+    padding-right:  0px;;
     font-size: 1.1em;
     width: 85%;
     border: none;
     border-radius: 6px;
     margin-bottom: 0.6em;
     transition: background-color 0.2s;
-    
+
     .deployment-title {
-      font-size: 1em;
-      align-self: center;
+      font-size: 1em;    
       padding-left: 0.5em;
   }
     .open-button{
+      float: left;
+      transform: translate(14px, 12px);
       color: $primary-color;
     }
     .deployment-button{
+      float: left;
+      transform: translate(14px, 12px);
       color: $primary-color;
     }
   
@@ -50,7 +54,7 @@
 }
 
 #compose-deploy-div {
-  margin-bottom: 20%;
+  margin-bottom: 8%;
 }
 
 #swarm-deploy-popup {
@@ -159,7 +163,3 @@
   }
 
 }
-
-
-
-

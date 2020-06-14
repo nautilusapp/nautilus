@@ -178,12 +178,8 @@ const DeploySwarm: React.FC<Props> = ({
   } else if (swarmExists && success) {
     swarmBtnTitle = 'Leave Swarm';
     swarmOnClick = () => {
-<<<<<<< HEAD
-      toggleHidden(hiddenDiv);
-=======
       toggleHidden(swarmDeployPopup);
 
->>>>>>> 6cdef2ef72f8adba1df3a56d0f894a27691469b0
       leaveSwarm();
     }
   } 
