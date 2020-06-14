@@ -326,7 +326,7 @@ const Nodes: React.FC<Props> = ({
 
   useEffect(() => {
     if(options.ports) addPorts();
-    else if(boxPorts !== undefined) removePorts();
+    else if(boxPorts.length !== 0) removePorts();
 
     return () => {
       // before unmounting, if ports option was on, remove the ports
@@ -336,10 +336,10 @@ const Nodes: React.FC<Props> = ({
 
   useEffect(() => {
     if(options.volumes) addVolumes();
-    else if(boxVolumes !== undefined) removeVolumes();
+    else if(boxVolumes.length !== 0) removeVolumes();
 
     return () => {
-      // before unmounting, if ports option was on, remove the ports
+      // before unmounting, if volumes option was on, remove the ports
       if (options.volumes) removeVolumes();
     };
   }, [options.volumes])
