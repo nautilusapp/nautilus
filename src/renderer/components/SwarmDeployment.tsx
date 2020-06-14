@@ -209,19 +209,11 @@ const DeploySwarm: React.FC<Props> = ({
         onClick={swarmOnClick}>
             <span><FaUpload className="deployment-button" size={24} /></span>
               {swarmBtnTitle}
-<<<<<<< HEAD
-              <div className='status-container'>
-        <span className={`deployment-status status-healthy ${swarmDeployState === 3 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-moderate ${swarmDeployState === 2 ? 'status-active' : ''}`}></span>
-        <span className={`deployment-status status-dead ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
-      </div>
-=======
         <div className='status-container'>
           <span className={`deployment-status status-healthy ${swarmDeployState === 3 ? 'status-active' : ''}`}></span>
           <span className={`deployment-status status-moderate ${swarmDeployState === 2 ? 'status-active' : ''}`}></span>
           <span className={`deployment-status status-dead ${swarmDeployState === 1 ? 'status-active' : ''}`}></span>
         </div>
->>>>>>> b06a24ba77bd74d7186cfe1413e5abfce6908e87
       </button>
 
       <Draggable>
