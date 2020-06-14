@@ -38,7 +38,7 @@ function wrap(text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>) {
     const className = text.attr('class');
     const words = text.text();
     let line = 0;
-    const lineLength = 8;
+    const lineLength = 15;
     const maxLine = 3;
     const totalLinesNeeded = Math.ceil(words.length / lineLength);
     if (totalLinesNeeded === 2) {
@@ -58,7 +58,7 @@ function wrap(text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>) {
           .attr('dy', currentIndex * 1.7 - 10)
           .attr('class', className);
         if (line < 2 || words.length <= 24) {
-          lineText.text(words.slice(currentIndex, currentIndex + 8));
+          lineText.text(words.slice(currentIndex, currentIndex + lineLength));
         } else {
           lineText.text(words.slice(currentIndex, currentIndex + 5) + '...');
         }
@@ -81,6 +81,7 @@ const Nodes: React.FC<Props> = ({
    *********************
    */
   useEffect(() => {
+    console.log('use effect');
     const container = d3.select('.view-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
@@ -143,10 +144,10 @@ const Nodes: React.FC<Props> = ({
     nodeContainers
       .append('svg:image')
       .attr('xlink:href', (d: SNode) => {
-        return getStatic('container.svg');
+        return getStatic('box.svg');
       })
-      .attr('height', 75)
-      .attr('width', 132)
+      .attr('height', 133)
+      .attr('width', 133)
       .attr('class', 'containerImage');
 
     // add node service name
@@ -154,26 +155,27 @@ const Nodes: React.FC<Props> = ({
       .append('text')
       .text((d: SNode) => d.name)
       .attr('class', 'nodeLabel')
-      .attr('x', 80)
-      .attr('y', 60)
+      .attr('x', 133 / 2)
+      .attr('y', 133 / 2)
       .attr('text-anchor', 'middle')
       .call(wrap);
     //add stroke
+    /*
     nodeContainers
       .insert('text', '.nodeLabel')
       .text((d: SNode) => d.name)
       .attr('class', 'nodeLabelStroke')
-      .attr('x', 80)
-      .attr('y', 60)
+      .attr('x', 133 / 2)
+      .attr('y', 133 / 2)
       .attr('text-anchor', 'middle')
-      .call(wrap);
-
+      .call(wrap);*/
     return () => {
       // remove containers when services change
       nodeContainers.remove();
     };
   }, [services]);
 
+  console.log('nodes options', options);
   return (
     <g className="nodes">
       <NodePorts portsOn={options.ports} />

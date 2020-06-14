@@ -5,7 +5,6 @@
   align-items: center;
   justify-content: center;
   margin-right: 1em;
-
   .error-open-wrapper {
     width: 70%;
     display: flex;
@@ -36,7 +35,6 @@
             font-family: 'Sen-Bold';
             fill: $fourth-color;
             font-size: 16px;
-            transform: rotate(-13deg);
             text-anchor: middle;
           }
           .nodeLabelStroke {
@@ -44,17 +42,14 @@
             stroke: #006896;
             stroke-width: 4;
             font-size: 16px;
-            transform: rotate(-13deg);
             text-anchor: middle;
           }
           .port {
             stroke: $secondary-color;
-            transform: rotate(5deg);
-            fill: $fifth-color;
+            fill: rgb(223, 223, 223);
             opacity: 0.9;
           }
           .ports-text {
-            transform: rotate(4.6deg);
 
             tspan {
               font-family: 'Sen-Bold' !important;
@@ -82,16 +77,18 @@
   }
 
   .volumes-wrapper {
-    width: 200px;
+    width: 230px;
     height: 100%;
     display: flex;
     align-items: center;
     margin: 0 1em;
+    font-size: 1.3em;
+    color: white;
 
     .container {
       width: 100%;
       height: 90%;
-      background-color: $hover-color;
+      background-color: $primary-color;
       border-radius: 2em;
       display: flex;
       flex-direction: column;
@@ -108,6 +105,7 @@
       }
 
       h2 {
+        color: white;
         margin: 0.75em 0 0.5em 0;
       }
 
@@ -123,6 +121,8 @@
 
         p {
           margin: 0 0 0 0;
+          word-break:break-all;
+          width: 175px;
         }
 
         .volumeColorName {

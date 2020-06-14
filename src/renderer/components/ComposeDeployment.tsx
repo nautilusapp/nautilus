@@ -43,6 +43,7 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
   const [ deployState, setDeployState ] = useState(DeploymentStatus.NoFile);
   const [ errorMessage, setErrorMessage ] = useState('');
 
+  console.log('compose', currentFilePath);
   useEffect(() => {
     if(currentFilePath !== '') deployCheck();
     else if(deployState !== DeploymentStatus.NoFile) setDeployState(DeploymentStatus.NoFile);
@@ -87,7 +88,8 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
     setDeployState(DeploymentStatus.Undeploying);
   }
 
-  const onErrorClick = () => {
+  const onErrorClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     const dialog = remote.dialog;
     dialog.showErrorBox('Error Message:', errorMessage);
   }
@@ -149,23 +151,23 @@ const Deployment: React.FC<Props> = ({ currentFilePath, fileOpen }) => {
       <div onClick={onClick} className='deploy-btn'>
         {icon}
         <label className='deployment-title'>{title}{deployState === DeploymentStatus.NoFile ? inputButton : ''}</label>
-      </div>
-      <div className='status-container'>
-        <span className={`deployment-status status-healthy 
-          ${deployState === DeploymentStatus.Running || 
-            deployState === DeploymentStatus.Warning ? 'status-active' : ''}`}>
-        </span>
-        <span className={`deployment-status status-moderate 
-          ${deployState === DeploymentStatus.Deploying || 
-            deployState === DeploymentStatus.Undeploying ||
-            deployState === DeploymentStatus.Warning ? 'status-active' : ''}`}>
-        </span>
-        <span onClick={deployState === DeploymentStatus.DeadError ? onErrorClick : () => {}}className={`deployment-status status-dead 
-          ${deployState === DeploymentStatus.Dead || 
-            deployState === DeploymentStatus.DeadError ? 'status-active' : ''}
-          ${deployState === DeploymentStatus.DeadError ? 'clickable-status' : ''}`}>
-          {deployState === DeploymentStatus.DeadError ? '!' : ''}
-        </span>
+        <div className='status-container'>
+          <span className={`deployment-status status-healthy 
+            ${deployState === DeploymentStatus.Running || 
+              deployState === DeploymentStatus.Warning ? 'status-active' : ''}`}>
+          </span>
+          <span className={`deployment-status status-moderate 
+            ${deployState === DeploymentStatus.Deploying || 
+              deployState === DeploymentStatus.Undeploying ||
+              deployState === DeploymentStatus.Warning ? 'status-active' : ''}`}>
+          </span>
+          <span onClick={deployState === DeploymentStatus.DeadError ? onErrorClick : () => {}}className={`deployment-status status-dead 
+            ${deployState === DeploymentStatus.Dead || 
+              deployState === DeploymentStatus.DeadError ? 'status-active' : ''}
+            ${deployState === DeploymentStatus.DeadError ? 'clickable-status' : ''}`}>
+            {deployState === DeploymentStatus.DeadError ? '!' : ''}
+          </span>
+        </div>
       </div>
     </div>
   );

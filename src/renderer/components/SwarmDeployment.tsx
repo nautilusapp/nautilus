@@ -36,22 +36,35 @@ const DeploySwarm: React.FC<Props> = ({
   // Once component has mounted, check for changes in state and update component
   // depending on change
   // if there's no swarm and there is a file (defaults to true), show popup with input 
+  console.log('line 39 stackName', stackNameRef.current);
+
   useEffect(() => {
-    if (!swarmExists && !noFile) {
-      setPopupContent(popupStartDiv);
+    console.log('use effect line 40', stackName);
+    if (!swarmExists && currentFile) {
+      setNoFile(false);
     }
-  }, [swarmExists, noFile]);
+    else setNoFile(true);
+  }, [currentFile]);
 
   // if swarm exists and deployment was successful, render success div
   // else if swarm exists but deployment was unsuccessful, render error message
   useEffect(() => {
+    console.log('line 49', stackName);
     if (swarmExists && success) {
       setPopupContent(successDiv);
     } else if (swarmExists && !success) {
       setPopupContent(errorDiv);
-    } 
+    } else {
+      setPopupContent(popupStartDiv);
+    }
   }, [success, swarmExists]);
 
+  useEffect(() => {
+    if(swarmDeployState === 1){
+      console.log('setting swarm deploy state', stackName);
+      getNameAndDeploy();
+    }
+  }, [swarmDeployState])
   // if there is no active file, ask user to open a file to deploy
   // TO DO - have different message from default error message
   // currently using default, but would be best to have a 'please open a file' message
@@ -66,12 +79,17 @@ const DeploySwarm: React.FC<Props> = ({
     } 
   }, [noFile, currentFile]);
 
+  /*useEffect(() => {
+    console.log('useEffect', currentFile);
+    setNoFile(false);
+  }, [currentFile])*/
   // keep a variable for access to hidden div in order to toggle hidden/visible
   // may be better way to do this? // -> change to React best practice method of doing this
   const swarmDeployPopup: any = document.getElementById('swarm-deploy-popup');
   
   // save html code in variables for easier access later
   // the default for the pop-up div, before any interaction with swarm / after leaving swarm
+
   const popupStartDiv = (
     <div id="initialize-swarm">
       <label htmlFor="stack-name" id="stack-name-label">Stack Name</label>
@@ -81,7 +99,7 @@ const DeploySwarm: React.FC<Props> = ({
         onClick={() => { 
           if (currentFile) {
             console.log('stackName inside onClick: ', stackNameRef.current);
-            getNameAndDeploy(event)
+            getNameAndDeploy()
           } else {
             setSuccess(false);
             setNoFile(true);
@@ -126,7 +144,7 @@ const DeploySwarm: React.FC<Props> = ({
 
   // retrieve input from user and pass it to runDockerSwarmDeployment as an argument
   // the function will return stdout from running each function, so that we have access to that information
-  const getNameAndDeploy = async (event: any) => {
+  const getNameAndDeploy = async () => {
     // // get value from user's input
     // console.log('current stack name from state: ', stackNameRef.current);
 
@@ -165,7 +183,7 @@ const DeploySwarm: React.FC<Props> = ({
     toggleHidden(swarmDeployPopup);
     setSwarmExists(false);
     setSuccess(false);
-    setNoFile(false);
+    if(currentFile === '') setNoFile(true);
     runLeaveSwarm();
     setSwarmDeployState(1);
     setStackName('');
