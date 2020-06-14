@@ -13,13 +13,14 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 // IMPORT TYPES
 import { SNode } from '../App.d';
-
+import { SGraph } from '../App.d';
 type Props = {
   portsOn: boolean;
+  nodeGraph: SGraph;
 };
 
 
-const NodePorts: React.FC<Props> = ({ portsOn }) => {
+const NodePorts: React.FC<Props> = ({ portsOn, nodeGraph }) => {
   useEffect(() => {
     // PORTS SVG VARIABLE
     // border radius
@@ -37,14 +38,16 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
     const ports: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
     const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
-    console.log('node ports', portsOn);
+    console.log('useEffect update ports', portsOn);
     if (portsOn) {
       // select all nodes with ports
       nodesWithPorts = d3
         .select('.nodes')
         .selectAll<SVGGElement, SNode>('.node')
-        .filter((d: SNode) => d.ports.length > 0);
-
+        .filter((d: SNode) => {
+          debugger
+          return d.ports.length > 0
+        });
       // iterate through all nodes with ports
       nodesWithPorts.each(function (d: SNode) {
         const node = this;
@@ -87,6 +90,7 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
 
     return () => {
       // before unmounting, if ports option was on, remove the ports
+      console.log('node ports is unmounting');
       if (portsOn) {
         ports.forEach((node) => node.remove());
         portText.forEach((node) => node.remove());
@@ -95,7 +99,7 @@ const NodePorts: React.FC<Props> = ({ portsOn }) => {
     // only fire when options.ports changes
   }, [portsOn]);
 
-  console.log('node ports blah');
+  console.log('hitting node ports rerender which is an empty fragment');
   return <></>;
 };
 

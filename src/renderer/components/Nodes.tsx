@@ -8,7 +8,7 @@
  *
  * ************************************
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 
 // IMPORT HELPER FUNCTIONS
@@ -22,7 +22,6 @@ import { getStatic } from '../helpers/static';
 import { SNode, SetSelectedContainer, Services, Options } from '../App.d';
 
 // IMPORT COMPONENTS
-import NodePorts from './NodePorts';
 import NodeVolumes from './NodeVolumes';
 
 type Props = {
@@ -68,6 +67,7 @@ function wrap(text: d3.Selection<SVGTextElement, SNode, d3.BaseType, unknown>) {
   });
 }
 
+
 const Nodes: React.FC<Props> = ({
   setSelectedContainer,
   services,
@@ -75,17 +75,89 @@ const Nodes: React.FC<Props> = ({
   getColor,
 }) => {
   const { simulation, serviceGraph, treeDepth } = window.d3State;
+  const [boxPorts, setBoxPorts] = useState<d3.Selection<SVGRectElement, SNode, any, any>[] | []>([]);
+  const [boxPortTexts, setBoxPortTexts] = useState<d3.Selection<SVGTextElement, SNode, any, any>[] | []>([]);
+  
+  /** HELPER FUNCTIONS */
+  const removePorts = () => {
+    boxPorts.forEach((node) => node.remove());
+    boxPortTexts.forEach((node) => node.remove());
+  }
+
+  const addPorts = () => {
+    const rx = 3;
+    // size of rectangle
+    const pWidth = 78;
+    const pHeight = 15;
+    // ports location
+    const x = 133 - 60;
+    const y = 133 - 30;
+    // text location
+    const dx = x + 21; // center of text element because of text-anchor
+    const dy = y + pHeight;
+    // PORTS VARIABLES
+    console.log('adding ports');
+    let nodesWithPorts: d3.Selection<SVGGElement, SNode, any, any>;
+    const ports: d3.Selection<SVGRectElement, SNode, any, any>[] = [];
+    const portText: d3.Selection<SVGTextElement, SNode, any, any>[] = [];
+  
+    // select all nodes with ports
+    nodesWithPorts = d3
+      .select('.nodes')
+      .selectAll<SVGGElement, SNode>('.node')
+      .filter((d: SNode) => {
+        return d.ports.length > 0
+      });
+    // iterate through all nodes with ports
+    nodesWithPorts.each(function (d: SNode) {
+      const node = this;
+      // iterate through all ports of node
+      d.ports.forEach((pString, i) => {
+        // set font size based on length of ports text
+        const textSize = '12px';
+        // add svg port
+        const port = d3
+          .select<SVGElement, SNode>(node)
+          .append('rect')
+          .attr('class', 'port')
+          .attr('rx', rx)
+          .attr('x', x)
+          .attr('y', y + i * pHeight)
+          .attr('width', pWidth)
+          .attr('height', pHeight);
+        // store d3 object in ports array
+        ports.push(port);
+        // add svg port text
+        const pText = d3
+          .select<SVGElement, SNode>(node)
+          .append('text')
+          .attr('class', 'ports-text')
+          .attr('color', 'white')
+          .attr('dx', dx + 18)
+          .attr('dy', dy + i * pHeight - 2)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', textSize)
+          // center the text in the rectangle
+          .append('tspan')
+          .text(pString)
+          .attr('text-anchor', 'middle');
+  
+        // store d3 object in ports text array
+        portText.push(pText);
+      });
+    });
+    setBoxPorts(ports);
+    setBoxPortTexts(portText);
+  }
   /**
    *********************
    * RENDER NODES
    *********************
    */
   useEffect(() => {
-    console.log('use effect');
     const container = d3.select('.view-wrapper');
     const width = parseInt(container.style('width'), 10);
     const height = parseInt(container.style('height'), 10);
-
     //sets 'clicked' nodes back to unfixed position
     const dblClick = (d: SNode) => {
       simulation.alphaTarget(0);
@@ -159,26 +231,27 @@ const Nodes: React.FC<Props> = ({
       .attr('y', 133 / 2)
       .attr('text-anchor', 'middle')
       .call(wrap);
-    //add stroke
-    /*
-    nodeContainers
-      .insert('text', '.nodeLabel')
-      .text((d: SNode) => d.name)
-      .attr('class', 'nodeLabelStroke')
-      .attr('x', 133 / 2)
-      .attr('y', 133 / 2)
-      .attr('text-anchor', 'middle')
-      .call(wrap);*/
+
+    if(options.ports) addPorts();
+
     return () => {
       // remove containers when services change
       nodeContainers.remove();
     };
   }, [services]);
 
-  console.log('nodes options', options);
+  useEffect(() => {
+    if(options.ports) addPorts();
+    else if(boxPorts !== undefined) removePorts();
+
+    return () => {
+      // before unmounting, if ports option was on, remove the ports
+      if (options.ports) removePorts();
+    };
+  }, [options.ports])
+
   return (
     <g className="nodes">
-      <NodePorts portsOn={options.ports} />
       <NodeVolumes volumesOn={options.volumes} getColor={getColor} />
     </g>
   );
