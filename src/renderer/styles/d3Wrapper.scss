@@ -4,7 +4,7 @@
   min-height: 500px;
   align-items: center;
   justify-content: center;
-  margin-right: 1em;
+  margin-right: 0.1em;
   .error-open-wrapper {
     width: 70%;
     display: flex;
@@ -77,7 +77,7 @@
   }
 
   .volumes-wrapper {
-    width: 230px;
+    width: 245px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -116,7 +116,7 @@
       }
 
       .volumeLegend {
-        margin: 0 0 0.75em 0.5em;
+        margin: 0 0 0.75em 0.1em;
         display: flex;
 
         p {
