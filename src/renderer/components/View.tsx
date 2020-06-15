@@ -278,6 +278,7 @@ const View: React.FC<Props> = ({
         .restart()
     }
 
+    console.log('view d3 render line 281 View.tsx');
     return () => {
       // clear window resize if changing away from depends view
       if (view === 'depends_on') {
