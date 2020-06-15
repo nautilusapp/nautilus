@@ -17,12 +17,12 @@ import { SwitchTab } from '../App.d';
 type Props = {
   activePath: string;
   openFiles: Array<string>;
-  switchToTab: SwitchTab;
+  switchTab: SwitchTab;
   closeTab: SwitchTab;
 }
-const TabBar: React.FC<Props> = ({ openFiles, switchToTab, closeTab, activePath }) => {
+const TabBar: React.FC<Props> = ({ openFiles, switchTab, closeTab, activePath }) => {
   // console.log(openFiles)
-  const tabs = openFiles.map(filePath => <Tab key={`${filePath}`} filePath={`${filePath}`} switchToTab={switchToTab} closeTab={closeTab} activePath={activePath} />)
+  const tabs = openFiles.map(filePath => <Tab key={`${filePath}`} filePath={`${filePath}`} switchTab={switchTab} closeTab={closeTab} activePath={activePath} />)
   return (
     <div className="tab-bar">
       {tabs}

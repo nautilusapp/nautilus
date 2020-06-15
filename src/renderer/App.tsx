@@ -171,18 +171,28 @@ class App extends Component<{}, State> {
    * @description sets state to the state stored in localStorage of the file
    * associated with the given filePath.
    */
-  switchToTab: SwitchTab = (filePath: string, openFiles?: Array<string>) => {
-    // Copy of current options
-    const { options }= this.state;
+  switchTab: SwitchTab = (
+    filePath: string,
+    openFiles?: Array<string>
+    ) => {
     // Extract the desired tab state from localStorage
     const tabState = JSON.parse(localStorage.getItem(filePath) || '{}');
     // Create new state object with the returned tab state
     let newState;
-    if (openFiles) newState = {...this.state, ...tabState, openFiles, options}
-    else newState = {...this.state, ...tabState, options};
+    if (openFiles) newState = {
+      ...this.state,
+      ...tabState,
+      openFiles,
+      // options
+    }
+    else newState = {
+      ...this.state,
+      ...tabState,
+      // options
+    };
     // Set the 'state' item in localStorage to the tab state. This means that tab is the current tab, which would be used if the app got reloaded.
     localStorage.setItem('state', JSON.stringify(tabState));
-    // console.log('Services', newState.services)
+
     // Set the d3 state using the services extracted from the tabState and then setState
     window.d3State = setD3State(newState.services);
     this.setState(newState);
@@ -201,13 +211,17 @@ class App extends Component<{}, State> {
     localStorage.removeItem(filePath);
     // If the tab to be closed is the active tab, reset d3 and delete "state" object from local storage and set state to the initial state with the updated open files array included.
     if (filePath === this.state.filePath){
-      // Remove the 'state' localStorage item, which represents the services of the currently opened file.
-      // Stop the simulation to prevent d3 transform errors related to 'tick' events
+      // Remove the 'state' localStorage item, which represents the 
+      // services of the currently opened file.
+      // Stop the simulation to prevent d3 transform errors related 
+      // to 'tick' events
       localStorage.removeItem('state');
       const { simulation } = window.d3State;
       simulation.stop();
-      if (openFiles.length > 1 ) this.switchToTab(newOpenFiles[0], newOpenFiles)
-      else this.setState({...initialState, openFiles: newOpenFiles, options});
+      // If there are other open tabs, switch to the first open one
+      // If not, reset to initialState with selected options.
+      if (openFiles.length > 1 ) this.switchTab(newOpenFiles[0], newOpenFiles)
+      else this.setState({...initialState, options});
       
     }
     else this.setState({...this.state, openFiles: newOpenFiles });
@@ -307,7 +321,7 @@ class App extends Component<{}, State> {
           <TabBar
             activePath={this.state.filePath}
             openFiles={this.state.openFiles}
-            switchToTab={this.switchToTab}
+            switchTab={this.switchTab}
             closeTab={this.closeTab}
           />
           <D3Wrapper
