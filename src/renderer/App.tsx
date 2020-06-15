@@ -218,8 +218,10 @@ class App extends Component<{}, State> {
       localStorage.removeItem('state');
       const { simulation } = window.d3State;
       simulation.stop();
+      // If there are other open tabs, switch to the first open one
+      // If not, reset to initialState with selected options.
       if (openFiles.length > 1 ) this.switchTab(newOpenFiles[0], newOpenFiles)
-      else this.setState({...initialState, openFiles: newOpenFiles, options});
+      else this.setState({...initialState, options});
       
     }
     else this.setState({...this.state, openFiles: newOpenFiles });
