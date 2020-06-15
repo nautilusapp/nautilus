@@ -1,13 +1,13 @@
 .tab-bar {
   display: flex;
   background-color: rgb(0,50,92);;
-  height: 2em;
+  height: 2.2em;
   align-items: bottom;
   overflow-y: hidden;
   overflow-x: scroll;
   .tab {
     width: 12em;
-    height: 2em;
+    height: 2.2em;
     color: darken($secondary-color, 10%);
     background-color: rgb(0,50,92);
     color: white;
