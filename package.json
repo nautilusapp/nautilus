@@ -41,7 +41,6 @@
         "Categories": "WebDevelopment"
       },
       "executableName": "nautilus",
-      "maintainer": "michaelxhdinh@gmail.com",
       "target": [
         "AppImage"
       ]
